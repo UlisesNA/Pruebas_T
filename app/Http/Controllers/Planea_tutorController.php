@@ -18,7 +18,7 @@ class Planea_tutorController extends Controller
                                         and planeacion.id_semestre=asigna_tutor.id_semestre
                                         and planeacion.id_estado=1 GROUP BY planeacion.id_semestre');
 
-        $tabla1=DB::select('SELECT planeacion.id_semestre as id, gnral_semestres.descripcion as sem, planeacion.comentarios,planeacion.sugerencia,planeacion.id_planeacion,planeacion.desc_actividad,planeacion.objetivo,planeacion.instrucciones, planeacion.comentarios,planeacion.id_sugerencia
+        $tabla1=DB::select('SELECT planeacion.id_semestre as id, gnral_semestres.descripcion as sem, planeacion.sugerencia,planeacion.id_planeacion,planeacion.desc_actividad,planeacion.objetivo,planeacion.instrucciones, planeacion.comentarios,planeacion.id_sugerencia
                                       from gnral_personales,gnral_carreras,gnral_semestres,asigna_tutor,asigna_planeacion_actividad,planeacion
                                         where gnral_personales.id_personal=asigna_tutor.id_personal 
                                         and gnral_carreras.id_carrera=asigna_tutor.id_carrera

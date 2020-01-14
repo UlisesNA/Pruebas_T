@@ -13,27 +13,31 @@
                                     <table class="table table-bordered">
                                         <thead>
                                         <tr>
-                                            <th scope="col" colspan="3" class="text-center">DATOS DEL ESTUDIANTE</th>
-                                            <td scope="col" rowspan="2">FECHA CITA: <input type="date" class="form-control" id="fecha_canalizacion" name="fecha_canalizacion"></td>
+                                            <th scope="col" colspan="4" class="text-center">DATOS DEL ESTUDIANTE</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr>
-                                            <td scope="row" colspan="3">CARRERA:
+                                            <td scope="col" colspan="3">CARRERA:
                                                 @foreach ($carreras as $dato)
                                                     {{$dato->nombre}}
                                                 @endforeach
                                             </td>
-                                            <td>HORA: <input type="time" class="form-control" id="hora" name="hora"></td>
-
-                                        </tr>
-                                        <tr>
-                                            <td scope="row" colspan="3">NOMBRE DEL ESTUDIANTE: {{$alumno->nombre}} {{$alumno->apaterno}} {{$alumno->amaterno}}</td>
-                                            <td>SEMESTRE:
+                                            <td scope="col">SEMESTRE:
                                                 @foreach ($semestre as $dato)
                                                     {{$dato->descripcion}}
                                                 @endforeach
                                             </td>
+                                            <td scope="col" >FECHA CITA ANTERIOR: <input type="date" class="form-control" id="fecha_canalizacion_anterior" name="fecha_canalizacion_anterior"></td>
+                                        </tr>
+                                        <tr>
+                                            <td scope="row" colspan="3">NOMBRE DEL ESTUDIANTE: {{$alumno->nombre}} {{$alumno->apaterno}} {{$alumno->amaterno}}</td>
+                                            <td>GRUPO:
+                                                @foreach ($grupo as $dato)
+                                                    {{$dato->grupo}}
+                                                @endforeach
+                                            </td>
+                                            <td scope="col" >FECHA CITA: <input type="date" class="form-control" id="fecha_canalizacion" name="fecha_canalizacion"></td>
                                         </tr>
                                         <tr>
                                             <td scope="row" colspan="3">NOMBRE DEL TUTOR:
@@ -41,11 +45,9 @@
                                                     {{$dato->nombre}}
                                                 @endforeach
                                             </td>
-                                            <td>GRUPO:
-                                                @foreach ($grupo as $dato)
-                                                    {{$dato->grupo}}
-                                                @endforeach
+                                            <td>HORA: <input type="time" class="form-control" id="hora" name="hora" ></td>
                                             </td>
+                                            <td scope="col" >FECHA DE SIGUIENTE CITA: <input type="date" class="form-control" id="fecha_canalizacion_siguiente" name="fecha_canalizacion"></td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -60,7 +62,7 @@
                                         <tbody>
                                         <tr>
                                             <th scope="row" colspan="3" >Aspectos sociológicos</th>
-                                            <th scope="row" colspan="6" rowspan="4" ><textarea type="text" id="observaciones" name="observaciones" class="form-control"></textarea></th>
+                                            <th scope="row" colspan="6" rowspan="9" ><textarea type="text" id="observaciones" name="observaciones" class="form-control"></textarea></th>
                                         </tr>
                                         <tr>
                                             <td>Indisciplina:</td>
@@ -76,7 +78,6 @@
                                         </tr>
                                         <tr>
                                             <th scope="row" colspan="3" >Aspectos académicos</th>
-                                            <th >¿EL TUTOR REQUIERE NOTIFICACIÓN PERIÓDICA DE LOS AVANCES DEL CASO?</th>
                                         </tr>
                                         <tr>
                                             <td>Dificultades de concentración:</td>
@@ -100,21 +101,34 @@
                                     <table class="table table-bordered">
                                         <thead>
                                         <tr>
-                                            <th scope="col" colspan="3">¿EL TUTOR REQUIERE NOTIFICACIÓN PERIÓDICA DE LOS AVANCES DEL CASO?</th>
+                                            <th scope="col" colspan="2">¿EL TUTOR REQUIERE NOTIFICACIÓN PERIÓDICA DE LOS AVANCES DEL CASO?</th>
+                                            <th scope="col" >STATUS DE LA CANALIZACIÓN</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr>
                                             <td>
                                                 <select name="notificacion" id="notificacion" class="custom-select custom-select-md">
-                                                    <option value="" selected>Elija Opcion</option>
+                                                    <option value="" selected>Elija Opción</option>
                                                     <option value="1" >Si</option>
                                                     <option value="0" >No</option>
                                                 </select>
                                             </td>
-                                            <td rowspan="">EMAIL: <br>@foreach ($prof as $dato)
+                                            <td rowspan="">CORREO: <br>@foreach ($prof as $dato)
                                                     {{$dato->correo}}
-                                                @endforeach</td>
+                                                @endforeach
+                                            </td>
+                                            <td>
+                                                <div class="form-check">
+                                                    <input type="radio" class="form-check-input" id="status" name="status" value="0">
+                                                    <label class="form-check-label" for="materialGroupExample2">En Proceso</label>
+                                                </div>
+
+                                                <div class="form-check">
+                                                    <input type="radio" class="form-check-input" id="status" name="status" value="1">
+                                                    <label class="form-check-label" for="materialGroupExample3">Terminado</label>
+                                                </div>
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -122,14 +136,14 @@
                                     <table class="table table-bordered">
                                         <thead>
                                         <tr>
-                                            <th scope="col" colspan="3">Area a canalizar tutorado</th>
+                                            <th scope="col" colspan="3">Área a canalizar tutorado</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr>
                                             <td>
                                                 <select name="id_area" id="id_area" class="custom-select custom-select-md">
-                                                    <option value="" selected>Elija Area a canalizar</option>
+                                                    <option value="" selected>Elija área a canalizar</option>
                                                     @foreach ($areas as $dato)
                                                         <option value="{{$dato->id_area}}" >{{$dato->descripcion_area}}</option>
                                                     @endforeach
@@ -146,7 +160,7 @@
 
                                     </div>
                                     <div align="center">
-                                        <input type="submit" value="agregar">
+                                        <input type="submit" value="Agregar">
                                     </div>
                                 </div>
                             </div>

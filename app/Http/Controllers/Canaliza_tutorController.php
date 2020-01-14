@@ -72,6 +72,7 @@ class Canaliza_tutorController extends Controller
         //$datos=request()->all();
         $datos=request()->except('_token');
         Canalizacion::insert($datos);
+        return redirect()->back();
         //return redirect('canalizacion');
         //return response()->json($datos);
     }

@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
     <form action="{{route('canalizados.update',$plan->id_canalizacion)}}" method="post">
         @csrf
         @method('PUT')
@@ -15,30 +16,35 @@
                                     <table class="table table-bordered">
                                         <thead>
                                         <tr>
-                                            <th scope="col" colspan="3" class="text-center">DATOS DEL ALUMNO</th>
-                                            <td scope="col" rowspan="2">FECHA CITA: <input type="date" class="form-control" id="fecha_canalizacion" name="fecha_canalizacion" value="{{$plan->fecha_canalizacion}}"></td>
+                                            <th scope="col" colspan="4" class="text-center">DATOS DEL ESTUDIANTE</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr>
-                                            <td scope="row" colspan="3">CARRERA:
+                                            <td scope="col" colspan="3">CARRERA:
                                                 @foreach ($carreras as $dato)
                                                     {{$dato->nombre}}
                                                 @endforeach
                                             </td>
-                                            <td>HORA: <input type="time" class="form-control" id="hora" name="hora" value="{{$plan->hora}}"></td>
-
-                                        </tr>
-                                        <tr>
-                                            <td scope="row" colspan="3">NOMBRE DEL ALUMNO:
-                                                @foreach ($alumno as $al)
-                                                    {{$al->nombre}} {{$al->apaterno}} {{$al->amaterno}}</td>
-                                                @endforeach
-                                            <td>SEMESTRE:
+                                            <td scope="col">SEMESTRE:
                                                 @foreach ($semestre as $dato)
                                                     {{$dato->descripcion}}
                                                 @endforeach
                                             </td>
+                                            <td scope="col" >FECHA CITA ANTERIOR: <input type="date" class="form-control" id="fecha_canalizacion_anterior" name="fecha_canalizacion_anterior" value="{{$plan->fecha_canalizacion_anterior}}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td scope="row" colspan="3">NOMBRE DEL ESTUDIANTE:
+                                                @foreach ($alumno as $al)
+                                                    {{$al->nombre}} {{$al->apaterno}} {{$al->amaterno}}
+                                            @endforeach
+                                            </td>
+                                            <td>GRUPO:
+                                                @foreach ($grupo as $dato)
+                                                    {{$dato->grupo}}
+                                                @endforeach
+                                            </td>
+                                            <td scope="col" >FECHA CITA: <input type="date" class="form-control" id="fecha_canalizacion" name="fecha_canalizacion" value="{{$plan->fecha_canalizacion}}"></td>
                                         </tr>
                                         <tr>
                                             <td scope="row" colspan="3">NOMBRE DEL TUTOR:
@@ -46,11 +52,9 @@
                                                     {{$dato->nombre}}
                                                 @endforeach
                                             </td>
-                                            <td>GRUPO:
-                                                @foreach ($grupo as $dato)
-                                                    {{$dato->grupo}}
-                                                @endforeach
+                                            <td>HORA: <input type="time" class="form-control" id="hora" name="hora" value="{{$plan->hora}}"></td>
                                             </td>
+                                            <td scope="col" >FECHA DE SIGUIENTE CITA: <input type="date" class="form-control" id="fecha_canalizacion_siguiente" name="fecha_canalizacion_siguiente" value="{{$plan->fecha_canalizacion_siguiente}}"></td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -65,8 +69,7 @@
                                         <tbody>
                                         <tr>
                                             <th scope="row" colspan="3" >Aspectos sociológicos</th>
-                                            <th scope="row" colspan="6" rowspan="13" ><textarea type="text" id="observaciones" name="observaciones" class="form-control">{{$plan->observaciones}}</textarea></th>
-
+                                            <th scope="row" colspan="6" rowspan="9" ><textarea type="text" id="observaciones" name="observaciones" class="form-control">{{$plan->observaciones}}</textarea></th>
                                         </tr>
                                         <tr>
                                             <td>Indisciplina:</td>
@@ -92,7 +95,6 @@
                                                 <td> <input type="checkbox" class="" id="aspectos_sociologicos3" name="aspectos_sociologicos3" value="1"></td>
                                             @endif
                                         </tr>
-
                                         <tr>
                                             <th scope="row" colspan="3" >Aspectos académicos</th>
                                         </tr>
@@ -130,34 +132,69 @@
                                     <table class="table table-bordered">
                                         <thead>
                                         <tr>
-                                            <th scope="col" colspan="3">¿EL TUTOR REQUIERE NOTIFICACIÓN PERIÓDICA DE LOS AVANCES DEL CASO?</th>
+                                            <th scope="col" colspan="2">¿EL TUTOR REQUIERE NOTIFICACIÓN PERIÓDICA DE LOS AVANCES DEL CASO?</th>
+                                            <th scope="col" >STATUS DE LA CANALIZACIÓN</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr>
                                             <td>
                                                 <select name="notificacion" id="notificacion" class="custom-select custom-select-md">
-                                                        @if($plan->notificacion !=null)
-                                                            @if($plan->notificacion ==1)
-                                                                <option value="">Elija Opcion</option>
-                                                                <option value="1" selected>Si</option>
-                                                                <option value="0">No</option>
-                                                            @else
-                                                                <option value="">Elija Opcion</option>
-                                                                <option value="1">Si</option>
-                                                                <option value="0" selected>No</option>
-                                                            @endif
-                                                        @else
-                                                            <option value="" selected>Elija Opcion</option>
-                                                            <option value="1">Si</option>
+                                                    @if($plan->notificacion !=null)
+                                                        @if($plan->notificacion ==1)
+                                                            <option value="">Elija Opcion</option>
+                                                            <option value="1" selected>Si</option>
                                                             <option value="0">No</option>
+                                                        @else
+                                                            <option value="">Elija Opcion</option>
+                                                            <option value="1">Si</option>
+                                                            <option value="0" selected>No</option>
                                                         @endif
+                                                    @else
+                                                        <option value="" selected>Elija Opcion</option>
+                                                        <option value="1">Si</option>
+                                                        <option value="0">No</option>
+                                                    @endif
                                                 </select>
                                             </td>
-                                            <td rowspan="">EMAIL: <br>
-                                                @foreach ($prof as $dato)
+                                            <td rowspan="">CORREO: <br>@foreach ($prof as $dato)
                                                     {{$dato->correo}}
-                                                @endforeach</td>
+                                                @endforeach
+                                            </td>
+                                            <td>
+                                                @if($plan->status ==0)
+                                                    <div class="form-check">
+                                                        <input type="radio" class="form-check-input" id="status" name="status" value="0" checked>
+                                                        <label class="form-check-label" for="materialGroupExample2">En Proceso</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input type="radio" class="form-check-input" id="status" name="status" value="1">
+                                                        <label class="form-check-label" for="materialGroupExample3">Terminado</label>
+                                                    </div>
+                                                @else
+                                                    @if($plan->status ==1)
+                                                        <div class="form-check">
+                                                            <input type="radio" class="form-check-input" id="status" name="status" value="0">
+                                                            <label class="form-check-label" for="materialGroupExample2">En Proceso</label>
+                                                        </div>
+
+                                                        <div class="form-check">
+                                                            <input type="radio" class="form-check-input" id="status" name="status" value="1" checked>
+                                                            <label class="form-check-label" for="materialGroupExample3">Terminado</label>
+                                                        </div>
+                                                    @else
+                                                        <div class="form-check">
+                                                            <input type="radio" class="form-check-input" id="status" name="status" value="0">
+                                                            <label class="form-check-label" for="materialGroupExample2">En Proceso</label>
+                                                        </div>
+
+                                                        <div class="form-check">
+                                                            <input type="radio" class="form-check-input" id="status" name="status" value="1">
+                                                            <label class="form-check-label" for="materialGroupExample3">Terminado</label>
+                                                        </div>
+                                                    @endif
+                                                @endif
+                                            </td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -165,14 +202,14 @@
                                     <table class="table table-bordered">
                                         <thead>
                                         <tr>
-                                            <th scope="col" colspan="3">Area a canalizar tutorado</th>
+                                            <th scope="col" colspan="3">Área a canalizar tutorado</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr>
                                             <td>
                                                 <select name="id_area" id="id_area" class="custom-select custom-select-md">
-                                                    <option>Elija Area a canalizar</option>
+                                                    <option value="" selected>Elija área a canalizar</option>
                                                     @foreach ($areas as $dato)
                                                         @if($plan->id_area ==$dato->id_area)
                                                             <option value="{{$dato->id_area}}" selected>{{$dato->descripcion_area}}</option>

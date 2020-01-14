@@ -94,6 +94,8 @@ class Canalizados_tutorController extends Controller
         $plan = Canalizacion::find($id);
        // $plan=request()->except('updated_at');
         $plan->fecha_canalizacion = $request->get('fecha_canalizacion');
+        $plan->fecha_canalizacion_anterior = $request->get('fecha_canalizacion_anterior');
+        $plan->fecha_canalizacion_siguiente = $request->get('fecha_canalizacion_siguiente');
         $plan->hora = $request->hora;
         $plan->aspectos_sociologicos1 = $request->get('aspectos_sociologicos1');
         $plan->aspectos_sociologicos2 = $request->get('aspectos_sociologicos2');
@@ -105,6 +107,7 @@ class Canalizados_tutorController extends Controller
         $plan->otros = $request->get('otros');
         $plan->notificacion = $request->get('notificacion');
         $plan->id_area = $request->get('id_area');
+        $plan->status = $request->get('status');
         $plan->save();
         //return view('profesor.canalizados');
         //return view('profesor.canalizados');
