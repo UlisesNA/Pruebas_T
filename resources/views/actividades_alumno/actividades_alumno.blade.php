@@ -32,7 +32,7 @@
                                     @if($plan->evidencia==null)
                                         <td>Evidencia no agregada</td>
                                     @else
-                                        <td>{{$plan->evidencia}}</td>
+                                        <td><a href="{{url("/img/",$plan->evidencia)}}" target="_blank">Evidencia</a></td>
                                     @endif
                                 @else
                                     <td>Esta actividad no requiere evidencia</td>
@@ -64,12 +64,12 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{route('actividad.update',$dato->id_actividad)}}" method="post">
+                            <form action="{{route('actividad.update',$dato->id_actividad)}}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                 <div class="modal-body">
                                     <div class="form-group col-md-12">
-                                        <input type="file" class="form-control" name="evidencia" value="{{$dato->evidencia}}">
+                                        <input type="file" class="form-control" name="evidencia">
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -83,11 +83,17 @@
                 </div>
             </div>
         @endforeach
+
+
+
+
+
+
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Seleccione archivo</h5>
+                        <h5 class="modal-title" id="exampleModalLabel" name="evidencia">Seleccione archivoooooo</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -103,12 +109,6 @@
                 </div>
             </div>
         </div>
-
-
-
-
-
-
 
         <!-- Modal proyecto de vida-->
         <div class="modal fade" id="modalproyectodevida" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">

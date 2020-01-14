@@ -61,21 +61,22 @@ class actividades_alumnoController extends Controller
     {
 
         $plan = actividades::find($id);
-        /*if($request->hasFile('evidencia'))
+        if($request->hasFile('evidencia'))
         {
 
             $file=$request->file('evidencia');
-            $name=time().$file->getClientOriginalExtension();
+
+            $name=time().".".$file->getClientOriginalExtension();
             $plan->evidencia = $name;
             $file->move(public_path().'/img/',$name);
-        }else
-            {
+        }else {
                 $file=$request->file('evidencia');
+          //  dd($file);
                 $name=time()."daat";
 
                 $file->move(public_path().'/img/',$name);
-        }*/
-        $plan->evidencia = $request->evidencia;;
+        }
+        //$plan->evidencia = $request->evidencia;;
         $plan->save();
         return redirect()->back();
     }

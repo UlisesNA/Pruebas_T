@@ -26,13 +26,29 @@
                                                 </div>
                                                 <table class="table table-hover table-sm">
                                                     <tr>
-                                                        <th>Descripción de la Actividad de Planeacion</th>
-                                                        <th>Ver Actividad</th>
+                                                        <th>Fecha Inicio</th>
+                                                        <th>Fecha Fin</th>
+                                                        <th>Decripción Actividad</th>
+                                                        <th>Objetivo</th>
+                                                        <th>Instrucciones</th>
+                                                        <th>Semestre</th>
+                                                        <th>Comentarios</th>
+                                                        <th>Sugerencia</th>
                                                     </tr>
                                                     @foreach($tabla1 as $dat)
                                                         @if($dato->id==$dat->id)
                                                             <tr onmouseover="this.style.backgroundColor='#DBE7F3'" onmouseout="this.style.backgroundColor='white'">
+                                                                <td>{{$dat->fecha_inicio}}</td>
+                                                                <td>{{$dat->fecha_fin}}</td>
                                                                 <td>{{$dat->desc_actividad}}</td>
+                                                                <td>{{$dat->objetivo}}</td>
+                                                                <td>{{$dat->instrucciones}}</td>
+                                                                <td>{{$dat->id_semestre}}</td>
+                                                                <td>
+                                                                    <a class="btn btn-primary" data-toggle="modal" data-target="#myModal_{{$dat->id_planeacion}}" style="background: #f0f0f0;">
+                                                                        <i class="fas fa-eye" style="color: black"></i>
+                                                                    </a>
+                                                                </td>
                                                                 <td>
                                                                     <a class="btn btn-primary" data-toggle="modal" data-target="#myModal_{{$dat->id_planeacion}}" style="background: #f0f0f0;">
                                                                         <i class="fas fa-eye" style="color: black"></i>

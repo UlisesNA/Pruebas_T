@@ -36,7 +36,7 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label for="edad">Edad</label>
-                                            <input type="number" class="form-control" id="edad" name="edad">
+                                            <input type="number " class="form-control" id="edad" name="edad">
                                         </div>
                                         <div class="col-md-4">
                                             <label for="sexo">Sexo</label>
