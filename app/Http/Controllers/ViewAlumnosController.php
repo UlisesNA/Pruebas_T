@@ -519,6 +519,7 @@ class ViewAlumnosController extends Controller
             $pob,$ante,$sat,$ma_re,$to_r,$mat_e,$t_e,$g_e));
 
         return 'panel';
+        //return view('home');
     }
 
     public function updateExp(Request $request)
