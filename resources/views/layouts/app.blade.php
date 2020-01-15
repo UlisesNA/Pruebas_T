@@ -80,6 +80,9 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" href="coordina_inst" >Crear Planeación</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" href="peticiones_inst" >Peticiones</a>
+                                </li>
                             @endif
                                 @if (Auth::user()->id_rol ==2)
                                     <li class="nav-item">

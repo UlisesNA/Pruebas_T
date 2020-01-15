@@ -12,6 +12,7 @@ Route::Resource('/quinto_sem','Coordina_inst_qController');
 Route::Resource('/sexto_sem','Coordina_inst_seController');
 Route::Resource('/septimo_sem','Coordina_inst_sepController');
 Route::Resource('/octavo_sem','Coordina_inst_oController');
+Route::Resource('/peticiones_inst','CoordinaInst_peticionesController');
 
 Route::Resource('/coordina_carrera','Coordina_carrController');
 Route::Resource('/peticiones','Coordina_peticionesController');

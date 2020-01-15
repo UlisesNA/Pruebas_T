@@ -81,7 +81,7 @@
                                         </tr>
                                         <tr>
                                             <td>Problemas de integración:</td>
-                                            @if($plan->aspectos_sociologicos1=1)
+                                            @if($plan->aspectos_sociologicos1=null)
                                                 <td> <input type="checkbox" class="" id="aspectos_sociologicos2" name="aspectos_sociologicos2" value="1" checked></td>
                                             @else
                                                 <td> <input type="checkbox" class="" id="aspectos_sociologicos2" name="aspectos_sociologicos2" value="1"></td>

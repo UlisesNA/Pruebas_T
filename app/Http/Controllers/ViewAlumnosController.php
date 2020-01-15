@@ -12,16 +12,15 @@ use App\Exp_datos_familiare;
 use App\Exp_escalas;
 use App\Exp_familia_union;
 use App\Exp_formacion_integral;
-use App\Exp_opc_intelectual;
-use App\Exp_opcintelectual;
+use App\Exp_formatrabajo;
 use App\Exp_generale;
 use App\Exp_habitos_estudio;
+use App\Exp_opc_intelectual;
 use App\Exp_opc_nivel_socio;
 use App\Exp_opc_vives;
 use App\Exp_parentesco;
 use App\Exp_tiempoestudia;
 use App\Exp_turno;
-use App\gnral_alumnos;
 use App\Gnral_carreras;
 use App\Gnral_grupos;
 use App\Gnral_periodos;
@@ -31,48 +30,12 @@ use Illuminate\Support\Facades\Auth;
 use DB;
 class ViewAlumnosController extends Controller
 {
-    public function generapdf()
-    {
+    public  function generapdf(){
         $alumnos=Exp_asigna_expediente::all();
-
         return view('profesor.generapdf',compact('alumnos'));
     }
     public function index()
     {
-
-       // dd(Auth::user());
-        /*
-        $alumno = gnral_alumnos:: where ('id_usuario', Auth::user()->id)->count();
-        if ($alumno==0)
-        {
-            $exp_generale=Exp_generale::create(array());
-            $exp_antecedentes_academico=Exp_antecedentes_academico::create(array());
-            $exp_datos_familiare=Exp_datos_familiare::create(array());
-            $exp_habitos_estudio=Exp_habitos_estudio::create(array());
-            $exp_formacion_integral=Exp_formacion_integral::create(array());
-            $exp_area_psicopedagogica=Exp_area_psicopedagogica::create(array());
-
-            $id_alumno=Auth::user()->id;
-            $obtenerid=gnral_alumnos::create(array('id_usuario'=>$id_alumno));
-
-
-            $exp_asigna_expediente = array(
-                "id_exp_general" => $exp_generale->id_exp_general,
-                "id_exp_antecedentes_academicos" => $exp_antecedentes_academico->id_exp_antecedentes_academicos,
-                "id_exp_datos_familiares" => $exp_datos_familiare->id_exp_datos_familiares,
-                "id_exp_habitos_estudio" => $exp_habitos_estudio->id_exp_habitos_estudio,
-                "id_exp_formacion_integral" => $exp_formacion_integral->id_exp_formacion_integral,
-                "id_exp_area_psicopedagogica" => $exp_area_psicopedagogica->id_exp_area_psicopedagogica,
-                "id_alumno" => $obtenerid -> $id_alumno
-            );
-            Exp_asigna_expediente::create($exp_asigna_expediente);
-
-           // dd("ok");
-        }*/
-
-       // dd($alumno);
-
-
         $datos = AsignaExpediente::getDatos();
         $carreras = Gnral_carreras::all();
         $grupos = Gnral_grupos::all();
@@ -86,12 +49,12 @@ class ViewAlumnosController extends Controller
         $turno = Exp_turno::all();
         $tiempoestudia = Exp_tiempoestudia::all();
         $intelectual = Exp_opc_intelectual::all();
-        $parentesco = Exp_parentesco::all();
-        $escala = Exp_escalas::all();
+        $parentesco=Exp_parentesco::all();
+        $escala=Exp_escalas::all();
 
 
         return view('alumno.expediente')->with(compact('carreras', 'grupos', 'periodos', 'datos',
-            'semestres', 'estadocivil', 'niveleconomico', 'bachillerato', 'vive', 'familiaunion', 'turno', 'tiempoestudia', 'intelectual', 'parentesco', 'escala'));
+            'semestres', 'estadocivil', 'niveleconomico', 'bachillerato', 'vive', 'familiaunion', 'turno', 'tiempoestudia', 'intelectual','parentesco','escala'));
     }
     public function create()
     {
@@ -99,204 +62,6 @@ class ViewAlumnosController extends Controller
     }
     public function store(Request $request)
     {
-      /* request()->validate([
-            "id_carrera"=>"required",
-            "id_periodo" => "required",
-            "id_grupo" => "required",
-            "nombre" => "required",
-            "edad" => "required",
-            "sexo" => "required",
-            "fecha_nacimientos" => "required",
-            "lugar_nacimientos" => "required",
-            "id_semestre" => "required",
-            "id_estado_civil" => "required",
-            "no_hijos" => "required",
-            "direccion" =>"required",
-            "correo" => "required",
-            "cel" => "required",
-            "id_nivel_economico" => "required",
-            "trabaja" => "required",
-            "no_cuenta" => "required",
-            "beca" => "required",
-            "estado" => "required",
-            "turno" => "required",
-            "poblacion"=> "required",
-            "ant_inst"=> "required",
-            "satisfaccion_c"=> "required",
-            "materias_repeticion"=>"required",
-            "tot_repe"=>"required",
-            "materias_especial"=>"required",
-            "tot_espe"=>"required",
-            "gen_espe"=>"required",
-            "id_bachillerato" => "required",
-            "otros_estudios" => "required",
-            "anos_curso_bachillerato" => "required",
-            "ano_terminacion" =>"required",
-            "escuela_procedente" => "required",
-            "materias_reprobadas" =>"required",
-            "otra_carrera_ini" => "required",
-            "interrupciones_estudios" => "required",
-            "razon_descide_estudiar_tesvb" =>"required",
-            "sabedel_perfil_profesional" => "required",
-            "otras_opciones_vocales" => "required",
-            "tegusta_carrera_elegida" => "required",
-            "porque_carrera_elegida" => "required",
-            "suspension_estudios_bachillerato" =>"required",
-            "teestimula_familia" =>"required",
-            "nombre_padre" => "required",
-            "edad_padre" => "required",
-            "ocupacion_padre" => "required",
-            "lugar_residencia_padre" => "required",
-            "nombre_madre" => "required",
-            "edad_madre" => "required",
-            "ocupacion_madre" => "required",
-            "lugar_residencia_madre" => "required",
-            "no_hermanos" => "required",
-            "id_opc_vives" =>"required",
-            "no_personas" => "required",
-            "etnia_indigena" => "required",
-            "sostiene_economia_hogar" => "required",
-            "id_familia_union" => "required",
-            "nombre_tutor" => "required",
-            "id_parentesco" =>"required",
-            "tiempo_empelado_estudiar" => "required",
-            "id_opc_intelectual" => "required",
-            "forma_estudio" => "required",
-            "tiempo_libre" => "required",
-            "asignatura_preferida" =>"required",
-            "porque_asignatura" => "required",
-            "asignatura_dificil" => "required",
-            "porque_asignatura_dificil" => "required",
-            "opinion_tu_mismo_estudiante" => "required",
-            "practica_deporte" =>"required",
-            "practica_artistica" => "required",
-            "id_escala"=>"required",
-            "pasatiempo" => "required",
-            "actividades_culturales" => "required",
-            "estado_salud" => "required",
-            "enfermedad_cronica" => "required",
-            "enf_cron_padre" => "required",
-            "operacion" => "required",
-            "enfer_visual" => "required",
-            "usas_lentes" => "required",
-            "medicamento_controlado" => "required",
-            "estatura" => "required",
-            "peso" => "required",
-            "accidente_grave" =>"required",
-            "rendimiento_escolar" => "required",
-            "dominio_idioma" => "required",
-            "otro_idioma" => "required",
-            "conocimiento_compu" =>"required",
-            "aptitud_especial" =>"required",
-            "comprension" => "required",
-            "preparacion" =>"required",
-            "estrategias_aprendizaje" => "required",
-            "organizacion_actividades" =>"required",
-            "concentracion" =>"required",
-            "solucion_problemas" =>"required",
-            "condiciones_ambientales" => "required",
-            "busqueda_bibliografica" => "required",
-            "trabajo_equipo" =>"required"
-        ],
-            [
-                'id_carrera.required' => 'El campo no puede quedar vacio',
-                'id_periodo.required' => 'El campo no puede quedar vacio',
-                'id_grupo.required' => 'El campo no puede quedar vacio',
-                'nombre.required' => 'El campo no puede quedar vacio',
-                'edad.required' => 'El campo  no puede quedar vacio',
-                'sexo.required' => 'El campo no puede quedar vacio',
-                'fecha_nacimientos.required' => 'El campo no puede quedar vacio',
-                'lugar_nacimientos.required' => 'El campo no puede quedar vacio',
-                'id_semestre.required' => 'El campo no puede quedar vacio',
-                'id_estado_civil.required' => 'El campo no puede quedar vacio',
-                'no_hijos.required' => 'El campo no puede quedar vacio',
-                'direccion.required' => 'El campo no puede quedar vacio',
-                'correo.required' => 'El campo no puede quedar vacio',
-                'cel.required' => 'El campo no puede quedar vacio',
-                'id_nivel_economico.required' => 'El campo no puede quedar vacio',
-                'trabaja.required' => 'El campo no puede quedar vacio',
-                'no_cuenta.required' => 'El campo no puede quedar vacio',
-                'beca.required' => 'El campo no puede quedar vacio',
-                'estado.required' => 'El campo no puede quedar vacio',
-                'turno.required' => 'El campo no puede quedar vacio',
-                'poblacion.required' => 'El campo no puede quedar vacio',
-                'ant_inst.required' => 'El campo no puede quedar vacio',
-                'satisfaccion_c.required'=>'El campo no puede quedar vacio',
-                'materias_repeticion.required'=>'El campo no puede quedar vacio',
-                'tot_repe.required'=>'El campo no puede quedar vacio',
-                'materias_especial.required'=>'El campo no puede quedar vacio',
-                'tot_espe.required'=>'El campo no puede quedar vacio',
-                'gen_espe.required'=>'El campo no puede quedar vacio',
-                'id_bachillerato.required'=>'El campo no puede quedar vacio',
-                'otros_estudios.required'=>'El campo no puede quedar vacio',
-                'anos_curso_bachillerato.required'=>'El campo no puede quedar vacio',
-                'ano_terminacion.required'=>'El campo no puede quedar vacio',
-                'escuela_procedente.required'=>'El campo no puede quedar vacio',
-                'materias_reprobadas.required'=>'El campo no puede quedar vacio',
-                'otra_carrera_ini.required'=>'El campo no puede quedar vacio',
-                'interrupciones_estudios.required' => 'El campo no puede quedar vacio',
-                'razon_descide_estudiar_tesvb.required' => 'El campo no puede quedar vacio',
-                'sabedel_perfil_profesional.required' => 'El campo no puede quedar vacio',
-                'otras_opciones_vocales.required' => 'El campo no puede quedar vacio',
-                'tegusta_carrera_elegida.required' => 'El campo no puede quedar vacio',
-                'porque_carrera_elegida.required' => 'El campo no puede quedar vacio',
-                'suspension_estudios_bachillerato.required' => 'El campo no puede quedar vacio',
-                'teestimula_familia.required' => 'El campo no puede quedar vacio',
-                'nombre_padre.required' =>'El campo no puede quedar vacio',
-                'edad_padre.required' =>'El campo no puede quedar vacio',
-                'ocupacion_padre.required' => 'El campo no puede quedar vacio',
-                'lugar_residencia_padre.required' => 'El campo no puede quedar vacio',
-                'nombre_madre.required' => 'El campo no puede quedar vacio',
-                'edad_madre.required' =>'El campo no puede quedar vacio',
-                'ocupacion_madre.required' => 'El campo no puede quedar vacio',
-                'lugar_residencia_madre.required' => 'El campo no puede quedar vacio',
-                'no_hermanos.required' => 'El campo no puede quedar vacio',
-                'id_opc_vives.required' =>'El campo no puede quedar vacio',
-                'no_personas.required' => 'El campo no puede quedar vacio',
-                'etnia_indigena.required' => 'El campo no puede quedar vacio',
-                'sostiene_economia_hogar.required' => 'El campo no puede quedar vacio',
-                'id_familia_union.required' => 'El campo no puede quedar vacio',
-                'nombre_tutor.required' => 'El campo no puede quedar vacio',
-                'id_parentesco.required' => 'El campo no puede quedar vacio',
-                'tiempo_empelado_estudiar.required' => 'El campo no puede quedar vacio',
-                'id_opc_intelectual.required' => 'El campo no puede quedar vacio',
-                'forma_estudio.required' =>'El campo no puede quedar vacio',
-                'tiempo_libre.required' => 'El campo no puede quedar vacio',
-                'asignatura_preferida.required' => 'El campo no puede quedar vacio',
-                'porque_asignatura.required' =>'El campo no puede quedar vacio',
-                'asignatura_dificil.required' => 'El campo no puede quedar vacio',
-                'porque_asignatura_dificil.required' => 'El campo no puede quedar vacio',
-                'opinion_tu_mismo_estudiante.required' => 'El campo no puede quedar vacio',
-                'practica_deporte.required' =>'El campo no puede quedar vacio',
-                'practica_artistica.required' => 'El campo no puede quedar vacio',
-                'id_escala.required'=>'El campo no puede quedar vacio',
-                'pasatiempo.required' => 'El campo no puede quedar vacio',
-                'actividades_culturales.required' => 'El campo no puede quedar vacio',
-                'estado_salud.required' => 'El campo no puede quedar vacio',
-                'enfermedad_cronica.required' => 'El campo no puede quedar vacio',
-                'enf_cron_padre.required' =>'El campo no puede quedar vacio',
-                'operacion.required' =>'El campo no puede quedar vacio',
-                'enfer_visual.required' => 'El campo no puede quedar vacio',
-                'usas_lentes.required' =>'El campo no puede quedar vacio',
-                'medicamento_controlado.required' => 'El campo no puede quedar vacio',
-                'estatura.required' => 'El campo no puede quedar vacio',
-                'peso.required' => 'El campo no puede quedar vacio',
-                'accidente_grave.required' =>'El campo no puede quedar vacio',
-                'rendimiento_escolar.required' =>'El campo no puede quedar vacio',
-                'dominio_idioma.required' => 'El campo no puede quedar vacio',
-                'otro_idioma.required' =>'El campo no puede quedar vacio',
-                'conocimiento_compu.required' => 'El campo no puede quedar vacio',
-                'aptitud_especial.required' => 'El campo no puede quedar vacio',
-                'comprension.required' => 'El campo no puede quedar vacio',
-                'preparacion.required' =>'El campo no puede quedar vacio',
-                'estrategias_aprendizaje.required' => 'El campo no puede quedar vacio',
-                'organizacion_actividades.required' => 'El campo no puede quedar vacio',
-                'concentracion.required' => 'El campo no puede quedar vacio',
-                'solucion_problemas.required' => 'El campo no puede quedar vacio',
-                'condiciones_ambientales.required' => 'El campo no puede quedar vacio',
-                'busqueda_bibliografica.required' => 'El campo no puede quedar vacio',
-                'trabajo_equipo.required' => 'El campo no puede quedar vacio',
-            ]);*/
         $exp_generale = array(
             "id_carrera"=>$request->id_carrera,
             "id_periodo" => $request->id_periodo,
@@ -439,12 +204,7 @@ class ViewAlumnosController extends Controller
         $exp_habitos_estudio=Exp_habitos_estudio::create($exp_habitos_estudio);
         $exp_formacion_integral=Exp_formacion_integral::create($exp_formacion_integral);
         $exp_area_psicopedagogica=Exp_area_psicopedagogica::create($exp_area_psicopedagogica);
-
-
         $id_alumno=Auth::user()->id;
-        $obtenerid=gnral_alumnos::create(array('id_usuario'=>$id_alumno));
-
-
         $exp_asigna_expediente = array(
             "id_exp_general" => $exp_generale->id_exp_general,
             "id_exp_antecedentes_academicos" => $exp_antecedentes_academico->id_exp_antecedentes_academicos,
@@ -452,11 +212,9 @@ class ViewAlumnosController extends Controller
             "id_exp_habitos_estudio" => $exp_habitos_estudio->id_exp_habitos_estudio,
             "id_exp_formacion_integral" => $exp_formacion_integral->id_exp_formacion_integral,
             "id_exp_area_psicopedagogica" => $exp_area_psicopedagogica->id_exp_area_psicopedagogica,
-            "id_alumno" => $obtenerid -> id_alumno
+            "id_alumno" => $id_alumno
         );
         Exp_asigna_expediente::create($exp_asigna_expediente);
-
-
 
         $nombre =array("nombre" => $request->nombre);
         $no_cuenta=array("no_cuenta" => $request->no_cuenta);
@@ -519,7 +277,6 @@ class ViewAlumnosController extends Controller
             $pob,$ante,$sat,$ma_re,$to_r,$mat_e,$t_e,$g_e));
 
         return 'panel';
-        //return view('home');
     }
 
     public function updateExp(Request $request)

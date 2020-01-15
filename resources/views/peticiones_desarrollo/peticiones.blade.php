@@ -39,8 +39,8 @@
                                             <form action="{{route('peticiones.update',$sem1->id_planeacion)}}" method="post">
                                                 @csrf
                                                 @method('PUT')
-                                                <input type="number" class="form-control" name="id_sugerencia" value="2" hidden>
-                                                <button type="submit" class="btn" style="background: #e0e0e0">Visto Bueno</button>
+                                                <input type="number" class="form-control" name="id_sugerencia" value="1" hidden>
+                                                <button type="submit" class="btn" style="background: #e0e0e0">Aprobar</button>
                                             </form>
                                         </td>
                                         <td>
@@ -78,8 +78,8 @@
                                         <form action="{{route('peticiones.update',$sem1->id_planeacion)}}" method="post">
                                             @csrf
                                             @method('PUT')
-                                            <input type="number" class="form-control" name="id_sugerencia" value="2" hidden>
-                                            <button type="submit" class="btn" style="background: #e0e0e0">Visto Bueno</button>
+                                            <input type="number" class="form-control" name="id_sugerencia" value="1" hidden>
+                                            <button type="submit" class="btn" style="background: #e0e0e0">Aprobar</button>
                                         </form>
                                     </td>
                                     <td>
@@ -117,8 +117,8 @@
                                         <form action="{{route('peticiones.update',$sem1->id_planeacion)}}" method="post">
                                             @csrf
                                             @method('PUT')
-                                            <input type="number" class="form-control" name="id_sugerencia" value="2" hidden>
-                                            <button type="submit" class="btn" style="background: #e0e0e0">Visto Bueno</button>
+                                            <input type="number" class="form-control" name="id_sugerencia" value="1" hidden>
+                                            <button type="submit" class="btn" style="background: #e0e0e0">Aprobar</button>
                                         </form>
                                     </td>
                                     <td>
@@ -156,8 +156,8 @@
                                         <form action="{{route('peticiones.update',$sem1->id_planeacion)}}" method="post">
                                             @csrf
                                             @method('PUT')
-                                            <input type="number" class="form-control" name="id_sugerencia" value="2" hidden>
-                                            <button type="submit" class="btn" style="background: #e0e0e0">Visto Bueno</button>
+                                            <input type="number" class="form-control" name="id_sugerencia" value="1" hidden>
+                                            <button type="submit" class="btn" style="background: #e0e0e0">Aprobar</button>
                                         </form>
                                     </td>
                                     <td>
@@ -195,8 +195,8 @@
                                         <form action="{{route('peticiones.update',$sem1->id_planeacion)}}" method="post">
                                             @csrf
                                             @method('PUT')
-                                            <input type="number" class="form-control" name="id_sugerencia" value="2" hidden>
-                                            <button type="submit" class="btn" style="background: #e0e0e0">Visto Bueno</button>
+                                            <input type="number" class="form-control" name="id_sugerencia" value="1" hidden>
+                                            <button type="submit" class="btn" style="background: #e0e0e0">Aprobar</button>
                                         </form>
                                     </td>
                                     <td>
@@ -234,8 +234,8 @@
                                         <form action="{{route('peticiones.update',$sem1->id_planeacion)}}" method="post">
                                             @csrf
                                             @method('PUT')
-                                            <input type="number" class="form-control" name="id_sugerencia" value="2" hidden>
-                                            <button type="submit" class="btn" style="background: #e0e0e0">Visto Bueno</button>
+                                            <input type="number" class="form-control" name="id_sugerencia" value="1" hidden>
+                                            <button type="submit" class="btn" style="background: #e0e0e0">Aprobar</button>
                                         </form>
                                     </td>
                                     <td>
@@ -273,8 +273,8 @@
                                         <form action="{{route('peticiones.update',$sem1->id_planeacion)}}" method="post">
                                             @csrf
                                             @method('PUT')
-                                            <input type="number" class="form-control" name="id_sugerencia" value="2" hidden>
-                                            <button type="submit" class="btn" style="background: #e0e0e0">Visto Bueno</button>
+                                            <input type="number" class="form-control" name="id_sugerencia" value="1" hidden>
+                                            <button type="submit" class="btn" style="background: #e0e0e0">Aprobar</button>
                                         </form>
                                     </td>
                                     <td>

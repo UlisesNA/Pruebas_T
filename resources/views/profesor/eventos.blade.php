@@ -1,6 +1,8 @@
 @extends('layouts.app')
 @section('content')
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel='stylesheet' href='{{ asset('css/sweetalert2.min.css') }}' />
+    <script src="{{asset('js/sweetalert2.min.js')}}"></script>
     <div class="container card">
         <div class="row">
             <div class="col-md-12">
@@ -36,7 +38,8 @@
                                             <form action="{{ route('eventos.destroy', $plan->id_evento)}}" method="post">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="btn btn-lg"><i class="fas fa-times-circle"></i></button>
+                                                <button type="submit" class="btn btn-lg" id="final"><i class="fas fa-times-circle"></i></button>
+                                                
                                             </form>
                                         </td>
                                     </tr>

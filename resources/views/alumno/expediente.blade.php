@@ -36,7 +36,7 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label for="edad">Edad</label>
-                                            <input type="number " class="form-control" id="edad" name="edad">
+                                            <input type="text" class="form-control" id="edad" name="edad">
                                         </div>
                                         <div class="col-md-4">
                                             <label for="sexo">Sexo</label>
@@ -975,11 +975,8 @@
     </div>
 @endsection
 <script src="{{asset('js/jquery.js')}}"></script>
-<link rel='stylesheet' href='{{ asset('css/sweetalert2.min.css') }}' />
-<script src="{{asset('js/sweetalert2.min.js')}}"></script>
 <script>
     $(document).ready(function () {
-        //swal("Hola Mundo");
         $('#siguiente1').click(function(){
             $('#v-pills-general-tab').removeClass('active');
             $('#v-pills-antecedentes-tab').addClass('active').removeClass('disabled');
@@ -1020,7 +1017,6 @@
             //alert('das');\
             //$('#v-pills-general-tab').tab('show')
         });
-
         $('#final').click(function(){
             var con= true;
             var datos = $('#form-expe').serialize();
@@ -1034,20 +1030,16 @@
                 data:datos,
                 success:function( response){
                     console.log(response)
-
-                }
-                ,error:function(error)
+                },error:function(error)
                 {
                     $.each(error.responseJSON.errors,function(element, key){
                         console.log(element+"---"+key);
                         $("#"+element).after("<span class='text-danger'>"+key+"</span>");
                     })
                 }
-            }
+            });
 
-            );
-            //alert("ok");
-            swal("Expediente Registrado", "Se a guardado correctamente", "success");
+
         });
         $('#update').click(function(){
             var datos = $('#form-expe').serialize();

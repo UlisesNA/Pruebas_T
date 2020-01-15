@@ -227,9 +227,7 @@
             </tr>
             <tr>
                 <td scope="col" colspan="5">Tiempo dedicado a estudiar diariamente fuera de clase: </td>
-                <td scope="col">{{$datos->exp_habitos_estudio[0]->tiempo[0]->tiempo_empelado_estudiar}}</td>
-                <td scope="col" colspan="5">¿Cómo es tú forma de trabajo intelectual?: </td>
-                <td scope="col" colspan="">{{$datos->exp_habitos_estudio[0]->intelectual[0]->desc_opc}}</td>
+
             </tr>
             <tr>
                 <td scope="col" colspan="4">Tu forma de estudio mas utilizada: </td>

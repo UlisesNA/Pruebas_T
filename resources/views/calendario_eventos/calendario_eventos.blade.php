@@ -35,6 +35,10 @@
                             <p>Instrucciones:</p>
                             <p id="descEvento"></p>
                         </li>
+                        <li class="list-group-item">
+                            <p>Hora:</p>
+                            <p id="hora"></p>
+                        </li>
                     </ul>
                 </div>
                 <div class="modal-footer">
@@ -59,21 +63,31 @@
             eventLimit: true,
             events: [
                     @foreach ($evento as $even)
-                {
-                    title: '{{ $even->des }}',
-                    start: '{{ $even->fi }}',
-                    end:'{{ $even->ff }}',
-                    color: '#3A87AD',
-                    textColor: '#ffffff',
-                    descripcion:'{{ $even->ins }}',
-                    objetivo:'{{ $even->ob }}'
-                },
-                @endforeach
+                    {
+                        title: '{{ $even->des }}',
+                        start: '{{ $even->fi }}',
+                        end:'{{ $even->ff }}',
+                        color: '#52ad3a',
+                        textColor: '#080808',
+                        descripcion:'{{ $even->ins }}',
+                        objetivo:'{{ $even->ob }}'
+                    },
+                    @endforeach
+                    @foreach ($evento1 as $even)
+                    {
+                        title: '{{ $even->titulo_evento }}',
+                        start: '{{ $even->fecha }}',
+                        color: '#C7ACF5',
+                        textColor: '#080808',
+                        hora:'{{ $even->hora }}'
+                    },
+                    @endforeach
             ],
             eventClick:function (calEvent,jsEvent,view) {
                 $('#tituloEvento').html(calEvent.title);
                 $('#objetivoEvento').html(calEvent.objetivo);
                 $('#descEvento').html(calEvent.descripcion);
+                $('#hora').html(calEvent.hora);
                 $('#myModal').modal('show');
             }
         });
