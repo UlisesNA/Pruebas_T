@@ -12,7 +12,7 @@
                     </div>
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
-                    @foreach($tabla1 as $dato)
+                    @foreach($tabla as $dato)
                         <div class="tab-pane fade" id="target_{{$dato->id}}" role="tabpanel" aria-labelledby="nav-profile-tab">
                             <div class="container card">
                                 <div class="row">
@@ -50,6 +50,7 @@
                                                                         @endif
                                                                     @endforeach
                                                                 </td>
+                                                                {{$dato->id_planeacion}}
                                                                 @if($dat->id_estrategia==0)
                                                                     @if($dat->id_sugerencia==0)
                                                                         <td>
@@ -104,14 +105,15 @@
                                                                                 <a>Estrategia Aceptada</a>
                                                                                 @foreach($actividades as $acti)
                                                                                     @if($acti->id_planeacion == $dat->id_planeacion)
+                                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                            <span class="btn btn-primary" data-toggle="modal" data-target="#myModal_{{$dato->id_planeacion}}_actu " style="background: #067a39;color: white">Editar Actividad</span>
+                                                                                        </button>
                                                                                     @else
                                                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                                             <span class="btn btn-primary" data-toggle="modal" data-target="#myModal_{{$dato->id_planeacion}}_acti" style="background: #067a39;color: white">Asignar Actividad</span>
                                                                                         </button>
                                                                                     @endif
-                                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                                            <span class="btn btn-primary" data-toggle="modal" data-target="#myModal_{{$dato->id_planeacion}}_actu " style="background: #067a39;color: white">Editar Actividad</span>
-                                                                                        </button>
+
                                                                                 @endforeach
                                                                             </td>
                                                                         @endif

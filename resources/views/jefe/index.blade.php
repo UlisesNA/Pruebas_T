@@ -64,7 +64,7 @@
                             <thead>
                             <tr>
                                 <th scope="col">Nombre</th>
-                                <th scope="col">Carrera</th>
+                                <th scope="col">Plan Institucional</th>
                                 <th scope="col">Semestre</th>
                             </tr>
                             </thead>

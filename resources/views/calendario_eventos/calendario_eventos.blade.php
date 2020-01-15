@@ -35,10 +35,6 @@
                             <p>Instrucciones:</p>
                             <p id="descEvento"></p>
                         </li>
-                        <li class="list-group-item">
-                            <p>Hora:</p>
-                            <p id="hora"></p>
-                        </li>
                     </ul>
                 </div>
                 <div class="modal-footer">
@@ -47,52 +43,47 @@
             </div>
         </div>
     </div>
-@endsection
-<script src="{{asset('js/jquery.js')}}"></script>
-<script>
-    $(document).ready(function() {
-        $('#calendar').fullCalendar({
-            header: {
-                left: 'prev,next',
-                center: 'title',
-                right: 'month,agendaWeek,agendaDay'
-            },
-            buttonIcons: true,
-            weekNumbers: false,
-            editable: true,
-            eventLimit: true,
-            events: [
-                    @foreach ($evento as $even)
+
+    <script src="{{asset('js/jquery.js')}}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                buttonIcons: true,
+                weekNumbers: false,
+                editable: true,
+                eventLimit: true,
+                events: [
+                        @foreach ($evento as $even)
                     {
                         title: '{{ $even->des }}',
                         start: '{{ $even->fi }}',
                         end:'{{ $even->ff }}',
                         color: '#52ad3a',
                         textColor: '#080808',
-                        descripcion:'{{ $even->ins }}',
+                        descripcion:'{!! $even->ins !!} ',
                         objetivo:'{{ $even->ob }}'
                     },
                     @endforeach
-                    @foreach ($evento1 as $even)
-                    {
-                        title: '{{ $even->titulo_evento }}',
-                        start: '{{ $even->fecha }}',
-                        color: '#C7ACF5',
-                        textColor: '#080808',
-                        hora:'{{ $even->hora }}'
-                    },
-                    @endforeach
-            ],
-            eventClick:function (calEvent,jsEvent,view) {
-                $('#tituloEvento').html(calEvent.title);
-                $('#objetivoEvento').html(calEvent.objetivo);
-                $('#descEvento').html(calEvent.descripcion);
-                $('#hora').html(calEvent.hora);
-                $('#myModal').modal('show');
-            }
+
+                ],
+                eventClick:function (calEvent,jsEvent,view) {
+                    $('#tituloEvento').html(calEvent.title);
+                    $('#objetivoEvento').html(calEvent.objetivo);
+                    $('#descEvento').html(calEvent.descripcion);
+                    $('#myModal').modal('show');
+                }
+            });
         });
-    });
-</script>
+    </script>
+@endsection
+
+
+
 
 
 

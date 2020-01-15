@@ -14,12 +14,12 @@
                 </div>
                 <table class="table table-hover table-sm">
                     <tr>
-                        <th>Actividad Planeacion</th>
+                        <th>Actividad Planeación</th>
                         <th>Actividad Evidencia</th>
-                        <th>Descripcion Actividad Evidencia</th>
+                        <th>Descripción Actividad Evidencia</th>
                         <th>Instrucciones</th>
                         <th>Evidencia</th>
-                        <th>Accion</th>
+                        <th>Acción</th>
                     </tr>
 
                     @foreach ($datos as $plan)

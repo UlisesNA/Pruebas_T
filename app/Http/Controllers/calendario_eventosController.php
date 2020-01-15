@@ -14,7 +14,14 @@ class calendario_eventosController extends Controller
                               FROM planeacion;');
         $evento1 = DB::select('select *
                               FROM eventos;');
-        return view('calendario_eventos.calendario_eventos')->with(compact( 'evento','evento1'));
+
+        foreach ($evento as $value) {
+
+            $value->ins = trim(preg_replace('/\s\s+/', '<br>', $value->ins));
+
+        }
+
+        return view('calendario_eventos.calendario_eventos')->with(compact( 'evento'));
     }
 
 

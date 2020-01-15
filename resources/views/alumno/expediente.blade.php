@@ -975,6 +975,8 @@
     </div>
 @endsection
 <script src="{{asset('js/jquery.js')}}"></script>
+<script src="{{asset('js/sweetalert2.min.js')}}"></script>
+<link rel='stylesheet' href='{{ asset('css/sweetalert2.min.css') }}' />
 <script>
     $(document).ready(function () {
         $('#siguiente1').click(function(){
@@ -1038,7 +1040,12 @@
                     })
                 }
             });
-
+            swal({
+                title: "Expediente Registrado",
+                text: "Se a guardado correctamente",
+                icon: "success",
+                button: "Aceptar",
+            });
 
         });
         $('#update').click(function(){
