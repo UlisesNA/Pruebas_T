@@ -8,6 +8,7 @@ use App\User;
 use App\Auth;
 use App\Alumno;
 use App\AsignaCoordinador;
+use App\GnralJefePeriodos;
 use Session;
 
 class LoginController extends Controller
