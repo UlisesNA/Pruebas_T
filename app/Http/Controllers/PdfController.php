@@ -976,15 +976,29 @@ class PdfController extends Controller
     public function pdf_lista(Request $request)
     {
 
-        $datos=(DB::select('SELECT gnral_alumnos.*, exp_asigna_alumnos.estado,exp_asigna_alumnos.id_asigna_alumno
-                 from gnral_alumnos JOIN exp_asigna_alumnos ON exp_asigna_alumnos.id_alumno=gnral_alumnos.id_alumno 
-                 where exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' and 
-                 gnral_alumnos.id_carrera='.$request->id_carrera.' order by(gnral_alumnos.apaterno)'));
-        //dd($datos);
-        $us=Auth::user()->id;
-        $profesor=DB::select('SELECT gnral_personales.* FROM gnral_personales WHERE gnral_personales.tipo_usuario='.Auth::user()->id);
-        $periodo=DB::select('SELECT gnral_periodos.periodo FROM gnral_personales, gnral_periodos, exp_asigna_tutor, exp_asigna_generacion WHERE gnral_periodos.id_periodo= exp_asigna_generacion.id and exp_asigna_generacion.id_asigna_generacion=exp_asigna_tutor.id_asigna_generacion and gnral_personales.id_personal=exp_asigna_tutor.id_personal and gnral_personales.tipo_usuario='.Auth::user()->id);
-        //dd($periodo);
+        $datos=DB::table('gnral_alumnos')
+            ->join('exp_asigna_alumnos','exp_asigna_alumnos.id_alumno','=','gnral_alumnos.id_alumno')
+            ->select('gnral_alumnos.*','exp_asigna_alumnos.estado','exp_asigna_alumnos.id_asigna_alumno')
+            ->where('exp_asigna_alumnos.id_asigna_generacion', '=', $request->id_asigna_generacion)
+            ->where('gnral_alumnos.id_carrera','=',$request->id_carrera)
+            ->orderBy('gnral_alumnos.apaterno')
+            ->get();
+        $carrera=DB::table('gnral_carreras')
+            ->select('nombre')
+            ->where('id_carrera', '=', $request->id_carrera)
+            ->get();
+        $profesor=DB::table('gnral_personales')
+            ->select('gnral_personales.*')
+            ->where('gnral_personales.tipo_usuario', '=', Auth::user()->id)
+            ->get();
+
+        $periodo=DB::table('gnral_personales')
+            ->join('exp_asigna_tutor','gnral_personales.id_personal','=','exp_asigna_tutor.id_personal')
+            ->join('exp_asigna_generacion','exp_asigna_generacion.id_asigna_generacion','=','exp_asigna_tutor.id_asigna_generacion')
+            ->join('gnral_periodos','gnral_periodos.id_periodo','=','exp_asigna_generacion.id')
+            ->select('gnral_periodos.periodo')
+            ->where('gnral_personales.tipo_usuario', '=', Auth::user()->id)
+            ->get();
 
         $pdf= new \Codedge\Fpdf\Fpdf\Fpdf();
         $pdf->AddPage();
@@ -998,12 +1012,12 @@ class PdfController extends Controller
         $pdf->Cell(($pdf->GetPageWidth()-20),5,"LISTA DE ASISTENCIA".utf8_decode(""),0,4,"C","true");
         $pdf->Ln(1);
         $pdf->SetFont('Times', 'B', 8);
-        $pdf->Cell(($pdf->GetPageWidth()-20),3,"CARRERA: ". utf8_decode(mb_strtoupper("INGENIERIA EN SISTEMAS COMPUTACIONALES")),0,0,"L");
+        $pdf->Cell(($pdf->GetPageWidth()-20),3,"CARRERA: ". utf8_decode(mb_strtoupper($carrera[0]->nombre)),0,0,"L");
         $pdf->Ln(3);
         $pdf->Cell(($pdf->GetPageWidth()-20)/3,3,"ASIGNATURA: ". utf8_decode("TUTORIAS"),0,0,"L");
         $pdf->Cell(($pdf->GetPageWidth()-20)/3,3,"". utf8_decode(""),0,0,"L");
         $pdf->SetFillColor(192,192,192);
-        $pdf->Cell(($pdf->GetPageWidth()-148)/1,3,"GRUPO: ".utf8_decode($datos[0]->grupo),0,1,"C","true");
+        $pdf->Cell(($pdf->GetPageWidth()-148)/1,3,"".utf8_decode($request->generacion),0,1,"C","true");
         $pdf->Ln(0);
         $pdf->Cell(($pdf->GetPageWidth()-20)/2,3,"PROFESOR: ". utf8_decode(mb_strtoupper($profesor[0]->nombre)),0,0,"L");
         $pdf->Cell(($pdf->GetPageWidth()-20)/2,3,"PERIODO: ". utf8_decode(mb_strtoupper($periodo[0]->periodo)),0,0,"R");

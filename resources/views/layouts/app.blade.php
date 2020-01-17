@@ -7,12 +7,18 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{asset('js/highcharts.js')}}"></script>
+
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/estilo.css') }}" rel="stylesheet">
+
+
+    <link type="text/css" rel="stylesheet" href="{{asset('css/all.css')}}">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="{{asset("css/app.css")}}" type="text/css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
@@ -22,6 +28,7 @@
     <script src="{{ asset('js/moment.min.js') }}" defer></script>
     <script src="{{ asset('js/fullcalendar.min.js') }}" defer></script>
     <script src="{{ asset('js/locale/es.js') }}" defer></script>
+
 </head>
 <body>
 <header id="header" >
@@ -165,7 +172,7 @@
                                 @endif
                                 @if (Auth::user()->tipo_usuario ==2 && !Session::get('jefe'))
                                     <li class="nav-item">
-                                        <a class="nav-link" href="tutorvista">Inicio</a>
+                                        <a class="nav-link" href="tutorvista">Tutorias</a>
                                     </li>
                                     @if (Session::get('coordinador'))
                                         <li class="nav-item">
