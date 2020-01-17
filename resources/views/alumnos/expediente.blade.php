@@ -1,8 +1,9 @@
 @extends('layouts.app')
 @section('content')
 
-<script src="{{asset('js/jquery-ui.js')}}"></script>
+
 <link rel="stylesheet" href="{{asset('css/jquery-ui.css')}}">
+
 <div class="container card">
     <br>
     <div class="row">
@@ -72,19 +73,19 @@
                                         <label for="sexo">Sexo</label>
                                         <select name="sexo" id="sexo"  class="custom-select custom-select-md">
                                             <option value="" selected>Elija un Sexo</option>
-                                            <option value="M">Masculino</option>
-                                            <option value="F">Femenino</option>
+                                            <option value="1">Masculino</option>
+                                            <option value="2">Femenino</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-4">
                                         <label for="fn">Fecha de Nacimiento</label>
-                                        <input type="date" value="{{isset($datos[0])?$datos[0]->fecha_nacimientos:''}}" id="fn" name="fecha_nacimiento" class="form-control" placeholder="Fecha de Nacimiento">
+                                        <input type="date" value="{{isset($datos[0])?$datos[0]->fecha_nacimientos:''}}" id="fn" name="fecha_nacimientos" class="form-control" placeholder="Fecha de Nacimiento">
                                     </div>
                                     <div class="col-md-4">
                                         <label for="ln">Lugar de Nacimiento</label>
-                                        <input type="text" id="ln" value="{{isset($datos[0])?$datos[0]->lugar_nacimientos:''}}" name="lugar_nacimiento" class="form-control" placeholder="Lugar de Nacimiento">
+                                        <input type="text" id="ln" value="{{isset($datos[0])?$datos[0]->lugar_nacimientos:''}}" name="lugar_nacimientos" class="form-control" placeholder="Lugar de Nacimiento">
                                     </div>
                                     <div class="col-md-4">
                                         <label for="semestre">Semestre</label>
@@ -144,8 +145,8 @@
                                         <label for="poblacion">Población</label>
                                         <select name="poblacion" id="poblacion" class="custom-select custom-select-md">
                                             <option value="" selected>Elija Opción</option>
-                                            <option value="Rural">Rural</option>
-                                            <option value="Urbana">Urbana</option>
+                                            <option value="1">Rural</option>
+                                            <option value="2">Urbana</option>
                                         </select>
                                     </div>
 
@@ -183,26 +184,28 @@
                                     </div>
                                 </div>
                                 <div class="row" id="tbeca">
-                                    <div class="col-md-4">
+                                    <div class="col-md-12">
                                         <label for="tbeca">Tipo Beca</label>
                                         <input type="text" value="{{isset($datos[0])?$datos[0]->tipo_beca:''}}"  name="tbeca" class="form-control" placeholder="Tipo Beca">
                                     </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-md-4">
                                         <label for="ant_inst">Antecedentes institucionales</label>
                                         <select name="ant_inst" id="ant_inst" class="custom-select custom-select-md">
                                             <option value="" selected>Elija Opción</option>
-                                            <option value="Continuación de estudios">Continuación de estudios</option>
-                                            <option value="Cambio de carrera">Cambio de carrera/institucion</option>
+                                            <option value="1">Continuación de estudios</option>
+                                            <option value="2">Cambio de carrera/institucion</option>
                                         </select>
                                     </div>
                                     <div class="col-md-4">
                                         <label for="satisfaccion_c">Nivel de satisfacción con la carrera</label>
                                         <select name="satisfaccion_c" id="satisfaccion_c" class="custom-select custom-select-md">
                                             <option value="" selected>Elija Opción</option>
-                                            <option value="Muy satisfecho">Muy satisfecho</option>
-                                            <option value="Satisfecho">Satisfecho</option>
-                                            <option value="Regular">Regular</option>
-                                            <option value="Inconforme">Inconforme</option>
+                                            <option value="1">Muy satisfecho</option>
+                                            <option value="2">Satisfecho</option>
+                                            <option value="3">Regular</option>
+                                            <option value="4">Inconforme</option>
                                         </select>
                                     </div>
                                 </div>
@@ -554,7 +557,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label for="parentesco">Parentesco</label>
-                                        <select name="parentesco" id="" class="custom-select custom-select-md">
+                                        <select name="parentesco" id="parentesco" class="custom-select custom-select-md">
                                             <option value="">Elija un parentesco</option>
                                             @foreach ($parentesco as $dato)
                                                 <option value="{{$dato->id_parentesco}}" >{{$dato->desc_parentesco}}</option>
@@ -667,7 +670,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label for="escala">¿Ingiere bebidas alcoholicas?</label>
-                                        <select name="id_escala" id="id_escala" class="custom-select custom-select-md">
+                                        <select name="id_expbebidas" id="id_expbebidas" class="custom-select custom-select-md">
                                             <option value="" selected>Elija una Opción</option>
                                             @foreach ($bebidas as $dato)
                                                 <option value="{{$dato->id_expbebidas}}" >{{$dato->descripcion_bebida}}</option>
@@ -992,7 +995,9 @@
         </div>
 </div>
 @endsection
+
 <script src="{{asset('js/jquery.js')}}"></script>
+
 <script>
     $(document).ready(function () {
         $('#siguiente1').click(function(){
@@ -1002,7 +1007,13 @@
             $('#v-pills-antecedentes').addClass('show active');
             //alert('das');\
             //$('#v-pills-general-tab').tab('show')
+
         });
+
+       // $( "#fn" ).datepicker({
+            //changeYear: true
+        //});
+
         $('#siguiente2').click(function(){
             $('#v-pills-antecedentes-tab').removeClass('active');
             $('#v-pills-familiares-tab').addClass('active').removeClass('disabled');
@@ -1052,8 +1063,10 @@
                 }
             });
 
+
             //}
         });
+
         $('#update').click(function(){
             var datos = $('#form-expe').serialize();
             $.ajax({
@@ -1068,9 +1081,7 @@
             });
         });
 
-        $( "#fn" ).datepicker({
-            changeYear: true
-        });
+
         {
             $('#actC').on('change',function () {
                 if ($(this).val()==1) {
@@ -1217,13 +1228,23 @@
             $("#periodo").val({{$datos[0]->id_periodo}});
             $("#grupo").val({{$datos[0]->id_grupo}});
             $("#sexo").val({{$datos[0]->sexo}});
+            $("#fn").val({{$datos[0]->fecha_nacimientos}});
             $("#semestre").val({{$datos[0]->id_semestre}});
             $("#EC").val({{$datos[0]->id_estado_civil}});
             $("#NSE").val({{$datos[0]->id_nivel_economico}});
             $("#trabaja").val({{$datos[0]->trabaja}});
+            $("#noC").val({{$datos[0]->no_cuenta}});
             $("#beca").val({{$datos[0]->beca}});
             $("#estado").val({{$datos[0]->estado}});
             $("#turno").val({{$datos[0]->turno}});
+            $("#poblacion").val({{$datos[0]->poblacion}});
+            $("#ant_inst").val({{$datos[0]->ant_inst}});
+            $("#satisfaccion_c").val({{$datos[0]->satisfaccion_c}});
+            $("#materias_repeticion").val({{$datos[0]->materias_repeticion}});
+            $("#tot_repe").val({{$datos[0]->tot_repe}});
+            $("#materias_especial").val({{$datos[0]->materias_especial}});
+            $("#tot_espe").val({{$datos[0]->tot_espe}});
+            $("#gen_espe").val({{$datos[0]->gen_espe}});
 
             $("#bachillerato").val({{$datos[1]->id_bachillerato}});
             $("#cb").val({{$datos[1]->anos_curso_bachillerato}});
@@ -1238,6 +1259,7 @@
             $("#av").val({{$datos[2]->id_opc_vives}});
             $("#etnia").val({{$datos[2]->etnia_indigena}});
             $("#hablas").val({{$datos[2]->hablas_lengua_indigena}});
+            $("#parentesco").val({{$datos[2]->id_parentesco}});
             $("#consideras").val({{$datos[2]->id_familia_union}});
 
             $("#tiempo").val({{$datos[3]->tiempo_empelado_estudiar}});
@@ -1245,6 +1267,7 @@
 
             $("#depo").val({{$datos[4]->practica_deporte}});
             $("#artistica").val({{$datos[4]->practica_artistica}});
+            $("#id_expbebidas").val({{$datos[4]->id_expbebidas}});
             $("#actC").val({{$datos[4]->actividades_culturales}});
             $("#estSalud").val({{$datos[4]->estado_salud}});
             $("#enferCron").val({{$datos[4]->enfermedad_cronica}});
@@ -1270,7 +1293,9 @@
             $("#bibliografica").val({{$datos[5]->busqueda_bibliografica}});
             $("#equipo").val({{$datos[5]->trabajo_equipo}});
             @endif
-        }else{
+        }
+
+        else{
 
             $('#ocupacion').hide();
             $('#otiOc').hide();
@@ -1290,6 +1315,7 @@
             $('#especificarMed').hide();
             $('#relata').hide();
         }
+
     });
 </script>
 
