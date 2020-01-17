@@ -84,7 +84,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label for="ln">Lugar de Nacimiento</label>
-                                        <input type="text" id="ln" value="{{isset($datos[0])?$datos[0]->lugar_naciemientos:''}}" name="lugar_nacimiento" class="form-control" placeholder="Lugar de Nacimiento">
+                                        <input type="text" id="ln" value="{{isset($datos[0])?$datos[0]->lugar_nacimientos:''}}" name="lugar_nacimiento" class="form-control" placeholder="Lugar de Nacimiento">
                                     </div>
                                     <div class="col-md-4">
                                         <label for="semestre">Semestre</label>
@@ -318,7 +318,7 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <label for="at">Año de Terminación</label>
-                                        <input type="text" value="{{isset($datos[1])?$datos[1]->año_terminacion:''}}" name="ano_terminacion" id="at" class="form-control" placeholder="Año Ternimación">
+                                        <input type="text" value="{{isset($datos[1])?$datos[1]->ano_terminacion:''}}" name="ano_terminacion" id="at" class="form-control" placeholder="Año Ternimación">
                                     </div>
                                     <div class="col-md-4">
                                         <label for="epro">Escuela de Procedencia</label>
@@ -1041,13 +1041,13 @@
             //var arr=$('#form-expe').serializeArray();
             $.ajax({
                 headers: {
-
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 url: "Alum",
                 method: "POST",
-                dataType: "json",
+                dataType: 'html',
                 data:datos,
-                success:function(){
+                success:function(respuesta){
                     location.href="/panel";
                 }
             });
@@ -1226,7 +1226,7 @@
             $("#turno").val({{$datos[0]->turno}});
 
             $("#bachillerato").val({{$datos[1]->id_bachillerato}});
-            $("#cb").val({{$datos[1]->años_curso_bachillerato}});
+            $("#cb").val({{$datos[1]->anos_curso_bachillerato}});
             $("#oti").val({{$datos[1]->otra_carrera_ini}});
             $("#SC").val({{$datos[1]->semestres_cursados}});
             $("#ie").val({{$datos[1]->interrupciones_estudios}});

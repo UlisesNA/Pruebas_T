@@ -3,6 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\AsignaExpediente;
+use App\Exp_civil_estado;
+use App\Exp_escalas;
+use App\Exp_generale;
+use App\Gnral_carreras;
+use App\Gnral_grupos;
+use App\Gnral_periodos;
+use App\Gnral_semestre;
 use App\Pdf;
 use Illuminate\Http\Request;
 use Codedge\Fpdf\Facades\Fpdf;
@@ -15,21 +22,43 @@ class PdfController extends Controller
     public function pdf_all()
     {
 
-        $datosGenerales=DB::select('SELECT * FROM exp_generales WHERE id_alumno='.Session::get('id_alumno').';');
-        //dd($datosGenerales[0]->nombre);
-        $datosAntecedentes=DB::select('SELECT * FROM exp_antecedentes_academicos WHERE id_alumno='.Session::get('id_alumno').';');
-        $datosFamiliares=DB::select('SELECT * FROM exp_datos_familiares WHERE id_alumno='.Session::get('id_alumno').';');
-        $datosHabitos=DB::select('SELECT * FROM exp_habitos_estudio WHERE id_alumno='.Session::get('id_alumno').';');
-        $datosFormacion=DB::select('SELECT * FROM exp_formacion_integral WHERE id_alumno='.Session::get('id_alumno').';');
-        $datosArea=DB::select('SELECT * FROM exp_area_psicopedagogica WHERE id_alumno='.Session::get('id_alumno').';');
-        //dd($datosArea);
+        $alumno=DB::table('gnral_alumnos')
+            ->select('id_alumno')
+            ->where('id_usuario', '=', Auth::user()->id)
+            ->get();
 
-        $carreras=\Illuminate\Support\Facades\DB::table('gnral_carreras')->get();
-        $periodos=\Illuminate\Support\Facades\DB::table('gnral_periodos')->get();
-        $grupos=\Illuminate\Support\Facades\DB::table('gnral_grupos')->get();
-        $semestres=\Illuminate\Support\Facades\DB::table('gnral_semestres')->get();
-        $estadoC=\Illuminate\Support\Facades\DB::table('exp_civil_estados')->get();
-        $escalas=\Illuminate\Support\Facades\DB::table('exp_escalas')->get();
+        $datosGenerales=DB::table('exp_generales')
+            ->select('exp_generales.*')
+            ->where('id_alumno','=',$alumno[0]->id_alumno)
+            ->get();
+        $datosAntecedentes=DB::table('exp_antecedentes_academicos')
+            ->select('exp_antecedentes_academicos.*')
+            ->where('id_alumno','=',$alumno[0]->id_alumno)
+            ->get();
+        $datosFamiliares=DB::table('exp_datos_familiares')
+            ->select('exp_datos_familiares.*')
+            ->where('id_alumno','=',$alumno[0]->id_alumno)
+            ->get();
+        $datosHabitos=DB::table('exp_habitos_estudio')
+            ->select('exp_habitos_estudio.*')
+            ->where('id_alumno','=',$alumno[0]->id_alumno)
+            ->get();
+        $datosFormacion=DB::table('exp_formacion_integral')
+            ->select('exp_formacion_integral.*')
+            ->where('id_alumno','=',$alumno[0]->id_alumno)
+            ->get();
+        $datosArea=DB::table('exp_area_psicopedagogica')
+            ->select('exp_area_psicopedagogica.*')
+            ->where('id_alumno','=',$alumno[0]->id_alumno)
+            ->get();
+
+
+        $carreras=Gnral_carreras::all();
+        $periodos=Gnral_periodos::all();
+        $grupos=Gnral_grupos::all();
+        $semestres=Gnral_semestre::all();
+        $estadoC=Exp_civil_estado::all();
+        $escalas=Exp_escalas::all();
         //dd($carreras);
 
 
@@ -83,7 +112,7 @@ class PdfController extends Controller
         $pdf->SetFont('Arial', 'B', 4);
         $pdf->Cell(($pdf->GetPageWidth()-20)/6,3,"Lugar de nacimiento: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 3);
-        $pdf->Cell(($pdf->GetPageWidth()-20)/6,3,"". utf8_decode($datosGenerales[0]->lugar_naciemientos),1,0,"C");
+        $pdf->Cell(($pdf->GetPageWidth()-20)/6,3,"". utf8_decode($datosGenerales[0]->lugar_nacimientos),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4);
         $pdf->Cell(($pdf->GetPageWidth()-20)/6,3,"Semestre: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 3);
@@ -202,11 +231,11 @@ class PdfController extends Controller
         $pdf->SetFont('Arial', 'B', 4);
         $pdf->Cell(($pdf->GetPageWidth()-20)/8,3,utf8_decode("Años en que curso el bachillerato: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 3);
-        $pdf->Cell(($pdf->GetPageWidth()-20)/8,3,"". utf8_decode($datosAntecedentes[0]->años_curso_bachillerato>5?'Mas':$datosAntecedentes[0]->años_curso_bachillerato),1,0,"C");
+        $pdf->Cell(($pdf->GetPageWidth()-20)/8,3,"". utf8_decode($datosAntecedentes[0]->anos_curso_bachillerato>5?'Mas':$datosAntecedentes[0]->anos_curso_bachillerato),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4);
         $pdf->Cell(($pdf->GetPageWidth()-20)/8,3,utf8_decode("Año de terminación: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 3);
-        $pdf->Cell(($pdf->GetPageWidth()-20)/8,3,"". utf8_decode($datosAntecedentes[0]->año_terminacion),1,0,"C");
+        $pdf->Cell(($pdf->GetPageWidth()-20)/8,3,"". utf8_decode($datosAntecedentes[0]->ano_terminacion),1,0,"C");
         $pdf->Ln(3);
 
         $pdf->SetFont('Arial', 'B', 4);

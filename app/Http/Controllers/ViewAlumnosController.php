@@ -71,7 +71,7 @@ class ViewAlumnosController extends Controller
             ->get();
 
 
-      //  dd($alumno[0]->id_alumno);
+      //dd($request->carrera);
         $exp_generale = array(
             "id_carrera"=>$request->carrera,
             "id_periodo" => $request->periodo,
@@ -285,7 +285,7 @@ class ViewAlumnosController extends Controller
             $trabajo,$practica_dep,$actividad_cult,$etnia_ind,$lugar_nac,$id_nivel_eco,$sotiene,$id_carr,$tegusta,$bec,$estad,$scal,
             $pob,$ante,$sat,$ma_re,$to_r,$mat_e,$t_e,$g_e));*/
 
-        //return redirect("/panel");
+        //return view('alumno.hola');
 
 
 

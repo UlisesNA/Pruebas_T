@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 17-01-2020 a las 01:54:40
+-- Tiempo de generación: 17-01-2020 a las 04:39:49
 -- Versión del servidor: 10.1.38-MariaDB
 -- Versión de PHP: 7.3.2
 
@@ -64,7 +64,8 @@ INSERT INTO `exp_antecedentes_academicos` (`id_exp_antecedentes_academicos`, `id
 (6, 1, 'NO', 3, '2016', 'CECYTEM VILLA VICTORIA', 9, '0', '2', '', NULL, 2, '', 'ME GUSTO', 'SI', 2, '', 1, 'ME GUSTA', 2, '', '1', 11),
 (7, 2, 'UUEM', 3, '2015', 'UUEM', 8, '2', '2', '', NULL, 2, '', 'ME  GUSTO', 'SI', 2, '', 1, 'ME GUSTA DIBUJAR', 2, '', '1', 1),
 (8, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0),
-(9, NULL, NULL, 3, '2016', NULL, 95, 'inguna', '2', 'no', NULL, NULL, 'o', NULL, NULL, NULL, NULL, 2, NULL, 2, NULL, NULL, 9);
+(9, NULL, NULL, 3, '2016', NULL, 95, 'inguna', '2', 'no', NULL, NULL, 'o', NULL, NULL, NULL, NULL, 2, NULL, 2, NULL, NULL, 9),
+(35, 1, '1', 2, '0', '0', 0, '0', '1', '0', 0, 0, '0', '0', '0', 0, '0', 1, '0', 1, '0', '0', 14);
 
 -- --------------------------------------------------------
 
@@ -101,7 +102,8 @@ INSERT INTO `exp_area_psicopedagogica` (`id_exp_area_psicopedagogica`, `rendimie
 (6, 2, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 2, 2, 2, 11),
 (7, 1, 3, 2, 1, 3, 3, 3, 3, 2, 4, 3, 4, 1, 3, 1),
 (8, 1, NULL, 3, NULL, NULL, 2, 1, NULL, 3, 2, NULL, NULL, NULL, NULL, 9),
-(9, 1, NULL, 3, NULL, NULL, 2, 1, NULL, 3, 2, NULL, NULL, NULL, NULL, 9);
+(9, 1, NULL, 3, NULL, NULL, 2, 1, NULL, 3, 2, NULL, NULL, NULL, NULL, 9),
+(34, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 14);
 
 -- --------------------------------------------------------
 
@@ -315,7 +317,8 @@ INSERT INTO `exp_datos_familiares` (`id_exp_datos_familiares`, `nombre_padre`, `
 (5, 'ISSAC REYES LOPEZ', 48, 'CHOFER', 'SANTO TOMAS', 'VALENTINA SUAREZ JIMENES', 45, 'AMA DE CASA', 'SAN JERONIMO', 0, '1', 1, 3, 1, 'MAZAHUA', 1, 'PADRE', 1, 'VALENTINA SUAREZ JIMENEZ', 'MADRE', 10),
 (6, 'Antonio Benavidez Sosa', 40, 'COMERCIANTE', 'SAN ANTONIO', 'Marcelina Santiago Jimenez', 37, 'AMA DE CASA', 'DONATO GUERRA', 2, '1', 1, 4, 2, '', 1, 'PADRE', 1, 'marcelina santiago jimenez', 'madre', 11),
 (7, 'MARCOS LOPEZ LOPEZ', 50, 'CHOFER', 'VILLA VICTORIA', 'MARGARITA MAURO ESTRADA', 47, 'AMA DE CASA', 'VILLA VICTORIA', 2, '1', 1, 4, 2, '', 2, 'PADRE', 1, 'MARGARITA MAURO ESTRADA', 'MADRE', 1),
-(8, 'JUAN CARLOS VILCHIS VILCHUS', 45, 'MECANICO', 'SAN AMRTIN', 'ANGELINA MARTINEZ VENTURA', 47, 'AMA DE CASA', 'SAN MARTIN', 1, NULL, NULL, NULL, NULL, 'NINGUNA', NULL, NULL, NULL, 'ANGELINA MARTINEZ VENTURA', NULL, 9);
+(8, 'JUAN CARLOS VILCHIS VILCHUS', 45, 'MECANICO', 'SAN AMRTIN', 'ANGELINA MARTINEZ VENTURA', 47, 'AMA DE CASA', 'SAN MARTIN', 1, NULL, NULL, NULL, NULL, 'NINGUNA', NULL, NULL, NULL, 'ANGELINA MARTINEZ VENTURA', NULL, 9),
+(34, '0', 0, '0', '0', '0', 0, '0', '0', 0, '0', 0, 0, 0, '0', 0, '0', 0, '0', '0', 14);
 
 -- --------------------------------------------------------
 
@@ -403,7 +406,8 @@ INSERT INTO `exp_formacion_integral` (`id_exp_formacion_integral`, `practica_dep
 (5, 1, 'FUTBOL', 2, '', 'VER VIDEOS', 2, '', 1, 2, '', 2, '', 2, '', 2, '', 2, 2, '', '1.58', '54', 2, '', 0, 10),
 (6, 2, '', 2, '', 'leer', 2, '', 1, 2, '', 2, '', 2, '', 2, '', 1, 2, '', '1.50', '52', 2, '', 0, 11),
 (7, 2, '', 1, 'CORRER', 'DIBUJAR', 2, '', 1, 2, '', 2, '', 2, '', 2, '', 1, 2, '', '1.65', '65', 2, '', 0, 1),
-(8, NULL, NULL, NULL, NULL, 'ERR', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, NULL, NULL, NULL, NULL, NULL, '7', '7', NULL, NULL, 0, 9);
+(8, NULL, NULL, NULL, NULL, 'ERR', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, NULL, NULL, NULL, NULL, NULL, '7', '7', NULL, NULL, 0, 9),
+(34, 1, '1', 1, '1', '0', 1, '1', 1, 1, '1', 1, '1', 2, '1', 1, '1', 1, 1, '1', '0', '0', 1, '1', 0, 14);
 
 -- --------------------------------------------------------
 
@@ -481,7 +485,8 @@ INSERT INTO `exp_generales` (`id_exp_general`, `id_periodo`, `nombre`, `edad`, `
 (25, 1, 'ISABEL', 21, 'F', '1998-01-05', 'TOLUCA', 1, 1, 0, 'VALLE DE BRAVO', 'isc_isabel@texvb.edu.mx', '7859624447', '7258965214', 1, 2, '', 'Matutino', '201607025', 1, 'Manutencion', 1, 1, 10, 5, 9, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (26, 1, 'ALEXA', 21, 'F', '1998-01-15', 'TOLUCA', 3, 1, 0, 'VILLA VICTORIA', 'isc_alexa@tesvb.edu.mx', '7258965412', '7214563258', 2, 1, 'MESERA', 'MATUTINO', '201607044', 2, '', 1, 1, 11, 5, 9, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (27, 1, 'ALEJANDRO', 22, 'M', '1997-01-08', 'VILLA VICTORIA', 7, 1, 0, 'VILLA VICTORIA', 'isc_alejandro@tesvb.edu.mx', '7214589632', '7216321458', 2, 1, 'Mecanico', 'matutino', '201207039', 2, '', 2, 1, 1, 5, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(28, 2, 'DANIELA MICHELLE VILCHIS MARTINEZ', 21, 'F', NULL, NULL, NULL, NULL, 0, 'SAN MARTIN OBISPO', 'isc_vilchis.d@tesvb.edu,mx', '7228832212', '7228832212', NULL, 2, 'sss', 'matutino', '201607043', 1, NULL, 1, 1, 9, 9, 9, 'Rural', 'Continuaci', 'Muy satisf', 2, 1, 2, 1, 1);
+(28, 2, 'DANIELA MICHELLE VILCHIS MARTINEZ', 21, 'F', NULL, NULL, NULL, NULL, 0, 'SAN MARTIN OBISPO', 'isc_vilchis.d@tesvb.edu,mx', '7228832212', '7228832212', NULL, 2, 'sss', 'matutino', '201607043', 1, NULL, 1, 1, 9, 9, 9, 'Rural', 'Continuaci', 'Muy satisf', 2, 1, 2, 1, 1),
+(57, 1, '0', 0, 'M', '1998-01-15', '1', 0, 0, 0, '0', '0', '0', '0', 0, 2, '0', '0', '201635032', 1, '1', 1, 1, 14, 12, 3, 'Urbana', 'Cambio de ', 'Regular', 2, 1, 1, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -524,7 +529,8 @@ INSERT INTO `exp_habitos_estudio` (`id_exp_habitos_estudio`, `tiempo_empelado_es
 (5, '2', 2, 'VISUAL', 'JUGAR', 'MATEMATICAS', 'ME GUSTAN', 'ESPAÑO', 'TEORIA', 'GOOD', 10),
 (6, '2', 2, 'auditiva', 'trabajo en el hogar', 'español', 'me gusta leer', 'matematicas', 'no les entiendo', 'bueno', 11),
 (7, '3', 1, 'AUDITIVO', 'TRABAJAR', 'ESPAÑOL', 'ES FACIL', 'MATEMATICAS', 'NO LES ENTIENDO BIEN', 'BUEN ESTUDIANTE', 1),
-(8, NULL, NULL, 'AUDITIVA', 'VER VIDEOS', NULL, 'ME GUSTA', 'ESPAÑOL', 'ES TEORIA', 'ME GUSTA', 9);
+(8, NULL, NULL, 'AUDITIVA', 'VER VIDEOS', NULL, 'ME GUSTA', 'ESPAÑOL', 'ES TEORIA', 'ME GUSTA', 9),
+(34, '1', 2, '0', '0', '1', '0', '0', '0', '0', 14);
 
 -- --------------------------------------------------------
 
@@ -731,13 +737,13 @@ INSERT INTO `gnral_alumnos` (`id_alumno`, `cuenta`, `nombre`, `apaterno`, `amate
 (5, 201507038, 'AURORA', 'VEGA', 'FELIX', 'F', '1997-03-22', 20, 'VAFA9700125FGV', 'CASADO', 'MEXICANA', '', 'BELL@gmail.com', '', '5562054134', '5562054134', '15', 'NIVEL SUPERIO', 9, 6, 1, 80, 15, 661, 'SN/C', 'SN/N', 'SN/N', 'SN/N', 'SN/N', 'SN/N', 'SAN SEBASTIAN', 'SAN SEBASTIAN', '51260', 58, NULL, '2020-01-05 06:06:22', '2018-05-16 17:43:43'),
 (6, 201507033, 'VALENTINA', 'HIDALGO', 'PINET', 'F', '1997-05-20', 20, 'SARFHJSS5728NSN', 'VIUDO', 'MEXICANA', '', 'VA@gmail.com', '', '7227915864', '', '15', 'PREPARATORIA', 9, 6, 1, 84, 15, 767, 'VALLE D EBRAVO', '112', '', 'IMSS', 'IMSS', 'A 200 M DEL CONALEP', 'VALLE', 'VALLE', '51230', 61, NULL, '2019-11-24 22:14:16', '2018-05-16 17:59:37'),
 (7, 201735045, 'JES', 'MEDINA', 'LILI', 'F', '1997-10-30', 20, 'MDJNNDS5522685SADA', 'CASADO', 'MEXICANA', '', 'JES@GMAIL.COM', 'JESY', '5524688741', '72454623366', '15', 'BACHILLERATO', 2, 4, 1, 85, 15, 733, 'GUERRERO', 'S/N', 'S/N', 'GUERRERO', 'GUERRERO', 'A 500 M DE LA IGLESIA', 'GUERRERO', 'GUERRERO', '51470', 62, NULL, '2020-01-05 06:06:35', '2018-05-17 19:17:23'),
-(8, 201607042, 'YOSELIN', 'VERA', 'SOTERO', 'F', '1998-01-28', 20, 'VESY980128MMCRTS05', 'SOLTERO', 'MEXICANA', '', 'isc_vera.y@tesvb.edu.mx', '', '5578948739', '', '15', 'BACHILLERATO', 9, 4, 1, 93, 15, 769, 'SIN CALLE', 'S/N', 'S/N', 'SIN CALLE', 'SIN CALLE', 'CERCA DE LA CASA SDE LA SRA ELENA BERNAL ARIAS ', 'SABANA DE SAN JERONIMO', 'SABANA DE SAN JERONIMO', '51000', 64, NULL, '2019-11-24 22:14:16', '2018-05-16 22:17:42'),
+(8, 201607042, 'YOSELIN', 'VERA', 'SOTERO', 'F', '1998-01-28', 20, 'VESY980128MMCRTS05', 'SOLTERO', 'MEXICANA', '', 'isc_vera.y@tesvb.edu.mx', '', '5578948739', '', '15', 'BACHILLERATO', 9, 4, 1, 93, 15, 769, 'SIN CALLE', 'S/N', 'S/N', 'SIN CALLE', 'SIN CALLE', 'CERCA DE LA CASA SDE LA SRA ELENA BERNAL ARIAS ', 'SABANA DE SAN JERONIMO', 'SABANA DE SAN JERONIMO', '51000', 10, NULL, '2020-01-17 03:36:10', '2018-05-16 22:17:42'),
 (9, 201607043, 'DANIELA MICHELLE', 'VILCHIS', 'MARTINEZ', 'F', '1998-10-14', 19, 'VIMD981014MMCLRN05', 'SOLTERO', 'MEXICANA', '', 'danysmichi@gmail.com', '', '7261021720', '7261021720', '15', 'BACHILLERATO', 9, 4, 1, 95, 15, 687, 'S/C', 'S/N', 'S/N', 'S/C', 'S/C', '100M DE LA IGLESIA', 'SAN MARTIN OBISPO', 'SAN MARTIN OBISPO', '51030', 8, NULL, '2020-01-16 19:01:29', '2018-06-01 21:57:50'),
 (10, 201607025, 'ISABEL', 'SONNY', 'VEGA', 'F', '1998-08-15', 19, 'ISA528524AYHSH552', 'CASADO', 'MEXICANA', '0', 'is@hotmail.com', 'ISA VE', '55426584152', '72258745666', '15', 'PREPA', 9, 4, 1, 87, 15, 767, 'TOLUCA', 'S/N', 's/n', 'TOLUCA', 'TOLUCA', 'casa naranja', 'TOLUCA', 'TOLUCA', '54500', 66, NULL, '2020-01-05 06:06:42', '2018-05-16 23:08:45'),
 (11, 201607044, 'ALEXA', 'VILLA', 'JULIO', 'F', '1998-09-22', 19, 'ALBSDBET54568HSDN', 'SOLTERO', 'MEXICANA', '', 'ALE@tesvb.edu.mx', '', '5548546546464', '', '15', 'PREPARATORIA', 9, 4, 1, 80, 15, 767, 'CERRADA AVE DE LOMA', 'S/N', 'S/N', 'GIRASOL', '1ERA CERRADA AVE DE LOMA', 'Final de la calle', 'RINCÓN VILLA DEL VALLE', 'VALLE DE BRAVO', '51200', 67, NULL, '2020-01-05 06:06:47', '2018-05-16 22:17:12'),
 (12, 201635037, 'XIMENA', 'FIERRO', 'CASTILLO', 'F', '1998-06-19', 19, 'HSBDKBSA88546SR01', 'SOLTERO', 'MEXICANA', '', 'XIM@gmail.com', 'XIM HD', '5885655656', '54221433116', '15', 'Bachillerato ', 2, 4, 1, 91, 15, 767, 'cerrada centenario', 's/n', 's/n', 'Manuel Bautista', 'CERCA DEL CAMPO', 'a un costado del campo', 'El sifin', 'Valle', '51230', 69, NULL, '2020-01-05 06:06:51', '2018-05-16 22:12:22'),
 (13, 201635033, 'JONY', 'BRAVO', 'VILLA', 'M', '1998-08-28', 19, 'JSHDNS866FGJHJ55', 'SOLTERO', 'MEXICANA', '', 'jhv@tesvb.edu.mx', 'jon@hotmail.com', '722546985', '0', '15', 'preparatoria', 2, 4, 1, 88, 15, 767, 'barrio 1', '0', '0', 'barrio 1', 'santa rosa', 'centro', 'barrio 1', 'barrio 1', '51200', 70, NULL, '2019-11-24 22:16:54', '2018-05-16 22:24:39'),
-(14, 201635032, 'Emi', 'Polo', 'Avila', 'M', '1998-09-24', 19, 'sfsgd578678fddasf', 'SOLTERO', 'MEXICANA', '', 'kill@gmail.com', 'KIll AP', '7224585232', '5554593729', '', 'preparatoria', 2, 4, 1, 84, 15, 767, '16 de Septiembre', '517', '11', 'lázaro cardenas', 'uno', 'terminal 1 ', 'centro', 'Valle de Bravo', '51200', 71, NULL, '2019-11-24 22:17:35', '2018-05-16 22:13:48'),
+(14, 201635032, 'Emi', 'Polo', 'Avila', 'M', '1998-09-24', 19, 'sfsgd578678fddasf', 'SOLTERO', 'MEXICANA', '', 'kill@gmail.com', 'KIll AP', '7224585232', '5554593729', '', 'preparatoria', 2, 4, 1, 84, 15, 767, '16 de Septiembre', '517', '11', 'lázaro cardenas', 'uno', 'terminal 1 ', 'centro', 'Valle de Bravo', '51200', 9, NULL, '2020-01-17 01:07:20', '2018-05-16 22:13:48'),
 (15, 201635030, 'ANA', 'MIRALRIO', 'MIRALRIO', 'F', '1998-01-06', 20, 'MIOM980106HMCRRG01', 'SOLTERO', 'MEXICANA', '', 'ANI@gmail.com', 'ANITA', '7565546459', '5466118399', '15', 'PREPARATORIA', 2, 4, 1, 86, 15, 767, 'SOR JUANA INES DE LA CRUZ', '0', '0', 'SOR JUANA INES DE LA CRUZ', 'SOR JUANA INES DE LA CRUZ', 'A 10 M DE LA PRIMARIA 2', 'sin colonia', 'SIN ', '51200', 73, NULL, '2020-01-05 06:06:56', '2018-05-16 23:07:32'),
 (16, 201635027, 'MELISSA', 'ILL', 'SOLIS', 'F', '1998-12-13', 18, 'MJKHHKL866856JHJKN', 'SOLTERO', 'MEXICANA', 'SIN FACEBOOK', 'isc_ILL@tesvb.edu.mx', 'ILLY', '7225646546', '7546546546', '', 'UNIVERSITARIO', 2, 4, 1, 85, 15, 742, 'el centro', 's/n', 's/n', 'el centro', 'el centro', 'el centro', 'San Jose', 'San Jose', '51320', 74, NULL, '2019-11-24 22:17:24', '2018-05-16 22:17:59'),
 (17, 201607011, 'ISAIAS', 'RUFIS', 'JIL', 'M', '1998-07-21', 18, 'EAFSJSAÑJASL656', 'SOLTERO', 'MEXICANA', '', 'isi12@gmail.com', '', '7221410556', '7221410669', '15', 'PREPARATORIA', 9, 4, 1, 76, 15, 767, 'BENITO JUAREZ', 's/n', 'S/n', 'BENITO JUAREZ', 'LA COSTERA', 'BENITO JUAREZ', ' el calvario', 'el calvario', '51200', 75, NULL, '2019-11-24 22:14:16', '2018-05-16 22:14:52'),
@@ -1137,7 +1143,9 @@ INSERT INTO `users` (`id`, `email`, `password`, `activated`, `tipo_usuario`, `in
 (5, 'antonieta@gmail.com', '$2y$10$J/38vjFYFNU/oqra7vPpLO6GIoDIovyh0SYuTlyIGq8P1hAq1AQ/6', 0, 2, 0, NULL, '2019-11-14', '2019-11-14'),
 (6, 'rosa@gmail.com', '', 0, 2, 0, NULL, '2019-11-14', '2019-11-14'),
 (7, 'araceli@gmail.com', '$2y$10$uevct344MjW7FMIwN6J1Yuyj4ky2J60YwW6.Q6Hx11CAVI4ET2kuq', 0, 2, 0, NULL, '2019-11-14', '2019-11-14'),
-(8, 'michelle@gmail.com', '$2y$10$uevct344MjW7FMIwN6J1Yuyj4ky2J60YwW6.Q6Hx11CAVI4ET2kuq', 0, 1, 0, NULL, NULL, '2020-10-11');
+(8, 'michelle@gmail.com', '$2y$10$uevct344MjW7FMIwN6J1Yuyj4ky2J60YwW6.Q6Hx11CAVI4ET2kuq', 0, 1, 0, NULL, NULL, '2020-10-11'),
+(9, 'emi@gmail.com', '$2y$10$aDMM1GfZ1K4OYYY900ydnuNsEg2VGA4zN4Y9EKsKX.8ZY4rgs8hgi', 0, 1, 0, NULL, NULL, '2020-01-16'),
+(10, 'yose@gmail.com', '$2y$10$uevct344MjW7FMIwN6J1Yuyj4ky2J60YwW6.Q6Hx11CAVI4ET2kuq', NULL, 1, NULL, NULL, NULL, '2020-01-16');
 
 --
 -- Índices para tablas volcadas
@@ -1402,13 +1410,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `exp_antecedentes_academicos`
 --
 ALTER TABLE `exp_antecedentes_academicos`
-  MODIFY `id_exp_antecedentes_academicos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id_exp_antecedentes_academicos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT de la tabla `exp_area_psicopedagogica`
 --
 ALTER TABLE `exp_area_psicopedagogica`
-  MODIFY `id_exp_area_psicopedagogica` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id_exp_area_psicopedagogica` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT de la tabla `exp_asigna_alumnos`
@@ -1450,7 +1458,7 @@ ALTER TABLE `exp_civil_estados`
 -- AUTO_INCREMENT de la tabla `exp_datos_familiares`
 --
 ALTER TABLE `exp_datos_familiares`
-  MODIFY `id_exp_datos_familiares` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id_exp_datos_familiares` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT de la tabla `exp_escalas`
@@ -1462,19 +1470,19 @@ ALTER TABLE `exp_escalas`
 -- AUTO_INCREMENT de la tabla `exp_formacion_integral`
 --
 ALTER TABLE `exp_formacion_integral`
-  MODIFY `id_exp_formacion_integral` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id_exp_formacion_integral` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT de la tabla `exp_generales`
 --
 ALTER TABLE `exp_generales`
-  MODIFY `id_exp_general` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id_exp_general` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT de la tabla `exp_habitos_estudio`
 --
 ALTER TABLE `exp_habitos_estudio`
-  MODIFY `id_exp_habitos_estudio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id_exp_habitos_estudio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT de la tabla `exp_opc_intelectual`
@@ -1564,7 +1572,7 @@ ALTER TABLE `gnral_tipos_usuario`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
