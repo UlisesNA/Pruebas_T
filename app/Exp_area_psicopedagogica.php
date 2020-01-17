@@ -11,5 +11,5 @@ class Exp_area_psicopedagogica extends Model
     public $timestamps = false;
     protected $fillable=["rendimiento_escolar","dominio_idioma","otro_idioma","conocimiento_compu","aptitud_especial",
         "comprension","preparacion","estrategias_aprendizaje","organizacion_actividades","concentracion","solucion_problemas",
-        "condiciones_ambientales","busqueda_bibliografica","trabajo_equipo"];
+        "condiciones_ambientales","busqueda_bibliografica","trabajo_equipo","id_alumno"];
 }

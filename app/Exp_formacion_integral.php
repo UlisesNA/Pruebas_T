@@ -12,10 +12,10 @@ class Exp_formacion_integral extends Model
     protected $fillable=["practica_deporte","especifica_deporte","practica_artistica","especifica_artistica","pasatiempo",
         "actividades_culturales","cuales_act","estado_salud","enfermedad_cronica","especifica_enf_cron","enf_cron_padre",
         "especifica_enf_cron_padres","operacion","deque_operacion","enfer_visual","especifica_enf","usas_lentes",
-        "medicamento_controlado","especifica_medicamento","estatura","peso","accidente_grave","relata_breve","id_escala"];
+        "medicamento_controlado","especifica_medicamento","estatura","peso","accidente_grave","relata_breve","id_expbebidas","id_alumno"];
 
     public function escala (){
-        return $this->hasMany('App\Exp_escalas','id_escala','id_escala');
+        return $this->hasMany('App\Exp_bebidas','id_expbebidas','id_expbebidas');
 
     }
 }

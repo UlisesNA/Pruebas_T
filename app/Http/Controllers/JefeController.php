@@ -1,42 +1,117 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
+use App\AsignaCoordinador;
 use App\AsignaTutor;
-use DB;
+use phpDocumentor\Reflection\Location;
+use App\Grupo;
+use Illuminate\Support\Facades\Auth;
 
 class JefeController extends Controller
 {
-    public function index()
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
     {
-        $consulta=DB::select('select gnral_personales.nombre as nom ,gnral_personales.id_personal as id
-                              from gnral_personales');
-        $carreras=DB::select('select gnral_carreras.nombre as carr ,gnral_carreras.id_carrera as id
-                              from gnral_carreras');
-        $semestres=DB::select('select gnral_semestres.descripcion as sem, gnral_semestres.id_semestre as id 
-                                from gnral_semestres');
-        $condicion=DB::select('SELECT asigna_tutor.id_asigna_tutor , gnral_personales.nombre as doc,gnral_carreras.nombre as carr,gnral_semestres.descripcion as sem 
-                                      from gnral_personales,gnral_carreras,gnral_semestres,asigna_tutor
-                                      where gnral_personales.id_personal=asigna_tutor.id_personal
-                                      and gnral_carreras.id_carrera=asigna_tutor.id_carrera
-                                      and gnral_semestres.id_semestre=asigna_tutor.id_semestre;');
-        $datosAT=AsignaTutor::all();
-        return view('jefe.index')->with(compact('datosAT','consulta','semestres','condicion','carreras'));
+        $datosAC=AsignaCoordinador::getCoordinador();
+        $datosAT=AsignaTutor::getTutores();
+
+        if($datosAC==null)
+        {
+            $datos['coordinador']=null;
+        }
+        else{
+            $datos['coordinador']=$datosAC;
+        }
+        if($datosAT==null)
+        {
+            $datos['tutores']=null;
+        }
+        else{
+            $datos['tutores']=$datosAT;
+        }
+        return $datos;
+
+
     }
+    public function UpdateCoo(Request $request){
+        //dd($request->coo);
+        AsignaCoordinador::UpdateCoordinador($request);
+        return redirect('jefe');
+    }
+    public function UpdateTuto(Request $request){
+        //dd($request);
+        AsignaTutor::UpdateTutor($request);
+        return redirect('jefe');
+    }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
-        $asigna = array(
-            "id_personal"=>$request->id_personal,
-            "id_carrera" => $request->id_carrera,
-            "id_semestre" => $request->id_semestre,
-        );
-        AsignaTutor::create($asigna);
-        return response()->json();
+        //
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function destroy($id)
     {
-        $asigna = AsignaTutor::find($id);
-        $asigna->delete();
-        return redirect()->back();
+        //
     }
 }

@@ -47,6 +47,79 @@ Route::Resource('/calendario','calendario_eventosController');
 Route::get('/ftp', ['as ' => 'ftp', 'uses' => 'FtpController@index']);
 Route::post('/ftp/Up', 'FtpController@upload');
 
+
+
+/////CONTROLADORES EXPEDIENTE
+
+Route::Resource('/jefevista','JefeVistaController');
+Route::Resource('/asignacovista','AsignaCoController');
+Route::Resource('/asignatuvista','AsignaTuController');
+
+Route::Resource('/tutorvista','TutorVistaController');
+
+Route::Resource('/jefe','JefeController');
+Route::post('/jefeAct','JefeController@UpdateCoo');
+Route::post('/jefeActTuto','JefeController@UpdateTuto');
+
+
+Route::group(['prefix'=>'graphics'],function (){
+    Route::get('/', 'GraficasController@index');
+    Route::post('genero', 'GraficasController@genero');
+    Route::post('academico', 'GraficasController@academico');
+    Route::post('generales', 'GraficasController@generales');
+    Route::post('familiares', 'GraficasController@familiares');
+    Route::post('habitos', 'GraficasController@habitos');
+    Route::post('salud', 'GraficasController@salud');
+    Route::post('area', 'GraficasController@area');
+
+
+});
+
+Route::Resource('/graficas','GraficasController');
+
+Route::get('/getAllDatos','GraficasController@getAll');
+
+Route::post('/profesor','ProfesorController@alumnos');
+Route::post('/cambio','ProfesorController@cambio');
+Route::get('grupos','ProfesorController@grupos');
+Route::post('/alu','ProfesorController@alumnos');
+Route::post('/uE','ProfesorController@updateEstado');
+Route::get('/getAll','ProfesorController@getAll');
+Route::get('/setAlumnId','ProfesorController@setAlumnoId');
+
+Route::Resource('/Alum','ViewAlumnosController');
+//Route::get('/Alum/{{alumno}}','ViewAlumnosController@store');
+
+
+Route::post('/UpdateAlum','ViewAlumnosController@updateExp');
+Route::post('/cerrar','ViewAlumnosController@cerrar');
+Route::post('/UpdateA','TutorExpedienteController@mostrar');
+
+Route::Resource('/alumnos','AlumnosController');
+Route::Resource('/AlumUpdate','UpdateAlumnosController');
+Route::Resource('/Alumno','LoginAlumnosController');
+Route::Resource('/panel','PanelAlumnoController');
+Route::get('/getAl', 'AlumnosController@getAl');
+Route::get('/gen', 'AlumnosController@getGen');
+Route::get('/list', 'AlumnosController@getlist');
+
+Route::Resource('/graficasCoordinador','GraficasCoordinadorController');
+Route::get('/getCarrCoo','GraficasCoordinadorController@getCarrCoo');
+Route::get('/getAG','GraficasCoordinadorController@getAlCoo');
+
+Route::get('/getG', 'AsignaTutorController@getAllGrupoAct');
+Route::Resource('/asignacoordinador','AsignaCoordinadorController');
+Route::get('/repo','AsignaCoordinadorController@repo');
+
+Route::Resource('asignatutores','AsignaTutorController');
+Route::get('asignatutores/{id}/destroy',[
+    'uses' => 'AsignaTutorController@destroy',
+    'as' => 'asignatutores.destroy'
+]);
+Route::get("pdf/all","PdfController@pdf_all")->name("pdf_all");
+Route::post("pdf/lista","PdfController@pdf_lista")->name("pdf_lista");
+
+
 ?>
 
 

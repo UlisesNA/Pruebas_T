@@ -7,6 +7,7 @@ use App\Exp_antecedentes_academico;
 use App\Exp_area_psicopedagogica;
 use App\Exp_asigna_expediente;
 use App\Exp_bachillerato;
+use App\Exp_bebidas;
 use App\Exp_civil_estado;
 use App\Exp_datos_familiare;
 use App\Exp_escalas;
@@ -21,13 +22,14 @@ use App\Exp_opc_vives;
 use App\Exp_parentesco;
 use App\Exp_tiempoestudia;
 use App\Exp_turno;
+use App\gnral_alumnos;
 use App\Gnral_carreras;
 use App\Gnral_grupos;
 use App\Gnral_periodos;
 use App\Gnral_semestre;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use DB;
+use Illuminate\Support\Facades\DB;
 class ViewAlumnosController extends Controller
 {
     public  function generapdf(){
@@ -51,10 +53,11 @@ class ViewAlumnosController extends Controller
         $intelectual = Exp_opc_intelectual::all();
         $parentesco=Exp_parentesco::all();
         $escala=Exp_escalas::all();
+        $bebidas=Exp_bebidas::all();
 
 
-        return view('alumno.expediente')->with(compact('carreras', 'grupos', 'periodos', 'datos',
-            'semestres', 'estadocivil', 'niveleconomico', 'bachillerato', 'vive', 'familiaunion', 'turno', 'tiempoestudia', 'intelectual','parentesco','escala'));
+        return view('alumnos.expediente')->with(compact('carreras', 'grupos', 'periodos', 'datos',
+            'semestres', 'estadocivil', 'niveleconomico', 'bachillerato', 'vive', 'familiaunion', 'turno', 'tiempoestudia', 'intelectual','parentesco','escala','bebidas'));
     }
     public function create()
     {
@@ -62,10 +65,17 @@ class ViewAlumnosController extends Controller
     }
     public function store(Request $request)
     {
+        $alumno=DB::table('gnral_alumnos')
+            ->select('id_alumno')
+            ->where('id_usuario', '=', Auth::user()->id)
+            ->get();
+
+
+      //  dd($alumno[0]->id_alumno);
         $exp_generale = array(
-            "id_carrera"=>$request->id_carrera,
-            "id_periodo" => $request->id_periodo,
-            "id_grupo"=>$request->id_grupo,
+            "id_carrera"=>$request->carrera,
+            "id_periodo" => $request->periodo,
+            "id_grupo"=>$request->grupo,
             "nombre" => $request->nombre,
             "edad" => $request->edad,
             "sexo" => $request->sexo,
@@ -94,12 +104,15 @@ class ViewAlumnosController extends Controller
             "tot_repe"=> $request->tot_repe,
             "materias_especial"=> $request->materias_especial,
             "tot_espe"=> $request->tot_espe,
-            "gen_espe"=> $request->gen_espe
+            "gen_espe"=> $request->gen_espe,
+            "id_alumno"=>$alumno[0]->id_alumno
+
+
         );
         $exp_antecedentes_academico = array(
             "id_bachillerato" => $request->id_bachillerato,
             "otros_estudios" => $request->otros_estudios,
-            "anos_curso_bachillerato" => $request->anos_curso_bachillerato,
+            "anos_curso_bachillerato" => $request->ano_curso_bachillerato,
             "ano_terminacion" => $request->ano_terminacion,
             "escuela_procedente" => $request->escuela_procedente,
             "promedio" => $request->promedio,
@@ -117,7 +130,8 @@ class ViewAlumnosController extends Controller
             "porque_carrera_elegida" => $request->porque_carrera_elegida,
             "suspension_estudios_bachillerato" => $request->suspension_estudios_bachillerato,
             "razones_suspension_estudios" => $request->razones_suspension_estudios,
-            "teestimula_familia" => $request->teestimula_familia
+            "teestimula_familia" => $request->teestimula_familia,
+             "id_alumno"=>$alumno[0]->id_alumno
 
         );
         $exp_datos_familiare = array(
@@ -139,7 +153,8 @@ class ViewAlumnosController extends Controller
             "sostiene_economia_hogar" => $request->sostiene_economia_hogar,
             "id_familia_union" => $request->id_familia_union,
             "nombre_tutor" => $request->nombre_tutor,
-            "id_parentesco" => $request->id_parentesco
+            "id_parentesco" => $request->id_parentesco,
+             "id_alumno"=>$alumno[0]->id_alumno
 
         );
         $exp_habitos_estudio = array(
@@ -151,7 +166,8 @@ class ViewAlumnosController extends Controller
             "porque_asignatura" => $request->porque_asignatura,
             "asignatura_dificil" => $request->asignatura_dificil,
             "porque_asignatura_dificil" => $request->porque_asignatura_dificil,
-            "opinion_tu_mismo_estudiante" => $request->opinion_tu_mismo_estudiante
+            "opinion_tu_mismo_estudiante" => $request->opinion_tu_mismo_estudiante,
+            "id_alumno"=>$alumno[0]->id_alumno
         );
         $exp_formacion_integral = array(
             "practica_deporte" => $request->practica_deporte,
@@ -177,7 +193,8 @@ class ViewAlumnosController extends Controller
             "peso" => $request->peso,
             "accidente_grave" => $request->accidente_grave,
             "relata_breve" => $request->relata_breve,
-            "id_escala"=>$request->id_escala
+            "id_escala"=>$request->id_escala,
+            "id_alumno"=>$alumno[0]->id_alumno
 
         );
         $exp_area_psicopedagogica = array(
@@ -194,7 +211,8 @@ class ViewAlumnosController extends Controller
             "solucion_problemas" => $request->solucion_problemas,
             "condiciones_ambientales" => $request->condiciones_ambientales,
             "busqueda_bibliografica" => $request->busqueda_bibliografica,
-            "trabajo_equipo" => $request->trabajo_equipo
+            "trabajo_equipo" => $request->trabajo_equipo,
+            "id_alumno"=>$alumno[0]->id_alumno
 
         );
 
@@ -204,18 +222,9 @@ class ViewAlumnosController extends Controller
         $exp_habitos_estudio=Exp_habitos_estudio::create($exp_habitos_estudio);
         $exp_formacion_integral=Exp_formacion_integral::create($exp_formacion_integral);
         $exp_area_psicopedagogica=Exp_area_psicopedagogica::create($exp_area_psicopedagogica);
-        $id_alumno=Auth::user()->id;
-        $exp_asigna_expediente = array(
-            "id_exp_general" => $exp_generale->id_exp_general,
-            "id_exp_antecedentes_academicos" => $exp_antecedentes_academico->id_exp_antecedentes_academicos,
-            "id_exp_datos_familiares" => $exp_datos_familiare->id_exp_datos_familiares,
-            "id_exp_habitos_estudio" => $exp_habitos_estudio->id_exp_habitos_estudio,
-            "id_exp_formacion_integral" => $exp_formacion_integral->id_exp_formacion_integral,
-            "id_exp_area_psicopedagogica" => $exp_area_psicopedagogica->id_exp_area_psicopedagogica,
-            "id_alumno" => $id_alumno
-        );
-        Exp_asigna_expediente::create($exp_asigna_expediente);
 
+
+        //return( '/panel');
         $nombre =array("nombre" => $request->nombre);
         $no_cuenta=array("no_cuenta" => $request->no_cuenta);
         $sexo=array("sexo" => $request->sexo);
@@ -272,11 +281,14 @@ class ViewAlumnosController extends Controller
         $t_e=implode($tot_esp);
         $g_e=implode($gen_es);
 
-        DB::select('call algoritmo(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',array($nom,$no_cue,$sex,$id_estado,$no_hijo,$no_hermano,$enfermedad,
+       /* DB::select('call algoritmo(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',array($nom,$no_cue,$sex,$id_estado,$no_hijo,$no_hermano,$enfermedad,
             $trabajo,$practica_dep,$actividad_cult,$etnia_ind,$lugar_nac,$id_nivel_eco,$sotiene,$id_carr,$tegusta,$bec,$estad,$scal,
-            $pob,$ante,$sat,$ma_re,$to_r,$mat_e,$t_e,$g_e));
+            $pob,$ante,$sat,$ma_re,$to_r,$mat_e,$t_e,$g_e));*/
 
-        return 'panel';
+        //return redirect("/panel");
+
+
+
     }
 
     public function updateExp(Request $request)

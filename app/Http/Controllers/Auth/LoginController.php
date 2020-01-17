@@ -14,7 +14,31 @@ class LoginController extends Controller
 {
     use AuthenticatesUsers;
      protected function authenticated($request,$user){
-        if ($user->id_rol==1) {
+
+         if ($user->tipo_usuario==1) {
+             //dd('ALumno');
+             $alumno=Alumno::getCuenta();
+             //d($alumno);
+             Session::put('cuenta',$alumno[0]->cuenta);
+             Session::put('nombre',$alumno[0]->apaterno." ".$alumno[0]->amaterno." ".$alumno[0]->nombre);
+             # code...
+             return redirect('/panel');
+         }else
+             if ($user->tipo_usuario==2) {
+
+                 $jefe=GnralJefePeriodos::isJefe($user);
+                 //dd($jefe);
+                 if($jefe && $jefe[0]->id_departamento==2){
+                     //dd();
+                     Session::put('jefe',$jefe[0]->id_carrera);
+                     return redirect('/jefevista');
+                 }else{
+                     //Session::put('coordinador',AsignaCoordinador::isCoordinador());
+                     return redirect('/tutorvista');
+                 }
+             }
+
+       /* if ($user->id_rol==1) {
             return redirect('/coordina_inst');
         }
         if ($user->id_rol==2) {
@@ -28,7 +52,7 @@ class LoginController extends Controller
          }
          if ($user->id_rol==6) {
              return redirect('/jefe');
-         }
+         }*/
      }
     public function __construct()
     {

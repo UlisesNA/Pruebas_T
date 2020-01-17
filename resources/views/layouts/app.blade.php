@@ -59,12 +59,25 @@
                     <!-- Authentication Links -->
                     @if (Session::has('cuenta'))
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href="panel">Inicio</a>
+                            <a class="nav-link" href="panel">Inicio</a>
                         </li>
-                        <a class="nav-link btn text-dark" href="Alumno" onclick="document.getElementById('logout-form').submit();">Cerrar Sesión</a>
-                        <form id="logout-form" action="cerrar" method="POST" style="display: none;">
-                            @csrf
-                        </form>
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle text-capitalize" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                {{ Session::get('nombre') }} <span class="caret"></span>
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                   onclick="event.preventDefault();
+                                                            document.getElementById('logout-form').submit();">
+                                    {{ __('Cerrar Sesión') }}
+                                </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                            </div>
+                        </li>
                     @else
                         @guest
                             <li class="nav-item">
@@ -136,6 +149,32 @@
                                         <a class="nav-link text-dark" href="jefe" >Asignar Tutores</a>
                                     </li>
                                 @endif
+                                @if (Session::get('jefe'))
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="jefevista">Inicio</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="asignacovista">Asigna Coordinador</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="asignatuvista">Asigna Tutor</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="alumnos">Alumnos</a>
+                                    </li>
+                                @endif
+                                @if (Auth::user()->tipo_usuario ==2 && !Session::get('jefe'))
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="tutorvista">Inicio</a>
+                                    </li>
+                                    @if (Session::get('coordinador'))
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="graficasCoordinador">Estadisticas Coordinador</a>
+                                        </li>
+                                    @endif
+                                @endif
+
+
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->email }} <span class="caret"></span>
