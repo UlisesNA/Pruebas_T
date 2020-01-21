@@ -7,6 +7,12 @@ use DB;
 class GnralJefePeriodos extends Model
 {
     //
+
+    protected $table="gnral_jefes_periodos";
+    protected $primaryKey='id_jefe_periodo';
+    protected $fillable=['id_carrera','id_personal','tipo_cargo','id_periodo'];
+
+
     public static function isJefe($data){
         //dd($data);
         $datos= DB::select('SELECT gnral_personales.nombre, gnral_personales.id_departamento,gnral_personales.tipo_usuario,gnral_jefes_periodos.id_carrera,gnral_jefes_periodos.id_personal from

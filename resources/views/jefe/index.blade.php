@@ -1,144 +1,122 @@
 @extends('layouts.app')
 @section('content')
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title" align="center">Asignar tutores</h5>
-                        <form id="form_jefe">
-                            {{ csrf_field() }}
-                            <div class="form-row">
-                                <div class="form-group col-md-7">
-                                        <select id="id_personal" name="id_personal" class="form-control">
-                                            <option selected>Docente</option>
-                                            @foreach($consulta as $c)
-                                            <option value="{{$c->id}}">{{$c->nom}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                <div class="form-group col-md-5">
-                                        <select id="id_semestre" name="id_semestre" class="form-control">
-                                            <option selected>Semestre</option>
-                                            @foreach($semestres as $s)
-                                            <option value="{{$s->id}}">{{$s->sem}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-12">
-                                    <select id="id_carrera" name="id_carrera" class="form-control">
-                                        <option selected>Carrera</option>
-                                        @foreach($carreras as $ca)
-                                            <option value="{{$ca->id}}">{{$ca->carr}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div align="center">
-                                <a class="btn btn-primary" id="jefe_f"  style="color: white">Agregar</a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-8">
-                <div class="card">
-                    <div class="card-body">
-                        <form>
+    <div id="index_d">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
                             <div class="row">
-                                <div class="col">
-                                    <h5 class="card-title" align="right">Tutores</h5>
+                                <div class="col-md-6" id="coordinador">
+                                    <div class="card" v-if="datos.coordinador!=null">
+                                        <div class="card-header">
+                                            <h5 class="card-title">Coordinador asignado</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <table class="text-center table">
+                                                <thead>
+                                                <th>Nombre</th>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>@{{datos.coordinador[0].nombre}}</td>
+                                                    <td><button  v-on:click="confirmC(datos.coordinador[0].id_asigna_coordinador)" class=" btn btn-outline-danger">X</button>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="card" v-if="datos.coordinador==null">
+                                        <div class="card-body text-center">
+                                            <h5 class="card-title">Coordinador No Asignado</h5>
+                                        </div>
+                                    </div>
+
                                 </div>
-                                <div class="col">
-                                   <div align="right">
-                                       <i class="fas fa-search" aria-hidden="true"></i>
-                                       <input type="text" placeholder="Buscar Tutor" id="docente" onkeyup="myFunction()" style="border: hidden">
-                                   </div>
+                                <div class="col-md-6" >
+                                    <div class="card" v-if="datos.tutores!=null">
+                                        <div class="card-header"><h5 class="card-title">Tutores asignados</h5></div>
+                                        <div class="card-body">
+                                            <table class="table text-center">
+                                                <thead>
+                                                <th>Nombre</th>
+                                                <th>Generación</th>
+                                                <th>Grupo</th>
+                                                </thead>
+                                                <tbody id="tabla">
+                                                <tr class="prof" v-for="tutor in datos.tutores">
+                                                    <td >@{{tutor.nombre}}</td>
+                                                    <td>@{{ tutor.generacion }}</td>
+                                                    <td>@{{ tutor.grupo }}</td>
+                                                    <td><button v-on:click="confirmT(tutor.id_asigna_tutor)" class="eliminar btn btn-outline-danger">X</button></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="card" v-if="datos.tutores==null">
+                                        <div class="card-body text-center">
+                                            <h5 class="card-title">Tutores no asignados</h5>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
-                        </form>
-                        <table class="table" id="Table">
-                            <thead>
-                            <tr>
-                                <th scope="col">Nombre</th>
-                                <th scope="col">Plan Institucional</th>
-                                <th scope="col">Semestre</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($condicion as $da)
-                            <tr onmouseover="this.style.backgroundColor='#DBE7F3'" onmouseout="this.style.backgroundColor='white'">
-                                <td>{{$da->doc}}</td>
-                                <td>{{$da->carr}}</td>
-                                <td>{{$da->sem}}</td>
-                                <td>
-                                    <form action="{{ route('jefe.destroy', $da->id_asigna_tutor) }}" method="post">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-lg" style="background:white"><i class="fas fa-times-circle"></i></button>
-                                    </form>
-                                </td>
-                            </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        @include('jefe.eliminartutor')
+        @include('jefe.eliminarcoor')
     </div>
-@endsection
 
-<script src="{{asset('js/jquery.js')}}"></script>
-<script>
-    $(document).ready(function () {
-        $('#jefe_f').click(function(){
-            var con= true;
-            var datos = $('#form_jefe').serialize();
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    <script>
+        new Vue({
+            el:"#index_d",
+            created:function(){
+                this.getDatos();
+            },
+            data:{
+                jefe:"{{url("/jefe")}}",
+                datos:[],
+                id_tu:null,
+                id_c:null
+            },
+            methods:{
+                getDatos:function () {
+                    axios.get(this.jefe).then(response=>{
+                        this.datos=response.data;
+                    }).catch(error=>{ });
                 },
-                url: "jefe",
-                method: "POST",
-                dataType: "json",
-                data:datos,
-                success:function (data) {
-                    location.reload();
+                deleteT:function () {
+                    var url = '/asignatutores/' + this.id_tu;
+                    //alert(id);
+                    axios.delete(url).then(response => {
+                        this.getDatos();
+                    });
                 },
-                error:function(request,status,data)
+                confirmT:function(id)
                 {
-                    alert("Hubo un error al insertar el dato, intentelo de nuevo")
-                    console.log(request)
-                    console.log(status)
-                    console.log(data)
-                }
-            });
+                    this.id_tu=id;
+                    $('#Eliminar').modal('show');
+                },
+                deleteC:function () {
+                    var url = '/asignacoordinador/' + this.id_co;
+                    axios.delete(url).then(response => {
+                        this.getDatos();
+                    });
+                },
+                confirmC:function (id) {
+                    this.id_co=id;
+                    $('#EliminarCo').modal('show');
+                },
+
+            },
         });
-    });
-    function myFunction() {
-        var input, filter, table, tr, td, i, txtValue;
-        input = document.getElementById("docente");
-        filter = input.value.toUpperCase();
-        table = document.getElementById("Table");
-        tr = table.getElementsByTagName("tr");
 
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[0];
-            if (td) {
-                txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
-            }
-        }
-    }
-</script>
-
+    </script>
+@endsection
 
 

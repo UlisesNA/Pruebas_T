@@ -2,7 +2,6 @@
 @section('content')
 
     <div class="container" id="ind">
-
         <div class="row" v-show="menugrupos==true">
             <div class="col-12">
                 <div class="row">
