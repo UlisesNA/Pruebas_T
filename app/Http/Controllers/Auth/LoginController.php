@@ -26,9 +26,9 @@ class LoginController extends Controller
              return redirect('/panel');
          }else
              if ($user->tipo_usuario==2) {
-
+                 //dd($user);
                  $jefe=GnralJefePeriodos::isJefe($user);
-                 //dd($jefe);
+
                  if($jefe && $jefe[0]->id_departamento==2){
                      //dd();
                      Session::put('jefe',$jefe[0]->id_carrera);

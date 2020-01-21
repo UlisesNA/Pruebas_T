@@ -16,6 +16,7 @@ class GnralJefePeriodos extends Model
         gnral_jefes_periodos.id_carrera=gnral_carreras.id_carrera and
         gnral_jefes_periodos.id_periodo=2 and
         gnral_personales.tipo_usuario='.$data->id);
+        //dd($data->id);
         //gnral_jefes_periodos.id_carrera
         return $datos;
     }
