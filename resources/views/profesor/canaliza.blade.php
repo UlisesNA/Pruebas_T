@@ -99,12 +99,6 @@
                                     </table>
 
                                     <table class="table table-bordered">
-                                        <thead>
-                                        <tr>
-                                            <th scope="col" colspan="2">¿EL TUTOR REQUIERE NOTIFICACIÓN PERIÓDICA DE LOS AVANCES DEL CASO?</th>
-                                            <th scope="col" >STATUS DE LA CANALIZACIÓN</th>
-                                        </tr>
-                                        </thead>
                                         <tbody>
                                         <tr>
                                             <td>

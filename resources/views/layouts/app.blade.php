@@ -175,16 +175,7 @@
                                         <a class="nav-link" href="tutorvista">Tutorias</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="/planeacion" >Planeación</a>
-                                    </li>
-                                    <li class="nav-item">
                                         <a class="nav-link" href="/eventos" >Eventos</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="/canalizacion" >Canalizar Tutorados</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="/canalizados" >Tutorados Canalizados</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="/profesor" >Deserción</a>
