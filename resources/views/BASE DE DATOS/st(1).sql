@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 17-01-2020 a las 04:39:49
+-- Tiempo de generación: 25-01-2020 a las 04:42:20
 -- Versión del servidor: 10.1.38-MariaDB
 -- Versión de PHP: 7.3.2
 
@@ -62,10 +62,7 @@ INSERT INTO `exp_antecedentes_academicos` (`id_exp_antecedentes_academicos`, `id
 (1, 1, 'SI', 3, '2015', 'CECYTEM', 70, 'NINGUNA', '1', 'CONALEP', 3, 1, 'ECONOMIA', 'ESTA LA CARRERA QUE ME GUSTA (2)', 'SI', 1, 'PEDAGOGIA', 1, 'ES INTERSANTE', 1, 'FALTA DE DINERO', '1', 8),
 (5, 1, 'No', 3, '2016', 'CECYTEM', 8, '1', '1', 'UNN', 1, 2, '', 'ME GUSTA', 'SI', 2, '', 1, 'ME GUSTA', 2, '', '1', 10),
 (6, 1, 'NO', 3, '2016', 'CECYTEM VILLA VICTORIA', 9, '0', '2', '', NULL, 2, '', 'ME GUSTO', 'SI', 2, '', 1, 'ME GUSTA', 2, '', '1', 11),
-(7, 2, 'UUEM', 3, '2015', 'UUEM', 8, '2', '2', '', NULL, 2, '', 'ME  GUSTO', 'SI', 2, '', 1, 'ME GUSTA DIBUJAR', 2, '', '1', 1),
-(8, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0),
-(9, NULL, NULL, 3, '2016', NULL, 95, 'inguna', '2', 'no', NULL, NULL, 'o', NULL, NULL, NULL, NULL, 2, NULL, 2, NULL, NULL, 9),
-(35, 1, '1', 2, '0', '0', 0, '0', '1', '0', 0, 0, '0', '0', '0', 0, '0', 1, '0', 1, '0', '0', 14);
+(36, 1, 'No', 3, '2016', 'CECYTEM', 95, 'Ninuna', '2', NULL, NULL, 2, NULL, 'Me gusta', 'si', 2, NULL, 1, 'Me gusta', 2, NULL, '1', 9);
 
 -- --------------------------------------------------------
 
@@ -100,10 +97,7 @@ INSERT INTO `exp_area_psicopedagogica` (`id_exp_area_psicopedagogica`, `rendimie
 (1, 2, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 8),
 (5, 2, 1, 1, 2, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 10),
 (6, 2, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 2, 2, 2, 11),
-(7, 1, 3, 2, 1, 3, 3, 3, 3, 2, 4, 3, 4, 1, 3, 1),
-(8, 1, NULL, 3, NULL, NULL, 2, 1, NULL, 3, 2, NULL, NULL, NULL, NULL, 9),
-(9, 1, NULL, 3, NULL, NULL, 2, 1, NULL, 3, 2, NULL, NULL, NULL, NULL, 9),
-(34, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 14);
+(35, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 9);
 
 -- --------------------------------------------------------
 
@@ -126,7 +120,7 @@ CREATE TABLE `exp_asigna_alumnos` (
 
 INSERT INTO `exp_asigna_alumnos` (`id_alumno`, `id_asigna_generacion`, `created_at`, `updated_at`, `id_asigna_alumno`, `estado`) VALUES
 (9, 1, '2020-01-10 16:01:55', '0000-00-00 00:00:00', 1, 3),
-(10, 1, '2020-01-10 16:01:53', '0000-00-00 00:00:00', 2, 3),
+(10, 1, '2020-01-17 04:37:43', '0000-00-00 00:00:00', 2, 1),
 (11, 1, '2020-01-07 05:19:09', '0000-00-00 00:00:00', 3, 2),
 (17, 2, '2019-12-09 03:51:16', '0000-00-00 00:00:00', 4, 1),
 (18, 2, '2019-12-09 03:51:18', '0000-00-00 00:00:00', 5, 1),
@@ -143,9 +137,18 @@ CREATE TABLE `exp_asigna_coordinador` (
   `id_asigna_coordinador` int(11) NOT NULL,
   `id_jefe_periodo` int(11) DEFAULT NULL,
   `id_personal` int(11) DEFAULT NULL,
-  `estado` int(11) DEFAULT NULL,
-  `deleted_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `created_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `exp_asigna_coordinador`
+--
+
+INSERT INTO `exp_asigna_coordinador` (`id_asigna_coordinador`, `id_jefe_periodo`, `id_personal`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(9, 11, 6, '2020-01-18 06:31:50', '2020-01-18 12:31:50', '2020-01-18 12:31:50'),
+(17, 11, 6, '2020-01-18 12:58:58', '2020-01-18 12:58:58', NULL);
 
 -- --------------------------------------------------------
 
@@ -189,7 +192,7 @@ INSERT INTO `exp_asigna_generacion` (`id_asigna_generacion`, `id_generacion`, `g
 (5, 3, 1, 1),
 (6, 4, 1, 1),
 (7, 4, 2, 1),
-(8, 1, 1, 1);
+(8, 1, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -202,19 +205,25 @@ CREATE TABLE `exp_asigna_tutor` (
   `id_jefe_periodo` int(11) DEFAULT NULL,
   `id_personal` int(11) DEFAULT NULL,
   `id_asigna_generacion` int(11) DEFAULT NULL,
-  `estado` int(11) DEFAULT NULL
+  `created_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `exp_asigna_tutor`
 --
 
-INSERT INTO `exp_asigna_tutor` (`id_asigna_tutor`, `id_jefe_periodo`, `id_personal`, `id_asigna_generacion`, `estado`) VALUES
-(35, 12, 6, 8, 1),
-(38, 11, 7, 2, 1),
-(39, 11, 14, 3, 1),
-(42, 11, 6, 4, 1),
-(44, 11, 6, 1, 1);
+INSERT INTO `exp_asigna_tutor` (`id_asigna_tutor`, `id_jefe_periodo`, `id_personal`, `id_asigna_generacion`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(35, 12, 6, 8, '2020-01-18 03:29:47', '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(47, 11, 6, 1, '2020-01-18 13:28:46', '2020-01-18 13:28:46', NULL),
+(48, 11, 14, 2, '2020-01-18 13:30:37', '2020-01-18 13:30:37', NULL),
+(49, 11, 3, 3, '2020-01-18 07:41:09', '2020-01-18 13:41:09', '2020-01-18 13:41:09'),
+(50, 11, 11, 4, '2020-01-18 07:42:27', '2020-01-18 13:42:27', '2020-01-18 13:42:27'),
+(51, 11, 11, 8, '2020-01-18 13:49:30', '2020-01-18 13:49:30', NULL),
+(52, 11, 11, 7, '2020-01-18 07:50:09', '2020-01-18 13:50:09', '2020-01-18 13:50:09'),
+(53, 11, 13, 3, '2020-01-18 08:17:19', '2020-01-18 14:17:19', '2020-01-18 14:17:19'),
+(54, 11, 13, 4, '2020-01-18 08:17:17', '2020-01-18 14:17:17', '2020-01-18 14:17:17');
 
 -- --------------------------------------------------------
 
@@ -316,9 +325,7 @@ INSERT INTO `exp_datos_familiares` (`id_exp_datos_familiares`, `nombre_padre`, `
 (1, 'SILVIANO VERA BERNAL', 48, 'AGRICULTOR', 'SABANA DE SAN JERONIMO', 'MARIA GUADALUPE SOTERO MARTINEZ', 50, 'AMA DE CASA', 'SABANA DE SAN JERONIMO', 4, '1', 2, 4, 1, 'OTOMI', 1, 'HERMANO', 1, 'MARIA GUADALUPE SOTERO MARTINEZ', 'MAMÁ', 8),
 (5, 'ISSAC REYES LOPEZ', 48, 'CHOFER', 'SANTO TOMAS', 'VALENTINA SUAREZ JIMENES', 45, 'AMA DE CASA', 'SAN JERONIMO', 0, '1', 1, 3, 1, 'MAZAHUA', 1, 'PADRE', 1, 'VALENTINA SUAREZ JIMENEZ', 'MADRE', 10),
 (6, 'Antonio Benavidez Sosa', 40, 'COMERCIANTE', 'SAN ANTONIO', 'Marcelina Santiago Jimenez', 37, 'AMA DE CASA', 'DONATO GUERRA', 2, '1', 1, 4, 2, '', 1, 'PADRE', 1, 'marcelina santiago jimenez', 'madre', 11),
-(7, 'MARCOS LOPEZ LOPEZ', 50, 'CHOFER', 'VILLA VICTORIA', 'MARGARITA MAURO ESTRADA', 47, 'AMA DE CASA', 'VILLA VICTORIA', 2, '1', 1, 4, 2, '', 2, 'PADRE', 1, 'MARGARITA MAURO ESTRADA', 'MADRE', 1),
-(8, 'JUAN CARLOS VILCHIS VILCHUS', 45, 'MECANICO', 'SAN AMRTIN', 'ANGELINA MARTINEZ VENTURA', 47, 'AMA DE CASA', 'SAN MARTIN', 1, NULL, NULL, NULL, NULL, 'NINGUNA', NULL, NULL, NULL, 'ANGELINA MARTINEZ VENTURA', NULL, 9),
-(34, '0', 0, '0', '0', '0', 0, '0', '0', 0, '0', 0, 0, 0, '0', 0, '0', 0, '0', '0', 14);
+(35, 'Juan Carlos Vilchis', 45, 'Mecánico', 'San Martin', 'Angelina Martinez Ventura', 47, 'Ama de casa', 'San Martin', 1, '1', 1, 4, 2, NULL, 2, 'Padre', 1, 'Angelina Martinez Ventura', '1', 9);
 
 -- --------------------------------------------------------
 
@@ -405,9 +412,7 @@ INSERT INTO `exp_formacion_integral` (`id_exp_formacion_integral`, `practica_dep
 (1, 1, 'FUTBOL', 1, 'DIBUJO', 'FAMILIA, AMIGOS, GRUPO', 1, 'DANZA', 2, 1, 'CORAZON', 1, 'CORAZON', 1, 'CORAZON', 1, 'MIOPIA', 1, 1, 'PCTML', '1.57', '60', 1, 'AUTO', 0, 8),
 (5, 1, 'FUTBOL', 2, '', 'VER VIDEOS', 2, '', 1, 2, '', 2, '', 2, '', 2, '', 2, 2, '', '1.58', '54', 2, '', 0, 10),
 (6, 2, '', 2, '', 'leer', 2, '', 1, 2, '', 2, '', 2, '', 2, '', 1, 2, '', '1.50', '52', 2, '', 0, 11),
-(7, 2, '', 1, 'CORRER', 'DIBUJAR', 2, '', 1, 2, '', 2, '', 2, '', 2, '', 1, 2, '', '1.65', '65', 2, '', 0, 1),
-(8, NULL, NULL, NULL, NULL, 'ERR', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, NULL, NULL, NULL, NULL, NULL, '7', '7', NULL, NULL, 0, 9),
-(34, 1, '1', 1, '1', '0', 1, '1', 1, 1, '1', 1, '1', 2, '1', 1, '1', 1, 1, '1', '0', '0', 1, '1', 0, 14);
+(35, 2, NULL, 2, NULL, 'Ver videos', 2, NULL, 2, 2, NULL, 1, 'Cardeaca', 2, NULL, 2, NULL, 1, 2, NULL, '158', '55', 2, NULL, 2, 9);
 
 -- --------------------------------------------------------
 
@@ -466,8 +471,8 @@ CREATE TABLE `exp_generales` (
   `id_grupo` int(11) NOT NULL,
   `id_carrera` int(11) NOT NULL,
   `poblacion` varchar(10) DEFAULT NULL,
-  `ant_inst` varchar(10) DEFAULT NULL,
-  `satisfaccion_c` varchar(10) DEFAULT NULL,
+  `ant_inst` varchar(255) DEFAULT NULL,
+  `satisfaccion_c` varchar(255) DEFAULT NULL,
   `materias_repeticion` int(11) DEFAULT NULL,
   `tot_repe` int(11) DEFAULT NULL,
   `materias_especial` int(11) DEFAULT NULL,
@@ -485,8 +490,7 @@ INSERT INTO `exp_generales` (`id_exp_general`, `id_periodo`, `nombre`, `edad`, `
 (25, 1, 'ISABEL', 21, 'F', '1998-01-05', 'TOLUCA', 1, 1, 0, 'VALLE DE BRAVO', 'isc_isabel@texvb.edu.mx', '7859624447', '7258965214', 1, 2, '', 'Matutino', '201607025', 1, 'Manutencion', 1, 1, 10, 5, 9, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (26, 1, 'ALEXA', 21, 'F', '1998-01-15', 'TOLUCA', 3, 1, 0, 'VILLA VICTORIA', 'isc_alexa@tesvb.edu.mx', '7258965412', '7214563258', 2, 1, 'MESERA', 'MATUTINO', '201607044', 2, '', 1, 1, 11, 5, 9, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (27, 1, 'ALEJANDRO', 22, 'M', '1997-01-08', 'VILLA VICTORIA', 7, 1, 0, 'VILLA VICTORIA', 'isc_alejandro@tesvb.edu.mx', '7214589632', '7216321458', 2, 1, 'Mecanico', 'matutino', '201207039', 2, '', 2, 1, 1, 5, 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(28, 2, 'DANIELA MICHELLE VILCHIS MARTINEZ', 21, 'F', NULL, NULL, NULL, NULL, 0, 'SAN MARTIN OBISPO', 'isc_vilchis.d@tesvb.edu,mx', '7228832212', '7228832212', NULL, 2, 'sss', 'matutino', '201607043', 1, NULL, 1, 1, 9, 9, 9, 'Rural', 'Continuaci', 'Muy satisf', 2, 1, 2, 1, 1),
-(57, 1, '0', 0, 'M', '1998-01-15', '1', 0, 0, 0, '0', '0', '0', '0', 0, 2, '0', '0', '201635032', 1, '1', 1, 1, 14, 12, 3, 'Urbana', 'Cambio de ', 'Regular', 2, 1, 1, 2, 2);
+(58, 3, 'Daniela Michelle Vilchis Martinez', 21, 'F', '1998-10-14', 'Toluca', 7, 1, 0, 'San Martin Obispo', 'isc_vilchis.d@tesvb.edu.mx', '7228832212', '7228832212', 2, 2, NULL, 'Matutino', '201607043', 1, 'Prospera', 1, 3, 9, 10, 9, 'Rural', 'Continuación de estudios', 'Muy satisfecho', 2, 1, 2, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -508,7 +512,7 @@ CREATE TABLE `exp_grupos_activos` (
 
 CREATE TABLE `exp_habitos_estudio` (
   `id_exp_habitos_estudio` int(11) NOT NULL,
-  `tiempo_empelado_estudiar` varchar(45) DEFAULT NULL,
+  `tiempo_empleado_estudiar` varchar(45) DEFAULT NULL,
   `id_opc_intelectual` int(11) DEFAULT NULL,
   `forma_estudio` varchar(45) DEFAULT NULL,
   `tiempo_libre` varchar(100) DEFAULT NULL,
@@ -524,13 +528,12 @@ CREATE TABLE `exp_habitos_estudio` (
 -- Volcado de datos para la tabla `exp_habitos_estudio`
 --
 
-INSERT INTO `exp_habitos_estudio` (`id_exp_habitos_estudio`, `tiempo_empelado_estudiar`, `id_opc_intelectual`, `forma_estudio`, `tiempo_libre`, `asignatura_preferida`, `porque_asignatura`, `asignatura_dificil`, `porque_asignatura_dificil`, `opinion_tu_mismo_estudiante`, `id_alumno`) VALUES
+INSERT INTO `exp_habitos_estudio` (`id_exp_habitos_estudio`, `tiempo_empleado_estudiar`, `id_opc_intelectual`, `forma_estudio`, `tiempo_libre`, `asignatura_preferida`, `porque_asignatura`, `asignatura_dificil`, `porque_asignatura_dificil`, `opinion_tu_mismo_estudiante`, `id_alumno`) VALUES
 (1, '2', 3, 'VISUAL-AUDITIVO', 'LEER, COMPARTIR TIEMPO CON MI FAMILIA, PRACTICAR DEPORTE, VER PELICULAS', 'BASE DE DATOS', 'ME GUSTAN LOS SISTEMAS DE INFORMACIÓN', 'DESARROLLO SUSTENTABLE', 'ES MUCHA TEORIA', 'SOY RESPONSABLE', 8),
 (5, '2', 2, 'VISUAL', 'JUGAR', 'MATEMATICAS', 'ME GUSTAN', 'ESPAÑO', 'TEORIA', 'GOOD', 10),
 (6, '2', 2, 'auditiva', 'trabajo en el hogar', 'español', 'me gusta leer', 'matematicas', 'no les entiendo', 'bueno', 11),
 (7, '3', 1, 'AUDITIVO', 'TRABAJAR', 'ESPAÑOL', 'ES FACIL', 'MATEMATICAS', 'NO LES ENTIENDO BIEN', 'BUEN ESTUDIANTE', 1),
-(8, NULL, NULL, 'AUDITIVA', 'VER VIDEOS', NULL, 'ME GUSTA', 'ESPAÑOL', 'ES TEORIA', 'ME GUSTA', 9),
-(34, '1', 2, '0', '0', '1', '0', '0', '0', '0', 14);
+(35, '2', 2, 'Visual', 'Ver videos', 'Programacion', 'Me gusta', 'Civismo', 'Es muy teórica', 'Buena', 9);
 
 -- --------------------------------------------------------
 
@@ -940,17 +943,18 @@ CREATE TABLE `gnral_periodos` (
   `periodo` varchar(50) DEFAULT NULL,
   `fecha_inicio` date NOT NULL,
   `fecha_termino` date NOT NULL,
-  `ciclo` varchar(30) NOT NULL
+  `ciclo` varchar(30) NOT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `gnral_periodos`
 --
 
-INSERT INTO `gnral_periodos` (`id_periodo`, `periodo`, `fecha_inicio`, `fecha_termino`, `ciclo`) VALUES
-(1, 'SEPTIEMBRE 2018-FEBRERO 2019', '2018-09-01', '2019-02-28', '0'),
-(2, 'MARZO 2019-AGOSTO 2019', '2019-03-01', '2019-08-30', '0'),
-(3, 'SEPTIEMBRE 2019-FEBRERO 2020', '2019-09-01', '2020-02-29', '0');
+INSERT INTO `gnral_periodos` (`id_periodo`, `periodo`, `fecha_inicio`, `fecha_termino`, `ciclo`, `deleted_at`) VALUES
+(1, 'SEPTIEMBRE 2018-FEBRERO 2019', '2018-09-01', '2019-02-28', '0', NULL),
+(2, 'MARZO 2019-AGOSTO 2019', '2019-03-01', '2019-08-30', '0', NULL),
+(3, 'SEPTIEMBRE 2019-FEBRERO 2020', '2019-09-01', '2020-02-29', '0', NULL);
 
 -- --------------------------------------------------------
 
@@ -1410,13 +1414,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `exp_antecedentes_academicos`
 --
 ALTER TABLE `exp_antecedentes_academicos`
-  MODIFY `id_exp_antecedentes_academicos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id_exp_antecedentes_academicos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT de la tabla `exp_area_psicopedagogica`
 --
 ALTER TABLE `exp_area_psicopedagogica`
-  MODIFY `id_exp_area_psicopedagogica` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id_exp_area_psicopedagogica` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT de la tabla `exp_asigna_alumnos`
@@ -1428,7 +1432,7 @@ ALTER TABLE `exp_asigna_alumnos`
 -- AUTO_INCREMENT de la tabla `exp_asigna_coordinador`
 --
 ALTER TABLE `exp_asigna_coordinador`
-  MODIFY `id_asigna_coordinador` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_asigna_coordinador` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `exp_asigna_expediente`
@@ -1440,7 +1444,7 @@ ALTER TABLE `exp_asigna_expediente`
 -- AUTO_INCREMENT de la tabla `exp_asigna_tutor`
 --
 ALTER TABLE `exp_asigna_tutor`
-  MODIFY `id_asigna_tutor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id_asigna_tutor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT de la tabla `exp_bebidas`
@@ -1458,7 +1462,7 @@ ALTER TABLE `exp_civil_estados`
 -- AUTO_INCREMENT de la tabla `exp_datos_familiares`
 --
 ALTER TABLE `exp_datos_familiares`
-  MODIFY `id_exp_datos_familiares` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id_exp_datos_familiares` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT de la tabla `exp_escalas`
@@ -1470,19 +1474,19 @@ ALTER TABLE `exp_escalas`
 -- AUTO_INCREMENT de la tabla `exp_formacion_integral`
 --
 ALTER TABLE `exp_formacion_integral`
-  MODIFY `id_exp_formacion_integral` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id_exp_formacion_integral` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT de la tabla `exp_generales`
 --
 ALTER TABLE `exp_generales`
-  MODIFY `id_exp_general` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `id_exp_general` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT de la tabla `exp_habitos_estudio`
 --
 ALTER TABLE `exp_habitos_estudio`
-  MODIFY `id_exp_habitos_estudio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id_exp_habitos_estudio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT de la tabla `exp_opc_intelectual`
