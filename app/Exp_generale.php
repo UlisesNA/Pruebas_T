@@ -8,7 +8,6 @@ class Exp_generale extends Model
 {
     protected $table ="exp_generales";
     protected $primaryKey="id_exp_general";
-    public $timestamps = false;
     protected $fillable=["id_carrera","id_periodo","id_grupo","nombre","edad","sexo","fecha_nacimientos","lugar_nacimientos","id_semestre",
         "id_estado_civil","no_hijos","direccion","correo","tel_casa","cel","id_nivel_economico","trabaja","ocupacion",
         "horario","no_cuenta","beca","tipo_beca","estado","turno","poblacion","ant_inst","satisfaccion_c","materias_repeticion","tot_repe",

@@ -8,7 +8,7 @@ class Exp_antecedentes_academico extends Model
 {
     protected $table ="exp_antecedentes_academicos";
     protected $primaryKey="id_exp_antecedentes_academicos";
-    public $timestamps = false;
+    //public $timestamps = false;
     protected $fillable=["id_bachillerato", "otros_estudios","anos_curso_bachillerato","ano_terminacion",
         "escuela_procedente","promedio","materias_reprobadas","otra_carrera_ini","institucion","semestres_cursados",
         "interrupciones_estudios","razones_interrupcion","razon_descide_estudiar_tesvb","sabedel_perfil_profesional",

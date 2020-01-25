@@ -450,7 +450,6 @@
                 </div>
             </div>
         </div>
-        <pre>@{{alu}}</pre>
         @include('profesor.modaleditar')
     </div>
 
@@ -587,6 +586,8 @@
                 escala:[],
                 bebidas:[],
                 lista:false,
+                listaa:false,
+                listacanaliza:false,
                 menugrupos:true,
                 menu:false,
                 graficas:false,
@@ -1860,8 +1861,8 @@
                 },
                 actualiza:function()
                 {
-                    axios.post(this.act,{id_periodo:alu.generales.id_periodo}).then(response=> {
-
+                    axios.post(this.act,{alu:this.alu}).then(response=> {
+                        $("#modaleditar").modal("hide");
                     });
                 },
                 ver:function (alumno) {
@@ -2017,6 +2018,10 @@
                         this.bebidas=response.data.bebidas;
 
                     });
+                },
+                borra_institucion:function(){
+                  this.alu.academicos.institucion=null;
+                  this.alu.academicos.semestres_cursados=null;
                 },
                 pdf:function () {
                     axios.post(this.pd,{id_asigna_generacion:this.idasigna,id_carrera:this.idca,generacion:this.gen},{
