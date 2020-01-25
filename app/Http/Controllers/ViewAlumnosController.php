@@ -18,9 +18,9 @@ use App\Exp_generale;
 use App\Exp_habitos_estudio;
 use App\Exp_opc_intelectual;
 use App\Exp_opc_nivel_socio;
+use App\Exp_opc_tiempo;
 use App\Exp_opc_vives;
 use App\Exp_parentesco;
-use App\Exp_tiempoestudia;
 use App\Exp_turno;
 use App\gnral_alumnos;
 use App\Gnral_carreras;
@@ -30,6 +30,8 @@ use App\Gnral_semestre;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use function Symfony\Component\VarDumper\Dumper\esc;
+
 class ViewAlumnosController extends Controller
 {
     public  function generapdf(){
@@ -49,7 +51,7 @@ class ViewAlumnosController extends Controller
         $vive = Exp_opc_vives::all();
         $familiaunion = Exp_familia_union::all();
         $turno = Exp_turno::all();
-        $tiempoestudia = Exp_tiempoestudia::all();
+        $tiempoestudia = Exp_opc_tiempo::all();
         $intelectual = Exp_opc_intelectual::all();
         $parentesco=Exp_parentesco::all();
         $escala=Exp_escalas::all();
@@ -158,7 +160,7 @@ class ViewAlumnosController extends Controller
 
         );
         $exp_habitos_estudio = array(
-            "tiempo_empelado_estudiar" => $request->tiempo_empleado_estudiar,
+            "tiempo_empleado_estudiar" => $request->tiempo_empleado_estudiar,
             "id_opc_intelectual" => $request->forma_trabajo,
             "forma_estudio" => $request->forma_estudio,
             "tiempo_libre" => $request->tiempo_libre,
@@ -302,6 +304,44 @@ class ViewAlumnosController extends Controller
         return 'panel';
 
     }
+
+    public  function veralumno(Request $request)
+    {
+
+        $data['generales']=Exp_generale::where('id_alumno',$request->id)->get();
+        //dd($data['generales']);
+        $data['academicos']=Exp_antecedentes_academico::where('id_alumno',$request->id)->get();
+        $data['familiares']=Exp_datos_familiare::where('id_alumno',$request->id)->get();
+        $data['estudio']=Exp_habitos_estudio::where('id_alumno',$request->id)->get();
+        $data['integral']=Exp_formacion_integral::where('id_alumno',$request->id)->get();
+        $data['area']=Exp_area_psicopedagogica::where('id_alumno',$request->id)->get();
+
+        $data['carreras']= Gnral_carreras::all();
+        $data['grupos']= Gnral_grupos::all();
+        $data['periodos'] = Gnral_periodos::all();
+        $data['semestres']= Gnral_semestre::all();
+        $data['estadocivil'] = Exp_civil_estado::all();
+        $data['nivel']= Exp_opc_nivel_socio::all();
+        $data['bachillerato'] = Exp_bachillerato::all();
+        $data['vive'] = Exp_opc_vives::all();
+        $data['unionfam'] = Exp_familia_union::all();
+        $data['turno'] = Exp_turno::all();
+        $data['tiempoestudia']= Exp_opc_tiempo::all();
+        $data['intelectual']= Exp_opc_intelectual::all();
+        $data['parentesco']=Exp_parentesco::all();
+        $data['escala']=Exp_escalas::all();
+        $data['bebidas']=Exp_bebidas::all();
+
+        return $data;
+    }
+
+    public function actualiza(Request $request)
+    {
+
+
+
+    }
+
     public function show($id)
     {
 

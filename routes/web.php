@@ -90,6 +90,8 @@ Route::get('/setAlumnId','ProfesorController@setAlumnoId');
 Route::Resource('/Alum','ViewAlumnosController');
 //Route::get('/Alum/{{alumno}}','ViewAlumnosController@store');
 
+Route::post('/ver','ViewAlumnosController@veralumno');
+Route::post('/actualiza','ViewAlumnosController@actualiza');
 
 Route::post('/UpdateAlum','ViewAlumnosController@updateExp');
 Route::post('/cerrar','ViewAlumnosController@cerrar');

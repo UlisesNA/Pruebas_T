@@ -20,7 +20,7 @@ class AsignaExpediente extends Model
         $datos5=DB::select('SELECT * FROM exp_formacion_integral WHERE id_alumno='.$id.';');
         $datos6=DB::select('SELECT * FROM exp_area_psicopedagogica WHERE id_alumno='.$id.';');
         $array=array_merge($datos,$datos2,$datos3,$datos4,$datos5,$datos6);
-        //dd($array);
+
      return $array;
     }
     public static function getDatos(){
@@ -31,12 +31,7 @@ class AsignaExpediente extends Model
         $datos5=DB::select('select exp_habitos_estudio.* from exp_habitos_estudio where id_alumno=(SELECT id_alumno from gnral_alumnos WHERE gnral_alumnos.id_usuario='.Auth::user()->id.');');
         $datos6=DB::select('select exp_area_psicopedagogica.* from exp_area_psicopedagogica where id_alumno=(SELECT id_alumno from gnral_alumnos WHERE gnral_alumnos.id_usuario='.Auth::user()->id.');');
 
-
-
-
         $array=array_merge($datos,$datos2,$datos3,$datos5,$datos4,$datos6);
-
-
 
         // dd($array);
         return $array;
