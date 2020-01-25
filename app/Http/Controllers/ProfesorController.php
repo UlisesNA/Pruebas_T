@@ -22,10 +22,23 @@ class ProfesorController extends Controller
 
     public function alumnos(Request $request)
     {
-        return (DB::select('SELECT gnral_alumnos.*, exp_asigna_alumnos.estado,exp_asigna_alumnos.id_asigna_alumno
+        //dd($request);
+        return (DB::select('SELECT gnral_alumnos.*, exp_asigna_alumnos.estado,exp_asigna_alumnos.id_asigna_alumno,gnral_semestres.descripcion
                  from gnral_alumnos JOIN exp_asigna_alumnos ON exp_asigna_alumnos.id_alumno=gnral_alumnos.id_alumno 
+                 JOIN gnral_semestres ON gnral_semestres.id_semestre=gnral_alumnos.id_semestre 
                  where exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' and 
                  gnral_alumnos.id_carrera='.$request->id_carrera.' order by(gnral_alumnos.apaterno)'));
+
+    }
+    public function alumnos1(Request $request)
+    {
+        //dd($request);
+        return (DB::select('SELECT gnral_carreras.nombre as carre,gnral_semestres.descripcion as sem,gnral_grupos.grupo as grup,gnral_alumnos.*
+                                    FROM gnral_carreras,gnral_semestres,gnral_alumnos,gnral_grupos
+                                    WHERE gnral_carreras.id_carrera=gnral_alumnos.id_carrera
+                                    and gnral_semestres.id_semestre=gnral_alumnos.id_semestre
+                                    and gnral_grupos.id_grupo=gnral_alumnos.grupo
+                                    and gnral_alumnos.id_alumno='.$request->id_alumno));
 
     }
     public  function grupos()

@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Gnral_periodos;
 use Illuminate\Http\Request;
 use App\AsignaCoordinador;
 use App\Periodo;
 use App\User;
 use App\DatosPersonales;
-use Auth;
+use App\Exp_asigna_coordinador;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 class AsignaCoordinadorController extends Controller
 {
     /**
@@ -21,7 +23,7 @@ class AsignaCoordinadorController extends Controller
         //
         $datosProfesores=AsignaCoordinador::getAllProf();
         $checkasig=AsignaCoordinador::getExistCoordinador();
-        $datosPeriodos=Periodo::getPeriodos();
+        $datosPeriodos=Gnral_periodos::all();
 
         $datos['profesores']=$datosProfesores;
         $datos['check']=$checkasig;
@@ -53,7 +55,19 @@ class AsignaCoordinadorController extends Controller
     public function store(Request $request)
     {
         //
-        AsignaCoordinador::insertCoordinador($request);
+
+        $jefe=DB::table('gnral_jefes_periodos')
+            ->join('gnral_personales','gnral_personales.id_personal','=','gnral_jefes_periodos.id_personal')
+            ->select('gnral_jefes_periodos.id_jefe_periodo')
+            ->where('gnral_jefes_periodos.id_periodo', '=', '2')
+            ->where('gnral_personales.tipo_usuario','=',Auth::user()->id)
+            ->get();
+
+        Exp_asigna_coordinador::create([
+            "id_jefe_periodo"=>$jefe[0]->id_jefe_periodo,
+            "id_personal"=>$request->get("id_personal")
+        ]);
+
     }
 
     /**
@@ -98,7 +112,7 @@ class AsignaCoordinadorController extends Controller
      */
     public function destroy($id)
     {
-        AsignaCoordinador::borrar($id);
+        Exp_asigna_coordinador::find($id)->delete();
 
     }
 }

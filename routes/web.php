@@ -80,6 +80,7 @@ Route::Resource('/graficas','GraficasController');
 Route::get('/getAllDatos','GraficasController@getAll');
 
 Route::post('/profesor','ProfesorController@alumnos');
+Route::post('/semestre','ProfesorController@alumnos1');
 Route::post('/cambio','ProfesorController@cambio');
 Route::get('grupos','ProfesorController@grupos');
 Route::post('/alu','ProfesorController@alumnos');
