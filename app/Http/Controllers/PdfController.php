@@ -479,12 +479,14 @@ class PdfController extends Controller
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->SetTextColor(010,010,010);
         $pdf->SetFillColor(204,204,204);
+
         $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,"Tiempo dedicado a estudiar diariamente fuera de clase: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,"". utf8_decode($datosHabitos[0]->tiempo_empelado_estudiar==3?'2 horas':'3 horas'),1,0,"C");
+        $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,"". utf8_decode($datosHabitos[0]->tiempo_empleado_estudiar==3?'2 horas':'3 horas'),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,utf8_decode("¿Cómo es tu forma de trabajo intelectual?: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
+
         if ($datosHabitos[0]->id_opc_intelectual==1)
         {
             $datosHabitos[0]->id_opc_intelectual='Muy rápido';

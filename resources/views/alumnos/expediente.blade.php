@@ -40,8 +40,8 @@
                                         <label for="sexo">Sexo *</label>
                                         <select name="sexo" id="sexo"  class="custom-select custom-select-md" required>
                                             <option value="" selected>Elija un sexo</option>
-                                            <option value="1">Masculino</option>
-                                            <option value="2">Femenino</option>
+                                            <option value="M">Masculino</option>
+                                            <option value="F">Femenino</option>
                                         </select>
                                     </div>
                                     <div class="col-md-4">
