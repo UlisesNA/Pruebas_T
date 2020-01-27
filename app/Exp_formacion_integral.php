@@ -8,7 +8,7 @@ class Exp_formacion_integral extends Model
 {
     protected $table ="exp_formacion_integral";
     protected $primaryKey="id_exp_formacion_integral";
-    public $timestamps = false;
+    //public $timestamps = false;
     protected $fillable=["practica_deporte","especifica_deporte","practica_artistica","especifica_artistica","pasatiempo",
         "actividades_culturales","cuales_act","estado_salud","enfermedad_cronica","especifica_enf_cron","enf_cron_padre",
         "especifica_enf_cron_padres","operacion","deque_operacion","enfer_visual","especifica_enf","usas_lentes",

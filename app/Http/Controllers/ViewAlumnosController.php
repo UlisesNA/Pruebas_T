@@ -23,6 +23,7 @@ use App\Exp_opc_vives;
 use App\Exp_parentesco;
 use App\Exp_tiempoestudia;
 use App\Exp_turno;
+use Illuminate\Support\Carbon;
 use App\gnral_alumnos;
 use App\Gnral_carreras;
 use App\Gnral_grupos;
@@ -338,9 +339,18 @@ class ViewAlumnosController extends Controller
 
     public function actualiza(Request $request)
     {
-
-
-
+        $generales = Exp_generale::find($request->alu['generales']['id_exp_general']);
+        $generales->update($request->alu['generales']);
+        $academicos = Exp_antecedentes_academico::find($request->alu['academicos']['id_exp_antecedentes_academicos']);
+        $academicos->update($request->alu['academicos']);
+        $familiares = Exp_datos_familiare::find($request->alu['familiares']['id_exp_datos_familiares']);
+        $familiares->update($request->alu['familiares']);
+        $estudio = Exp_habitos_estudio::find($request->alu['estudio']['id_exp_habitos_estudio']);
+        $estudio->update($request->alu['estudio']);
+        $integral = Exp_formacion_integral::find($request->alu['integral']['id_exp_formacion_integral']);
+        $integral->update($request->alu['integral']);
+        $area = Exp_area_psicopedagogica::find($request->alu['area']['id_exp_area_psicopedagogica']);
+        $area->update($request->alu['area']);
     }
 
     public function show($id)
