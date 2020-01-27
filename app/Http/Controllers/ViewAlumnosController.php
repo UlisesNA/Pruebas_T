@@ -21,6 +21,7 @@ use App\Exp_opc_nivel_socio;
 use App\Exp_opc_tiempo;
 use App\Exp_opc_vives;
 use App\Exp_parentesco;
+use App\Exp_tiempoestudia;
 use App\Exp_turno;
 use App\gnral_alumnos;
 use App\Gnral_carreras;
@@ -51,7 +52,7 @@ class ViewAlumnosController extends Controller
         $vive = Exp_opc_vives::all();
         $familiaunion = Exp_familia_union::all();
         $turno = Exp_turno::all();
-        $tiempoestudia = Exp_opc_tiempo::all();
+        $tiempoestudia = Exp_tiempoestudia::all();
         $intelectual = Exp_opc_intelectual::all();
         $parentesco=Exp_parentesco::all();
         $escala=Exp_escalas::all();

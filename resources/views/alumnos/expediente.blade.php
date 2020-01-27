@@ -40,8 +40,8 @@
                                         <label for="sexo">Sexo *</label>
                                         <select name="sexo" id="sexo"  class="custom-select custom-select-md" required>
                                             <option value="" selected>Elija un sexo</option>
-                                            <option value="M">Masculino</option>
-                                            <option value="F">Femenino</option>
+                                            <option value="1">Masculino</option>
+                                            <option value="2">Femenino</option>
                                         </select>
                                     </div>
                                     <div class="col-md-4">
@@ -181,7 +181,6 @@
                                             @endforeach
                                         </select>
                                     </div>
-
                                     <div class="col-md-4">
                                         <label for="trabaja">Trabaja</label>
                                         <select name="trabaja" id="trabaja" class="custom-select custom-select-md">
@@ -1281,7 +1280,6 @@
             $("#carrera").val({{$datos[0]->id_carrera}});
             $("#periodo").val({{$datos[0]->id_periodo}});
             $("#grupo").val({{$datos[0]->id_grupo}});
-            $("#sexo").val({{$datos[0]->sexo}});
             $("#fn").val({{$datos[0]->fecha_nacimientos}});
             $("#semestre").val({{$datos[0]->id_semestre}});
             $("#EC").val({{$datos[0]->id_estado_civil}});
@@ -1289,6 +1287,7 @@
             $("#trabaja").val({{$datos[0]->trabaja}});
             $("#noC").val({{$datos[0]->no_cuenta}});
             $("#beca").val({{$datos[0]->beca}});
+            $("#sexo").val({{$datos[0]->sexo}});
             $("#estado").val({{$datos[0]->estado}});
             $("#turno").val({{$datos[0]->turno}});
             $("#poblacion").val({{$datos[0]->poblacion}});
@@ -1316,7 +1315,7 @@
             $("#parentesco").val({{$datos[2]->id_parentesco}});
             $("#consideras").val({{$datos[2]->id_familia_union}});
 
-            $("#tiempo").val({{$datos[3]->tiempo_empelado_estudiar}});
+            $("#tiempo").val({{$datos[3]->tiempo_empleado_estudiar}});
             $("#fti").val({{$datos[3]->id_opc_intelectual}});
 
             $("#depo").val({{$datos[4]->practica_deporte}});
