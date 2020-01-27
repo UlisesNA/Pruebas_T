@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exp_generale;
 use Illuminate\Http\Request;
 use App\Profesor;
 use App\Alumno;
@@ -23,11 +24,21 @@ class ProfesorController extends Controller
     public function alumnos(Request $request)
     {
         //dd($request);
-        return (DB::select('SELECT gnral_alumnos.*, exp_asigna_alumnos.estado,exp_asigna_alumnos.id_asigna_alumno,gnral_semestres.descripcion
-                 from gnral_alumnos JOIN exp_asigna_alumnos ON exp_asigna_alumnos.id_alumno=gnral_alumnos.id_alumno 
-                 JOIN gnral_semestres ON gnral_semestres.id_semestre=gnral_alumnos.id_semestre 
-                 where exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' and 
-                 gnral_alumnos.id_carrera='.$request->id_carrera.' order by(gnral_alumnos.apaterno)'));
+
+        $datos=DB::table('gnral_alumnos')
+            ->join('exp_asigna_alumnos','exp_asigna_alumnos.id_alumno','=','gnral_alumnos.id_alumno')
+            ->select('gnral_alumnos.*','exp_asigna_alumnos.estado','exp_asigna_alumnos.id_asigna_alumno')
+            ->where('exp_asigna_alumnos.id_asigna_generacion', '=', $request->id_asigna_generacion)
+            ->where('gnral_alumnos.id_carrera','=',$request->id_carrera)
+            ->orderBy('gnral_alumnos.apaterno')
+            ->get();
+
+        $datos->map(function ($value, $key) {
+            $gen=Exp_generale::where('id_alumno',$value->id_alumno)->count();
+            $value->expediente=$gen>0?true:false;
+            return $value;
+        });
+        return $datos;
 
     }
     public function alumnos1(Request $request)
@@ -59,23 +70,6 @@ class ProfesorController extends Controller
     }
 
 
-    /////NO SE HAN OCUPADO
-    public function getAll(){
-        //dd($request);
-        $datosAlum=Profesor::getAlumnos();
-        //dd($datos);
-        return $datosAlum;
-    }
-    public function updateEstado(Request $request){
-        //dd($request);
-        Alumno::updateEst($request);
-        return redirect('profesor');
-    }
-    public function setAlumnoId(Request $request){
-        //dd($request);
-        Session::put('id_alumno',$request->id_alumno);
-        return Session::get('id_alumno');
-    }
     /**
      * Show the form for creating a new resource.
      *

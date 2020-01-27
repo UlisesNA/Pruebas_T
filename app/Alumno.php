@@ -41,21 +41,7 @@ class Alumno extends Model
                                 AND gnral_jefes_periodos.id_periodo=2 and gnral_personales.tipo_usuario='.Auth::user()->id.'))');
         return $gen;
     }
-    public static function updateEst($datos){
-        //dd($datos);
-        //dd('UPDATE alumnos SET estado = '.$datos->estado.' WHERE (id_alumno = '.$datos->id.');');
-        DB::update('UPDATE alumnos SET estado = '.$datos->estado.' WHERE (id_alumno = '.$datos->id.');');
-    }
-    public static function Verifica($datos){
-        if ($datos->usuario=='Alumno') {
-            $con= DB::select('SELECT * FROM gnral_alumnos where cuenta="'.$datos->contra.'";');
-            if ($con) {
-                return $con;
-                # code...
-            }
-            # code...
-        }
-    }
+
     public static function getCuenta(){
             $con= DB::select('SELECT nombre,apaterno,amaterno,cuenta FROM gnral_alumnos where
             gnral_alumnos.id_usuario='.Auth::user()->id);

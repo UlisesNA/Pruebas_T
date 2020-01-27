@@ -3,9 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\AsignaExpediente;
+use App\Exp_antecedentes_academico;
+use App\Exp_area_psicopedagogica;
 use App\Exp_civil_estado;
+use App\Exp_datos_familiare;
 use App\Exp_escalas;
+use App\Exp_formacion_integral;
 use App\Exp_generale;
+use App\Exp_habitos_estudio;
 use App\Gnral_carreras;
 use App\Gnral_grupos;
 use App\Gnral_periodos;
@@ -15,43 +20,25 @@ use Illuminate\Http\Request;
 use Codedge\Fpdf\Facades\Fpdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
-use Session;
+use Illuminate\Support\Facades\Session;
 use Auth;
 class PdfController extends Controller
 {
     public function pdf_all()
     {
+        $datosGenerales= Exp_generale::where('id_alumno',Session::get('id_alumno'))->get();
+        $datosAntecedentes= Exp_antecedentes_academico::where('id_alumno',Session::get('id_alumno'))->get();
+        $datosFamiliares= Exp_datos_familiare::where('id_alumno',Session::get('id_alumno'))->get();
+        $datosHabitos= Exp_habitos_estudio::where('id_alumno',Session::get('id_alumno'))->get();
+        $datosFormacion= Exp_formacion_integral::where('id_alumno',Session::get('id_alumno'))->get();
+        $datosArea= Exp_area_psicopedagogica::where('id_alumno',Session::get('id_alumno'))->get();
 
-        $alumno=DB::table('gnral_alumnos')
-            ->select('id_alumno')
-            ->where('id_usuario', '=', Auth::user()->id)
-            ->get();
-
-        $datosGenerales=DB::table('exp_generales')
-            ->select('exp_generales.*')
-            ->where('id_alumno','=',$alumno[0]->id_alumno)
-            ->get();
-        $datosAntecedentes=DB::table('exp_antecedentes_academicos')
-            ->select('exp_antecedentes_academicos.*')
-            ->where('id_alumno','=',$alumno[0]->id_alumno)
-            ->get();
-        $datosFamiliares=DB::table('exp_datos_familiares')
-            ->select('exp_datos_familiares.*')
-            ->where('id_alumno','=',$alumno[0]->id_alumno)
-            ->get();
-        $datosHabitos=DB::table('exp_habitos_estudio')
-            ->select('exp_habitos_estudio.*')
-            ->where('id_alumno','=',$alumno[0]->id_alumno)
-            ->get();
-        $datosFormacion=DB::table('exp_formacion_integral')
-            ->select('exp_formacion_integral.*')
-            ->where('id_alumno','=',$alumno[0]->id_alumno)
-            ->get();
-        $datosArea=DB::table('exp_area_psicopedagogica')
-            ->select('exp_area_psicopedagogica.*')
-            ->where('id_alumno','=',$alumno[0]->id_alumno)
-            ->get();
-
+        $datosArea->load("rendimientoescolar","dominioidioma","otroidioma","conocimientocompu","aptitudespecial",
+            "comprension1","preparacion1","estrategiasaprendizaje","organizacionactividades","concentracion1","solucionproblemas",
+            "condicionesambientales","busquedabibliografica","trabajoequipo");
+        $datosFamiliares->load('vives','union','parentesco');
+        $datosGenerales->load('turno1');
+        $datosHabitos->load('intelectual');
 
         $carreras=Gnral_carreras::all();
         $periodos=Gnral_periodos::all();
@@ -217,19 +204,7 @@ class PdfController extends Controller
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(10,4,"Turno: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        if ($datosGenerales[0]->turno==1)
-        {
-            $datosGenerales[0]->turno='Matutino';
-        }
-        if ($datosGenerales[0]->turno==2)
-        {
-            $datosGenerales[0]->turno='Vespertino';
-        }
-        if ($datosGenerales[0]->turno==3)
-        {
-            $datosGenerales[0]->turno='Mixto';
-        }
-        $pdf->Cell(13,4,"". utf8_decode($datosGenerales[0]->turno),1,0,"C");
+        $pdf->Cell(13,4,"". utf8_decode($datosGenerales[0]->turno1->descripcion_turno),1,0,"C");
         $pdf->Ln(4);
 
 
@@ -392,23 +367,7 @@ class PdfController extends Controller
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(25,4,"Actualmente vives con: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        if ($datosFamiliares[0]->id_opc_vives==1)
-        {
-            $datosFamiliares[0]->id_opc_vives='Con los padres';
-        }
-        if ($datosFamiliares[0]->id_opc_vives==2)
-        {
-            $datosFamiliares[0]->id_opc_vives='Con otros estudiantes';
-        }
-        if ($datosFamiliares[0]->id_opc_vives==3)
-        {
-            $datosFamiliares[0]->id_opc_vives='Con tios u otros familiares';
-        }
-        if ($datosFamiliares[0]->id_opc_vives==4)
-        {
-            $datosFamiliares[0]->id_opc_vives='Solo';
-        }
-        $pdf->Cell(27,4,"". utf8_decode($datosFamiliares[0]->id_opc_vives),1,0,"C");
+        $pdf->Cell(27,4,"". utf8_decode($datosFamiliares[0]->vives->desc_opc),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(45,4,utf8_decode("Número total de personas con las que vives: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
@@ -434,19 +393,7 @@ class PdfController extends Controller
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(35,4,utf8_decode("¿Cómo consideras a tu familia?: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        if ($datosFamiliares[0]->id_familia_union==1)
-        {
-            $datosFamiliares[0]->id_familia_union='Unida';
-        }
-        if ($datosFamiliares[0]->id_familia_union==2)
-        {
-            $datosFamiliares[0]->id_familia_union='Muy unida';
-        }
-        if ($datosFamiliares[0]->id_familia_union==3)
-        {
-            $datosFamiliares[0]->id_familia_union='Disfuncional';
-        }
-        $pdf->Cell(25,4,"". utf8_decode($datosFamiliares[0]->id_familia_union),1,0,"C");
+        $pdf->Cell(25,4,"". utf8_decode($datosFamiliares[0]->union->desc_union),1,0,"C");
         $pdf->Ln(4);
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(30,4,"Nombre del tutor: ". utf8_decode(""),1,0,"L","true");
@@ -455,19 +402,7 @@ class PdfController extends Controller
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(30,4,"Parentesco:  ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        if ($datosFamiliares[0]->id_parentesco==1)
-        {
-            $datosFamiliares[0]->id_parentesco='Madre';
-        }
-        if ($datosFamiliares[0]->id_parentesco==2)
-        {
-            $datosFamiliares[0]->id_parentesco='Padre';
-        }
-        if ($datosFamiliares[0]->id_parentesco==3)
-        {
-            $datosFamiliares[0]->id_parentesco='Tío (a)';
-        }
-        $pdf->Cell(40,4,"". utf8_decode($datosFamiliares[0]->id_parentesco),1,0,"C");
+        $pdf->Cell(40,4,"". utf8_decode($datosFamiliares[0]->parentesco->desc_parentesco),1,0,"C");
         $pdf->Ln(4);
 
 
@@ -486,28 +421,7 @@ class PdfController extends Controller
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,utf8_decode("¿Cómo es tu forma de trabajo intelectual?: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-
-        if ($datosHabitos[0]->id_opc_intelectual==1)
-        {
-            $datosHabitos[0]->id_opc_intelectual='Muy rápido';
-        }
-        if ($datosHabitos[0]->id_opc_intelectual==2)
-        {
-            $datosHabitos[0]->id_opc_intelectual='Rápido';
-        }
-        if ($datosHabitos[0]->id_opc_intelectual==3)
-        {
-            $datosHabitos[0]->id_opc_intelectual='Regular';
-        }
-        if ($datosHabitos[0]->id_opc_intelectual==4)
-        {
-            $datosHabitos[0]->id_opc_intelectual='Lento';
-        }
-        if ($datosHabitos[0]->id_opc_intelectual==5)
-        {
-            $datosHabitos[0]->id_opc_intelectual='Muy lento';
-        }
-        $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,"". utf8_decode($datosHabitos[0]->id_opc_intelectual),1,0,"C");
+        $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,"". utf8_decode($datosHabitos[0]->intelectual->desc_opc),1,0,"C");
         $pdf->Ln(4);
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(($pdf->GetPageWidth()-20)/2,4,utf8_decode("Tu forma de estudio más utlizada: "). utf8_decode(""),1,0,"L","true");
@@ -683,351 +597,69 @@ class PdfController extends Controller
         $pdf->SetFillColor(204,204,204);
         $pdf->Cell(25,4,"Rendimiento escolar: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        if ($datosArea[0]->rendimiento_escolar==1)
-        {
-            $datosArea[0]->rendimiento_escolar='Excelente';
-        }
-        if ($datosArea[0]->rendimiento_escolar==2)
-        {
-            $datosArea[0]->rendimiento_escolar='Muy bien';
-        }
-        if ($datosArea[0]->rendimiento_escolar==3)
-        {
-            $datosArea[0]->rendimiento_escolar='Bien';
-        }
-        if ($datosArea[0]->rendimiento_escolar==4)
-        {
-            $datosArea[0]->rendimiento_escolar='Regular';
-        }
-        if ($datosArea[0]->rendimiento_escolar==5)
-        {
-            $datosArea[0]->rendimiento_escolar='Mala';
-        }
-        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->rendimiento_escolar),1,0,"C");
+        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->rendimientoescolar->desc_escala),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(35,4,"Dominio del propio idioma: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        if ($datosArea[0]->dominio_idioma==1)
-        {
-            $datosArea[0]->dominio_idioma='Excelente';
-        }
-        if ($datosArea[0]->dominio_idioma==2)
-        {
-            $datosArea[0]->dominio_idioma='Muy bien';
-        }
-        if ($datosArea[0]->dominio_idioma==3)
-        {
-            $datosArea[0]->dominio_idioma='Bien';
-        }
-        if ($datosArea[0]->dominio_idioma==4)
-        {
-            $datosArea[0]->dominio_idioma='Regular';
-        }
-        if ($datosArea[0]->dominio_idioma==5)
-        {
-            $datosArea[0]->dominio_idioma='Mala';
-        }
-        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->dominio_idioma),1,0,"C");
+        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->dominioidioma->desc_escala),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(18,4,"Otro idioma: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        if ($datosArea[0]->otro_idioma==1)
-        {
-            $datosArea[0]->otro_idioma='Excelente';
-        }
-        if ($datosArea[0]->otro_idioma==2)
-        {
-            $datosArea[0]->otro_idioma='Muy bien';
-        }
-        if ($datosArea[0]->otro_idioma==3)
-        {
-            $datosArea[0]->otro_idioma='Bien';
-        }
-        if ($datosArea[0]->otro_idioma==4)
-        {
-            $datosArea[0]->otro_idioma='Regular';
-        }
-        if ($datosArea[0]->otro_idioma==5)
-        {
-            $datosArea[0]->otro_idioma='Mala';
-        }
-        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->otro_idioma),1,0,"C");
+        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->otroidioma->desc_escala),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(32,4,utf8_decode("Conocimientos de cómputo: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        if ($datosArea[0]->conocimiento_compu==1)
-        {
-            $datosArea[0]->conocimiento_compu='Excelente';
-        }
-        if ($datosArea[0]->conocimiento_compu==2)
-        {
-            $datosArea[0]->conocimiento_compu='Muy bien';
-        }
-        if ($datosArea[0]->conocimiento_compu==3)
-        {
-            $datosArea[0]->conocimiento_compu='Bien';
-        }
-        if ($datosArea[0]->conocimiento_compu==4)
-        {
-            $datosArea[0]->conocimiento_compu='Regular';
-        }
-        if ($datosArea[0]->conocimiento_compu==5)
-        {
-            $datosArea[0]->conocimiento_compu='Mala';
-        }
-        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->conocimiento_compu),1,0,"C");
+        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->conocimientocompu->desc_escala),1,0,"C");
         $pdf->Ln(4);
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(35,4,"Aptitudes especiales: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        if ($datosArea[0]->aptitud_especial==1)
-        {
-            $datosArea[0]->aptitud_especial='Excelente';
-        }
-        if ($datosArea[0]->aptitud_especial==2)
-        {
-            $datosArea[0]->aptitud_especial='Muy bien';
-        }
-        if ($datosArea[0]->aptitud_especial==3)
-        {
-            $datosArea[0]->aptitud_especial='Bien';
-        }
-        if ($datosArea[0]->aptitud_especial==4)
-        {
-            $datosArea[0]->aptitud_especial='Regular';
-        }
-        if ($datosArea[0]->aptitud_especial==5)
-        {
-            $datosArea[0]->aptitud_especial='Mala';
-        }
-        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->aptitud_especial),1,0,"C");
+        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->aptitudespecial->desc_escala),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(45,4,utf8_decode("Comprensión y retención en clase: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        if ($datosArea[0]->comprension==1)
-        {
-            $datosArea[0]->comprension='Excelente';
-        }
-        if ($datosArea[0]->comprension==2)
-        {
-            $datosArea[0]->comprension='Muy bien';
-        }
-        if ($datosArea[0]->comprension==3)
-        {
-            $datosArea[0]->comprension='Bien';
-        }
-        if ($datosArea[0]->comprension==4)
-        {
-            $datosArea[0]->comprension='Regular';
-        }
-        if ($datosArea[0]->comprension==5)
-        {
-            $datosArea[0]->comprension='Mala';
-        }
-        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->comprension),1,0,"C");
+        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->comprension1->desc_escala),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(50,4,utf8_decode("Preparación y presentación de examenes: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        if ($datosArea[0]->preparacion==1)
-        {
-            $datosArea[0]->preparacion='Excelente';
-        }
-        if ($datosArea[0]->preparacion==2)
-        {
-            $datosArea[0]->preparacion='Muy bien';
-        }
-        if ($datosArea[0]->preparacion==3)
-        {
-            $datosArea[0]->preparacion='Bien';
-        }
-        if ($datosArea[0]->preparacion==4)
-        {
-            $datosArea[0]->preparacion='Regular';
-        }
-        if ($datosArea[0]->preparacion==5)
-        {
-            $datosArea[0]->preparacion='Mala';
-        }
-        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->preparacion),1,0,"C");
+        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->preparacion1->desc_escala),1,0,"C");
         $pdf->Ln(4);
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,utf8_decode("Aplicación de estrategias de aprendizaje y estudio: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        if ($datosArea[0]->estrategias_aprendizaje==1)
-        {
-            $datosArea[0]->estrategias_aprendizaje='Excelente';
-        }
-        if ($datosArea[0]->estrategias_aprendizaje==2)
-        {
-            $datosArea[0]->estrategias_aprendizaje='Muy bien';
-        }
-        if ($datosArea[0]->estrategias_aprendizaje==3)
-        {
-            $datosArea[0]->estrategias_aprendizaje='Bien';
-        }
-        if ($datosArea[0]->estrategias_aprendizaje==4)
-        {
-            $datosArea[0]->estrategias_aprendizaje='Regular';
-        }
-        if ($datosArea[0]->estrategias_aprendizaje==5)
-        {
-            $datosArea[0]->estrategias_aprendizaje='Mala';
-        }
-        $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,"". utf8_decode($datosArea[0]->estrategias_aprendizaje),1,0,"C");
+        $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,"". utf8_decode($datosArea[0]->estrategiasaprendizaje->desc_escala),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,utf8_decode("Organización en las actividades de estudio: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        if ($datosArea[0]->organizacion_actividades==1)
-        {
-            $datosArea[0]->organizacion_actividades='Excelente';
-        }
-        if ($datosArea[0]->organizacion_actividades==2)
-        {
-            $datosArea[0]->organizacion_actividades='Muy bien';
-        }
-        if ($datosArea[0]->organizacion_actividades==3)
-        {
-            $datosArea[0]->organizacion_actividades='Bien';
-        }
-        if ($datosArea[0]->organizacion_actividades==4)
-        {
-            $datosArea[0]->organizacion_actividades='Regular';
-        }
-        if ($datosArea[0]->organizacion_actividades==5)
-        {
-            $datosArea[0]->organizacion_actividades='Mala';
-        }
-        $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,"". utf8_decode($datosArea[0]->organizacion_actividades),1,0,"C");
+        $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,"". utf8_decode($datosArea[0]->organizacionactividades->desc_escala),1,0,"C");
         $pdf->Ln(4);
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(65,4,utf8_decode("Consentración durante el estudio: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        if ($datosArea[0]->concentracion==1)
-        {
-            $datosArea[0]->concentracion='Excelente';
-        }
-        if ($datosArea[0]->concentracion==2)
-        {
-            $datosArea[0]->concentracion='Muy bien';
-        }
-        if ($datosArea[0]->concentracion==3)
-        {
-            $datosArea[0]->concentracion='Bien';
-        }
-        if ($datosArea[0]->concentracion==4)
-        {
-            $datosArea[0]->concentracion='Regular';
-        }
-        if ($datosArea[0]->concentracion==5)
-        {
-            $datosArea[0]->concentracion='Mala';
-        }
-        $pdf->Cell(30,4,"". utf8_decode($datosArea[0]->concentracion),1,0,"C");
+        $pdf->Cell(30,4,"". utf8_decode($datosArea[0]->concentracion1->desc_escala),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(65,4,utf8_decode("Solución de problemas y aprendizaje de las matemáticas: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        if ($datosArea[0]->solucion_problemas==1)
-        {
-            $datosArea[0]->solucion_problemas='Excelente';
-        }
-        if ($datosArea[0]->solucion_problemas==2)
-        {
-            $datosArea[0]->solucion_problemas='Muy bien';
-        }
-        if ($datosArea[0]->solucion_problemas==3)
-        {
-            $datosArea[0]->solucion_problemas='Bien';
-        }
-        if ($datosArea[0]->solucion_problemas==4)
-        {
-            $datosArea[0]->solucion_problemas='Regular';
-        }
-        if ($datosArea[0]->solucion_problemas==5)
-        {
-            $datosArea[0]->solucion_problemas='Mala';
-        }
-        $pdf->Cell(30,4,"". utf8_decode($datosArea[0]->solucion_problemas),1,0,"C");
+        $pdf->Cell(30,4,"". utf8_decode($datosArea[0]->solucionproblemas->desc_escala),1,0,"C");
         $pdf->Ln(4);
-
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(45,4,"Condiciones ambientales durante el estudio: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        if ($datosArea[0]->condiciones_ambientales==1)
-        {
-            $datosArea[0]->condiciones_ambientales='Excelente';
-        }
-        if ($datosArea[0]->condiciones_ambientales==2)
-        {
-            $datosArea[0]->condiciones_ambientales='Muy bien';
-        }
-        if ($datosArea[0]->condiciones_ambientales==3)
-        {
-            $datosArea[0]->condiciones_ambientales='Bien';
-        }
-        if ($datosArea[0]->condiciones_ambientales==4)
-        {
-            $datosArea[0]->condiciones_ambientales='Regular';
-        }
-        if ($datosArea[0]->condiciones_ambientales==5)
-        {
-            $datosArea[0]->condiciones_ambientales='Mala';
-        }
-        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->condiciones_ambientales),1,0,"C");
+        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->condicionesambientales->desc_escala),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(50,4,utf8_decode("Búsqueda bibliografica e integración de información: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        if ($datosArea[0]->busqueda_bibliografica==1)
-        {
-            $datosArea[0]->busqueda_bibliografica='Excelente';
-        }
-        if ($datosArea[0]->busqueda_bibliografica==2)
-        {
-            $datosArea[0]->busqueda_bibliografica='Muy bien';
-        }
-        if ($datosArea[0]->busqueda_bibliografica==3)
-        {
-            $datosArea[0]->busqueda_bibliografica='Bien';
-        }
-        if ($datosArea[0]->busqueda_bibliografica==4)
-        {
-            $datosArea[0]->busqueda_bibliografica='Regular';
-        }
-        if ($datosArea[0]->busqueda_bibliografica==5)
-        {
-            $datosArea[0]->busqueda_bibliografica='Mala';
-        }
-        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->busqueda_bibliografica),1,0,"C");
+        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->busquedabibliografica->desc_escala),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(35,4,"Trabajo en equipo: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        if ($datosArea[0]->trabajo_equipo==1)
-        {
-            $datosArea[0]->trabajo_equipo='Excelente';
-        }
-        if ($datosArea[0]->trabajo_equipo==2)
-        {
-            $datosArea[0]->trabajo_equipo='Muy bien';
-        }
-        if ($datosArea[0]->trabajo_equipo==3)
-        {
-            $datosArea[0]->trabajo_equipo='Bien';
-        }
-        if ($datosArea[0]->trabajo_equipo==4)
-        {
-            $datosArea[0]->trabajo_equipo='Regular';
-        }
-        if ($datosArea[0]->trabajo_equipo==5)
-        {
-            $datosArea[0]->trabajo_equipo='Mala';
-        }
-        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->trabajo_equipo),1,0,"C");
+        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->trabajoequipo->desc_escala),1,0,"C");
         $pdf->Output();
         exit();
     }
 
     public function pdf_lista(Request $request)
     {
-
         $datos=DB::table('gnral_alumnos')
             ->join('exp_asigna_alumnos','exp_asigna_alumnos.id_alumno','=','gnral_alumnos.id_alumno')
             ->select('gnral_alumnos.*','exp_asigna_alumnos.estado','exp_asigna_alumnos.id_asigna_alumno')
@@ -1165,6 +797,640 @@ class PdfController extends Controller
 
 
 
+    }
+
+    public function pdf_alumno(Request $request)
+    {
+        $datosGenerales= Exp_generale::where('id_alumno',$request->id_alumno)->get();
+        $datosAntecedentes= Exp_antecedentes_academico::where('id_alumno',$request->id_alumno)->get();
+        $datosFamiliares= Exp_datos_familiare::where('id_alumno',$request->id_alumno)->get();
+        $datosHabitos= Exp_habitos_estudio::where('id_alumno',$request->id_alumno)->get();
+        $datosFormacion= Exp_formacion_integral::where('id_alumno',$request->id_alumno)->get();
+        $datosArea= Exp_area_psicopedagogica::where('id_alumno',$request->id_alumno)->get();
+
+        $datosArea->load("rendimientoescolar","dominioidioma","otroidioma","conocimientocompu","aptitudespecial",
+            "comprension1","preparacion1","estrategiasaprendizaje","organizacionactividades","concentracion1","solucionproblemas",
+            "condicionesambientales","busquedabibliografica","trabajoequipo");
+        $datosFamiliares->load('vives','union','parentesco');
+        $datosGenerales->load('turno1');
+        $datosHabitos->load('intelectual');
+
+        $carreras=Gnral_carreras::all();
+        $periodos=Gnral_periodos::all();
+        $grupos=Gnral_grupos::all();
+        $semestres=Gnral_semestre::all();
+        $estadoC=Exp_civil_estado::all();
+        $escalas=Exp_escalas::all();
+        //dd($carreras);
+
+
+        $pdf= new \Codedge\Fpdf\Fpdf\Fpdf();
+        $pdf->AddPage();
+
+        $pdf->SetFont('Arial', 'B', 8);
+        $pdf->SetFillColor(130,130,130);
+
+        $pdf->SetTextColor(255,255,255);
+        $pdf->Cell(($pdf->GetPageWidth()-20),11,"EXPEDIENTE DEL TUTORADO".utf8_decode(""),1,4,"C","true");
+
+        $pdf->SetFont('Arial', 'B', 7);
+        $pdf->SetFillColor(156,156,156);
+        $pdf->Cell(($pdf->GetPageWidth()-20),8,"DATOS GENERALES".utf8_decode(""),1,4,"C","true");
+        $pdf->SetDrawColor(010,010,010);
+        $pdf->Rect(180, 10, 15, 15, 'DF');
+        $pdf->Image('img/ff.jpg',180,10,20,19);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->SetTextColor(010,010,010);
+        $pdf->SetFillColor(204,204,204);
+        $pdf->Cell(25,4,"Carrera: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(80,4,"". utf8_decode($carreras[$datosGenerales[0]->id_carrera-1]->nombre),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(20,4,"Periodo: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(35,4,"". utf8_decode($periodos[$datosGenerales[0]->id_periodo-1]->periodo),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(20,4,"Grupo: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(10,4,"". utf8_decode($grupos[$datosGenerales[0]->id_grupo-1]->grupo),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(20,4,"Alumno: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(85,4,"". utf8_decode($datosGenerales[0]->nombre),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(20,4,"Edad: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(20,4,"". utf8_decode($datosGenerales[0]->edad),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(20,4,"Sexo: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(25,4,"". utf8_decode($datosGenerales[0]->sexo==1?'Masculino':'Femenino'),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(25,4,"Fecha de nacimiento: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(15,4,"". utf8_decode($datosGenerales[0]->fecha_nacimientos),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(25,4,"Lugar de nacimiento: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(70,4,"". utf8_decode($datosGenerales[0]->lugar_nacimientos),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(20,4,"Semestre: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(35,4,"". utf8_decode($semestres[$datosGenerales[0]->id_semestre-1]->descripcion),1,0,"C");
+        $pdf->Ln(4);
+
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(15,4,"Estado civil: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(13,4,"". utf8_decode($estadoC[$datosGenerales[0]->id_estado_civil-1]->desc_ec),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(15,4,"No. Hijos: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(13,4,"". utf8_decode($datosGenerales[0]->no_hijos),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(15,4,utf8_decode("Dirección: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(119,4,"". utf8_decode($datosGenerales[0]->direccion),1,0,"C");
+        $pdf->Ln(4);
+
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(($pdf->GetPageWidth()-20)/2,4,"e-mail: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(($pdf->GetPageWidth()-20)/2,4,"". utf8_decode($datosGenerales[0]->correo),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(($pdf->GetPageWidth()-20)/6,4,"Tel. Casa: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(($pdf->GetPageWidth()-20)/6,4,"". utf8_decode($datosGenerales[0]->tel_casa),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(($pdf->GetPageWidth()-20)/6,4,"Celular: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(($pdf->GetPageWidth()-20)/6,4,"". utf8_decode($datosGenerales[0]->cel),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(($pdf->GetPageWidth()-20)/6,4,utf8_decode("Nivel socio-económico"). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        if ($datosGenerales[0]->id_nivel_economico==1)
+        {
+            $datosGenerales[0]->id_nivel_economico='Alto';
+        }
+        if ($datosGenerales[0]->id_nivel_economico==2)
+        {
+            $datosGenerales[0]->id_nivel_economico='Medio';
+        }
+        if ($datosGenerales[0]->id_nivel_economico==3)
+        {
+            $datosGenerales[0]->id_nivel_economico='Bajo';
+        }
+        $pdf->Cell(($pdf->GetPageWidth()-20)/6,4,"". utf8_decode($datosGenerales[0]->id_nivel_economico),1,0,"C");
+        $pdf->Ln(4);
+
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(10,4,utf8_decode("¿Trabaja?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(10,4,"". utf8_decode($datosGenerales[0]->trabaja==1?'Si':'No'),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(15,4,utf8_decode("Ocupación: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(110,4,"". utf8_decode($datosGenerales[0]->ocupacion),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(10,4,"Horario: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(35,4,"". utf8_decode($datosGenerales[0]->horario),1,0,"C");
+        $pdf->Ln(4);
+
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(15,4,"No.Cuenta: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(14,4,"". utf8_decode($datosGenerales[0]->no_cuenta),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(18,4,utf8_decode("¿Cuenta con beca?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(10,4,"". utf8_decode($datosGenerales[0]->beca==1?'Si':'No'),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(20,4,utf8_decode("¿Qué tipo de beca?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(55,4,"". utf8_decode($datosGenerales[0]->tipo_beca),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(19,4,utf8_decode("Estado académico: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        if ($datosGenerales[0]->estado==1)
+        {
+            $datosGenerales[0]->estado='Regular';
+        }
+        if ($datosGenerales[0]->estado==2)
+        {
+            $datosGenerales[0]->estado='Irregular';
+        }
+        if ($datosGenerales[0]->estado==3)
+        {
+            $datosGenerales[0]->estado='Suspención';
+        }
+        if ($datosGenerales[0]->estado==4)
+        {
+            $datosGenerales[0]->estado='Baja temporal';
+        }
+        if ($datosGenerales[0]->estado==5)
+        {
+            $datosGenerales[0]->estado='Baja definitiva';
+        }
+        $pdf->Cell(16,4,"". utf8_decode($datosGenerales[0]->estado),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(10,4,"Turno: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(13,4,"". utf8_decode($datosGenerales[0]->turno1->descripcion_turno),1,0,"C");
+        $pdf->Ln(4);
+
+
+
+        $pdf->SetFont('Arial', 'B', 7);
+        $pdf->SetTextColor(255,255,255);
+        $pdf->SetFillColor(156,156,156);
+        $pdf->Cell(($pdf->GetPageWidth()-20),8,utf8_decode("ANTECEDENTES ACADÉMICOS").utf8_decode(""),1,4,"C","true");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->SetTextColor(010,010,010);
+        $pdf->SetFillColor(204,204,204);
+        $pdf->Cell(25,4,"Tipo de bachillerato: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(20,4,"". utf8_decode($datosAntecedentes[0]->id_bachillerato==1?'Tecnico':'General'),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(22,4,"Otros estudios: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(25,4,"". utf8_decode($datosAntecedentes[0]->otros_estudios),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(35,4,utf8_decode("Años en que curso el bachillerato: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(18,4,"". utf8_decode($datosAntecedentes[0]->anos_curso_bachillerato>5?'Mas':$datosAntecedentes[0]->anos_curso_bachillerato),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(30,4,utf8_decode("Año de terminación: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(15,4,"". utf8_decode($datosAntecedentes[0]->ano_terminacion),1,0,"C");
+        $pdf->Ln(4);
+
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(24,4,utf8_decode("Escuela de procedencia: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(136,4,"". utf8_decode($datosAntecedentes[0]->escuela_procedente),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(17,4,"Promedio: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(13,4,"". utf8_decode($datosAntecedentes[0]->promedio),1,0,"C");
+        $pdf->Ln(4);
+
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(60,4,"Materias reprobadas en el bachillerato: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(130,4,"". utf8_decode($datosAntecedentes[0]->materias_reprobadas),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(22,4,"Otra carrera iniciada: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(10,4,"". utf8_decode($datosAntecedentes[0]->otra_carrera_ini==1?'Si':'No'),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(15,4,utf8_decode("Institución: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(111,4,"". utf8_decode($datosAntecedentes[0]->institucion),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(22,4,"Semestres cursados: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(10,4,"". utf8_decode($datosAntecedentes[0]->semestres_cursados),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(30,4,utf8_decode("Interrupciones en los estudios: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(10,4,"". utf8_decode($datosAntecedentes[0]->interrupciones_estudios==1?'Si':'No'),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(40,4,utf8_decode("Razones de la interrupción en los estudios: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(110,4,"". utf8_decode($datosAntecedentes[0]->razones_interrupcion),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(58,4,utf8_decode("¿Cuál fue la razón por la que decidio estudiar en el TESVB?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(132,4,"". utf8_decode($datosAntecedentes[0]->razon_descide_estudiar_tesvb),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(($pdf->GetPageWidth()-20)/2,4,utf8_decode("¿Tienes información sobre el perfil profecional de la carrera?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(($pdf->GetPageWidth()-20)/2,4,"". utf8_decode($datosAntecedentes[0]->sabedel_perfil_profesional),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(60,4,utf8_decode("¿Tuviste opciones vocacionales por otras carreras?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(13,4,"". utf8_decode($datosAntecedentes[0]->otras_opciones_vocales==1?'Si':'No'),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(15,4,utf8_decode("¿Cuáles?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(102,4,"". utf8_decode($datosAntecedentes[0]->cuales_otras_opciones_vocales),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(50,4,utf8_decode("¿Te gusta la carrera elegida?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(13,4,"". utf8_decode($datosAntecedentes[0]->tegusta_carrera_elegida==1?'Si':'No'),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(15,4,utf8_decode("¿Por qué?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(112,4,"". utf8_decode($datosAntecedentes[0]->porque_carrera_elegida),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(50,4,utf8_decode("¿Suspención después de terminar el bachillerato?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(10,4,"". utf8_decode($datosAntecedentes[0]->suspension_estudios_bachillerato==1?'Si':'No'),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(35,4,utf8_decode("Razones de suspensión de estudios: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(95,4,"". utf8_decode($datosAntecedentes[0]->razones_suspension_estudios),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(($pdf->GetPageWidth()-20)/2,4,utf8_decode("¿Te estimula tu familia en tus estudios?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(($pdf->GetPageWidth()-20)/2,4,"". utf8_decode($datosAntecedentes[0]->teestimula_familia==1?'Si':'No'),1,0,"C");
+        $pdf->Ln(4);
+
+
+        $pdf->SetFont('Arial', 'B', 7);
+        $pdf->SetTextColor(255,255,255);
+        $pdf->SetFillColor(156,156,156);
+        $pdf->Cell(($pdf->GetPageWidth()-20),8,"DATOS FAMILIARES".utf8_decode(""),1,4,"C","true");
+        $pdf->SetTextColor(010,010,010);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->SetFillColor(204,204,204);
+        $pdf->Cell(40,4,"Nombre del padre: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(85,4,"". utf8_decode($datosFamiliares[0]->nombre_padre),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(35,4,"Edad: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(30,4,"". utf8_decode($datosFamiliares[0]->edad_padre),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(25,4,utf8_decode("Ocupación: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(60,4,"". utf8_decode($datosFamiliares[0]->ocupacion_padre),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(25,4,"Lugar de residencia: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(80,4,"". utf8_decode($datosFamiliares[0]->lugar_residencia_padre),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(40,4,"Nombre de la madre: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(85,4,"". utf8_decode($datosFamiliares[0]->nombre_madre),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(35,4,"Edad: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(30,4,"". utf8_decode($datosFamiliares[0]->edad_madre),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(25,4,utf8_decode("Ocupación: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(60,4,"". utf8_decode($datosFamiliares[0]->ocupacion_madre),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(25,4,"Lugar de residencia: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(80,4,"". utf8_decode($datosFamiliares[0]->lugar_residencia_madre),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(33,4,utf8_decode("Número de hermanos, incluyéndote: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(8,4,"". utf8_decode($datosFamiliares[0]->no_hermanos),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(33,4,"Lugar que ocupas entre ellos: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(8,4,"". utf8_decode($datosFamiliares[0]->lugar_ocupas),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(25,4,"Actualmente vives con: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(27,4,"". utf8_decode($datosFamiliares[0]->vives->desc_opc),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(45,4,utf8_decode("Número total de personas con las que vives: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(11,4,"". utf8_decode($datosFamiliares[0]->no_personas),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(($pdf->GetPageWidth()-20)/6,4,"Perteneces a una etnia indigena: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(($pdf->GetPageWidth()-20)/6,4,"". utf8_decode($datosFamiliares[0]->etnia_indigena==1?'Si':'No'),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(($pdf->GetPageWidth()-20)/6,4,utf8_decode("¿Cuál etnia?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(($pdf->GetPageWidth()-20)/6,4,"". utf8_decode($datosFamiliares[0]->cual_etnia),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(($pdf->GetPageWidth()-20)/6,4,"Hablas una lengua indigena: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(($pdf->GetPageWidth()-20)/6,4,"". utf8_decode($datosFamiliares[0]->hablas_lengua_indigena==1?'Si':'No'),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(40,4,utf8_decode("¿Quién sostiene económicamente tu hogar?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(90,4,"". utf8_decode($datosFamiliares[0]->sostiene_economia_hogar),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(35,4,utf8_decode("¿Cómo consideras a tu familia?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(25,4,"". utf8_decode($datosFamiliares[0]->union->desc_union),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(30,4,"Nombre del tutor: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(90,4,"". utf8_decode($datosFamiliares[0]->nombre_tutor),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(30,4,"Parentesco:  ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(40,4,"". utf8_decode($datosFamiliares[0]->parentesco->desc_parentesco),1,0,"C");
+        $pdf->Ln(4);
+
+
+
+        $pdf->SetFont('Arial', 'B', 7);
+        $pdf->SetTextColor(255,255,255);
+        $pdf->SetFillColor(156,156,156);
+        $pdf->Cell(($pdf->GetPageWidth()-20),8,utf8_decode("HABITOS DE ESTUDIO").utf8_decode(""),1,4,"C","true");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->SetTextColor(010,010,010);
+        $pdf->SetFillColor(204,204,204);
+
+        $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,"Tiempo dedicado a estudiar diariamente fuera de clase: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,"". utf8_decode($datosHabitos[0]->tiempo_empleado_estudiar==3?'2 horas':'3 horas'),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,utf8_decode("¿Cómo es tu forma de trabajo intelectual?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,"". utf8_decode($datosHabitos[0]->intelectual->desc_opc),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(($pdf->GetPageWidth()-20)/2,4,utf8_decode("Tu forma de estudio más utlizada: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(($pdf->GetPageWidth()-20)/2,4,"". utf8_decode($datosHabitos[0]->forma_estudio),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(50,4,utf8_decode("¿Cómo empleas tu tiempo libre?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(140,4,"". utf8_decode($datosHabitos[0]->tiempo_libre),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(55,4,"Asignaturas preferidas: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(135,4,"". utf8_decode($datosHabitos[0]->asignatura_preferida),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(40,4,utf8_decode("¿Por qué?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(150,4,"". utf8_decode($datosHabitos[0]->porque_asignatura),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(55,4,utf8_decode("Asignaturas que te han sido difíciles: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(135,4,"". utf8_decode($datosHabitos[0]->asignatura_dificil),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(40,4,utf8_decode("¿Por qué?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(150,4,"". utf8_decode($datosHabitos[0]->porque_asignatura_dificil),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(60,4,utf8_decode("¿Qué opinión tines de ti mismo como estudiante?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(130,4,"". utf8_decode($datosHabitos[0]->opinion_tu_mismo_estudiante),1,0,"C");
+        $pdf->Ln(4);
+
+
+
+        $pdf->SetFont('Arial', 'B', 7);
+        $pdf->SetTextColor(255,255,255);
+        $pdf->SetFillColor(156,156,156);
+        $pdf->Cell(($pdf->GetPageWidth()-20),8,utf8_decode("FORMACIÓN INTEGRAL/SALUD").utf8_decode(""),1,4,"C","true");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->SetTextColor(010,010,010);
+        $pdf->SetFillColor(204,204,204);
+        $pdf->Cell(50,4,utf8_decode("¿Practica regularmente algún deporte?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(10,4,"". utf8_decode($datosFormacion[0]->practica_deporte==1?'Si':'No'),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(30,4,"Especifica el deporte: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(100,4,"". utf8_decode($datosFormacion[0]->especifica_deporte),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(50,4,utf8_decode("¿Practicas alguna actividad artística?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(10,4,"". utf8_decode($datosFormacion[0]->practica_artistica==1?'Si':'No'),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(30,4,utf8_decode("Especifica la actividad artística: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(100,4,"". utf8_decode($datosFormacion[0]->especifica_artistica),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(50,4,"Tu pasatiempo favorito: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(140,4,"". utf8_decode($datosFormacion[0]->pasatiempo),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(45,4,utf8_decode("¿Participas en actividades culturales, sociales?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(10,4,"". utf8_decode($datosFormacion[0]->actividades_culturales==1?'Si':'No'),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(45,4,utf8_decode("¿Cuáles actividades culturales o sociales?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(90,4,"". utf8_decode($datosFormacion[0]->cuales_act),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(35,4,utf8_decode("¿Cómo consideras tu estado de salud?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        if ($datosFormacion[0]->estado_salud==1)
+        {
+            $datosFormacion[0]->estado_salud='Excelente';
+        }
+        if ($datosFormacion[0]->estado_salud==2)
+        {
+            $datosFormacion[0]->estado_salud='Buena';
+        }
+        if ($datosFormacion[0]->estado_salud==3)
+        {
+            $datosFormacion[0]->estado_salud='Regular';
+        }
+        if ($datosFormacion[0]->estado_salud==4)
+        {
+            $datosFormacion[0]->estado_salud='Mala';
+        }
+        $pdf->Cell(15,4,"". utf8_decode($datosFormacion[0]->estado_salud),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(35,4,utf8_decode("¿Padeces alguna enfermedad crónica?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(15,4,"". utf8_decode($datosFormacion[0]->enfermedad_cronica==1?'Si':'No'),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(35,4,utf8_decode("Especificar enfermedad crónica: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(55,4,"". utf8_decode($datosFormacion[0]->especifica_enf_cron),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(45,4,utf8_decode("¿Tus padres padecen alguna enfermedad crónica?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(10,4,"". utf8_decode($datosFormacion[0]->enf_cron_padre==1?'Si':'No'),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(45,4,utf8_decode("Especificar enfermedad crónica de los padres: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(90,4,"". utf8_decode($datosFormacion[0]->especifica_enf_cron_padres),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(50,4,utf8_decode("¿Te han realizado alguna operación médico-quirúrgica: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(10,4,"". utf8_decode($datosFormacion[0]->operacion==1?'Si':'No'),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(45,4,utf8_decode("Especificar la operación médico-quirúrgica: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(85,4,"". utf8_decode($datosFormacion[0]->deque_operacion),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(35,4,utf8_decode("¿Padeces alguna enfermedad visual?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(10,4,"". utf8_decode($datosFormacion[0]->enfer_visual==1?'Si':'No'),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(30,4,"Especificar enfermedad visual: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(75,4,"". utf8_decode($datosFormacion[0]->especifica_enf),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(30,4,utf8_decode("¿Usas lentes?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(10,4,"". utf8_decode($datosFormacion[0]->usas_lentes==1?'Sí':'No'),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(35,4,utf8_decode("¿Tomas medicamento controlado?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(7,4,"". utf8_decode($datosFormacion[0]->medicamento_controlado==1?'Sí':'No'),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(25,4,"Especificar medicamento: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(79,4,"". utf8_decode($datosFormacion[0]->especifica_medicamento),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(15,4,"Estatura: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(7,4,"". utf8_decode($datosFormacion[0]->estatura),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(15,4,"Peso: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(7,4,"". utf8_decode($datosFormacion[0]->peso),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(35,4,utf8_decode("¿Has tenido algún acidente grave?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(7,4,"". utf8_decode($datosFormacion[0]->accidente_grave==1?'Si':'No'),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(20,4,"Relata brevemente: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(128,4,"". utf8_decode($datosFormacion[0]->relata_breve),1,0,"C");
+        $pdf->Ln(4);
+
+
+
+        $pdf->SetFont('Arial', 'B', 7);
+        $pdf->SetTextColor(255,255,255);
+        $pdf->SetFillColor(156,156,156);
+        $pdf->Cell(($pdf->GetPageWidth()-20),8,utf8_decode("ÁREA PSICOPEDAGÓGICA (CONOCIMIENTOS Y HABILIDADES)").utf8_decode(""),1,4,"C","true");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->SetTextColor(010,010,010);
+        $pdf->SetFillColor(204,204,204);
+        $pdf->Cell(25,4,"Rendimiento escolar: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->rendimientoescolar->desc_escala),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(35,4,"Dominio del propio idioma: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->dominioidioma->desc_escala),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(18,4,"Otro idioma: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->otroidioma->desc_escala),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(32,4,utf8_decode("Conocimientos de cómputo: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->conocimientocompu->desc_escala),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(35,4,"Aptitudes especiales: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->aptitudespecial->desc_escala),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(45,4,utf8_decode("Comprensión y retención en clase: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->comprension1->desc_escala),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(50,4,utf8_decode("Preparación y presentación de examenes: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->preparacion1->desc_escala),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,utf8_decode("Aplicación de estrategias de aprendizaje y estudio: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,"". utf8_decode($datosArea[0]->estrategiasaprendizaje->desc_escala),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,utf8_decode("Organización en las actividades de estudio: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,"". utf8_decode($datosArea[0]->organizacionactividades->desc_escala),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(65,4,utf8_decode("Consentración durante el estudio: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(30,4,"". utf8_decode($datosArea[0]->concentracion1->desc_escala),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(65,4,utf8_decode("Solución de problemas y aprendizaje de las matemáticas: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(30,4,"". utf8_decode($datosArea[0]->solucionproblemas->desc_escala),1,0,"C");
+        $pdf->Ln(4);
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(45,4,"Condiciones ambientales durante el estudio: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->condicionesambientales->desc_escala),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(50,4,utf8_decode("Búsqueda bibliografica e integración de información: "). utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->busquedabibliografica->desc_escala),1,0,"C");
+        $pdf->SetFont('Arial', 'B', 4.8);
+        $pdf->Cell(35,4,"Trabajo en equipo: ". utf8_decode(""),1,0,"L","true");
+        $pdf->SetFont('Arial', '', 4.8);
+        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->trabajoequipo->desc_escala),1,0,"C");
+        $pdf->Output();
+        exit();
     }
 
 

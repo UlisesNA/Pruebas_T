@@ -23,18 +23,18 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-9 text-center font-weight-bold">@{{ carrera }}</div>
-                            <div class="col-1"><button class="btn text-white btn-success" @click="getAlumnos()" ><i class="fas fa-list"></i></button></div>
-                            <div class="col-1"><button class="btn text-white btn-primary" @click="graficagenero()" ><i class="fas fa-chart-pie"></i></button></div>
+                            <div class="col-1"><button class="btn text-white btn-success" @click="getAlumnos()" data-toggle="tooltip" data-placement="bottom" title="Lista"><i class="fas fa-list"></i></button></div>
+                            <div class="col-1"><button class="btn text-white btn-primary" @click="graficagenero()" data-toggle="tooltip" data-placement="bottom" title="Gráficas"><i class="fas fa-chart-pie"></i></button></div>
                             <div class="col-1"><button class="btn text-white btn-danger"  @click="getAlumnos1()"><i class="fas fa-file-alt"></i></button></div>
                         </div>
-                        <div class="row"><div class="col-10 text-center">@{{ gen }}</div></div>
+                        <div class="row"><div class="col-9 text-center">@{{ gen }}</div></div>
                     </div>
                     <div class="card-body" v-show="lista==true" >
                         <div class="row">
                             <div class="col-12">
                                 <div class="row pb-2">
                                     <div class="col-11"></div>
-                                    <a @click="pdf()" target="_blank" class="btn btn-danger text-white float-right"> <i class="fas fa-file-pdf"></i></a>
+                                    <button @click="pdf()" target="_blank" class="btn btn-danger text-white float-right" data-toggle="tooltip" data-placement="bottom" title="Generar lista"> <i class="fas fa-file-pdf"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -45,7 +45,7 @@
                                     <tr class="">
                                         <th>Cuenta</th>
                                         <th>Nombre</th>
-                                        <th>Acciones</th>
+                                        <th>Normal, Baja temporal, Baja definitiva</th>
                                         <th>Expediente</th>
                                         <th>Canalización</th>
                                     </tr>
@@ -55,11 +55,16 @@
                                         <td class="text-center font-weight-bold" v-bind:class="[alumno.estado==2 ? 'bg-warning' : alumno.estado==3 ? 'bg-danger':'']">@{{ alumno.cuenta }}</td>
                                         <td class="">@{{ alumno.apaterno }} @{{ alumno.amaterno }} @{{ alumno.nombre }}</td>
                                         <td class="text-center">
-                                            <button class="btn btn-outline-success" @click="cambio(alumno,1)">N</button>
-                                            <button class="btn btn-outline-warning m-1" @click="cambio(alumno,2)">T</button>
-                                            <button class="btn btn-outline-danger m-1" @click="cambio(alumno,3)">B</button>
+                                            <button class="btn btn-outline-success" @click="cambio(alumno,1)" data-toggle="tooltip" data-placement="bottom" title="Normal"><i class="fas fa-check-circle"></i></button>
+                                            <button class="btn btn-outline-warning m-1" @click="cambio(alumno,2)" data-toggle="tooltip" data-placement="bottom" title="Baja temporal"><i class="fas fa-minus-circle"></i></button>
+                                            <button class="btn btn-outline-danger m-1" @click="cambio(alumno,3)" data-toggle="tooltip" data-placement="bottom" title="Baja definitiva"><i class="fas fa-times-circle"></i></button>
+                                           <!-- <i class="fas h2 text-success fa-check-circle pt-2"></i>-->
                                         </td>
-                                        <td class="text-center"><button class="btn btn-outline-primary" @click="ver(alumno)">E</button></td>
+                                        <td class="text-center" v-if="alumno.expediente">
+                                            <button class="btn btn-outline-primary m-1" @click="ver(alumno)" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="far fa-edit"></i></button>
+                                            <button class="btn btn-outline-danger" @click="pdfAlumno(alumno)" data-toggle="tooltip" data-placement="bottom" title="Expediente"><i class="far fa-file-pdf"></i></button>
+                                        </td>
+                                        <td v-else class="text-center"><i class="fas h4 fa-times text-danger pt-2"></i></td>
                                         <td class="text-center"><button class="btn btn-outline-secondary"  @click="getAlumnos2(alumno)"><i class="fas fa-check-square"></i></button></td>
                                     </tr>
                                     </tbody>
@@ -334,7 +339,6 @@
                             </form>
                         </div>
                     </div>
-
                     <div class="row" v-show="graficas==true">
                         <div class="col-12">
                             <div class="row pt-3">
@@ -558,6 +562,7 @@
                 salud:"/graphics/salud",
                 area:"/graphics/area",
                 pd:"pdf/lista",
+                palu:'pdf/alumno',
                 veralu:'/ver',
                 datos:[],
                 datos1:[],
@@ -2035,7 +2040,20 @@
                         const blob = new Blob([response.data], { type: 'application/pdf' });
                         const objectUrl = URL.createObjectURL(blob);
                         window.open(objectUrl)
-
+                    });
+                },
+                pdfAlumno:function (alumno) {
+                    axios.post(this.palu,{id_alumno:alumno.id_alumno},{
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/pdf'
+                        },
+                        responseType: "blob"
+                    }).then(response=>{
+                        console.log(response.data);
+                        const blob = new Blob([response.data], { type: 'application/pdf' });
+                        const objectUrl = URL.createObjectURL(blob);
+                        window.open(objectUrl)
                     });
                 }
             },

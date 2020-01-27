@@ -23,19 +23,7 @@ class AsignaExpediente extends Model
 
      return $array;
     }
-    public static function getDatos(){
-        $datos=DB::select('select exp_generales.* from exp_generales where id_alumno=(SELECT id_alumno from gnral_alumnos WHERE gnral_alumnos.id_usuario='.Auth::user()->id.');');
-        $datos2=DB::select('select exp_antecedentes_academicos.* from exp_antecedentes_academicos where id_alumno=(SELECT id_alumno from gnral_alumnos WHERE gnral_alumnos.id_usuario='.Auth::user()->id.');');
-        $datos3=DB::select('select exp_datos_familiares.* from exp_datos_familiares where id_alumno=(SELECT id_alumno from gnral_alumnos WHERE gnral_alumnos.id_usuario='.Auth::user()->id.');');
-        $datos4=DB::select('select exp_formacion_integral.* from exp_formacion_integral where id_alumno=(SELECT id_alumno from gnral_alumnos WHERE gnral_alumnos.id_usuario='.Auth::user()->id.');');
-        $datos5=DB::select('select exp_habitos_estudio.* from exp_habitos_estudio where id_alumno=(SELECT id_alumno from gnral_alumnos WHERE gnral_alumnos.id_usuario='.Auth::user()->id.');');
-        $datos6=DB::select('select exp_area_psicopedagogica.* from exp_area_psicopedagogica where id_alumno=(SELECT id_alumno from gnral_alumnos WHERE gnral_alumnos.id_usuario='.Auth::user()->id.');');
 
-        $array=array_merge($datos,$datos2,$datos3,$datos5,$datos4,$datos6);
-
-        // dd($array);
-        return $array;
-    }
     public static function insert($datos){
 
         //dd($dat);

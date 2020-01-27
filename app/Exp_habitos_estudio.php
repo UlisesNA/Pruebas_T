@@ -13,8 +13,7 @@ class Exp_habitos_estudio extends Model
         "asignatura_preferida","porque_asignatura","asignatura_dificil","porque_asignatura_dificil","opinion_tu_mismo_estudiante","id_alumno"];
 
     public function intelectual (){
-        return $this->hasMany('App\Exp_opc_intelectual','id_opc_intelectual','id_opc_intelectual');
-
+        return $this->hasOne('App\Exp_opc_intelectual','id_opc_intelectual','id_opc_intelectual');
     }
     public function tiempo (){
         return $this->hasMany('App\Exp_tiempoestudia','id_tiempoestudia','tiempo_empelado_estudiar');

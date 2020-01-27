@@ -1,17 +1,18 @@
 @extends('layouts.app')
 @section('content')
-    <div class="row" id="expediente">
+
+    <div class="row" id="update">
         <div class="col-12">
             <div class="row">
                 <div class="col-12">
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link" @click="categoria('generales')" v-bind:class="{active:actgenerales}" id="exp-generales-tab" data-toggle="tab" href="#exp-generales" role="tab" aria-controls="exp-generales" aria-selected="true">Datos Generales</a>
-                            <a class="nav-item nav-link" @click="categoria('academico')" v-bind:class="{active:actacademico, disabled:disacademico}" id="exp-antecedentes-tab" data-toggle="tab" href="#exp-antecedentes" role="tab" aria-controls="exp-antecedentes" aria-selected="false">Antecedentes Académicos</a>
-                            <a class="nav-item nav-link" @click="categoria('familiares')" v-bind:class="{active:actfamiliares, disabled:disfamiliares}" id="exp-familiares-tab" data-toggle="tab" href="#exp-familiares" role="tab" aria-controls="exp-familiares" aria-selected="false">Datos Familiares</a>
-                            <a class="nav-item nav-link" @click="categoria('estudio')" v-bind:class="{active:actestudio, disabled:disestudio}"   id="exp-habitos-tab" data-toggle="tab" href="#exp-habitos" role="tab" aria-controls="exp-habitos" aria-selected="false">Hábitos de Estudio</a>
-                            <a class="nav-item nav-link" @click="categoria('integral')" v-bind:class="{active:actintegral, disabled:disintegral}" id="formacion-tab" data-toggle="tab" href="#exp-formacion" role="tab" aria-controls="exp-formacion" aria-selected="false">Formación Integral/Salud</a>
-                            <a class="nav-item nav-link" @click="categoria('area')" v-bind:class="{active:actarea, disabled:disarea}" id="exp-area-tab" data-toggle="tab" href="#exp-area" role="tab" aria-controls="exp-area" aria-selected="false">Área Psicopedagógica</a>
+                            <a class="nav-item nav-link active" id="exp-generales-tab" data-toggle="tab" href="#exp-generales" role="tab" aria-controls="exp-generales" aria-selected="true">Datos Generales</a>
+                            <a class="nav-item nav-link" id="exp-antecedentes-tab" data-toggle="tab" href="#exp-antecedentes" role="tab" aria-controls="exp-antecedentes" aria-selected="false">Antecedentes Académicos</a>
+                            <a class="nav-item nav-link" id="exp-familiares-tab" data-toggle="tab" href="#exp-familiares" role="tab" aria-controls="exp-familiares" aria-selected="false">Datos Familiares</a>
+                            <a class="nav-item nav-link" id="exp-habitos-tab" data-toggle="tab" href="#exp-habitos" role="tab" aria-controls="exp-habitos" aria-selected="false">Hábitos de Estudio</a>
+                            <a class="nav-item nav-link" id="formacion-tab" data-toggle="tab" href="#exp-formacion" role="tab" aria-controls="exp-formacion" aria-selected="false">Formación Integral/Salud</a>
+                            <a class="nav-item nav-link" id="exp-area-tab" data-toggle="tab" href="#exp-area" role="tab" aria-controls="exp-area" aria-selected="false">Área Psicopedagógica</a>
                         </div>
                     </nav>
                 </div>
@@ -20,7 +21,7 @@
                 <div class="col-12">
                     {{ csrf_field() }}
                     <div class="tab-content" id="nav-tabContent">
-                        <div class="tab-pane fade" v-bind:class="{show:actgenerales,active:actgenerales}" id="exp-generales" role="tabpanel" aria-labelledby="exp-generales-tab">
+                        <div class="tab-pane fade show active" id="exp-generales" role="tabpanel" aria-labelledby="exp-generales-tab">
                             <div class="" >
                                 <div class="row pt-3 pr-3 pl-3">
                                     <div class=" col-12 align-content-center">
@@ -245,14 +246,11 @@
                                                 <option v-bind:value="turn.id_turno" v-for="turn in turno">@{{turn.descripcion_turno}}</option>
                                             </select>
                                         </div>
-                                        <div class="col-12 pt-4">
-                                            <button class="btn btn-outline-primary col-12" @click="siguiente('academico')">Siguiente</button>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" v-bind:class="{show:actacademico,active:actacademico}" id="exp-antecedentes" role="tabpanel" aria-labelledby="exp-antecedentes-tab">
+                        <div class="tab-pane fade" id="exp-antecedentes" role="tabpanel" aria-labelledby="exp-antecedentes-tab">
                             <div class="" >
                                 <div class="row pt-3 pr-3 pl-3">
                                     <div class=" col-12 align-content-center">
@@ -401,12 +399,9 @@
                                     </div>
 
                                 </div>
-                                <div class="col-12 pt-4">
-                                    <button class="btn btn-outline-primary col-12" @click="siguiente('familiares')">Siguiente</button>
-                                </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" v-bind:class="{show:actfamiliares,active:actfamiliares}" id="exp-familiares" role="tabpanel" aria-labelledby="exp-familiares-tab">
+                        <div class="tab-pane fade" id="exp-familiares" role="tabpanel" aria-labelledby="exp-familiares-tab">
                             <div class="" >
                                 <div class="row pt-3 pr-3 pl-3">
                                     <div class=" col-12 align-content-center">
@@ -516,12 +511,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-12 pt-4">
-                                    <button class="btn btn-outline-primary col-12" @click="siguiente('estudio')">Siguiente</button>
-                                </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" v-bind:class="{show:actestudio,active:actestudio}" id="exp-habitos" role="tabpanel" aria-labelledby="exp-habitos-tab">
+                        <div class="tab-pane fade" id="exp-habitos" role="tabpanel" aria-labelledby="exp-habitos-tab">
                             <div class="" >
                                 <div class="row pt-3 pr-3 pl-3">
                                     <div class=" col-12 align-content-center">
@@ -578,12 +570,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-12 pt-4">
-                                    <button class="btn btn-outline-primary col-12" @click="siguiente('integral')">Siguiente</button>
-                                </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" v-bind:class="{show:actintegral,active:actintegral}" id="exp-formacion" role="tabpanel" aria-labelledby="formacion-tab">
+                        <div class="tab-pane fade" id="exp-formacion" role="tabpanel" aria-labelledby="formacion-tab">
                             <div class="" >
                                 <div class="row pt-3 pr-3 pl-3">
                                     <div class=" col-12 align-content-center">
@@ -739,12 +728,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-12 pt-4">
-                                    <button class="btn btn-outline-primary col-12" @click="siguiente('area')">Siguiente</button>
-                                </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" v-bind:class="{show:actarea,active:actarea}" id="exp-area" role="tabpanel" aria-labelledby="exp-area-tab">
+                        <div class="tab-pane fade" id="exp-area" role="tabpanel" aria-labelledby="exp-area-tab">
                             <div class="" >
                                 <div class="row pt-3 pr-3 pl-3">
                                     <div class=" col-12 align-content-center">
@@ -860,27 +846,38 @@
                                             </select>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-12 pt-4">
-                                    <button class="btn btn-outline-primary col-12" @click="Guardar()">Guardar</button>
+                                    <div class="row pt-5">
+                                        <button class="btn col-12 btn-outline-primary" @click="updateDatos()">Actualizar datos</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <pre>@{{ alu }}</pre>
         </div>
+        <!--<Toasts
+                :show-progress="true"
+                :rtl="true"
+                :max-messages="7"
+                :time-out="5000"
+                :closeable="true"
+        ></Toasts>-->
+        <b-toast id="mensaje" variant="success" solid>
+            <b-img blank blank-color="#067a39" class="mr-2" width="12" height="12"></b-img>
+            <strong class="mr-auto">Notice!</strong>
+        </b-toast>
     </div>
     <script>
+
         new Vue({
-            el: "#expediente",
+            el: "#update",
             created: function () {
                 this.getDatos();
             },
             data: {
-                rut: "/getAlumno",
-                ruta:'/guardar',
+                rut: "/getDatos",
+                act:'/actualiza',
                 datos:[],
                 periodos:[],
                 semestres:[],
@@ -897,19 +894,9 @@
                 parentesco:[],
                 escala:[],
                 bebidas:[],
-                actacademico:false,
-                disacademico:true,
-                actgenerales:true,
-                actfamiliares:false,
-                disfamiliares:true,
-                actestudio:false,
-                disestudio:true,
-                actintegral:false,
-                disintegral:true,
-                actarea:false,
-                disarea:true,
                 alu:{
                     generales:{
+                        id_exp_general:null,
                         id_periodo:null,
                         nombre:null,
                         edad:null,
@@ -945,6 +932,7 @@
                         id_alumno:null,
                     },
                     academicos:{
+                        id_exp_antecedentes_academicos:null,
                         id_bachillerato:null,
                         otros_estudios:null,
                         anos_curso_bachillerato:null,
@@ -969,6 +957,7 @@
                         id_alumno:null,
                     },
                     familiares:{
+                        id_exp_datos_familiares:null,
                         nombre_padre:null,
                         edad_padre:null,
                         ocupacion_padre:null,
@@ -991,6 +980,7 @@
                         id_alumno:null
                         ,                    },
                     estudio:{
+                        id_exp_habitos_estudio:null,
                         tiempo_empleado_estudiar:null,
                         id_opc_intelectual:null,
                         forma_estudio:null,
@@ -1003,6 +993,7 @@
                         id_alumno:null
                         ,                    },
                     integral:{
+                        id_exp_formacion_integral:null,
                         practica_deporte:null,
                         especifica_deporte:null,
                         practica_artistica:null,
@@ -1030,6 +1021,7 @@
                         id_alumno:null,
                     },
                     area:{
+                        id_exp_area_psicopedagogica:null,
                         rendimiento_escolar:null,
                         dominio_idioma:null,
                         otro_idioma:null,
@@ -1046,28 +1038,146 @@
                         trabajo_equipo:null,
                         id_alumno:null,
                     }
+
                 },
+                toastCount:0,
+                mensaje:false,
             },
             methods: {
                 getDatos: function () {
                     axios.get(this.rut).then(response => {
-                        this.alu.generales.id_alumno=response.data.datos[0].id_alumno;
-                        this.alu.generales.nombre=response.data.datos[0].nombre +' '+response.data.datos[0].apaterno+' '+response.data.datos[0].amaterno;
-                        this.alu.generales.no_cuenta=response.data.datos[0].cuenta;
-                        this.alu.generales.sexo=response.data.datos[0].genero;
-                        this.alu.generales.fecha_nacimientos=response.data.datos[0].fecha_nac;
-                        this.alu.generales.edad=response.data.datos[0].edad;
-                        this.alu.generales.correo=response.data.email;
-                        this.alu.generales.tel_casa=response.data.datos[0].tel_fijo_al;
-                        this.alu.generales.cel=response.data.datos[0].cel_al;
-                        this.alu.generales.id_carrera=response.data.datos[0].id_carrera;
-                        this.alu.generales.id_semestre=response.data.datos[0].id_semestre;
-                        this.alu.generales.id_grupo=response.data.datos[0].grupo;
-                        this.alu.academicos.id_alumno=response.data.datos[0].id_alumno;
-                        this.alu.familiares.id_alumno=response.data.datos[0].id_alumno;
-                        this.alu.estudio.id_alumno=response.data.datos[0].id_alumno;
-                        this.alu.integral.id_alumno=response.data.datos[0].id_alumno;
-                        this.alu.area.id_alumno=response.data.datos[0].id_alumno;
+                        this.alu.generales.id_exp_general=response.data.generales[0].id_exp_general;
+                        this.alu.generales.id_periodo=response.data.generales[0].id_periodo;
+                        this.alu.generales.nombre=response.data.generales[0].nombre;
+                        this.alu.generales.edad=response.data.generales[0].edad;
+                        this.alu.generales.sexo=response.data.generales[0].sexo;
+                        this.alu.generales.fecha_nacimientos=response.data.generales[0].fecha_nacimientos;
+                        this.alu.generales.lugar_nacimientos=response.data.generales[0].lugar_nacimientos;
+                        this.alu.generales.id_semestre=response.data.generales[0].id_semestre;
+                        this.alu.generales.id_estado_civil=response.data.generales[0].id_estado_civil;
+                        this.alu.generales.no_hijos=response.data.generales[0].no_hijos;
+                        this.alu.generales.direccion=response.data.generales[0].direccion;
+                        this.alu.generales.correo=response.data.generales[0].correo;
+                        this.alu.generales.tel_casa=response.data.generales[0].tel_casa;
+                        this.alu.generales.cel=response.data.generales[0].cel;
+                        this.alu.generales.id_nivel_economico=response.data.generales[0].id_nivel_economico;
+                        this.alu.generales.trabaja=response.data.generales[0].trabaja;
+                        this.alu.generales.ocupacion=response.data.generales[0].ocupacion;
+                        this.alu.generales.horario=response.data.generales[0].horario;
+                        this.alu.generales.no_cuenta=response.data.generales[0].no_cuenta;
+                        this.alu.generales.beca=response.data.generales[0].beca;
+                        this.alu.generales.tipo_beca=response.data.generales[0].tipo_beca;
+                        this.alu.generales.estado=response.data.generales[0].estado;
+                        this.alu.generales.turno=response.data.generales[0].turno;
+                        this.alu.generales.id_alumno=response.data.generales[0].id_alumno;
+                        this.alu.generales.id_grupo=response.data.generales[0].id_grupo;
+                        this.alu.generales.id_carrera=response.data.generales[0].id_carrera;
+                        this.alu.generales.poblacion=response.data.generales[0].poblacion;
+                        this.alu.generales.ant_inst=response.data.generales[0].ant_inst;
+                        this.alu.generales.ant_inst=response.data.generales[0].ant_inst;
+                        this.alu.generales.satisfaccion_c=response.data.generales[0].satisfaccion_c;
+                        this.alu.generales.materias_repeticion=response.data.generales[0].materias_repeticion;
+                        this.alu.generales.tot_repe=response.data.generales[0].tot_repe;
+                        this.alu.generales.materias_especial=response.data.generales[0].materias_especial;
+                        this.alu.generales.tot_espe=response.data.generales[0].tot_espe;
+                        this.alu.generales.gen_espe=response.data.generales[0].gen_espe;
+                        this.alu.academicos.id_exp_antecedentes_academicos=response.data.academicos[0].id_exp_antecedentes_academicos;
+                        this.alu.academicos.id_bachillerato=response.data.academicos[0].id_bachillerato;
+                        this.alu.academicos.otros_estudios=response.data.academicos[0].otros_estudios;
+                        this.alu.academicos.anos_curso_bachillerato=response.data.academicos[0].anos_curso_bachillerato;
+                        this.alu.academicos.ano_terminacion=response.data.academicos[0].ano_terminacion;
+                        this.alu.academicos.escuela_procedente=response.data.academicos[0].escuela_procedente;
+                        this.alu.academicos.promedio=response.data.academicos[0].promedio;
+                        this.alu.academicos.materias_reprobadas=response.data.academicos[0].materias_reprobadas;
+                        this.alu.academicos.otra_carrera_ini=response.data.academicos[0].otra_carrera_ini;
+                        this.alu.academicos.institucion=response.data.academicos[0].institucion;
+                        this.alu.academicos.semestres_cursados=response.data.academicos[0].semestres_cursados;
+                        this.alu.academicos.interrupciones_estudios=response.data.academicos[0].interrupciones_estudios;
+                        this.alu.academicos.razones_interrupcion=response.data.academicos[0].razones_interrupcion;
+                        this.alu.academicos.razon_descide_estudiar_tesvb=response.data.academicos[0].razon_descide_estudiar_tesvb;
+                        this.alu.academicos.sabedel_perfil_profesional=response.data.academicos[0].sabedel_perfil_profesional;
+                        this.alu.academicos.otras_opciones_vocales=response.data.academicos[0].otras_opciones_vocales;
+                        this.alu.academicos.cuales_otras_opciones_vocales=response.data.academicos[0].cuales_otras_opciones_vocales;
+                        this.alu.academicos.tegusta_carrera_elegida=response.data.academicos[0].tegusta_carrera_elegida;
+                        this.alu.academicos.porque_carrera_elegida=response.data.academicos[0].porque_carrera_elegida;
+                        this.alu.academicos.suspension_estudios_bachillerato=response.data.academicos[0].suspension_estudios_bachillerato;
+                        this.alu.academicos.razones_suspension_estudios=response.data.academicos[0].razones_suspension_estudios;
+                        this.alu.academicos.teestimula_familia=response.data.academicos[0].teestimula_familia;
+                        this.alu.academicos.id_alumno=response.data.academicos[0].id_alumno;
+                        this.alu.familiares.id_exp_datos_familiares=response.data.familiares[0].id_exp_datos_familiares;
+                        this.alu.familiares.nombre_padre=response.data.familiares[0].nombre_padre;
+                        this.alu.familiares.edad_padre=response.data.familiares[0].edad_padre;
+                        this.alu.familiares.ocupacion_padre=response.data.familiares[0].ocupacion_padre;
+                        this.alu.familiares.lugar_residencia_padre=response.data.familiares[0].lugar_residencia_padre;
+                        this.alu.familiares.nombre_madre=response.data.familiares[0].nombre_madre;
+                        this.alu.familiares.edad_madre=response.data.familiares[0].edad_madre;
+                        this.alu.familiares.ocupacion_madre=response.data.familiares[0].ocupacion_madre;
+                        this.alu.familiares.lugar_residencia_madre=response.data.familiares[0].lugar_residencia_madre;
+                        this.alu.familiares.no_hermanos=response.data.familiares[0].no_hermanos;
+                        this.alu.familiares.lugar_ocupas=response.data.familiares[0].lugar_ocupas;
+                        this.alu.familiares.id_opc_vives=response.data.familiares[0].id_opc_vives;
+                        this.alu.familiares.no_personas=response.data.familiares[0].no_personas;
+                        this.alu.familiares.etnia_indigena=response.data.familiares[0].etnia_indigena;
+                        this.alu.familiares.cual_etnia=response.data.familiares[0].cual_etnia;
+                        this.alu.familiares.hablas_lengua_indigena=response.data.familiares[0].hablas_lengua_indigena;
+                        this.alu.familiares.sostiene_economia_hogar=response.data.familiares[0].sostiene_economia_hogar;
+                        this.alu.familiares.id_familia_union=response.data.familiares[0].id_familia_union;
+                        this.alu.familiares.nombre_tutor=response.data.familiares[0].nombre_tutor;
+                        this.alu.familiares.id_parentesco=response.data.familiares[0].id_parentesco;
+                        this.alu.familiares.id_alumno=response.data.familiares[0].id_alumno;
+                        this.alu.estudio.id_exp_habitos_estudio=response.data.estudio[0].id_exp_habitos_estudio;
+                        this.alu.estudio.tiempo_empleado_estudiar=response.data.estudio[0].tiempo_empleado_estudiar;
+                        this.alu.estudio.id_opc_intelectual=response.data.estudio[0].id_opc_intelectual;
+                        this.alu.estudio.forma_estudio=response.data.estudio[0].forma_estudio;
+                        this.alu.estudio.tiempo_libre=response.data.estudio[0].tiempo_libre;
+                        this.alu.estudio.asignatura_preferida=response.data.estudio[0].asignatura_preferida;
+                        this.alu.estudio.porque_asignatura=response.data.estudio[0].porque_asignatura;
+                        this.alu.estudio.asignatura_dificil=response.data.estudio[0].asignatura_dificil;
+                        this.alu.estudio.porque_asignatura_dificil=response.data.estudio[0].porque_asignatura_dificil;
+                        this.alu.estudio.opinion_tu_mismo_estudiante=response.data.estudio[0].opinion_tu_mismo_estudiante;
+                        this.alu.estudio.id_alumno=response.data.estudio[0].id_alumno;
+                        this.alu.integral.id_exp_formacion_integral=response.data.integral[0].id_exp_formacion_integral;
+                        this.alu.integral.practica_deporte=response.data.integral[0].practica_deporte;
+                        this.alu.integral.especifica_deporte=response.data.integral[0].especifica_deporte;
+                        this.alu.integral.practica_artistica=response.data.integral[0].practica_artistica;
+                        this.alu.integral.especifica_artistica=response.data.integral[0].especifica_artistica;
+                        this.alu.integral.pasatiempo=response.data.integral[0].pasatiempo;
+                        this.alu.integral.actividades_culturales=response.data.integral[0].actividades_culturales;
+                        this.alu.integral.cuales_act=response.data.integral[0].cuales_act;
+                        this.alu.integral.estado_salud=response.data.integral[0].estado_salud;
+                        this.alu.integral.enfermedad_cronica=response.data.integral[0].enfermedad_cronica;
+                        this.alu.integral.especifica_enf_cron=response.data.integral[0].especifica_enf_cron;
+                        this.alu.integral.enf_cron_padre=response.data.integral[0].enf_cron_padre;
+                        this.alu.integral.especifica_enf_cron_padres=response.data.integral[0].especifica_enf_cron_padres;
+                        this.alu.integral.operacion=response.data.integral[0].operacion;
+                        this.alu.integral.deque_operacion=response.data.integral[0].deque_operacion;
+                        this.alu.integral.enfer_visual=response.data.integral[0].enfer_visual;
+                        this.alu.integral.especifica_enf=response.data.integral[0].especifica_enf;
+                        this.alu.integral.usas_lentes=response.data.integral[0].usas_lentes;
+                        this.alu.integral.medicamento_controlado=response.data.integral[0].medicamento_controlado;
+                        this.alu.integral.especifica_medicamento=response.data.integral[0].especifica_medicamento;
+                        this.alu.integral.estatura=response.data.integral[0].estatura;
+                        this.alu.integral.peso=response.data.integral[0].peso;
+                        this.alu.integral.accidente_grave=response.data.integral[0].accidente_grave;
+                        this.alu.integral.relata_breve=response.data.integral[0].relata_breve;
+                        this.alu.integral.id_expbebidas=response.data.integral[0].id_expbebidas;
+                        this.alu.integral.id_alumno=response.data.integral[0].id_alumno;
+                        this.alu.area.id_exp_area_psicopedagogica=response.data.area[0].id_exp_area_psicopedagogica;
+                        this.alu.area.rendimiento_escolar=response.data.area[0].rendimiento_escolar;
+                        this.alu.area.dominio_idioma=response.data.area[0].dominio_idioma;
+                        this.alu.area.otro_idioma=response.data.area[0].otro_idioma;
+                        this.alu.area.conocimiento_compu=response.data.area[0].conocimiento_compu;
+                        this.alu.area.aptitud_especial=response.data.area[0].aptitud_especial;
+                        this.alu.area.comprension=response.data.area[0].comprension;
+                        this.alu.area.preparacion=response.data.area[0].preparacion;
+                        this.alu.area.estrategias_aprendizaje=response.data.area[0].estrategias_aprendizaje;
+                        this.alu.area.organizacion_actividades=response.data.area[0].organizacion_actividades;
+                        this.alu.area.concentracion=response.data.area[0].concentracion;
+                        this.alu.area.solucion_problemas=response.data.area[0].solucion_problemas;
+                        this.alu.area.condiciones_ambientales=response.data.area[0].condiciones_ambientales;
+                        this.alu.area.busqueda_bibliografica=response.data.area[0].busqueda_bibliografica;
+                        this.alu.area.trabajo_equipo=response.data.area[0].trabajo_equipo;
+                        this.alu.area.id_alumno=response.data.area[0].id_alumno;
                         ///CATALOGOS
                         this.periodos=response.data.periodos;
                         this.semestres=response.data.semestres;
@@ -1087,102 +1197,61 @@
                     }).catch(error => {
                     });
                 },
+                updateDatos:function () {
+                    //this.$bvToast.show('mensaje');
+                    //this.makeToast();
+                    axios.post(this.act,{alu:this.alu},{
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'text'
+                        }}).then(response=> {
+                       // $('#mensaje').toast('show');
+                        //this.$toast.success('Actualizado correctamente');
+                        this.popToast();
+                        if(this.mensaje==true)
+                        {
+                            window.location='inicioalu';
+                        }
+                    });
+                },
                 borra_institucion:function(){
                     this.alu.academicos.institucion=null;
                     this.alu.academicos.semestres_cursados=null;
                 },
-                siguiente:function (cat) {
-                    switch ( cat) {
-                        case 'academico':
-                            this.actacademico=true;
-                            this.disacademico=false;
-                            this.actgenerales=false;
-                            break;
-                        case 'familiares':
-                            this.actfamiliares=true;
-                            this.disfamiliares=false;
-                            this.actacademico=false;
-                            break;
-                        case 'estudio':
-                            this.actfamiliares=false;
-                            this.actestudio=true;
-                            this.disestudio=false;
-                            break;
-                        case 'integral':
-                            this.actestudio=false;
-                            this.actintegral=true;
-                            this.disintegral=false;
-                            break;
-                        case 'area':
-                            this.actintegral=false;
-                            this.actarea=true;
-                            this.disarea=false;
-                            break;
-
-                    }
+                makeToast() {
+                    this.$bvToast.toast('Datos', {
+                        variant: 'success',
+                        solid: true,
+                        noCloseButton: true
+                    });
                 },
-                categoria:function (cat) {
-                    switch (cat) {
-                        case 'generales':
-                            this.actgenerales=true;
-                            this.actacademico=false;
-                            this.actfamiliares=false;
-                            this.actestudio=false;
-                            this.actintegral=false;
-                            this.actarea=false;
-                            break;
-                        case 'academico':
-                            this.actacademico=true;
-                            this.actfamiliares=false;
-                            this.actgenerales=false;
-                            this.actestudio=false;
-                            this.actintegral=false;
-                            this.actarea=false;
-                            break;
-                        case 'familiares':
-                            this.actfamiliares=true;
-                            this.actacademico=false;
-                            this.actgenerales=false;
-                            this.actestudio=false;
-                            this.actintegral=false;
-                            this.actarea=false;
-                            break;
-                        case 'estudio':
-                            this.actestudio=true;
-                            this.actacademico=false;
-                            this.actfamiliares=false;
-                            this.actgenerales=false;
-                            this.actintegral=false;
-                            this.actarea=false;
-                            break;
-                        case 'integral':
-                            this.actintegral=true;
-                            this.actacademico=false;
-                            this.actfamiliares=false;
-                            this.actgenerales=false;
-                            this.actestudio=false;
-                            this.actarea=false;
-                            break;
-                        case 'area':
-                            this.actarea=true;
-                            this.actacademico=false;
-                            this.actfamiliares=false;
-                            this.actgenerales=false;
-                            this.actintegral=false;
-                            this.actestudio=false;
-                            break;
+                popToast() {
+                    const h = this.$createElement;
+                    const vNodesMsg = h(
+                        'p',
+                        { class: ['text-center', 'mb-0'] },
+                        [
+                            h('b-spinner', { props: { type: 'grow', small: true } }),
+                            h('strong', {}, '     Datos actualizados correctamente    '),
+                            h('b-spinner', { props: { type: 'grow', small: true } })
+                        ]
+                    );
+                    this.$bvToast.toast([vNodesMsg], {
+                        solid: true,
+                        variant: 'success',
+                        toaster:'b-toaster-top-full',
+                        noCloseButton: true,
+                        noHoverPause:false,
+                        autoHideDelay:'9000',
 
-                    }
+                    });
+                   // console.log(this.$bvToast.toast)
+                    this.mensaje=true;
+                   //
                 },
-                Guardar:function () {
-                    axios.post(this.ruta,{alu:this.alu}).then(response=>{
-                        window.location='inicioalu';
-                    }).catch(error=>{ this.getPosts(); });
-                }
-            }
+            },
+
         });
     </script>
 
 @endsection
-
-

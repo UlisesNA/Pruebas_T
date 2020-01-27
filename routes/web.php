@@ -88,11 +88,15 @@ Route::post('/uE','ProfesorController@updateEstado');
 Route::get('/getAll','ProfesorController@getAll');
 Route::get('/setAlumnId','ProfesorController@setAlumnoId');
 
-Route::Resource('/Alum','ViewAlumnosController');
+//Route::Resource('/Alum','ViewAlumnosController');
 //Route::get('/Alum/{{alumno}}','ViewAlumnosController@store');
+Route::get('/Alum','ViewAlumnosController@llenar');
+Route::get('/AlumActualizar','ViewAlumnosController@actualizar');
 
 Route::post('/ver','ViewAlumnosController@veralumno');
 Route::post('/actualiza','ViewAlumnosController@actualiza');
+Route::post('/guardar','ViewAlumnosController@store');
+
 
 Route::post('/UpdateAlum','ViewAlumnosController@updateExp');
 Route::post('/cerrar','ViewAlumnosController@cerrar');
@@ -102,6 +106,11 @@ Route::Resource('/alumnos','AlumnosController');
 Route::Resource('/AlumUpdate','UpdateAlumnosController');
 Route::Resource('/Alumno','LoginAlumnosController');
 Route::Resource('/panel','PanelAlumnoController');
+Route::get('/getDatos','PanelAlumnoController@datosAlu');
+Route::get('/getAlumno','PanelAlumnoController@datosPrincipales');
+
+Route::get('/inicioalu','PanelAlumnoController@principal');
+
 Route::get('/getAl', 'AlumnosController@getAl');
 Route::get('/gen', 'AlumnosController@getGen');
 Route::get('/list', 'AlumnosController@getlist');
@@ -121,6 +130,7 @@ Route::get('asignatutores/{id}/destroy',[
 ]);
 Route::get("pdf/all","PdfController@pdf_all")->name("pdf_all");
 Route::post("pdf/lista","PdfController@pdf_lista")->name("pdf_lista");
+Route::post("pdf/alumno","PdfController@pdf_alumno")->name("pdf_alumno");
 
 
 ?>

@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.9.0",
-    "highcharts": "^7.1.2"
+    "highcharts": "^7.1.2",
+    "vue-bootstrap-toasts": "^1.0.7"
   }
 }

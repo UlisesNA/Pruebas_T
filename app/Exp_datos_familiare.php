@@ -15,15 +15,15 @@ class Exp_datos_familiare extends Model
         "id_parentesco","id_alumno"];
 
     public function vives (){
-        return $this->hasMany('App\Exp_opc_vives','id_opc_vives','id_opc_vives');
+        return $this->hasOne('App\Exp_opc_vives','id_opc_vives','id_opc_vives');
 
     }
     public function union (){
-        return $this->hasMany('App\Exp_familia_union','id_familia_union','id_familia_union');
+        return $this->hasOne('App\Exp_familia_union','id_familia_union','id_familia_union');
 
     }
     public function parentesco (){
-        return $this->hasMany('App\Exp_parentesco','id_parentesco','id_parentesco');
+        return $this->hasOne('App\Exp_parentesco','id_parentesco','id_parentesco');
 
     }
 }

@@ -37,8 +37,8 @@ class Exp_generale extends Model
         return $this->hasMany('App\Exp_opc_nivel_socio','id_nivel_economico','id_nivel_economico');
 
     }
-    public function turno (){
-        return $this->hasMany('App\Exp_turno','id_turno','id_turno');
+    public function turno1 (){
+        return $this->hasOne('App\Exp_turno','id_turno','turno');
 
     }
 }

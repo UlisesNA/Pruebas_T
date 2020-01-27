@@ -7,6 +7,26 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+import Vue from 'vue';
+
+import VueBootstrap from "vue-bootstrap-toasts";
+
+Vue.use(VueBootstrap);
+
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+
+// Install BootstrapVue
+Vue.use(BootstrapVue);
+// Optionally install the BootstrapVue icon components plugin
+Vue.use(IconsPlugin);
+import 'bootstrap-vue/dist/bootstrap-vue.css';
+
+
+
+/**import VueBootstrapToasts from "vue-bootstrap-toasts";
+Vue.use(VueBootstrapToasts);
+
+Vue.component('toasts', { /* ... */ 
 
 /**
  * The following block of code may be used to automatically register your
@@ -27,6 +47,4 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-const app = new Vue({
-    el: '#app',
-});
+

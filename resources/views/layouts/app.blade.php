@@ -66,7 +66,7 @@
                     <!-- Authentication Links -->
                     @if (Session::has('cuenta'))
                         <li class="nav-item">
-                            <a class="nav-link" href="panel">Inicio</a>
+                            <a class="nav-link" href="/inicioalu">Inicio</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle text-capitalize" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
