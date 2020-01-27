@@ -21,6 +21,7 @@ use App\Exp_opc_nivel_socio;
 use App\Exp_opc_tiempo;
 use App\Exp_opc_vives;
 use App\Exp_parentesco;
+use App\Exp_tiempoestudia;
 use App\Exp_turno;
 use Illuminate\Support\Carbon;
 use App\gnral_alumnos;
@@ -42,6 +43,7 @@ class ViewAlumnosController extends Controller
     public function actualizar()
     {
         return view('alumnos.expedienteUpdate');
+
     }
     public function create()
     {

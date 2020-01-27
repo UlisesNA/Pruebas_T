@@ -19,12 +19,40 @@
             <div class="row">
                 <div class="col-12">
                     {{ csrf_field() }}
+<<<<<<< HEAD
                     <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade" v-bind:class="{show:actgenerales,active:actgenerales}" id="exp-generales" role="tabpanel" aria-labelledby="exp-generales-tab">
                             <div class="" >
                                 <div class="row pt-3 pr-3 pl-3">
                                     <div class=" col-12 align-content-center">
                                         <h4 class="text-center alert alert-primary pt-4"><b>Datos Generales</b></h4>
+=======
+                <div class="tab-content text-justify" id="v-pills-tabContent">
+                    <div class="tab-pane fade show active" id="v-pills-general" role="tabpanel" aria-labelledby="v-pills-general-tab">
+                        <div class="card" >
+                            <div class="row pt-3 pr-3 pl-3">
+                                <div class=" col-12 align-content-center">
+                                    <h4 class="text-center alert alert-primary pt-4"><b>Datos Generales</b></h4>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="nombre">Nombre *</label>
+                                        <input type="text" id="nombre" name="nombre" value="{{isset($datos[0])?$datos[0]->nombre:Session::get('alumno')}}" class="form-control" placeholder="Nombre" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="sexo">Sexo *</label>
+                                        <select name="sexo" id="sexo"  class="custom-select custom-select-md" required>
+                                            <option value="" selected>Elija un sexo</option>
+                                            <option value="1">Masculino</option>
+                                            <option value="2">Femenino</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="fn">Fecha de nacimiento *</label>
+                                        <input type="date" value="{{isset($datos[0])?$datos[0]->fecha_nacimientos:''}}" id="fn" name="fecha_nacimientos" class="form-control" placeholder="Fecha de nacimiento" required>
+>>>>>>> b57afab83f05690fc080fe3a8a70ec14d929d1dd
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -110,6 +138,125 @@
                                             <label for="tel-casa">Tel. Casa</label>
                                             <input type="text" v-model="alu.generales.tel_casa" id="tel-casa" name="tel_casa" class="form-control" placeholder="Tel. Casa">
                                         </div>
+<<<<<<< HEAD
+=======
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="tel-casa">Tel. Casa</label>
+                                        <input type="text" value="{{isset($datos[0])?$datos[0]->tel_casa:''}}" id="tel-casa" name="tel_casa" class="form-control" placeholder="Tel. casa">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="cel">Celular *</label>
+                                        <input type="text" value="{{isset($datos[0])?$datos[0]->cel:''}}" id="cel" name="cel" class="form-control" placeholder="Cel" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="carrera">Carrera *</label>
+                                        <select name="carrera" id="carrera" value="{{isset($datos[0])?$datos[0]->id_carrera:''}}" class="custom-select custom-select-md" required>
+                                            <option value="" >Elija una carrera</option>
+                                            @foreach ($carreras as $dato)
+                                                <option value="{{$dato->id_carrera}}" >{{$dato->nombre}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="periodo">Periodo *</label>
+                                        <select name="periodo" id="periodo" value="{{isset($datos[0])?$datos[0]->id_periodo:''}}" class="custom-select custom-select-md" required>
+                                            <option value="" selected>Elija un periodo</option>
+                                            @foreach ($periodos as $dato)
+                                                <option value="{{$dato->id_periodo}}" >{{$dato->periodo}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="semestre">Semestre *</label>
+                                        <select name="semestre" id="semestre" class="custom-select custom-select-md" required>
+                                            <option value="" selected>Elija un semestre</option>
+                                            @foreach ($semestres as $dato)
+                                                <option value="{{$dato->id_semestre}}" >{{$dato->descripcion}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="grupo">Grupo *</label>
+                                        <select name="grupo" id="grupo" value="{{isset($datos[0])?$datos[0]->id_grupo:''}}" class="custom-select custom-select-md" required>
+                                            <option value="" selected>Elija un grupo</option>
+                                            @foreach ($grupos as $dato)
+                                                <option value="{{$dato->id_grupo}}" >{{$dato->grupo}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="turno">Turno</label>
+                                        <select name="turno" id="turno" class="custom-select custom-select-md">
+                                            <option value="" selected>Elija turno</option>
+                                            @foreach ($turno as $dato)
+                                                <option value="{{$dato->id_turno}}" >{{$dato->descripcion_turno}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="estado">Estado académico*</label>
+                                        <select id="estado" name="estado" class="custom-select custom-select-md" required>
+                                            <option value="" selected>Elija estado académico</option>
+                                            <option value="1">Regular</option>
+                                            <option value="2">Irregular</option>
+                                            <option value="3">Suspención</option>
+                                            <option value="4">Baja temporal</option>
+                                            <option value="5">Baja definitiva</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="noC">No. Cuenta *</label>
+                                        <input type="text" id="noC"  name="no_cuenta" class="form-control" value="{{isset($datos[0])?$datos[0]->no_cuenta:Session::get('cuenta')}}" placeholder="No. cuenta" required>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label for="poblacion">Tipo de población</label>
+                                        <select name="poblacion" id="poblacion" class="custom-select custom-select-md">
+                                            <option value="" selected>Elija el tipo</option>
+                                            <option value="1">Rural</option>
+                                            <option value="2">Urbana</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="NSE">Nivel socio-económico</label>
+                                        <select name="nivel_socioeconomico" id="NSE" class="custom-select custom-select-md">
+                                            <option value="" >Elija el nivel socio-económico</option>
+                                            @foreach ($niveleconomico as $dato)
+                                                <option value="{{$dato->id_nivel_economico}}" >{{$dato->desc_opc}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="trabaja">Trabaja</label>
+                                        <select name="trabaja" id="trabaja" class="custom-select custom-select-md">
+                                            <option value="" selected>Elija una opción</option>
+                                            <option value="1">Si</option>
+                                            <option value="2">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="ocupacion">
+                                    <div class="col-md-6">
+                                        <label for="ocupacion">Ocupación</label>
+                                        <input type="text" value="{{isset($datos[0])?$datos[0]->ocupacion:''}}" name="ocupacion" class="form-control" placeholder="Ocupación">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="horario">Horario de trabajo</label>
+                                        <input type="text" value="{{isset($datos[0])?$datos[0]->horario:''}}" id="horario" name="horario" class="form-control" placeholder="Horario">
+>>>>>>> b57afab83f05690fc080fe3a8a70ec14d929d1dd
                                     </div>
                                     <div class="row">
                                         <div class="col-md-3">
@@ -869,7 +1016,6 @@
                     </div>
                 </div>
             </div>
-            <pre>@{{ alu }}</pre>
         </div>
     </div>
     <script>
