@@ -52,7 +52,6 @@
                                     <div class="col-md-4">
                                         <label for="fn">Fecha de nacimiento *</label>
                                         <input type="date" value="{{isset($datos[0])?$datos[0]->fecha_nacimientos:''}}" id="fn" name="fecha_nacimientos" class="form-control" placeholder="Fecha de nacimiento" required>
->>>>>>> b57afab83f05690fc080fe3a8a70ec14d929d1dd
                                     </div>
                                 </div>
                                 <div class="card-body">

@@ -17,6 +17,7 @@ use App\DatosPersonales;
 use App\Alumno;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class AlumnosController extends Controller
 {
@@ -40,24 +41,11 @@ class AlumnosController extends Controller
         return view('alumno.index');
     }
 
-    public function listaGeneral()
-    {
-        $carrera=DB::table('gnral_jefes_periodos')
-            ->join('gnral_personales','gnral_personales.id_personal','=','gnral_jefes_periodos.id_personal')
-            ->where('gnral_jefes_periodos.id_periodo','=','2')
-            ->where('gnral_personales.tipo_usuario','=',Auth::user()->id)
-            ->select('gnral_jefes_periodos.id_carrera')
-            ->get();
-        $alumnos= gnral_alumnos::where('id_carrera',$carrera[0]->id_carrera)->orderby('apaterno','asc')->get();
-
-        return $alumnos;
-
-    }
     public function generaciones()
     {
         $generaciones=Exp_generacion::all();
         $generaciones->map(function ($value,$key){
-            $value->grupos=Exp_asigna_generacion::where('id',Auth::user()->id)->where('id_generacion',$value->id_generacion)->get();
+            $value->grupos=Exp_asigna_generacion::where('id_jefe_periodo',Session::get('id_jefe_periodo'))->where('id_generacion',$value->id_generacion)->get();
 
         });
         return $generaciones;
@@ -66,12 +54,8 @@ class AlumnosController extends Controller
     {
 
         //dd($request->generacion);
-        $carrera=DB::table('gnral_jefes_periodos')
-            ->join('gnral_personales','gnral_personales.id_personal','=','gnral_jefes_periodos.id_personal')
-            ->where('gnral_jefes_periodos.id_periodo','=','2')
-            ->where('gnral_personales.tipo_usuario','=',Auth::user()->id)
-            ->select('gnral_jefes_periodos.id_carrera')
-            ->get();
+
+        $carrera=DB::select('SELECT id_carrera from gnral_jefes_periodos where id_jefe_periodo='.Session::get('id_jefe_periodo'));
 
         if($request->generacion>2000)
         {

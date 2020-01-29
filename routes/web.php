@@ -103,7 +103,6 @@ Route::post('/cerrar','ViewAlumnosController@cerrar');
 Route::post('/UpdateA','TutorExpedienteController@mostrar');
 
 Route::Resource('/alumnos','AlumnosController');
-Route::get('/alumnosgen','AlumnosController@listaGeneral');
 Route::get('/generaciones','AlumnosController@generaciones');
 Route::post('/alumnosgeneracion','AlumnosController@alumnosgeneracion');
 
