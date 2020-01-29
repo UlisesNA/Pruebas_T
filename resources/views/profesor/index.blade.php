@@ -64,7 +64,7 @@
                                             <button class="btn btn-outline-primary m-1" @click="ver(alumno)" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="far fa-edit"></i></button>
                                             <button class="btn btn-outline-danger" @click="pdfAlumno(alumno)" data-toggle="tooltip" data-placement="bottom" title="Expediente"><i class="far fa-file-pdf"></i></button>
                                         </td>
-                                        <td v-else class="text-center"><i class="fas h4 fa-times text-danger pt-2"></i></td>
+                                        <td v-else class="text-center"><i class="fas h4 fa-times text-danger pt-2" data-toggle="tooltip" data-placement="bottom" title="Expediente sin llenar"></i></td>
                                         <td class="text-center"><button class="btn btn-outline-secondary"  @click="getAlumnos2(alumno)"><i class="fas fa-check-square"></i></button></td>
                                     </tr>
                                     </tbody>

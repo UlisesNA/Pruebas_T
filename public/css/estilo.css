@@ -2,3 +2,20 @@
     height: 250px;
     width: 329px;
 }
+/*TABLA SCROLL*/
+.header_fijo {
+    table-layout: fixed;
+    border-collapse: separate;
+}
+.header_fijo thead tr {
+    position: center;
+}
+.header_fijo tbody {
+    display: block;
+    overflow: auto;
+    height: 400px;
+}
+
+.no_link_decor{
+    text-decoration: none;
+}

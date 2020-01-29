@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exp_asigna_generacion;
+use App\gnral_alumnos;
 use App\Grupo;
 use Illuminate\Http\Request;
 use App\AsignaCoordinador;
@@ -14,7 +15,9 @@ use App\Periodo;
 use App\User;
 use App\DatosPersonales;
 use App\Alumno;
-use Auth;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
 class AlumnosController extends Controller
 {
     /**
@@ -26,30 +29,71 @@ class AlumnosController extends Controller
     {
         //
         //$request->user()->authorizeRoles('1');
-        $alumnosAll=Alumno::lista_general();
-        $alumnosGrup=[];//AsignaTutor::getAllGruposAsigTutores();
-        $generaciones=Exp_generacion::all();
-        $generaciones->load('getGrupo');
-        //dd($generaciones);
+        //$alumnosAll=Alumno::lista_general();
+        /*$generaciones=Exp_asigna_generacion::where('id',\Illuminate\Support\Facades\Auth::user()->id)->get();
+        $generaciones->load('getGeneracion');
+        dd($generaciones);*/
         //$listaGen=AsignaGeneracion::getAll();
         //$alumnosSem=AsignaSemestre::getAl();
         //dd($alumnosSem);
         //dd($arr);
-        return view('alumno.index')->with(compact('alumnosAll','alumnosGrup','generaciones'));
+        return view('alumno.index');
     }
-    public function getAl(Request $id)
+
+    public function listaGeneral()
     {
-        //dd($id->id);
-        $alumnosSem=AsignaSemestre::getAl($id->id);
-        return $alumnosSem;
-        //return 'dsads';
+        $carrera=DB::table('gnral_jefes_periodos')
+            ->join('gnral_personales','gnral_personales.id_personal','=','gnral_jefes_periodos.id_personal')
+            ->where('gnral_jefes_periodos.id_periodo','=','2')
+            ->where('gnral_personales.tipo_usuario','=',Auth::user()->id)
+            ->select('gnral_jefes_periodos.id_carrera')
+            ->get();
+        $alumnos= gnral_alumnos::where('id_carrera',$carrera[0]->id_carrera)->orderby('apaterno','asc')->get();
+
+        return $alumnos;
+
     }
-    public function getGen(Request $id)
+    public function generaciones()
     {
-        //dd($id->id);
-        $prof=AsignaGeneracion::getAll($id);
-        return $prof;
-        //return 'dsads';
+        $generaciones=Exp_generacion::all();
+        $generaciones->map(function ($value,$key){
+            $value->grupos=Exp_asigna_generacion::where('id',Auth::user()->id)->where('id_generacion',$value->id_generacion)->get();
+
+        });
+        return $generaciones;
+    }
+    public function alumnosgeneracion(Request $request)
+    {
+
+        //dd($request->generacion);
+        $carrera=DB::table('gnral_jefes_periodos')
+            ->join('gnral_personales','gnral_personales.id_personal','=','gnral_jefes_periodos.id_personal')
+            ->where('gnral_jefes_periodos.id_periodo','=','2')
+            ->where('gnral_personales.tipo_usuario','=',Auth::user()->id)
+            ->select('gnral_jefes_periodos.id_carrera')
+            ->get();
+
+        if($request->generacion>2000)
+        {
+            $alumnos=DB::table('gnral_alumnos')
+                ->where('gnral_alumnos.id_carrera',$carrera[0]->id_carrera)
+                ->where(DB::raw('substr(gnral_alumnos.cuenta, 1, 4)'), '=' , $request->generacion)
+                ->select('gnral_alumnos.nombre', 'gnral_alumnos.apaterno', 'gnral_alumnos.amaterno', 'gnral_alumnos.cuenta')
+                ->orderBy('gnral_alumnos.apaterno','asc')
+                ->get();
+        }
+        else{
+            $alumnos=DB::table('gnral_alumnos')
+                ->join('exp_asigna_alumnos','exp_asigna_alumnos.id_alumno','=','gnral_alumnos.id_alumno')
+                ->where('gnral_alumnos.id_carrera',$carrera[0]->id_carrera)
+                ->where('exp_asigna_alumnos.id_asigna_generacion','=',$request->generacion)
+                ->select('gnral_alumnos.nombre', 'gnral_alumnos.apaterno', 'gnral_alumnos.amaterno', 'gnral_alumnos.cuenta')
+                ->orderBy('gnral_alumnos.apaterno','asc')
+                ->get();
+        }
+
+
+        return $alumnos;
     }
     public function getlist(Request $id)
     {

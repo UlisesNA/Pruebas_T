@@ -43,14 +43,12 @@ class ProfesorController extends Controller
     }
     public function alumnos1(Request $request)
     {
-        //dd($request);
         return (DB::select('SELECT gnral_carreras.nombre as carre,gnral_semestres.descripcion as sem,gnral_grupos.grupo as grup,gnral_alumnos.*
                                     FROM gnral_carreras,gnral_semestres,gnral_alumnos,gnral_grupos
                                     WHERE gnral_carreras.id_carrera=gnral_alumnos.id_carrera
                                     and gnral_semestres.id_semestre=gnral_alumnos.id_semestre
                                     and gnral_grupos.id_grupo=gnral_alumnos.grupo
                                     and gnral_alumnos.id_alumno='.$request->id_alumno));
-
     }
     public  function grupos()
     {
@@ -60,7 +58,7 @@ class ProfesorController extends Controller
                 gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal JOIN gnral_carreras on
                 gnral_carreras.id_carrera=gnral_jefes_periodos.id_carrera JOIN exp_asigna_generacion ON 
                 exp_asigna_generacion.id_asigna_generacion=exp_asigna_tutor.id_asigna_generacion JOIN exp_generacion
-                ON exp_generacion.id_generacion=exp_asigna_generacion.id_generacion where gnral_personales.tipo_usuario='.Auth::user()->id);
+                ON exp_generacion.id_generacion=exp_asigna_generacion.id_generacion where exp_asigna_tutor.deleted_at is null and gnral_personales.tipo_usuario='.Auth::user()->id);
 
         return $grupos;
     }
