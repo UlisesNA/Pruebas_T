@@ -10,7 +10,7 @@ use App\AsignaExpediente;
 use App\AsignaCoordinador;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Session;
+use Illuminate\Support\Facades\Session;
 
 
 class ProfesorController extends Controller
@@ -58,7 +58,9 @@ class ProfesorController extends Controller
                 gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal JOIN gnral_carreras on
                 gnral_carreras.id_carrera=gnral_jefes_periodos.id_carrera JOIN exp_asigna_generacion ON 
                 exp_asigna_generacion.id_asigna_generacion=exp_asigna_tutor.id_asigna_generacion JOIN exp_generacion
-                ON exp_generacion.id_generacion=exp_asigna_generacion.id_generacion where exp_asigna_tutor.deleted_at is null and gnral_personales.tipo_usuario='.Auth::user()->id);
+                ON exp_generacion.id_generacion=exp_asigna_generacion.id_generacion where 
+                gnral_jefes_periodos.id_periodo='.Session::get('id_periodo').' and 
+                exp_asigna_tutor.deleted_at is null and gnral_personales.tipo_usuario='.Auth::user()->id);
 
         return $grupos;
     }

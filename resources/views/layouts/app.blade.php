@@ -177,7 +177,7 @@
                                         </div>
                                     </div>
                                 @endif
-                                @if (Auth::user()->tipo_usuario ==2 && !Session::get('jefe'))
+                                @if (Session::get('tutor'))
                                     <li class="nav-item">
                                         <a class="nav-link" href="tutorvista">Tutorias</a>
                                     </li>

@@ -54,9 +54,7 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
-
                             </div>
                             <div class="col-md-2 header_fijo">
                                 <table class="table table-bordered ">
