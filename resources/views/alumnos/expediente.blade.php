@@ -63,7 +63,7 @@
                                         <div class="col-md-4">
                                             <label for="direccion">Dirección *</label>
                                             <input type="text" v-model="alu.generales.direccion"  id="direccion" name="direccion" class="form-control"  placeholder="Dirección" required>
-                                            <small class="form-text text-danger" v-if="alu.generales.direccion==null">Colocar una dirección</small>
+                                            <small class="form-text text-danger" v-if='alu.generales.direccion==null || alu.generales.direccion=="" '>Colocar una dirección</small>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -143,7 +143,7 @@
                                                 <option value="4">Baja temporal</option>
                                                 <option value="5">Baja definitiva</option>
                                             </select>
-                                            <small class="form-text text-danger" v-if="alu.generales.estado==null">Elija un estado académico</small>
+                                            <small class="form-text text-danger" v-if='(alu.generales.estado==null || alu.generales.estado=="null")'>Elija un estado académico</small>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="noC">No. Cuenta</label>
@@ -212,7 +212,7 @@
                                                 <option value="1">Si</option>
                                                 <option value="2"  @click="alu.generales.tipo_beca=null">No</option>
                                             </select>
-                                            <small class="form-text text-danger" v-if="alu.generales.beca==null">Elija una opción</small>
+                                            <small class="form-text text-danger" v-if='alu.generales.beca==null || alu.generales.beca=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -232,7 +232,7 @@
                                                 <option value="1">Si</option>
                                                 <option value="2"  @click="alu.generales.tot_repe=null">No</option>
                                             </select>
-                                            <small class="form-text text-danger" v-if="alu.generales.materias_repeticion==null">Elija una opción</small>
+                                            <small class="form-text text-danger" v-if='alu.generales.materias_repeticion==null || alu.generales.materias_repeticion=="null"'>Elija una opción</small>
                                         </div>
                                         <div class="col-md-4" v-if="alu.generales.materias_repeticion==1">
                                             <label for="tot_repe">Número de materias en repetición</label>
@@ -251,7 +251,7 @@
                                                 <option value="1">Si</option>
                                                 <option value="2"  @click="alu.generales.tot_espe=null">No</option>
                                             </select>
-                                            <small class="form-text text-danger" v-if="alu.generales.materias_especial==null">Elija una opción</small>
+                                            <small class="form-text text-danger" v-if='alu.generales.materias_especial==null || alu.generales.materias_especial=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
