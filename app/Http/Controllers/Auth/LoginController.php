@@ -50,10 +50,12 @@ class LoginController extends Controller
                      'gnral_carreras.nombre as carrera','gnral_jefes_periodos.id_periodo','gnral_jefes_periodos.id_jefe_periodo')
                  ->get();
              $tutor=GnralPersonales::where('tipo_usuario',Auth::user()->id)->get();
-             $jefeperiodo=GnralJefePeriodos::where('id_periodo',Session::get('id_periodo'))->get();
 
              $estutor=DB::select('SELECT id_asigna_tutor from exp_asigna_tutor where id_personal='.$tutor[0]->id_personal.' 
-             AND id_jefe_periodo in (Select id_jefe_periodo from gnral_jefes_periodos where id_periodo='.Session::get('id_periodo').')');
+             AND exp_asigna_tutor.deleted_at is null and id_jefe_periodo in (Select id_jefe_periodo from gnral_jefes_periodos where id_periodo='.Session::get('id_periodo').')');
+
+             $escoordinador=DB::select('SELECT id_asigna_coordinador from exp_asigna_coordinador where id_personal='.$tutor[0]->id_personal.' 
+             AND exp_asigna_coordinador.deleted_at is null and id_jefe_periodo in (Select id_jefe_periodo from gnral_jefes_periodos where id_periodo='.Session::get('id_periodo').')');
 
 
              if($jefe->count()>0 && $jefe[0]->id_departamento==2){
@@ -63,14 +65,21 @@ class LoginController extends Controller
                  Session::put('jefe',$jefe[0]->id_carrera);
                  Session::put('nombre',$jefe[0]->nombre);
                  Session::put('id_jefe_periodo',$jefe[0]->id_jefe_periodo);
-                 return redirect('/jefevista');
+                 return view('home');
              }
-             else if(count($estutor)>0){
+
+             if(count($estutor)>0){
                  //Session::put('coordinador',AsignaCoordinador::isCoordinador());
-                 Session::put('tutor');
+                 Session::put('tutor',$tutor[0]->id_personal);
                  Session::put('nombre',$tutor[0]->nombre);
-                 return redirect('/tutorvista');
              }
+             if(count($escoordinador)>0){
+                 //Session::put('coordinador',AsignaCoordinador::isCoordinador());
+                 Session::put('coordinador',count($escoordinador));
+                 Session::put('nombre',$tutor[0]->nombre);
+
+             }
+             return view('home');
          }
 
        /* if ($user->id_rol==1) {

@@ -110,20 +110,20 @@ Route::post('/creargrupo','AlumnosController@creargrupo');
 Route::post('/buscaalumnos','AlumnosController@BuscarAlumnosGrupo');
 Route::post('/asignaralumnos','AlumnosController@AsignarAlumnos');
 Route::post('/eliminaralumno','AlumnosController@EliminaAlumnoGrupo');
+Route::get('/list', 'AlumnosController@getlist');
 
 
-
-
-
-Route::Resource('/AlumUpdate','UpdateAlumnosController');
-Route::Resource('/Alumno','LoginAlumnosController');
 Route::Resource('/panel','PanelAlumnoController');
 Route::get('/getDatos','PanelAlumnoController@datosAlu');
 Route::get('/getAlumno','PanelAlumnoController@datosPrincipales');
-
 Route::get('/inicioalu','PanelAlumnoController@principal');
 
-Route::get('/list', 'AlumnosController@getlist');
+Route::get('/carrera','CoordinadorCarreraController@carreras');
+Route::get('/carreras', function () {
+    return view('coordinadorc.index');
+});
+Route::post('/generacionca','CoordinadorCarreraController@generaciones');
+
 
 Route::Resource('/graficasCoordinador','GraficasCoordinadorController');
 Route::get('/getCarrCoo','GraficasCoordinadorController@getCarrCoo');

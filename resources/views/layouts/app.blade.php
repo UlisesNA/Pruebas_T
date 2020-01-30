@@ -170,7 +170,7 @@
                                             Tutorias
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="MenuJefe">
-                                            <a class="dropdown-item" href="jefevista">Tutores y coordinador</a>
+                                            <a class="dropdown-item" href="jefevista">Tutores y Coordinador</a>
                                             <a class="dropdown-item" href="asignacovista">Asigna Coordinador</a>
                                             <a class="dropdown-item" href="asignatuvista">Asigna Tutor</a>
                                             <a class="dropdown-item" href="alumnos">Alumnos</a>
@@ -178,23 +178,28 @@
                                     </div>
                                 @endif
                                 @if (Session::get('tutor'))
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="tutorvista">Tutorias</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="/eventos" >Eventos</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="/profesor" >Deserción</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="/listado_alumnos" >Listado</a>
-                                    </li>
-                                    @if (Session::get('coordinador'))
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="graficasCoordinador">Estadisticas Coordinador</a>
-                                        </li>
-                                    @endif
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle btn border-0" type="button" id="MenuTutor" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Tutorias
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="MenuTutor">
+                                            <a class="dropdown-item" href="tutorvista">Grupos Tutorias</a>
+                                            <a class="dropdown-item" href="eventos">Eventos</a>
+                                            <a class="dropdown-item" href="profesor">Deserción</a>
+                                            <a class="dropdown-item" href="listado_alumnos">Listado</a>
+                                        </div>
+                                    </div>
+                                @endif
+                                @if (Session::get('coordinador'))
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle btn border-0" type="button" id="MenuCoordinador" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Coordinador
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="MenuCoordinador">
+                                            <a class="dropdown-item" href="carreras">{{ \Illuminate\Support\Facades\Session::get('coordinador')>1 ? 'Carreras':'Carrera' }}</a>
+                                            <a class="dropdown-item" href="graficasCoordinador">Estadísticas Coordinador</a>
+                                        </div>
+                                    </div>
                                 @endif
 
 

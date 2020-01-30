@@ -81,7 +81,6 @@
                     </div>
                 </div>
             </div>
-        <pre> @{{ $data }}</pre>
         @include('alumno.modalCrearGrupo')
         @include('alumno.EliminarGrupo')
         @include('alumno.AgregarAlumnos')
