@@ -665,6 +665,7 @@ class PdfController extends Controller
             ->select('gnral_alumnos.*','exp_asigna_alumnos.estado','exp_asigna_alumnos.id_asigna_alumno')
             ->where('exp_asigna_alumnos.id_asigna_generacion', '=', $request->id_asigna_generacion)
             ->where('gnral_alumnos.id_carrera','=',$request->id_carrera)
+            ->whereNull('exp_asigna_alumnos.deleted_at')
             ->orderBy('gnral_alumnos.apaterno')
             ->get();
         $carrera=DB::table('gnral_carreras')
@@ -673,14 +674,6 @@ class PdfController extends Controller
             ->get();
         $profesor=DB::table('gnral_personales')
             ->select('gnral_personales.*')
-            ->where('gnral_personales.tipo_usuario', '=', Auth::user()->id)
-            ->get();
-
-        $periodo=DB::table('gnral_personales')
-            ->join('exp_asigna_tutor','gnral_personales.id_personal','=','exp_asigna_tutor.id_personal')
-            ->join('exp_asigna_generacion','exp_asigna_generacion.id_asigna_generacion','=','exp_asigna_tutor.id_asigna_generacion')
-            ->join('gnral_periodos','gnral_periodos.id_periodo','=','exp_asigna_generacion.id')
-            ->select('gnral_periodos.periodo')
             ->where('gnral_personales.tipo_usuario', '=', Auth::user()->id)
             ->get();
 
@@ -704,7 +697,7 @@ class PdfController extends Controller
         $pdf->Cell(($pdf->GetPageWidth()-148)/1,3,"".utf8_decode($request->generacion),0,1,"C","true");
         $pdf->Ln(0);
         $pdf->Cell(($pdf->GetPageWidth()-20)/2,3,"PROFESOR: ". utf8_decode(mb_strtoupper($profesor[0]->nombre)),0,0,"L");
-        $pdf->Cell(($pdf->GetPageWidth()-20)/2,3,"PERIODO: ". utf8_decode(mb_strtoupper($periodo[0]->periodo)),0,0,"R");
+        $pdf->Cell(($pdf->GetPageWidth()-20)/2,3,"PERIODO: ". utf8_decode(mb_strtoupper(Session::get('nombre_periodo'))),0,0,"R");
 
 
         $pdf->Ln(10);

@@ -3,6 +3,7 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+
 Auth::routes();
 Route::Resource('/coordina_inst','Coordina_instController');
 Route::Resource('/segundo_sem','Coordina_inst_sController');
@@ -105,6 +106,12 @@ Route::post('/UpdateA','TutorExpedienteController@mostrar');
 Route::Resource('/alumnos','AlumnosController');
 Route::get('/generaciones','AlumnosController@generaciones');
 Route::post('/alumnosgeneracion','AlumnosController@alumnosgeneracion');
+Route::post('/creargrupo','AlumnosController@creargrupo');
+Route::post('/buscaalumnos','AlumnosController@BuscarAlumnosGrupo');
+Route::post('/asignaralumnos','AlumnosController@AsignarAlumnos');
+Route::post('/eliminaralumno','AlumnosController@EliminaAlumnoGrupo');
+
+
 
 
 
@@ -116,8 +123,6 @@ Route::get('/getAlumno','PanelAlumnoController@datosPrincipales');
 
 Route::get('/inicioalu','PanelAlumnoController@principal');
 
-Route::get('/getAl', 'AlumnosController@getAl');
-Route::get('/gen', 'AlumnosController@getGen');
 Route::get('/list', 'AlumnosController@getlist');
 
 Route::Resource('/graficasCoordinador','GraficasCoordinadorController');

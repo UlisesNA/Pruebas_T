@@ -30,8 +30,10 @@ class ProfesorController extends Controller
             ->select('gnral_alumnos.*','exp_asigna_alumnos.estado','exp_asigna_alumnos.id_asigna_alumno')
             ->where('exp_asigna_alumnos.id_asigna_generacion', '=', $request->id_asigna_generacion)
             ->where('gnral_alumnos.id_carrera','=',$request->id_carrera)
+            ->whereNull('exp_asigna_alumnos.deleted_at')
             ->orderBy('gnral_alumnos.apaterno')
             ->get();
+
 
         $datos->map(function ($value, $key) {
             $gen=Exp_generale::where('id_alumno',$value->id_alumno)->count();

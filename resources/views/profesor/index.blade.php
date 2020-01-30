@@ -39,7 +39,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-12">
+                            <div class="col-12 tableFixHeadLista">
                                 <table class="table table-sm">
                                     <thead class=" text-center" >
                                     <tr class="">
