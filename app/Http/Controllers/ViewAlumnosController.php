@@ -121,15 +121,11 @@ class ViewAlumnosController extends Controller
             $pob,$ante,$sat,$ma_re,$to_r,$mat_e,$t_e,$g_e));*/
 
         //return view('alumno.hola');
-
-
-
     }
 
     public  function veralumno(Request $request)
     {
         $data['generales']=Exp_generale::where('id_alumno',$request->id)->get();
-        //dd($data['generales']);
         $data['academicos']=Exp_antecedentes_academico::where('id_alumno',$request->id)->get();
         $data['familiares']=Exp_datos_familiare::where('id_alumno',$request->id)->get();
         $data['estudio']=Exp_habitos_estudio::where('id_alumno',$request->id)->get();

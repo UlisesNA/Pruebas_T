@@ -13,7 +13,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
-                    <div align="center">BIENVENIDO ALUMNO</div>
+                    <div align="center">BIENVENIDO</div>
                 </div>
             </div>
         </div>

@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\AsignaCoordinador;
 use App\AsignaTutor;
 use phpDocumentor\Reflection\Location;
-use App\Grupo;
 use Illuminate\Support\Facades\Auth;
 
 class JefeController extends Controller
@@ -38,16 +37,6 @@ class JefeController extends Controller
         return $datos;
 
 
-    }
-    public function UpdateCoo(Request $request){
-        //dd($request->coo);
-        AsignaCoordinador::UpdateCoordinador($request);
-        return redirect('jefe');
-    }
-    public function UpdateTuto(Request $request){
-        //dd($request);
-        AsignaTutor::UpdateTutor($request);
-        return redirect('jefe');
     }
     /**
      * Show the form for creating a new resource.

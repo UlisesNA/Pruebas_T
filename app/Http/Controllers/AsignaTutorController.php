@@ -9,7 +9,8 @@ use App\AsignaCoordinador;
 use App\AsignaTutor;
 use App\Grupo;
 use App\Periodo;
-use Auth;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
@@ -25,11 +26,16 @@ class AsignaTutorController extends Controller
     {
 
         $datosProf=AsignaCoordinador::getAllProf();
-        $datosPeriodos=Gnral_periodos::all();
-        $noGrupo=Grupo::generacion();
+        $noGrupo=DB::select('SELECT exp_asigna_generacion.id_asigna_generacion,exp_generacion.generacion,exp_generacion.id_generacion, exp_asigna_generacion.grupo
+                                from exp_generacion, exp_asigna_generacion WHERE exp_generacion.id_generacion=exp_asigna_generacion.id_generacion
+                              AND exp_asigna_generacion.id_asigna_generacion NOT IN (SELECT exp_asigna_generacion.id_asigna_generacion
+                              from gnral_personales, exp_asigna_tutor,exp_asigna_generacion,exp_generacion where
+                               exp_asigna_tutor.id_personal=gnral_personales.id_personal AND exp_asigna_tutor.id_asigna_generacion=exp_asigna_generacion.id_asigna_generacion AND 
+                               exp_asigna_generacion.id_generacion=exp_generacion.id_generacion and exp_asigna_tutor.deleted_at is null AND exp_asigna_tutor.id_jefe_periodo='.Session::get('id_jefe_periodo').') 
+                               and exp_asigna_generacion.deleted_at is null 
+                               and exp_asigna_generacion.id_jefe_periodo='.Session::get('id_jefe_periodo').' ORDER BY exp_generacion.generacion');
 
         $datos['profesores']=$datosProf;
-        $datos['periodos']=$datosPeriodos;
         if($noGrupo==null)
         {
             $datos['grupos']=null;
@@ -58,20 +64,9 @@ class AsignaTutorController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        //$datos =explode(',',$request->da);
-
-
-        //AsignaTutor::insertAsignaTuto($datos);
-        $jefe=DB::table('gnral_jefes_periodos')
-            ->join('gnral_personales','gnral_personales.id_personal','=','gnral_jefes_periodos.id_personal')
-            ->select('gnral_jefes_periodos.id_jefe_periodo')
-            ->where('gnral_jefes_periodos.id_periodo', '=', '2')
-            ->where('gnral_personales.tipo_usuario','=',1)
-            ->get();
 
         Exp_asigna_tutor::create([
-            "id_jefe_periodo"=>$jefe[0]->id_jefe_periodo,
+            "id_jefe_periodo"=>Session::get('id_jefe_periodo'),
             "id_personal"=>$request->get("id_personal"),
             "id_asigna_generacion"=>$request->get("id_asigna_generacion"),
         ]);

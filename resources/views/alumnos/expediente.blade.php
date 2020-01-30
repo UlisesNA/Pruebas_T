@@ -316,7 +316,7 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    
+
                                     <div class="row pt-3 pr-3 pl-3">
                                         <div class=" col-12 align-content-center">
                                             <h5 class="text-center alert alert-secondary pt-2"><b>Nivel Medio-Superior</b></h5>

@@ -51,7 +51,15 @@
     </div>
 </header>
 <br>
+
 <div id="app" class="container">
+    @if(Session::get('nombre'))
+    <div class="row">
+        <div class="col-12 text-right ">
+            <h5> <span class="badge badge-primary">{{ Session::get('nombre')}}    Periodo: {{ Session::get('nombre_periodo')}} </span></h5>
+        </div>
+    </div>
+    @endif
     <nav class="navbar navbar-expand-md navbar-light shadow-sm subm bg-white">
         <div class="container" >
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -157,37 +165,41 @@
                                     </li>
                                 @endif
                                 @if (Session::get('jefe'))
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="jefevista">Inicio</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="asignacovista">Asigna Coordinador</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="asignatuvista">Asigna Tutor</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="alumnos">Alumnos</a>
-                                    </li>
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle btn border-0" type="button" id="MenuJefe" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Tutorias
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="MenuJefe">
+                                            <a class="dropdown-item" href="jefevista">Tutores y Coordinador</a>
+                                            <a class="dropdown-item" href="asignacovista">Asigna Coordinador</a>
+                                            <a class="dropdown-item" href="asignatuvista">Asigna Tutor</a>
+                                            <a class="dropdown-item" href="alumnos">Alumnos</a>
+                                        </div>
+                                    </div>
                                 @endif
-                                @if (Auth::user()->tipo_usuario ==2 && !Session::get('jefe'))
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="tutorvista">Tutorias</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="/eventos" >Eventos</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="/profesor" >Deserción</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="/listado_alumnos" >Listado</a>
-                                    </li>
-                                    @if (Session::get('coordinador'))
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="graficasCoordinador">Estadisticas Coordinador</a>
-                                        </li>
-                                    @endif
+                                @if (Session::get('tutor'))
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle btn border-0" type="button" id="MenuTutor" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Tutorias
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="MenuTutor">
+                                            <a class="dropdown-item" href="tutorvista">Grupos Tutorias</a>
+                                            <a class="dropdown-item" href="eventos">Eventos</a>
+                                            <a class="dropdown-item" href="profesor">Deserción</a>
+                                            <a class="dropdown-item" href="listado_alumnos">Listado</a>
+                                        </div>
+                                    </div>
+                                @endif
+                                @if (Session::get('coordinador'))
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle btn border-0" type="button" id="MenuCoordinador" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Coordinador
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="MenuCoordinador">
+                                            <a class="dropdown-item" href="carreras">{{ \Illuminate\Support\Facades\Session::get('coordinador')>1 ? 'Carreras':'Carrera' }}</a>
+                                            <a class="dropdown-item" href="graficasCoordinador">Estadísticas Coordinador</a>
+                                        </div>
+                                    </div>
                                 @endif
 
 

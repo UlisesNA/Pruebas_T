@@ -23,13 +23,15 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-9 text-center font-weight-bold">@{{ carrera }}</div>
-                            <div class="col-1"><button class="btn text-white btn-success" @click="getAlumnos()" data-toggle="tooltip" data-placement="bottom" title="Lista"><i class="fas fa-list"></i></button></div>
-                            <div class="col-1"><button class="btn text-white btn-primary" @click="graficagenero()" data-toggle="tooltip" data-placement="bottom" title="Gráficas"><i class="fas fa-chart-pie"></i></button></div>
-                            <div class="col-1"><button class="btn text-white btn-danger"  @click="getAlumnos1()"><i class="fas fa-file-alt"></i></button></div>
+                            <div class="row" v-if="datos.length>0">
+                                <div class="col-4"><button class="btn text-white btn-success" @click="getAlumnos()" data-toggle="tooltip" data-placement="bottom" title="Lista"><i class="fas fa-list"></i></button></div>
+                                <div class="col-4"><button class="btn text-white btn-primary" @click="graficagenero()" data-toggle="tooltip" data-placement="bottom" title="Gráficas"><i class="fas fa-chart-pie"></i></button></div>
+                                <div class="col-4"><button class="btn text-white btn-danger"  @click="getAlumnos1()"><i class="fas fa-file-alt"></i></button></div>
+                            </div>
                         </div>
                         <div class="row"><div class="col-9 text-center">@{{ gen }}</div></div>
                     </div>
-                    <div class="card-body" v-show="lista==true" >
+                    <div class="card-body" v-show="lista==true" v-if="datos.length>0">
                         <div class="row">
                             <div class="col-12">
                                 <div class="row pb-2">
@@ -39,7 +41,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-12">
+                            <div class="col-12 tableFixHeadLista">
                                 <table class="table table-sm">
                                     <thead class=" text-center" >
                                     <tr class="">
@@ -64,11 +66,18 @@
                                             <button class="btn btn-outline-primary m-1" @click="ver(alumno)" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="far fa-edit"></i></button>
                                             <button class="btn btn-outline-danger" @click="pdfAlumno(alumno)" data-toggle="tooltip" data-placement="bottom" title="Expediente"><i class="far fa-file-pdf"></i></button>
                                         </td>
-                                        <td v-else class="text-center"><i class="fas h4 fa-times text-danger pt-2"></i></td>
+                                        <td v-else class="text-center"><i class="fas h4 fa-times text-danger pt-2" data-toggle="tooltip" data-placement="bottom" title="Expediente sin llenar"></i></td>
                                         <td class="text-center"><button class="btn btn-outline-secondary"  @click="getAlumnos2(alumno)"><i class="fas fa-check-square"></i></button></td>
                                     </tr>
                                     </tbody>
                                 </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body" v-else>
+                        <div class="row">
+                            <div class="col-12 alert-info alert text-center">
+                                <h5 class="font-weight-bold">No se han asignado alumnos al grupo</h5>
                             </div>
                         </div>
                     </div>

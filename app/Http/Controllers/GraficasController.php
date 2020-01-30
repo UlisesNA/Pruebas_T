@@ -19,15 +19,6 @@ class GraficasController extends Controller
      */
     public function index(Request $request)
     {
-
-        //
-        //dd($request->user());
-        //$request->user()->authorizeRoles('2');
-        //$datos=Grafica::getGraficasTutor();
-       // $datosG=Profesor::getGeneroChar();//no tocar
-        //$arr=['Datos Generales','Antecedentes Academicos','Datos Familiares','Habitos de Estudios','Formacion Integral/Salud','Area Psicopedagogica'];
-
-        //dd($datos);
         return view('profesor.estadisticas');
     }
     public function genero(Request $request)
@@ -42,6 +33,7 @@ class GraficasController extends Controller
         exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion JOIN gnral_personales ON 
         gnral_personales.id_personal=exp_asigna_tutor.id_personal WHERE gnral_alumnos.genero="F" AND gnral_alumnos.id_carrera='.$request->id_carrera.' AND gnral_personales.tipo_usuario='.\Illuminate\Support\Facades\Auth::user()->id);
 
+
         return response()->json(
             ["hombres"=>$hombres,
                 "mujeres"=>$mujeres],200
@@ -50,6 +42,8 @@ class GraficasController extends Controller
 
     public function generales(Request $request)
     {
+
+
         $estado=DB::select('select COUNT(exp_generales.id_exp_general) as cant, exp_civil_estados.desc_ec
                      as estado FROM exp_generales JOIN exp_civil_estados ON exp_generales.id_estado_civil=exp_civil_estados.id_estado_civil
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
@@ -57,6 +51,9 @@ class GraficasController extends Controller
                      JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
                       WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND gnral_personales.tipo_usuario='.\Illuminate\Support\Facades\Auth::user()->id.' 
                       GROUP BY exp_civil_estados.id_estado_civil');
+
+
+
          $nivel=DB::select('select COUNT(exp_generales.id_exp_general) as cant, exp_opc_nivel_socio.desc_opc
                      as nivel FROM exp_generales JOIN exp_opc_nivel_socio ON exp_opc_nivel_socio.id_nivel_economico=exp_generales.id_nivel_economico
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 

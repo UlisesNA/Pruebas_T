@@ -11,6 +11,8 @@ use App\DatosPersonales;
 use App\Exp_asigna_coordinador;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+
 class AsignaCoordinadorController extends Controller
 {
     /**
@@ -22,12 +24,18 @@ class AsignaCoordinadorController extends Controller
     {
         //
         $datosProfesores=AsignaCoordinador::getAllProf();
-        $checkasig=AsignaCoordinador::getExistCoordinador();
-        $datosPeriodos=Gnral_periodos::all();
 
+        $checkasig=DB::select('SELECT exp_asigna_coordinador.id_asigna_coordinador,exp_asigna_coordinador.id_personal,gnral_personales.nombre FROM exp_asigna_coordinador,gnral_personales where exp_asigna_coordinador.id_personal=gnral_personales.id_personal and 
+                                   exp_asigna_coordinador.deleted_at is null and
+                                  exp_asigna_coordinador.id_jefe_periodo='.Session::get('id_jefe_periodo'));
+        if(count($checkasig)>0)
+        {
+            $datos['check']=true;
+        }
+        else{
+            $datos['check']=false;
+        }
         $datos['profesores']=$datosProfesores;
-        $datos['check']=$checkasig;
-        $datos['periodos']=$datosPeriodos;
         return $datos;
 
     }
@@ -55,16 +63,8 @@ class AsignaCoordinadorController extends Controller
     public function store(Request $request)
     {
         //
-
-        $jefe=DB::table('gnral_jefes_periodos')
-            ->join('gnral_personales','gnral_personales.id_personal','=','gnral_jefes_periodos.id_personal')
-            ->select('gnral_jefes_periodos.id_jefe_periodo')
-            ->where('gnral_jefes_periodos.id_periodo', '=', '2')
-            ->where('gnral_personales.tipo_usuario','=',Auth::user()->id)
-            ->get();
-
         Exp_asigna_coordinador::create([
-            "id_jefe_periodo"=>$jefe[0]->id_jefe_periodo,
+            "id_jefe_periodo"=>Session::get('id_jefe_periodo'),
             "id_personal"=>$request->get("id_personal")
         ]);
 
