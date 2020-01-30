@@ -9,8 +9,8 @@ class Exp_generale extends Model
     protected $table ="exp_generales";
     protected $primaryKey="id_exp_general";
     protected $fillable=["id_carrera","id_periodo","id_grupo","nombre","edad","sexo","fecha_nacimientos","lugar_nacimientos","id_semestre",
-        "id_estado_civil","no_hijos","direccion","correo","tel_casa","cel","id_nivel_economico","trabaja","ocupacion",
-        "horario","no_cuenta","beca","tipo_beca","estado","turno","poblacion","ant_inst","satisfaccion_c","materias_repeticion","tot_repe",
+        "id_estado_civil","no_hijos","direccion","correo","tel_casa","cel","nivel_economico","trabaja","ocupacion",
+        "horario","no_cuenta","beca","id_expbeca","estado","turno","poblacion","ant_inst","satisfaccion_c","materias_repeticion","tot_repe",
         "materias_especial","tot_espe","gen_espe","id_alumno"];
 
     public function carrera (){
@@ -33,12 +33,16 @@ class Exp_generale extends Model
         return $this->hasMany('App\Exp_civil_estado','id_estado_civil','id_estado_civil');
 
     }
-    public function nivel (){
+    /*public function nivel (){
         return $this->hasMany('App\Exp_opc_nivel_socio','id_nivel_economico','id_nivel_economico');
 
-    }
+    }*/
     public function turno1 (){
         return $this->hasOne('App\Exp_turno','id_turno','turno');
+
+    }
+    public function beca (){
+        return $this->hasOne('App\Exp_beca','id_expbeca','id_expbeca');
 
     }
 }

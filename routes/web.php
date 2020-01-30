@@ -133,6 +133,7 @@ Route::post("pdf/lista","PdfController@pdf_lista")->name("pdf_lista");
 Route::post("pdf/alumno","PdfController@pdf_alumno")->name("pdf_alumno");
 
 
+Route::Resource('/Lista','ListaController');
 ?>
 
 

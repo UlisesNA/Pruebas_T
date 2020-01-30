@@ -112,4 +112,51 @@
         </div>
     </div>
 </div>
+<script type="application/javascript">
+
+    $(document).ready(function () {
+
+        $('#finall').click(function () {
+            var sum=0;
+            res="";
+
+            for ( var i=1;i<7;i++)
+            {
+                sum+=(parseInt($("#p"+i).val()));
+            }
+
+            if(sum>204 && sum<=300)
+            {
+                res="A/B";
+            }
+            else if(sum>=166 && sum<=204)
+            {
+                res="C+";
+            }
+            else if(sum>=136 && sum<=165)
+            {
+                res="C";
+            }
+            else if(sum>=112 && sum<=135)
+            {
+                res="C-";
+            }
+            else if(sum>=90 && sum<=111)
+            {
+                res="D+";
+            }
+            else if(sum>=48 && sum<=89)
+            {
+                res="D";
+            }
+            else if(sum>=0 && sum<=47)
+            {
+                res="E";
+            }
+            $("#nivel_economico").val(res);
+            //alert(res);
+        });
+
+    });
+</script>
 

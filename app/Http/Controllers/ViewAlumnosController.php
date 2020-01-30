@@ -8,6 +8,7 @@ use App\Exp_area_psicopedagogica;
 use App\Exp_asigna_expediente;
 use App\Exp_bachillerato;
 use App\Exp_bebidas;
+use App\Exp_beca;
 use App\Exp_civil_estado;
 use App\Exp_datos_familiare;
 use App\Exp_escalas;
@@ -17,7 +18,6 @@ use App\Exp_formatrabajo;
 use App\Exp_generale;
 use App\Exp_habitos_estudio;
 use App\Exp_opc_intelectual;
-use App\Exp_opc_nivel_socio;
 use App\Exp_opc_tiempo;
 use App\Exp_opc_vives;
 use App\Exp_parentesco;
@@ -141,7 +141,7 @@ class ViewAlumnosController extends Controller
         $data['periodos'] = Gnral_periodos::all();
         $data['semestres']= Gnral_semestre::all();
         $data['estadocivil'] = Exp_civil_estado::all();
-        $data['nivel']= Exp_opc_nivel_socio::all();
+        /*$data['nivel']= Exp_opc_nivel_socio::all();*/
         $data['bachillerato'] = Exp_bachillerato::all();
         $data['vive'] = Exp_opc_vives::all();
         $data['unionfam'] = Exp_familia_union::all();
@@ -151,6 +151,7 @@ class ViewAlumnosController extends Controller
         $data['parentesco']=Exp_parentesco::all();
         $data['escala']=Exp_escalas::all();
         $data['bebidas']=Exp_bebidas::all();
+        $data['becas']=Exp_beca::all();
         return $data;
     }
 

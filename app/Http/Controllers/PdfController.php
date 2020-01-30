@@ -1,8 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
-use App\AsignaExpediente;
 use App\Exp_antecedentes_academico;
 use App\Exp_area_psicopedagogica;
 use App\Exp_civil_estado;
@@ -15,13 +12,36 @@ use App\Gnral_carreras;
 use App\Gnral_grupos;
 use App\Gnral_periodos;
 use App\Gnral_semestre;
-use App\Pdf;
+//use App\Pdf;
 use Illuminate\Http\Request;
-use Codedge\Fpdf\Facades\Fpdf;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Session;
 use Auth;
+use Codedge\Fpdf\Fpdf\Fpdf as FPDF;
+class PDF extends FPDF
+{
+
+    //CABECERA DE LA PAGINA
+    function Header()
+    {
+        $this->Image('img/edomex.png',10,0,40,20);
+        $this->Image('img/TESVB.png',145,3,28,11);
+        $this->Image('img/edomex1.png',176,2,30,13);
+        $this->Line(175,2.5,175,14);
+    }
+    //PIE DE PAGINA
+    function Footer()
+    {
+        // Position at 1.5 cm from bottom
+        $this->SetY(-15);
+        // Arial italic 8
+        $this->SetFont('Times','B',8);
+        // Page number
+        $this->Cell(0,10,utf8_decode('Página '.$this->PageNo().'/{nb}'),0,0,'C');
+    }
+
+}
+
 class PdfController extends Controller
 {
     public function pdf_all()
@@ -67,7 +87,7 @@ class PdfController extends Controller
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->SetTextColor(010,010,010);
         $pdf->SetFillColor(204,204,204);
-        $pdf->Cell(25,4,"Carrera: ". utf8_decode(""),1,0,"L","true");
+        $pdf->Cell(25,4,"Programa educativo: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
         $pdf->Cell(80,4,"". utf8_decode($carreras[$datosGenerales[0]->id_carrera-1]->nombre),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
@@ -80,7 +100,7 @@ class PdfController extends Controller
         $pdf->Cell(10,4,"". utf8_decode($grupos[$datosGenerales[0]->id_grupo-1]->grupo),1,0,"C");
         $pdf->Ln(4);
         $pdf->SetFont('Arial', 'B', 4.8);
-        $pdf->Cell(20,4,"Alumno: ". utf8_decode(""),1,0,"L","true");
+        $pdf->Cell(20,4,"Estudiante: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
         $pdf->Cell(85,4,"". utf8_decode($datosGenerales[0]->nombre),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
@@ -136,19 +156,7 @@ class PdfController extends Controller
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(($pdf->GetPageWidth()-20)/6,4,utf8_decode("Nivel socio-económico"). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        if ($datosGenerales[0]->id_nivel_economico==1)
-        {
-            $datosGenerales[0]->id_nivel_economico='Alto';
-        }
-        if ($datosGenerales[0]->id_nivel_economico==2)
-        {
-            $datosGenerales[0]->id_nivel_economico='Medio';
-        }
-        if ($datosGenerales[0]->id_nivel_economico==3)
-        {
-            $datosGenerales[0]->id_nivel_economico='Bajo';
-        }
-        $pdf->Cell(($pdf->GetPageWidth()-20)/6,4,"". utf8_decode($datosGenerales[0]->id_nivel_economico),1,0,"C");
+        $pdf->Cell(($pdf->GetPageWidth()-20)/6,4,"". utf8_decode($datosGenerales[0]->nivel_economico),1,0,"C");
         $pdf->Ln(4);
 
         $pdf->SetFont('Arial', 'B', 4.8);
@@ -176,7 +184,23 @@ class PdfController extends Controller
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(20,4,utf8_decode("¿Qué tipo de beca?: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        $pdf->Cell(55,4,"". utf8_decode($datosGenerales[0]->tipo_beca),1,0,"C");
+        if ($datosGenerales[0]->id_expbeca==1)
+        {
+            $datosGenerales[0]->id_expbeca='Manutención Federal';
+        }
+        if ($datosGenerales[0]->id_expbeca==2)
+        {
+            $datosGenerales[0]->id_expbeca='Benito Juárez';
+        }
+        if ($datosGenerales[0]->id_expbeca==3)
+        {
+            $datosGenerales[0]->id_expbeca='Permanencia';
+        }
+        if ($datosGenerales[0]->id_expbeca==4)
+        {
+            $datosGenerales[0]->id_expbeca='Excelencia Académica';
+        }
+        $pdf->Cell(55,4,"". utf8_decode($datosGenerales[0]->id_expbeca),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(19,4,utf8_decode("Estado académico: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
@@ -658,7 +682,7 @@ class PdfController extends Controller
         exit();
     }
 
-    public function pdf_lista(Request $request)
+   public function pdf_lista(Request $request)
     {
         $datos=DB::table('gnral_alumnos')
             ->join('exp_asigna_alumnos','exp_asigna_alumnos.id_alumno','=','gnral_alumnos.id_alumno')
@@ -684,16 +708,20 @@ class PdfController extends Controller
             ->where('gnral_personales.tipo_usuario', '=', Auth::user()->id)
             ->get();
 
-        $pdf= new \Codedge\Fpdf\Fpdf\Fpdf();
+        //$pdf= new \Codedge\Fpdf\Fpdf\Fpdf();
+       // $pdf->AddPage();
+        $pdf=new PDF($orientation='P',$unit='mm',$format='Letter');
+        #Establecemos los márgenes izquierda, arriba y derecha:
+        $pdf->SetMargins(10, 19 , 10);
+        //$pdf->SetAutoPageBreak(true,25);
         $pdf->AddPage();
-        $pdf->Image('img/edomex.png',10,0,30,15);
-        $pdf->Image('img/TESVB.png',150,3,22,10);
-        $pdf->Image('img/edomex1.png',175,2,25,10);
-        $pdf->Line(173,2.5,173,13.5);
+
+
+
         $pdf->SetFont('Times', 'B', 10);
         $pdf->SetFillColor(192,192,192);
-        $pdf->Ln(8);
-        $pdf->Cell(($pdf->GetPageWidth()-20),5,"LISTA DE ASISTENCIA".utf8_decode(""),0,4,"C","true");
+        $pdf->Ln(1);
+        $pdf->Cell(($pdf->GetPageWidth()-20),6,"LISTA DE ASISTENCIA".utf8_decode(""),0,4,"C","true");
         $pdf->Ln(1);
         $pdf->SetFont('Times', 'B', 8);
         $pdf->Cell(($pdf->GetPageWidth()-20),3,"CARRERA: ". utf8_decode(mb_strtoupper($carrera[0]->nombre)),0,0,"L");
@@ -701,13 +729,13 @@ class PdfController extends Controller
         $pdf->Cell(($pdf->GetPageWidth()-20)/3,3,"ASIGNATURA: ". utf8_decode("TUTORIAS"),0,0,"L");
         $pdf->Cell(($pdf->GetPageWidth()-20)/3,3,"". utf8_decode(""),0,0,"L");
         $pdf->SetFillColor(192,192,192);
-        $pdf->Cell(($pdf->GetPageWidth()-148)/1,3,"".utf8_decode($request->generacion),0,1,"C","true");
+        $pdf->Cell(($pdf->GetPageWidth()-151)/1,4,"".utf8_decode($request->generacion),0,1,"C","true");
         $pdf->Ln(0);
         $pdf->Cell(($pdf->GetPageWidth()-20)/2,3,"PROFESOR: ". utf8_decode(mb_strtoupper($profesor[0]->nombre)),0,0,"L");
         $pdf->Cell(($pdf->GetPageWidth()-20)/2,3,"PERIODO: ". utf8_decode(mb_strtoupper($periodo[0]->periodo)),0,0,"R");
 
 
-        $pdf->Ln(10);
+        $pdf->Ln(8);
         $pdf->SetFont('Times', 'B', 6);
         $np=0;
         $pdf->Cell(8,3.5,"NP".utf8_decode(mb_strtoupper("")),'LRT',0,"C","true");
@@ -754,7 +782,7 @@ class PdfController extends Controller
         {
             $pdf->Cell(8,5," ".utf8_decode(mb_strtoupper($np=0?$np=0:$np=$np+1)),1,0,"C");
             $pdf->Cell(12,5,"". utf8_decode(mb_strtoupper($dat->cuenta)),1,0,"C");
-            $pdf->Cell(55,5,"". utf8_decode(mb_strtoupper($dat->apaterno." ".$dat->amaterno." ".$dat->nombre)),1,0,"C");
+            $pdf->Cell(55,5,"". utf8_decode(mb_strtoupper($dat->apaterno." ".$dat->amaterno." ".$dat->nombre)),1,0,"L");
             $pdf->Cell(3.7,5,"". utf8_decode(mb_strtoupper("")),1,0,"C");
             $pdf->Cell(3.7,5,"". utf8_decode(mb_strtoupper("")),1,0,"C");
             $pdf->Cell(3.7,5,"". utf8_decode(mb_strtoupper("")),1,0,"C");
@@ -788,12 +816,17 @@ class PdfController extends Controller
             $pdf->Cell(3.7,5,"". utf8_decode(mb_strtoupper("")),1,1,"C");
 
         }
+
+        //$pdf->Cell(0,100,utf8_decode('Página '.$pdf->PageNo()),0,0,'R');
         $pdf->Ln(10);
         $pdf->Cell(($pdf->GetPageWidth()),3,"". utf8_decode(mb_strtoupper("________________________________________________")),0,1,"C");
         $pdf->Cell(($pdf->GetPageWidth()),3,"". utf8_decode(mb_strtoupper($profesor[0]->nombre)),0,0,"C");
 
+       // $pdf->Output();
+        $pdf->AliasNbPages();
         $pdf->Output();
         exit();
+       // exit();
 
 
 
@@ -842,7 +875,7 @@ class PdfController extends Controller
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->SetTextColor(010,010,010);
         $pdf->SetFillColor(204,204,204);
-        $pdf->Cell(25,4,"Carrera: ". utf8_decode(""),1,0,"L","true");
+        $pdf->Cell(25,4,"Programa de estudios: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
         $pdf->Cell(80,4,"". utf8_decode($carreras[$datosGenerales[0]->id_carrera-1]->nombre),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
@@ -855,7 +888,7 @@ class PdfController extends Controller
         $pdf->Cell(10,4,"". utf8_decode($grupos[$datosGenerales[0]->id_grupo-1]->grupo),1,0,"C");
         $pdf->Ln(4);
         $pdf->SetFont('Arial', 'B', 4.8);
-        $pdf->Cell(20,4,"Alumno: ". utf8_decode(""),1,0,"L","true");
+        $pdf->Cell(20,4,"Estudiante: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
         $pdf->Cell(85,4,"". utf8_decode($datosGenerales[0]->nombre),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);

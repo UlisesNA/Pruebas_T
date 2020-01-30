@@ -29,227 +29,272 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-md-5">
-                                            <label for="carrera">Carrera</label>
-                                            <select name="carrera" id="carrera" class="custom-select custom-select-md" v-model="alu.generales.id_carrera">
-                                                <option value="null" >Elija una Carrera</option>
-                                                <option v-bind:value="car.id_carrera" v-for="car in carreras">@{{car.nombre}}</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="periodo">Periodo</label>
-                                            <select name="periodo" id="periodo" class="custom-select custom-select-md" v-model="alu.generales.id_periodo" >
-                                                <option value="null" selected>Elija un Periodo</option>
-                                                <option v-bind:value="period.id_periodo" v-for="period in periodos">@{{period.periodo}}</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label for="grupo">Grupo</label>
-                                            <select name="grupo" id="grupo" v-model="alu.generales.id_grupo" class="custom-select custom-select-md">
-                                                <option value="null" selected>Elija un Grupo</option>
-                                                <option v-bind:value="gru.id_grupo" v-for="gru in grupo">@{{gru.grupo}}</option>
-                                            </select>
-                                        </div>
-                                    </div>
+                                    <!---aqui-->
+
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label for="nombre">Nombre</label>
-                                            <input type="text" id="nombre" name="nombre" v-model="alu.generales.nombre" class="form-control" placeholder="Nombre">
+                                            <label for="nombre">Estudiante *</label>
+                                            <input type="text" id="nombre" name="nombre" v-model="alu.generales.nombre" class="form-control" placeholder="Nombre" required disabled>
+                                            <small class="form-text text-danger" v-if="alu.generales.nombre==''">Colocar su nombre</small>
                                         </div>
-                                        <div class="col-md-2">
-                                            <label for="edad">Edad</label>
-                                            <input type="text" class="form-control" v-model="alu.generales.edad" id="edad" name="edad" placeholder="Edad">
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label for="sexo">Sexo</label>
-                                            <select name="sexo" id="sexo"  class="custom-select custom-select-md" v-model="alu.generales.sexo">
-                                                <option value="null" selected>Elija un Sexo</option>
+                                        <div class="col-md-4">
+                                            <label for="sexo">Sexo *</label>
+                                            <select name="sexo" id="sexo"  class="custom-select custom-select-md" v-model="alu.generales.sexo" required disabled>
+                                                <option value="null" selected>Elija un sexo</option>
                                                 <option value="M">Masculino</option>
                                                 <option value="F">Femenino</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if="alu.generales.sexo=='null'">Elija un sexo</small>
                                         </div>
-                                        <div class="col-md-3">
-                                            <label for="fn">Fecha de Nacimiento</label>
-                                            <input type="date" v-model="alu.generales.fecha_nacimientos" id="fn" name="fecha_nacimiento" class="form-control" placeholder="Fecha de Nacimiento">
+                                        <div class="col-md-4">
+                                            <label for="fn">Fecha de nacimiento *</label>
+                                            <input type="date" v-model="alu.generales.fecha_nacimientos" id="fn" name="fecha_nacimiento" class="form-control" placeholder="Fecha de Nacimiento" required disabled>
+                                            <small class="form-text text-danger" v-if="alu.generales.fecha_nacimientos==''">Colocar fecha de nacimiento</small>
                                         </div>
                                     </div>
+
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label for="ln">Lugar de Nacimiento</label>
-                                            <input type="text" id="ln" v-model="alu.generales.lugar_nacimientos" name="lugar_nacimiento" class="form-control" placeholder="Lugar de Nacimiento">
+                                            <label for="edad">Edad</label>
+                                            <input type="text" class="form-control" v-model="alu.generales.edad" id="edad" name="edad" placeholder="Edad" disabled>
                                         </div>
-                                        <div class="col-md-3">
-                                            <label for="semestre">Semestre</label>
-                                            <select name="semestre" id="semestre" v-model="alu.generales.id_semestre" class="custom-select custom-select-md">
-                                                <option value="null" selected>Elija un Semestre</option>
-                                                <option v-bind:value="sem.id_semestre" v-for="sem in semestres">@{{sem.descripcion}}</option>
-                                            </select>
+                                        <div class="col-md-4">
+                                            <label for="ln">Lugar de nacimiento</label>
+                                            <input type="text" id="ln" v-model="alu.generales.lugar_nacimientos" name="lugar_nacimiento" class="form-control" placeholder="Lugar de nacimiento">
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
+                                            <label for="direccion">Dirección *</label>
+                                            <input type="text" v-model="alu.generales.direccion"  id="direccion" name="direccion" class="form-control"  placeholder="Dirección" required>
+                                            <small class="form-text text-danger" v-if="alu.generales.direccion==''">Colocar una dirección</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
                                             <label for="EC">Estado Civil</label>
                                             <select name="estado_civil" id="EC" class="custom-select custom-select-md" v-model="alu.generales.id_estado_civil">
                                                 <option value="null" selected >Elija el estado civil</option>
                                                 <option v-bind:value="es.id_estado_civil" v-for="es in estadociv">@{{es.desc_ec}}</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-4">
                                             <label for="nh">No. Hijos</label>
                                             <input type="number" v-model="alu.generales.no_hijos" id="nh" name="no_hijos" class="form-control" placeholder="No. Hijos">
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="direccion">Dirección</label>
-                                            <input type="text" v-model="alu.generales.direccion"  id="direccion" name="direccion" class="form-control" placeholder="Dirección">
-                                        </div>
                                         <div class="col-md-4">
-                                            <label for="correo">Correo</label>
-                                            <input type="text" v-model="alu.generales.correo"  id="correo" name="correo" class="form-control" placeholder="Correo">
+                                            <label for="correo">e-mail *</label>
+                                            <input type="text" v-model="alu.generales.correo"  id="correo" name="correo" class="form-control" placeholder="Correo" required disabled>
+                                            <small class="form-text text-danger" v-if="alu.generales.correo==''">Colocar una e-mail</small>
                                         </div>
-                                        <div class="col-md-2">
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
                                             <label for="tel-casa">Tel. Casa</label>
-                                            <input type="text" v-model="alu.generales.tel_casa" id="tel-casa" name="tel_casa" class="form-control" placeholder="Tel. Casa">
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <label for="cel">Celular</label>
-                                            <input type="text" v-model="alu.generales.cel"  id="cel" name="cel" class="form-control" placeholder="Cel">
+                                            <input type="text" v-model="alu.generales.tel_casa" id="tel-casa" name="tel_casa" class="form-control" placeholder="Tel. Casa" disabled>
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="NSE">Nivel Socio-Económico</label>
-                                            <select name="nivel_socioeconomico" v-model="alu.generales.id_nivel_economico" id="NSE" class="custom-select custom-select-md">
-                                                <option value="null" >Elija el nivel Socio-económico</option>
-                                                <option v-bind:value="niv.id_nivel_economico" v-for="niv in nivel">@{{niv.desc_opc}}</option>
+                                            <label for="cel">Celular *</label>
+                                            <input type="text" v-model="alu.generales.cel"  id="cel" name="cel" class="form-control" placeholder="Cel" required disabled>
+                                            <small class="form-text text-danger" v-if="alu.generales.cel==''">Colocar un número celular</small>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="carrera">Programa educativo *</label>
+                                            <select name="carrera" id="carrera" class="custom-select custom-select-md" v-model="alu.generales.id_carrera" required disabled>
+                                                <option value="null" >Elija una opción</option>
+                                                <option v-bind:value="car.id_carrera" v-for="car in carreras">@{{car.nombre}}</option>
+                                            </select>
+                                            <small class="form-text text-danger" v-if="alu.generales.id_carrera=='null'">Elija un programa educativo</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="periodo">Periodo *</label>
+                                            <select name="periodo" id="periodo" class="custom-select custom-select-md" v-model="alu.generales.id_periodo" required>
+                                                <option value="null" selected>Elija un periodo</option>
+                                                <option v-bind:value="period.id_periodo" v-for="period in periodos">@{{period.periodo}}</option>
+                                            </select>
+                                            <small class="form-text text-danger" v-if="alu.generales.id_periodo=='null'">Elija un periodo</small>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="semestre">Semestre *</label>
+                                            <select name="semestre" id="semestre" v-model="alu.generales.id_semestre" class="custom-select custom-select-md" required disabled>
+                                                <option value="null" selected>Elija un semestre</option>
+                                                <option v-bind:value="sem.id_semestre" v-for="sem in semestres">@{{sem.descripcion}}</option>
+                                            </select>
+                                            <small class="form-text text-danger" v-if="alu.generales.id_semestre=='null'">Elija un semestre</small>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="grupo">Grupo *</label>
+                                            <select name="grupo" id="grupo" v-model="alu.generales.id_grupo" class="custom-select custom-select-md" required disabled>
+                                                <option value="null" selected>Elija un grupo</option>
+                                                <option v-bind:value="gru.id_grupo" v-for="gru in grupo">@{{gru.grupo}}</option>
+                                            </select>
+                                            <small class="form-text text-danger" v-if="alu.generales.id_grupo=='null'">Elija un grupo</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="turno">Turno</label>
+                                            <select name="turno" id="turno" v-model="alu.generales.turno" class="custom-select custom-select-md">
+                                                <option value="null" selected>Elija turno</option>
+                                                <option v-bind:value="turn.id_turno" v-for="turn in turno">@{{turn.descripcion_turno}}</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-3">
-                                            <label for="poblacion">Población</label>
+                                        <div class="col-md-4">
+                                            <label for="estado">Estado académico *</label>
+                                            <select id="estado" name="estado" v-model="alu.generales.estado" class="custom-select custom-select-md" required>
+                                                <option value="null" selected>Elija estado académico</option>
+                                                <option value="1">Regular</option>
+                                                <option value="2">Irregular</option>
+                                                <option value="3">Suspención</option>
+                                                <option value="4">Baja temporal</option>
+                                                <option value="5">Baja definitiva</option>
+                                            </select>
+                                            <small class="form-text text-danger" v-if="alu.generales.estado=='null'">Elija un estado académico</small>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="noC">No. Cuenta</label>
+                                            <input type="text" id="noC"  name="no_cuenta" class="form-control" v-model="alu.generales.no_cuenta"  placeholder="No. Cuenta" disabled>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="poblacion">Tipo de población</label>
                                             <select name="poblacion" id="poblacion" v-model="alu.generales.poblacion" class="custom-select custom-select-md">
-                                                <option value="null" selected>Elija Opción</option>
+                                                <option value="null" selected>Elija una opción</option>
                                                 <option value="Rural">Rural</option>
                                                 <option value="Urbana">Urbana</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-4">
+                                            <label for="nivel_economico">Nivel Socio-Económico *</label>
+                                            <input disabled type="text" v-model="alu.generales.nivel_economico"  id="nivel_economico" name="nivel_economico" class="form-control" placeholder="Nivel Socio-Económico" required>
+                                            <small class="form-text text-danger" v-if="alu.generales.nivel_economico==''">Realizar test</small>
+                                        </div>
+                                        <div class="col-md-4">
                                             <label for="trabaja">Trabaja</label>
                                             <select name="trabaja" id="trabaja" v-model="alu.generales.trabaja" class="custom-select custom-select-md">
-                                                <option value="null" selected>Elija Opción</option>
+                                                <option value="null" selected>Elija opción</option>
                                                 <option value="1">Si</option>
                                                 <option value="2" @click="alu.generales.ocupacion=null">No</option>
                                             </select>
                                         </div>
-
                                     </div>
+
                                     <div class="row">
-                                        <div class="col-md-4" v-if="alu.generales.trabaja==1" >
+                                        <div class="col-md-6" v-if="alu.generales.trabaja==1" >
                                             <label for="ocupacion">Ocupación</label>
                                             <input type="text" v-model="alu.generales.ocupacion"  name="ocupacion" class="form-control" placeholder="Ocupación">
                                         </div>
-                                        <div class="col-md-2">
-                                            <label for="horario">Horario</label>
+                                        <div class="col-md-6" v-if="alu.generales.trabaja==1">
+                                            <label for="horario">Horario de trabajo</label>
                                             <input type="text" v-model="alu.generales.horario"  id="horario" name="horario" class="form-control" placeholder="Horario">
                                         </div>
-                                        <div class="col-md-3">
-                                            <label for="noC">No. Cuenta</label>
-                                            <input type="text" id="noC"  name="no_cuenta" class="form-control" v-model="alu.generales.no_cuenta"  placeholder="No. Cuenta">
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label for="beca">Beca</label>
-                                            <select name="beca" id="beca" v-model="alu.generales.beca" class="custom-select custom-select-md">
-                                                <option value="null" selected>Eliga Opción</option>
-                                                <option value="1">Si</option>
-                                                <option value="2"  @click="alu.generales.tipo_beca=null">No</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-4" v-if="alu.generales.beca==1">
-                                            <label for="tbeca">Tipo Beca</label>
-                                            <input type="text" v-model="alu.generales.tipo_beca"  name="tbeca" class="form-control" placeholder="Tipo Beca">
-                                        </div>
-                                        <div class="col-md-3">
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
                                             <label for="ant_inst">Antecedentes institucionales</label>
                                             <select name="ant_inst" id="ant_inst" v-model="alu.generales.ant_inst" class="custom-select custom-select-md">
-                                                <option value="null" selected>Elija Opción</option>
+                                                <option value="null" selected>Elija una opción</option>
                                                 <option value="Continuación de estudios">Continuación de estudios</option>
                                                 <option value="Cambio de carrera/institución">Cambio de carrera/institución</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                             <label for="satisfaccion_c">Nivel de satisfacción con la carrera</label>
                                             <select name="satisfaccion_c" id="satisfaccion_c" v-model="alu.generales.satisfaccion_c" class="custom-select custom-select-md">
-                                                <option value="null" selected>Elija Opción</option>
+                                                <option value="null" selected>Elija una opción</option>
                                                 <option value="Muy satisfecho">Muy satisfecho</option>
                                                 <option value="Satisfecho">Satisfecho</option>
                                                 <option value="Regular">Regular</option>
                                                 <option value="Inconforme">Inconforme</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-3">
-                                            <label for="materias_repeticion">Materias en repeticion</label>
-                                            <select name="materias_repeticion" id="materias_repeticion" v-model="alu.generales.materias_repeticion" class="custom-select custom-select-md">
-                                                <option value="null" selected>Elija Opción</option>
+                                        <div class="col-md-4">
+                                            <label for="beca">¿Cuenta con beca? *</label>
+                                            <select name="beca" id="beca" v-model="alu.generales.beca" class="custom-select custom-select-md" required>
+                                                <option value="null" selected>Elija una opción</option>
                                                 <option value="1">Si</option>
-                                                <option value="2"  @click="alu.generales.tot_repe=null">No</option>
+                                                <option value="2"  @click="alu.generales.tipo_beca=null">No</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if="alu.generales.beca=='null'">Elija una opción</small>
                                         </div>
-                                        <div class="col-md-3" v-if="alu.generales.materias_repeticion==1">
-                                            <label for="tot_repe">Número de materias en repetición</label>
-                                            <select name="tot_repe" v-model="alu.generales.tot_repe" id="tot_repe" class="custom-select custom-select-md">
-                                                <option value="null" selected>Elija Opción</option>
-                                                <option value="1">0</option>
-                                                <option value="2">1</option>
-                                                <option value="3">2</option>
-                                                <option value="4">3 o más</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label for="materias_especial">Materias en especial</label>
-                                            <select name="materias_especial" v-model="alu.generales.materias_especial" id="materias_especial" class="custom-select custom-select-md">
-                                                <option value="null" selected>Elija Opción</option>
-                                                <option value="1">Si</option>
-                                                <option value="2"  @click="alu.generales.tot_espe=null">No</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-3" v-if="alu.generales.materias_especial==1">
-                                            <label for="tot_espe">Número de materias en especial</label>
-                                            <select name="tot_espe" id="tot_espe" v-model="alu.generales.tot_espe" class="custom-select custom-select-md">
-                                                <option value="null" selected>Elija Opción</option>
-                                                <option value="1">0</option>
-                                                <option value="2">1</option>
-                                                <option value="3">2</option>
-                                                <option value="4">3 o más</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label for="gen_espe">Número de especiales totales</label>
-                                            <select name="gen_espe" v-model="alu.generales.gen_espe" id="gen_espe" class="custom-select custom-select-md">
-                                                <option value="null" selected>Elija Opción</option>
-                                                <option value="1">0</option>
-                                                <option value="2">1</option>
-                                                <option value="3">2</option>
-                                                <option value="4">3 o más</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label for="estado">Estado</label>
-                                            <select id="estado" name="estado" v-model="alu.generales.estado" class="custom-select custom-select-md">
-                                                <option value="null" selected>Elija estado académico</option>
-                                                <option value="1">Regular</option>
-                                                <option value="2">Irregular</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label for="turno">Turno</label>
-                                            <select name="turno" id="turno" v-model="alu.generales.turno" class="custom-select custom-select-md">
-                                                <option value="null" selected>Elija Turno</option>
-                                                <option v-bind:value="turn.id_turno" v-for="turn in turno">@{{turn.descripcion_turno}}</option>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12" v-if="alu.generales.beca==1">
+                                            <label for="tbeca">¿Qué tipo de beca?</label>
+                                            <select name="tbeca" id="tbeca" class="custom-select custom-select-md" v-model="alu.generales.id_expbeca" >
+                                                <option value="null" selected>Elija una opción</option>
+                                                <option v-bind:value="bec.id_expbeca" v-for="bec in becas">@{{bec.descripcion_beca}}</option>
                                             </select>
                                         </div>
                                     </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="materias_repeticion">Materias en repeticion *</label>
+                                            <select name="materias_repeticion" id="materias_repeticion" v-model="alu.generales.materias_repeticion" class="custom-select custom-select-md" required>
+                                                <option value="null" selected>Elija una opción</option>
+                                                <option value="1">Si</option>
+                                                <option value="2"  @click="alu.generales.tot_repe=null">No</option>
+                                            </select>
+                                            <small class="form-text text-danger" v-if="alu.generales.materias_repeticion=='null'">Elija una opción</small>
+                                        </div>
+                                        <div class="col-md-4" v-if="alu.generales.materias_repeticion==1">
+                                            <label for="tot_repe">Número de materias en repetición</label>
+                                            <select name="tot_repe" v-model="alu.generales.tot_repe" id="tot_repe" class="custom-select custom-select-md">
+                                                <option value="null" selected>Elija una opción</option>
+                                                <option value="1">0</option>
+                                                <option value="2">1</option>
+                                                <option value="3">2</option>
+                                                <option value="4">3 o más</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="materias_especial">Materias en especial *</label>
+                                            <select name="materias_especial" v-model="alu.generales.materias_especial" id="materias_especial" class="custom-select custom-select-md" required>
+                                                <option value="null" selected>Elija una opción</option>
+                                                <option value="1">Si</option>
+                                                <option value="2"  @click="alu.generales.tot_espe=null">No</option>
+                                            </select>
+                                            <small class="form-text text-danger" v-if="alu.generales.materias_especial=='null'">Elija una opción</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6" v-if="alu.generales.materias_especial==1">
+                                            <label for="tot_espe">Número de materias en especial</label>
+                                            <select name="tot_espe" id="tot_espe" v-model="alu.generales.tot_espe" class="custom-select custom-select-md">
+                                                <option value="null" selected>Elija una opción</option>
+                                                <option value="1">0</option>
+                                                <option value="2">1</option>
+                                                <option value="3">2</option>
+                                                <option value="4">3 o más</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="gen_espe">Número de especiales totales</label>
+                                            <select name="gen_espe" v-model="alu.generales.gen_espe" id="gen_espe" class="custom-select custom-select-md">
+                                                <option value="null" selected>Elija una opción</option>
+                                                <option value="1">0</option>
+                                                <option value="2">1</option>
+                                                <option value="3">2</option>
+                                                <option value="4">3 o más</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
+
+
                         <div class="tab-pane fade" id="exp-antecedentes" role="tabpanel" aria-labelledby="exp-antecedentes-tab">
                             <div class="" >
                                 <div class="row pt-3 pr-3 pl-3">
@@ -258,6 +303,11 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
+
+                                    <!--aqui-->
+
+
+
                                     <div class="row">
                                         <div class="col-md-2">
                                             <label for="bachillerato">Bachillerato</label>
@@ -846,6 +896,9 @@
                                             </select>
                                         </div>
                                     </div>
+
+
+
                                     <div class="row pt-5">
                                         <button class="btn col-12 btn-outline-primary" @click="updateDatos()">Actualizar datos</button>
                                     </div>
