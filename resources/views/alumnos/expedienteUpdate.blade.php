@@ -145,7 +145,7 @@
                                                 <option value="null" selected>Elija estado académico</option>
                                                 <option value="1">Regular</option>
                                                 <option value="2">Irregular</option>
-                                                <option value="3">Suspención</option>
+                                                <option value="3">Suspensión</option>
                                                 <option value="4">Baja temporal</option>
                                                 <option value="5">Baja definitiva</option>
                                             </select>
