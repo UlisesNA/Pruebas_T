@@ -141,7 +141,7 @@ class PdfController extends Controller
         {
             $datosGenerales[0]->no_hijos='3';
         }
-        if ($datosGenerales[0]->no_hijos=='4 o más')
+        if ($datosGenerales[0]->no_hijos==5)
         {
             $datosGenerales[0]->no_hijos='4 o más';
         }
@@ -715,12 +715,11 @@ class PdfController extends Controller
 
 
         //$pdf= new \Codedge\Fpdf\Fpdf\Fpdf();
-       // $pdf->AddPage();
+        // $pdf->AddPage();
         $pdf=new PDF($orientation='P',$unit='mm',$format='Letter');
         #Establecemos los márgenes izquierda, arriba y derecha:
         $pdf->SetMargins(10, 19 , 10);
         //$pdf->SetAutoPageBreak(true,25);
-        $pdf= new \Codedge\Fpdf\Fpdf\Fpdf();
         $pdf->AddPage();
 
 
@@ -829,11 +828,11 @@ class PdfController extends Controller
         $pdf->Cell(($pdf->GetPageWidth()),3,"". utf8_decode(mb_strtoupper("________________________________________________")),0,1,"C");
         $pdf->Cell(($pdf->GetPageWidth()),3,"". utf8_decode(mb_strtoupper($profesor[0]->nombre)),0,0,"C");
 
-       // $pdf->Output();
+        // $pdf->Output();
         $pdf->AliasNbPages();
         $pdf->Output();
         exit();
-       // exit();
+        // exit();
 
 
 
@@ -920,6 +919,7 @@ class PdfController extends Controller
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(15,4,"No. Hijos: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
+        /*uno*/
         if ($datosGenerales[0]->no_hijos==1)
         {
             $datosGenerales[0]->no_hijos='0';
@@ -936,7 +936,7 @@ class PdfController extends Controller
         {
             $datosGenerales[0]->no_hijos='3';
         }
-        if ($datosGenerales[0]->no_hijos=='4 o más')
+        if ($datosGenerales[0]->no_hijos==5)
         {
             $datosGenerales[0]->no_hijos='4 o más';
         }
