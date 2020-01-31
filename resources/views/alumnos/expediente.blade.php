@@ -39,12 +39,13 @@
                                             <input type="text" id="nombre" name="nombre" v-model="alu.generales.nombre" class="form-control" placeholder="Nombre" required disabled>
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="sexo">Sexo </label>
-                                            <select name="sexo" id="sexo"  class="custom-select custom-select-md" v-model="alu.generales.sexo" required disabled>
+                                            <label for="sexo">Sexo *</label>
+                                            <select name="sexo" id="sexo"  class="custom-select custom-select-md" v-model="alu.generales.sexo" required>
                                                 <option value="null" selected>Elija un sexo</option>
                                                 <option value="M">Masculino</option>
                                                 <option value="F">Femenino</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.generales.sexo==null || alu.generales.sexo=="null"'>Elija un sexo</small>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="fn">Fecha de nacimiento </label>
@@ -68,15 +69,24 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label for="EC">Estado Civil</label>
-                                            <select name="estado_civil" id="EC" class="custom-select custom-select-md" v-model="alu.generales.id_estado_civil">
+                                            <label for="EC">Estado Civil *</label>
+                                            <select name="estado_civil" id="EC" class="custom-select custom-select-md" v-model="alu.generales.id_estado_civil" required>
                                                 <option value="null" selected >Elija el estado civil</option>
                                                 <option v-bind:value="es.id_estado_civil" v-for="es in estadociv">@{{es.desc_ec}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.generales.id_estado_civil==null || alu.generales.id_estado_civil=="null"'>Elija una opción</small>
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="nh">No. Hijos</label>
-                                            <input type="number" v-model="alu.generales.no_hijos" id="nh" name="no_hijos" class="form-control" placeholder="No. Hijos">
+                                            <label for="estado">No. Hijos *</label>
+                                            <select id="nh" name="no_hijos" v-model="alu.generales.no_hijos" class="custom-select custom-select-md" required>
+                                                <option value="null" selected>Elija una opción</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5 o más">5 o más</option>
+                                            </select>
+                                            <small class="form-text text-danger" v-if='alu.generales.no_hijos=="" || alu.generales.no_hijos==null '>Colocar un número de hijos</small>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="correo">e-mail </label>
@@ -91,7 +101,7 @@
                                         <div class="col-md-3">
                                             <label for="cel">Celular *</label>
                                             <input type="text" v-model="alu.generales.cel"  id="cel" name="cel" class="form-control" placeholder="Cel" required>
-                                            <small class="form-text text-danger" v-if="alu.generales.cel==null">Colocar un número celular</small>
+                                            <small class="form-text text-danger" v-if='alu.generales.cel==null || alu.generales.cel==""'>Colocar un número celular</small>
                                         </div>
                                         <div class="col-md-5">
                                             <label for="carrera">Programa educativo </label>
@@ -122,7 +132,7 @@
                                                 <option value="null" selected>Elija un grupo</option>
                                                 <option v-bind:value="gru.id_grupo" v-for="gru in grupo">@{{gru.grupo}}</option>
                                             </select>
-                                            <small class="form-text text-danger" v-if="alu.generales.id_grupo==null">Elija un grupo</small>
+                                            <small class="form-text text-danger" v-if='alu.generales.id_grupo==null || alu.generales.id_grupo=="null"'>Elija un grupo</small>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -168,12 +178,13 @@
                                             <button class="btn btn-outline-primary"  data-toggle="modal" data-target="#modalNSE"><i class="fa fa-file"></i></button>
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="trabaja">Trabaja</label>
-                                            <select name="trabaja" id="trabaja" v-model="alu.generales.trabaja" class="custom-select custom-select-md">
+                                            <label for="trabaja">Trabaja *</label>
+                                            <select name="trabaja" id="trabaja" v-model="alu.generales.trabaja" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija Opción</option>
                                                 <option value="1">Si</option>
-                                                <option value="2" @click="alu.generales.ocupacion=null">No</option>
+                                                <option value="2" @click="borra_trabaja()">No</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.generales.trabaja==null || alu.generales.trabaja=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row" v-if="alu.generales.trabaja==1">
@@ -217,11 +228,12 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12" v-if="alu.generales.beca==1">
-                                            <label for="tbeca">¿Qué tipo de beca?</label>
-                                            <select name="tbeca" id="tbeca" class="custom-select custom-select-md" v-model="alu.generales.id_expbeca" >
+                                            <label for="tbeca">¿Qué tipo de beca? *</label>
+                                            <select name="tbeca" id="tbeca" class="custom-select custom-select-md" v-model="alu.generales.id_expbeca" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="bec.id_expbeca" v-for="bec in becas">@{{bec.descripcion_beca}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.generales.id_expbeca==null || alu.generales.id_expbeca=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -282,11 +294,18 @@
                                 </div>
                             </div>
                         </div>
+
+
                         <div class="tab-pane fade" v-bind:class="{show:actacademico,active:actacademico}" id="exp-antecedentes" role="tabpanel" aria-labelledby="exp-antecedentes-tab">
                             <div class="" >
                                 <div class="row pt-3 pr-3 pl-3">
                                     <div class=" col-12 align-content-center">
                                         <h4 class="text-center alert alert-primary pt-4"><b>Antecedentes Académicos</b></h4>
+                                    </div>
+                                </div>
+                                <div class="col-12 pt-4" v-if="llenoant==false">
+                                    <div class="alert alert-danger text-center">
+                                        Por favor, llena todos los campos requeridos para poder pasar al llenado de la siguiente área del expediente. Gracias.
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -298,7 +317,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label for="bachillerato">Tipo de achillerato</label>
+                                            <label for="bachillerato">Tipo de bachillerato</label>
                                             <select name="bachillerato" v-model="alu.academicos.id_bachillerato" id="bachillerato" class="custom-select custom-select-md">
                                                 <option value="null" selected>Elija una opcoón</option>
                                                 <option v-bind:value="bach.id_bachillerato" v-for="bach in bachiller">@{{bach.desc_bachillerato}}</option>
@@ -318,13 +337,13 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label for="at">Año de terminación</label>
-                                            <input type="text" v-model="alu.academicos.ano_terminacion" name="ano_terminacion" id="at" class="form-control" placeholder="Año Ternimación">
+                                            <input type="text" v-model="alu.academicos.ano_terminacion" name="ano_terminacion" id="at" class="form-control" placeholder="Año Terminación">
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label for="epro">Escuela de procedencia</label>
-                                            <input type="text" v-model="alu.academicos.escuela_procedente" class="form-control" id="epro" name="escuela_procedencia" placeholder="Escuela de Procedencia">
+                                            <input type="text" v-model="alu.academicos.escuela_procedente" class="form-control" id="epro" name="escuela_procedencia" placeholder="Escuela de procedencia">
                                         </div>
                                         <div class="col-md-4">
                                             <label for="promedio">Promedio</label>
@@ -369,12 +388,13 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <label for="cae">¿Te gusta la carrera elegida?</label>
-                                            <select v-model="alu.academicos.tegusta_carrera_elegida" id="cae" class="custom-select custom-select-md">
+                                            <label for="cae">¿Te gusta la carrera elegida? *</label>
+                                            <select v-model="alu.academicos.tegusta_carrera_elegida" id="cae" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option value="1">Si</option>
                                                 <option value="2" @click="alu.academicos.porque_carrera_elegida=null">No</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.academicos.tegusta_carrera_elegida==null || alu.academicos.tegusta_carrera_elegida=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -401,12 +421,13 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label for="tefe">¿Te estimula tu familia en tus estudios?</label>
-                                            <select v-model="alu.academicos.teestimula_familia" id="tefe" class="custom-select custom-select-md">
+                                            <label for="tefe">¿Te estimula tu familia en tus estudios? *</label>
+                                            <select v-model="alu.academicos.teestimula_familia" id="tefe" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option value="1">Si</option>
                                                 <option value="2">No</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.academicos.teestimula_familia==null || alu.academicos.teestimula_familia=="null"'>Elija una opción</small>
                                         </div>
                                         <div class="col-md-8">
                                             <label for="ov">¿Tuviste otras opciones vocacionales o preferencias por otras carreras?</label>
@@ -431,11 +452,12 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <label for="oti">Otra carrera iniciada</label>
-                                            <select v-model="alu.academicos.otra_carrera_ini" id="oti" class="custom-select custom-select-md">
+                                            <select v-model="alu.academicos.otra_carrera_ini" id="oti" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option value="1">Si</option>
                                                 <option value="2" @click="borra_institucion()">No</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.academicos.otra_carrera_ini==null || alu.academicos.otra_carrera_ini=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row" v-if="alu.academicos.otra_carrera_ini==1">
@@ -475,12 +497,17 @@
                                         <h4 class="text-center alert alert-primary pt-4"><b>Datos Familiares</b></h4>
                                     </div>
                                 </div>
+                                <div class="col-12 pt-4" v-if="llenofam==false">
+                                    <div class="alert alert-danger text-center">
+                                        Por favor, llena todos los campos requeridos para poder pasar al llenado de la siguiente área del expediente. Gracias.
+                                    </div>
+                                </div>
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label for="np">Nombre del padre *</label>
                                             <input name="nombre_padre" v-model="alu.familiares.nombre_padre" id="np" type="text" class="form-control" placeholder="Nombre del padre" required>
-                                            <small class="form-text text-danger" v-if="alu.familiares.nombre_padre==''">Colocar nombre del padre</small>
+                                            <small class="form-text text-danger" v-if='alu.familiares.nombre_padre==null || alu.familiares.nombre_padre=="" '>Colocar nombre del padre</small>
                                         </div>
                                         <div class="col-md-1">
                                             <label for="edadP">Edad</label>
@@ -493,14 +520,14 @@
                                         <div class="col-md-4">
                                             <label for="LRP">Lugar de residencia *</label>
                                             <input v-model="alu.familiares.lugar_residencia_padre" name="lugar_residencia_padre" id="LRP" placeholder="Lugar de residencia" type="text" class="form-control" required>
-                                            <small class="form-text text-danger" v-if="alu.familiares.lugar_residencia_padre==''">Colocar lugar de residencia</small>
+                                            <small class="form-text text-danger" v-if='alu.familiares.lugar_residencia_padre==null || alu.familiares.lugar_residencia_padre=="" '>Colocar un lugar de residencia del padre</small>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label for="nm">Nombre de la madre *</label>
                                             <input type="text" v-model="alu.familiares.nombre_madre" name="nombre_madre" id="nm" class="form-control" placeholder="Nombre de la madre" required>
-                                            <small class="form-text text-danger" v-if="alu.familiares.nombre_madre==''">Colocar nombre de la madre</small>
+                                            <small class="form-text text-danger" v-if='alu.familiares.nombre_madre==null || alu.familiares.nombre_madre=="" '>Colocar nombre de la madre</small>
                                         </div>
                                         <div class="col-md-1">
                                             <label for="edadM">Edad</label>
@@ -513,7 +540,7 @@
                                         <div class="col-md-4">
                                             <label for="LRM">Lugar de residencia *</label>
                                             <input id="LRM" v-model="alu.familiares.lugar_residencia_madre" name="lugar_residencia_madre" type="text" placeholder="Lugar de residencia" class="form-control" required>
-                                            <small class="form-text text-danger" v-if="alu.familiares.lugar_residencia_madre==''">Colocar lugar de residencia</small>
+                                            <small class="form-text text-danger" v-if='alu.familiares.lugar_residencia_madre==null || alu.familiares.lugar_residencia_madre=="" '>Colocar un lugar de residencia de la madre</small>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -526,11 +553,12 @@
                                             <input type="text" v-model="alu.familiares.lugar_ocupas" id="loe" name="lugar_que_ocupas" class="form-control" placeholder="Lugar que ocupas entre ellos">
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="av">Actualmente vives con: </label>
-                                            <select name="actualmente_vives" id="av" v-model="alu.familiares.id_opc_vives" class="custom-select custom-select-md">
+                                            <label for="av">Actualmente vives con: *</label>
+                                            <select name="actualmente_vives" id="av" v-model="alu.familiares.id_opc_vives" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="viv.id_opc_vives" v-for="viv in vive">@{{viv.desc_opc}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.familiares.id_opc_vives==null || alu.familiares.id_opc_vives=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -545,7 +573,7 @@
                                                 <option value="1">Si</option>
                                                 <option value="2" @click="alu.familiares.cual_etnia=null">No</option>
                                             </select>
-                                            <small class="form-text text-danger" v-if="alu.familiares.etnia_indigena=='null'">Elija una opción</small>
+                                            <small class="form-text text-danger" v-if='alu.familiares.etnia_indigena==null || alu.familiares.etnia_indigena=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -562,7 +590,7 @@
                                                 <option value="1">Si</option>
                                                 <option value="2">No</option>
                                             </select>
-                                            <small class="form-text text-danger" v-if="alu.familiares.hablas_lengua_indigena=='null'">Elija una opción</small>
+                                            <small class="form-text text-danger" v-if='alu.familiares.hablas_lengua_indigena==null || alu.familiares.hablas_lengua_indigena=="null"'>Elija una opción</small>
                                         </div>
                                         <div class="col-md-6">
                                             <label for="sostiene">¿Quién sostiene económicamente tu hogar?</label>
@@ -572,11 +600,12 @@
 
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label for="consideras">Consideras a tu familia</label>
-                                            <select id="consideras" name="consideras_a_familia" v-model="alu.familiares.id_familia_union" class="custom-select custom-select-md">
+                                            <label for="consideras">Consideras a tu familia *</label>
+                                            <select id="consideras" name="consideras_a_familia" v-model="alu.familiares.id_familia_union" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="uni.id_familia_union" v-for="uni in union">@{{uni.desc_union}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.familiares.id_familia_union==null || alu.familiares.id_familia_union=="null"'>Elija un grupo</small>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="nt">Nombre del Tutor</label>
@@ -591,14 +620,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-12 pt-4" v-if="alu.familiares.nombre_madre!='' && alu.familiares.nombre_madre!='' && alu.familiares.lugar_residencia_madre!='' && alu.familiares.lugar_residencia_padre!='' && alu.familiares.etnia_indigena!='null' && alu.familiares.hablas_lengua_indigena!='null'">
+                                <div class="col-12 pt-4">
                                     <button class="btn btn-outline-primary col-12" @click="siguiente('estudio')">Siguiente</button>
                                 </div>
-                                <div class="col-12 pt-4" v-else>
-                                    <div class="alert alert-danger text-center">
-                                        Por favor, llena todos los campos requeridos para poder pasar al llenado de la siguente área del expedinte. Gracias.
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                         <div class="tab-pane fade" v-bind:class="{show:actestudio,active:actestudio}" id="exp-habitos" role="tabpanel" aria-labelledby="exp-habitos-tab">
@@ -608,14 +633,20 @@
                                         <h4 class="text-center alert alert-primary pt-4"><b>Hábitos de Estudio</b></h4>
                                     </div>
                                 </div>
+                                <div class="col-12 pt-4" v-if="llenohab==false">
+                                    <div class="alert alert-danger text-center">
+                                        Por favor, llena todos los campos requeridos para poder pasar al llenado de la siguiente área del expediente. Gracias.
+                                    </div>
+                                </div>
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <label for="tiempo">Tiempo dedicado a estudiar diariamente fuera de clase</label>
-                                            <select v-model="alu.estudio.tiempo_empleado_estudiar" id="tiempo" type="text" class="custom-select custom-select-md">
+                                            <label for="tiempo">Tiempo dedicado a estudiar diariamente fuera de clase *</label>
+                                            <select v-model="alu.estudio.tiempo_empleado_estudiar" id="tiempo" type="text" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="tiemp.id_opc_tiempo" v-for="tiemp in tiempo">@{{tiemp.desc_opc}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.estudio.tiempo_empleado_estudiar==null || alu.estudio.tiempo_empleado_estudiar=="null"'>Elija una opción</small>
                                         </div>
                                         <div class="col-md-6">
                                             <label for="fti">¿Cómo es tú forma de trabajo intelectual?</label>
@@ -629,7 +660,7 @@
                                         <div class="col-md-12">
                                             <label for="formaes">Tu forma de estudio mas utilizada *</label>
                                             <input name="forma_estudio" v-model="alu.estudio.forma_estudio" id="formaes" type="text" class="form-control" placeholder="Tu forma de estudio mas utilizada" required>
-                                            <small class="form-text text-danger" v-if="alu.estudio.forma_estudio==''">Colocar una forma de estudio</small>
+                                            <small class="form-text text-danger" v-if='alu.estudio.forma_estudio==null || alu.estudio.forma_estudio=="" '>Colocar una forma de estudio</small>
                                         </div>
                                         <div class="col-md-12">
                                             <label for="empleas">¿Cómo empleas tu tiempo libre?</label>
@@ -659,14 +690,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-12 pt-4" v-if="alu.estudio.forma_estudio!=''">
+                                <div class="col-12 pt-4">
                                     <button class="btn btn-outline-primary col-12" @click="siguiente('integral')">Siguiente</button>
                                 </div>
-                                <div class="col-12 pt-4" v-else>
-                                    <div class="alert alert-danger text-center">
-                                        Por favor, llena todos los campos requeridos para poder pasar al llenado de la siguente área del expedinte. Gracias.
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
                         <div class="tab-pane fade" v-bind:class="{show:actintegral,active:actintegral}" id="exp-formacion" role="tabpanel" aria-labelledby="formacion-tab">
@@ -676,15 +703,21 @@
                                         <h4 class="text-center alert alert-primary pt-4"><b>Formación Integral/Salud</b></h4>
                                     </div>
                                 </div>
+                                <div class="col-12 pt-4" v-if="llenofor==false">
+                                    <div class="alert alert-danger text-center">
+                                        Por favor, llena todos los campos requeridos para poder pasar al llenado de la siguiente área del expediente. Gracias.
+                                    </div>
+                                </div>
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <label for="depo">¿Practicas regularmente algún deporte?</label>
-                                            <select name="depo" id="depo" v-model="alu.integral.practica_deporte" class="custom-select custom-select-md">
+                                            <label for="depo">¿Practicas regularmente algún deporte? *</label>
+                                            <select name="depo" id="depo" v-model="alu.integral.practica_deporte" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option value="1">Si</option>
                                                 <option value="2" @click="alu.integral.especifica_deporte=null">No</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.integral.practica_deporte==null || alu.integral.practica_deporte=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -695,12 +728,13 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <label for="artistica">¿Practicas alguna actividad artística?</label>
-                                            <select name="artistica" id="artistica" v-model="alu.integral.practica_artistica" class="custom-select custom-select-md">
+                                            <label for="artistica">¿Practicas alguna actividad artística? *</label>
+                                            <select name="artistica" id="artistica" v-model="alu.integral.practica_artistica" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option value="1">Si</option>
                                                 <option value="2" @click="alu.integral.especifica_artistica=null">No</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.integral.practica_artistica==null || alu.integral.practica_artistica=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -711,12 +745,13 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <label for="actC">¿Participas en actividades culturales o sociales?</label>
-                                            <select  id="actC" name="actC" v-model="alu.integral.actividades_culturales" class="custom-select custom-select-md">
+                                            <label for="actC">¿Participas en actividades culturales o sociales? *</label>
+                                            <select  id="actC" name="actC" v-model="alu.integral.actividades_culturales" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option value="1">Si</option>
                                                 <option value="2" @click="alu.integral.cuales_act=null">No</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.integral.actividades_culturales==null || alu.integral.actividades_culturales=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -756,7 +791,7 @@
                                                 <option value="1">Si</option>
                                                 <option value="2" @click="alu.integral.especifica_enf_cron=null">No</option>
                                             </select>
-                                            <small class="form-text text-danger" v-if="alu.integral.enfermedad_cronica=='null'">Elija una opción</small>
+                                            <small class="form-text text-danger" v-if='alu.integral.enfermedad_cronica==null || alu.integral.enfermedad_cronica=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -773,7 +808,7 @@
                                                 <option value="1">Si</option>
                                                 <option value="2" @click="alu.integral.especifica_enf_cron_padres=null">No</option>
                                             </select>
-                                            <small class="form-text text-danger" v-if="alu.integral.enf_cron_padre=='null'">Elija una opción</small>
+                                            <small class="form-text text-danger" v-if='alu.integral.enf_cron_padre==null || alu.integral.enf_cron_padre=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -790,7 +825,7 @@
                                                 <option value="1">Si</option>
                                                 <option value="2" @click="alu.integral.deque_operacion=null">No</option>
                                             </select>
-                                            <small class="form-text text-danger" v-if="alu.integral.operacion=='null'">Elija una opción</small>
+                                            <small class="form-text text-danger" v-if='alu.integral.operacion==null || alu.integral.operacion=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -807,7 +842,7 @@
                                                 <option value="1">Si</option>
                                                 <option value="2" @click="alu.integral.especifica_enf=null">No</option>
                                             </select>
-                                            <small class="form-text text-danger" v-if="alu.integral.enfer_visual=='null'">Elija una opción</small>
+                                            <small class="form-text text-danger" v-if='alu.integral.enfer_visual==null || alu.integral.enfer_visual=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -818,12 +853,13 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label for="lentes">¿Usas lentes?</label>
-                                            <select name="lentes" id="lentes" v-model="alu.integral.usas_lentes" class="custom-select custom-select-md">
+                                            <label for="lentes">¿Usas lentes? *</label>
+                                            <select name="lentes" id="lentes" v-model="alu.integral.usas_lentes" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option value="1">Si</option>
                                                 <option value="2">No</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.integral.usas_lentes==null || alu.integral.usas_lentes=="null"'>Elija una opción</small>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="estatura">Estatura</label>
@@ -842,7 +878,7 @@
                                                 <option value="1">Si</option>
                                                 <option value="2" @click="alu.integral.especifica_medicamento=null">No</option>
                                             </select>
-                                            <small class="form-text text-danger" v-if="alu.integral.medicamento_controlado=='null'">Elija una opción</small>
+                                            <small class="form-text text-danger" v-if='alu.integral.medicamento_controlado==null || alu.integral.medicamento_controlado=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -868,13 +904,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-12 pt-4" v-if="alu.integral.enfermedad_cronica!='null' && alu.integral.enf_cron_padre!='null' && alu.integral.operacion!='null' && alu.integral.enfer_visual!='null' && alu.integral.medicamento_controlado!='null'">
+                                <div class="col-12 pt-4">
                                     <button class="btn btn-outline-primary col-12" @click="siguiente('area')">Siguiente</button>
-                                </div>
-                                <div class="col-12 pt-4" v-else>
-                                    <div class="alert alert-danger text-center">
-                                        Por favor, llena todos los campos requeridos para poder pasar al llenado de la siguente área del expedinte. Gracias.
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -885,14 +916,25 @@
                                         <h4 class="text-center alert alert-primary pt-4"><b>Área Psicopedagógica</b></h4>
                                     </div>
                                 </div>
+                                <div class="col-12 pt-4" v-if="llenoare==false">
+                                    <div class="alert alert-danger text-center">
+                                        Por favor, llena todos los campos requeridos para poder finalizar el llenado del expediente. Gracias.
+                                    </div>
+                                </div>
+                                <div class="col-12 pt-4" v-if="lleno==false">
+                                    <div class="alert alert-success text-center">
+                                        Tus cambios se han guardado correctamente. Gracias.
+                                    </div>
+                                </div>
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-3">
-                                            <label for="rendEsco">Rendimiento Escolar</label>
-                                            <select name="rendimiento_escolar" v-model="alu.area.rendimiento_escolar" id="rendEsco" class="custom-select custom-select-md">
+                                            <label for="rendEsco">Rendimiento escolar *</label>
+                                            <select name="rendimiento_escolar" v-model="alu.area.rendimiento_escolar" id="rendEsco" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="esc.id_escala" v-for="esc in escala">@{{esc.desc_escala}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.area.rendimiento_escolar==null || alu.area.rendimiento_escolar=="null"'>Elija una opción</small>
                                         </div>
                                         <div class="col-md-3">
                                             <label for="dominio">Dominio del propio idioma</label>
@@ -902,41 +944,45 @@
                                             </select>
                                         </div>
                                         <div class="col-md-3">
-                                            <label for="otro">Otro idioma</label>
-                                            <select name="otro_idioma" id="otro" v-model="alu.area.otro_idioma" class="custom-select custom-select-md">
+                                            <label for="otro">Otro idioma *</label>
+                                            <select name="otro_idioma" id="otro" v-model="alu.area.otro_idioma" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="esc.id_escala" v-for="esc in escala">@{{esc.desc_escala}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.area.otro_idioma==null || alu.area.otro_idioma=="null"'>Elija una opción</small>
                                         </div>
                                         <div class="col-md-3">
-                                            <label for="conComp">Conocimentos en cómputo</label>
-                                            <select name="conocimiento_computo" id="conComp" v-model="alu.area.conocimiento_compu" class="custom-select custom-select-md">
+                                            <label for="conComp">Conocimentos en cómputo *</label>
+                                            <select name="conocimiento_computo" id="conComp" v-model="alu.area.conocimiento_compu" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="esc.id_escala" v-for="esc in escala">@{{esc.desc_escala}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.area.conocimiento_compu==null || alu.area.conocimiento_compu=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-3">
-                                            <label for="aptitudes">Aptitudes Especiales</label>
+                                            <label for="aptitudes">Aptitudes especiales</label>
                                             <select name="aptitudes" id="aptitudes" v-model="alu.area.aptitud_especial" class="custom-select custom-select-md">
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="esc.id_escala" v-for="esc in escala">@{{esc.desc_escala}}</option>
                                             </select>
                                         </div>
                                         <div class="col-md-3">
-                                            <label for="comprension">Comprensión y Retención en clase</label>
-                                            <select name="comprension" id="comprension" v-model="alu.area.comprension" class="custom-select custom-select-md">
+                                            <label for="comprension">Comprensión y retención en clase *</label>
+                                            <select name="comprension" id="comprension" v-model="alu.area.comprension" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="esc.id_escala" v-for="esc in escala">@{{esc.desc_escala}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.area.comprension==null || alu.area.comprension=="null"'>Elija una opción</small>
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="preparacion">Preparación y presentación de exámenes</label>
-                                            <select name="preparacion" id="preparacion" v-model="alu.area.preparacion" class="custom-select custom-select-md">
+                                            <label for="preparacion">Preparación y presentación de exámenes *</label>
+                                            <select name="preparacion" id="preparacion" v-model="alu.area.preparacion" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="esc.id_escala"  v-for="esc in escala">@{{esc.desc_escala}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.area.preparacion==null || alu.area.preparacion=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -955,20 +1001,22 @@
                                             </select>
                                         </div>
                                         <div class="col-md-3">
-                                            <label for="concentracion">Concentración durante el estudio</label>
-                                            <select name="concentracion" id="concentracion" v-model="alu.area.concentracion" class="custom-select custom-select-md">
+                                            <label for="concentracion">Concentración durante el estudio *</label>
+                                            <select name="concentracion" id="concentracion" v-model="alu.area.concentracion" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="esc.id_escala" v-for="esc in escala">@{{esc.desc_escala}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.area.concentracion==null || alu.area.concentracion=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-5">
-                                            <label for="solucion">Solución de problemas y aprendizaje de las matemáticas</label>
-                                            <select name="solucion" id="solucion" v-model="alu.area.solucion_problemas" class="custom-select custom-select-md">
+                                            <label for="solucion">Solución de problemas y aprendizaje de las matemáticas *</label>
+                                            <select name="solucion" id="solucion" v-model="alu.area.solucion_problemas" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="esc.id_escala" v-for="esc in escala">@{{esc.desc_escala}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.area.solucion_problemas==null || alu.area.solucion_problemas=="null"'>Elija una opción</small>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="condiciones">Condiciones ambientales durante el estudio</label>
@@ -978,20 +1026,22 @@
                                             </select>
                                         </div>
                                         <div class="col-md-3">
-                                            <label for="equipo">Trabajo en equipo</label>
-                                            <select name="equipo" id="equipo" v-model="alu.area.trabajo_equipo" class="custom-select custom-select-md">
+                                            <label for="equipo">Trabajo en equipo *</label>
+                                            <select name="equipo" id="equipo" v-model="alu.area.trabajo_equipo" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="esc.id_escala" v-for="esc in escala">@{{esc.desc_escala}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.area.trabajo_equipo==null || alu.area.trabajo_equipo=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-5">
-                                            <label for="bibliografica">Búsqueda bibliografica e integración de información</label>
-                                            <select name="bibliografica" id="bibliografica" v-model="alu.area.busqueda_bibliografica" class="custom-select custom-select-md">
+                                            <label for="bibliografica">Búsqueda bibliografica e integración de información *</label>
+                                            <select name="bibliografica" id="bibliografica" v-model="alu.area.busqueda_bibliografica" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="esc.id_escala"  v-for="esc in escala">@{{esc.desc_escala}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.area.busqueda_bibliografica==null || alu.area.busqueda_bibliografica=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                 </div>
@@ -1004,8 +1054,6 @@
                 </div>
             </div>
         </div>
-        <pre>@{{ test }}</pre>
-        <pre>@{{ alu.generales }}</pre>
         @include("alumnos.partial.modalNSE")
     </div>
     <script type="application/javascript">
@@ -1186,6 +1234,12 @@
                     }
                 },
                 llenogen:true,
+                llenofam:true,
+                llenohab:true,
+                llenoant:true,
+                llenofor:true,
+                llenoare:true,
+                lleno:true,
                 test:{
                     p1:null,
                     p2:null,
@@ -1243,22 +1297,43 @@
                     this.alu.academicos.institucion=null;
                     this.alu.academicos.semestres_cursados=null;
                 },
+                borra_trabaja:function(){
+                    this.alu.generales.ocupacion="";
+                    this.alu.generales.horario="";
+                },
                 siguiente:function (cat) {
                     switch ( cat) {
                         case 'academico':
 
                             if(this.alu.generales.estado!=null
                                 && this.alu.generales.nivel_economico!=null
-                                && this.alu.generales.beca!=null
                                 && this.alu.generales.materias_especial!=null
                                 && this.alu.generales.materias_repeticion!=null
                                 && this.alu.generales.direccion!=null
-                                && this.alu.generales.id_periodo!=null)
+                                && this.alu.generales.id_periodo!=null
+                                && this.alu.generales.no_hijos!=null
+                                && this.alu.generales.id_grupo!=null
+                                && this.alu.generales.sexo!=null
+                                && this.alu.generales.id_estado_civil!=null
+                                && this.alu.generales.trabaja!=null)
                             {
-                                this.actacademico=true;
-                                this.disacademico=false;
-                                this.actgenerales=false;
-                                this.llenogen=true;
+                                if (this.alu.generales.beca==1 && this.alu.generales.id_expbeca!=null){
+                                    this.actacademico=true;
+                                    this.disacademico=false;
+                                    this.actgenerales=false;
+                                    this.llenogen=true;
+                                }
+                                if (this.alu.generales.beca==1 && this.alu.generales.id_expbeca==null){
+                                    this.llenogen=false;
+                                }
+
+                                    if(this.alu.generales.beca==2 && this.alu.generales.id_expbeca==null)
+                                    {
+                                        this.actacademico=true;
+                                        this.disacademico=false;
+                                        this.actgenerales=false;
+                                        this.llenogen=true;
+                                    }
 
                             }
                             else
@@ -1267,26 +1342,79 @@
                             }
                                 break;
                         case 'familiares':
-                            this.actfamiliares=true;
-                            this.disfamiliares=false;
-                            this.actacademico=false;
+                            if(this.alu.academicos.teestimula_familia!=null
+                                && this.alu.academicos.tegusta_carrera_elegida!=null
+                                && this.alu.academicos.otra_carrera_ini!=null)
+                            {
+                                this.actfamiliares=true;
+                                this.disfamiliares=false;
+                                this.actacademico=false;
+                                this.llenoant=true;
+
+
+                            }
+                            else
+                            {
+                                this.llenoant=false;
+                            }
                             break;
                         case 'estudio':
-                            this.actfamiliares=false;
-                            this.actestudio=true;
-                            this.disestudio=false;
+                            if(this.alu.familiares.nombre_padre!=null
+                                && this.alu.familiares.nombre_madre!=null
+                                && this.alu.familiares.lugar_residencia_madre!=null
+                                && this.alu.familiares.lugar_residencia_padre!=null
+                                && this.alu.familiares.etnia_indigena!=null
+                                && this.alu.familiares.hablas_lengua_indigena!=null
+                                && this.alu.familiares.id_opc_vives!=null
+                                && this.alu.familiares.id_familia_union!=null)
+                            {
+                                this.actfamiliares=false;
+                                this.actestudio=true;
+                                this.disestudio=false;
+                                this.llenofam=true;
+
+                            }
+                            else
+                            {
+                                this.llenofam=false;
+                            }
                             break;
                         case 'integral':
-                            this.actestudio=false;
-                            this.actintegral=true;
-                            this.disintegral=false;
+                            if(this.alu.estudio.forma_estudio!=null && this.alu.estudio.tiempo_empleado_estudiar!=null)
+                            {
+                                this.actestudio=false;
+                                this.actintegral=true;
+                                this.disintegral=false;
+                                this.llenohab=true;
+
+                            }
+                            else
+                            {
+                                this.llenohab=false;
+                            }
                             break;
                         case 'area':
-                            this.actintegral=false;
-                            this.actarea=true;
-                            this.disarea=false;
-                            break;
+                            if(this.alu.integral.enfermedad_cronica!=null
+                                && this.alu.integral.enf_cron_padre!=null
+                                && this.alu.integral.operacion!=null
+                                && this.alu.integral.enfer_visual!=null
+                                && this.alu.integral.medicamento_controlado!=null
+                                && this.alu.integral.practica_deporte!=null
+                                && this.alu.integral.practica_artistica!=null
+                                && this.alu.integral.actividades_culturales!=null
+                                && this.alu.integral.usas_lentes!=null)
+                            {
+                                this.actintegral=false;
+                                this.actarea=true;
+                                this.disarea=false;
+                                this.llenofor=true;
 
+                            }
+                            else
+                            {
+                                this.llenofor=false;
+                            }
+                            break;
                     }
                 },
                 categoria:function (cat) {
@@ -1343,9 +1471,26 @@
                     }
                 },
                 Guardar:function () {
-                    axios.post(this.ruta,{alu:this.alu}).then(response=>{
-                        window.location='inicioalu';
-                    }).catch(error=>{  });
+                    if (this.alu.area.trabajo_equipo!=null
+                        && this.alu.area.rendimiento_escolar!=null
+                        && this.alu.area.conocimiento_compu!=null
+                        && this.alu.area.comprension!=null
+                        && this.alu.area.concentracion!=null
+                        && this.alu.area.otro_idioma!=null
+                        && this.alu.area.solucion_problemas!=null
+                        && this.alu.area.preparacion!=null
+                        && this.alu.area.busqueda_bibliografica!=null)
+                    {
+                        this.lleno=true;
+                        axios.post(this.ruta,{alu:this.alu}).then(response=>{
+                            window.location='inicioalu';
+                        }).catch(error=>{  });
+                    }
+                    else
+                    {
+                        this.llenoare=false;
+                    }
+
                 },
                 CalculaNivel:function () {
 
