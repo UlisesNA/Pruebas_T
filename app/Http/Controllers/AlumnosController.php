@@ -102,7 +102,9 @@ class AlumnosController extends Controller
         $alumnos=DB::select('select gnral_alumnos.nombre, gnral_alumnos.apaterno, gnral_alumnos.amaterno, 
                 gnral_alumnos.cuenta,gnral_alumnos.id_alumno FROM gnral_alumnos WHERE gnral_alumnos.id_carrera='.$carrera[0]->id_carrera.' and 
                 substr(gnral_alumnos.cuenta, 1, 4)='.$request->generacion.' and gnral_alumnos.id_alumno NOT IN (SELECT exp_asigna_alumnos.id_alumno 
-                from exp_asigna_alumnos WHERE exp_asigna_alumnos.deleted_at is null and exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.') ORDER BY gnral_alumnos.apaterno ');
+                from exp_asigna_alumnos WHERE exp_asigna_alumnos.deleted_at is null and exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.') 
+                 AND gnral_alumnos.id_alumno NOT IN (SELECT exp_asigna_alumnos.id_alumno 
+                from exp_asigna_alumnos WHERE exp_asigna_alumnos.deleted_at is null) ORDER BY gnral_alumnos.apaterno ');
 
         return $alumnos;
     }

@@ -1004,7 +1004,6 @@
                 </div>
             </div>
         </div>
-        <pre>@{{ test }}</pre>
         <pre>@{{ alu.generales }}</pre>
         @include("alumnos.partial.modalNSE")
     </div>
@@ -1023,7 +1022,6 @@
                 carreras:[],
                 grupo:[],
                 estadociv:[],
-                /*nivel:[],*/
                 bachiller:[],
                 vive:[],
                 union:[],
@@ -1066,7 +1064,6 @@
                         horario:null,
                         no_cuenta:null,
                         beca:null,
-                        /*tipo_beca:null,*/
                         estado:null,
                         turno:null,
                         id_expbeca:null,
