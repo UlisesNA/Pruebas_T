@@ -354,7 +354,7 @@
                                 <div class="col-11"></div>
                                 <div class="col-1"><a href="#!"  class="btn text-white btn-danger" ><i class="fas fa-file-pdf"></i></a></div>
                             </div>
-                            <div class="row m-2"><div class="col-12 "><h5 class="alert alert-primary text-center">Estadísticas</h5></div></div>
+                            <div class="row m-2"><div class="col-12 "><h5 class="alert alert-primary text-center font-weight-bold">Estadísticas</h5></div></div>
                             <div class="row text-center"><div class="col-4"></div><div class="col-4 graf" id="genero"></div></div>
                             <div class="row pl-4">
                                 <div class="col-12 pt-4">
@@ -381,13 +381,88 @@
                                             <div class="row pt-4">
                                                 <div class="col-12">
                                                     <div class="row">
-                                                        <div class="col-4 graf" id="estadoc"></div>
-                                                        <div class="col-4 graf" id="ne"></div>
-                                                        <div class="col-4 graf" id="tra"></div>
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Estado Civil</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 graf" id="ecg"></div>
+                                                                <div class="col-4 graf" id="ecf"></div>
+                                                                <div class="col-4 graf" id="ecm"></div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="col-4 graf" id="bec"></div>
-                                                        <div class="col-4 graf" id="est"></div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Nivel Socioeconómico</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 graf" id="neg"></div>
+                                                                <div class="col-4 graf" id="nef"></div>
+                                                                <div class="col-4 graf" id="nem"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Trabaja</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 graf" id="trag"></div>
+                                                                <div class="col-4 graf" id="traf"></div>
+                                                                <div class="col-4 graf" id="tram"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Estado Académico</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 graf" id="eag"></div>
+                                                                <div class="col-4 graf" id="eaf"></div>
+                                                                <div class="col-4 graf" id="eam"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Beca</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 graf" id="bg"></div>
+                                                                <div class="col-4 graf" id="bf"></div>
+                                                                <div class="col-4 graf" id="bm"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Tipo de beca</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 graf" id="tbg"></div>
+                                                                <div class="col-4 graf" id="tbf"></div>
+                                                                <div class="col-4 graf" id="tbm"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Número de hijos</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 graf" id="hg"></div>
+                                                                <div class="col-4 graf" id="hf"></div>
+                                                                <div class="col-4 graf" id="hm"></div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -755,9 +830,13 @@
                         busqueda_bibliografica:"",
                         trabajo_equipo:"",
                         id_alumno:"",
-                    }
+                    },
+                    cadena:null
 
                 },
+                titulosGrafica:['General','Femenino','Masculino'],
+                general:[['ecg','ecf','ecm'],['neg','nef','nem'],['trag','traf','tram'],
+                         ['eag','eaf','eam'],['bg','bf','bm'],['tbg','tbf','tbm'],['hg','hf','hm']],
             },
             methods:{
                 getTut:function(){
@@ -813,18 +892,25 @@
                 },
                 graficagenero:function()
                 {
+
                     this.lista=false;
                     this.menugrupos=false;
                     this.graficas=true;
                     this.listacanaliza=false;
-                    axios.post(this.rutgen,{id_carrera:this.idca}).then(response=>{
+                    axios.post(this.rutgen,{id_carrera:this.idca,id_asigna_generacion:this.idasigna}).then(response=>{
                         this.alumnog=response.data;
+                        // Create the chart
                         Highcharts.chart('genero', {
                             chart: {
                                 type: 'column'
                             },
                             title: {
-                                text: 'Alumnos por género'
+                                text: 'Alumnos por sexo'
+                            },
+                            accessibility: {
+                                announceNewData: {
+                                    enabled: true
+                                }
                             },
                             xAxis: {
                                 type: 'category'
@@ -842,212 +928,79 @@
                                     borderWidth: 0,
                                     dataLabels: {
                                         enabled: true,
-                                        format: '{point.y:.1f}'
+                                        format: '{point.y:.1f}%'
                                     }
                                 }
                             },
                             tooltip: {
                                 headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}</b> total<br/>'
+                                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
                             },
-                            series: [{
-                                data: [{
-                                    name: 'Mujeres',
-                                    y: this.alumnog.mujeres[0].mujeres,
-
-                                }, {
-                                    name: 'Hombres',
-                                    y: this.alumnog.hombres[0].hombres,
-                                }]
-                            }]
+                            series: [
+                                {
+                                    name: "Sexo",
+                                    colorByPoint: true,
+                                    data: this.alumnog
+                                }
+                            ],
                         });
                     }).catch(error=>{ });
 
-                    axios.post(this.generales,{id_carrera:this.idca}).then(response=>{
+                    axios.post(this.generales,{id_carrera:this.idca,id_asigna_generacion:this.idasigna}).then(response=>{
                         this.eg=response.data;
-                        Highcharts.chart('ne', {
-                            chart: {
-                                type: 'column'
-                            },
-                            title: {
-                                text: 'Nivel económico'
-                            },
-                            xAxis: {
-                                categories:this.eg.categoria,
-                                crosshair: true
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: 'Total'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: [{
-                                name: 'Nivel económico',
-                                data: this.eg.cantidad,
-                            }]
-                        });
-                        Highcharts.chart('tra', {
-                            chart: {
-                                type: 'column'
-                            },
-                            title: {
-                                text: 'Trabaja'
-                            },
-                            xAxis: {
-                                categories:this.eg.cattrabaja,
-                                crosshair: true
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: 'Total'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: [{
-                                name: 'Trabaja',
-                                data: this.eg.canttrabaja,
-                            }]
-                        });
-                        Highcharts.chart('bec', {
-                            chart: {
-                                type: 'column'
-                            },
-                            title: {
-                                text: 'Beca'
-                            },
-                            xAxis: {
-                                categories:this.eg.catbeca,
-                                crosshair: true
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: 'Total'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: [{
-                                name: 'Beca',
-                                data: this.eg.cantbeca,
-                            }]
-                        });
-                        Highcharts.chart('est', {
-                            chart: {
-                                type: 'column'
-                            },
-                            title: {
-                                text: 'Situación académica'
-                            },
-                            xAxis: {
-                                categories:this.eg.catestado,
-                                crosshair: true
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: 'Total'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: [{
-                                name: 'Estado',
-                                data: this.eg.cantestado,
-                            }]
-                        });
-                        Highcharts.chart('estadoc', {
-                            chart: {
-                                type: 'column'
-                            },
-                            title: {
-                                text: 'Estado civil'
-                            },
-                            xAxis: {
-                                categories:this.eg.catcivil,
-                                crosshair: true
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: 'Total'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: [{
-                                name: 'Estado civil',
-                                data: this.eg.cantcivil,
-                            }]
-                        });
+                        for (let i in  this.eg)
+                        {
+                            for (let z in this.titulosGrafica)
+                            {
+                                Highcharts.chart(this.general[i][z], {
+                                    chart: {
+                                        type: 'column'
+                                    },
+                                    title: {
+                                        text: this.titulosGrafica[z]
+                                    },
+                                    accessibility: {
+                                        announceNewData: {
+                                            enabled: true
+                                        }
+                                    },
+                                    xAxis: {
+                                        type: 'category'
+                                    },
+                                    yAxis: {
+                                        title: {
+                                            text: 'Total'
+                                        }
+                                    },
+                                    legend: {
+                                        enabled: false
+                                    },
+                                    plotOptions: {
+                                        series: {
+                                            borderWidth: 0,
+                                            dataLabels: {
+                                                enabled: true,
+                                                format: '{point.y:.1f}%'
+                                            }
+                                        }
+                                    },
+                                    tooltip: {
+                                        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                                        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+                                    },
+                                    series: [
+                                        {
+                                            name: this.titulosGrafica[z],
+                                            colorByPoint: true,
+                                            data: this.eg[i][z]
+                                        }
+                                    ],
+                                });
+                            }
+                        }
 
-                    }).catch(error=>{ });
-                    axios.post(this.academico,{id_carrera:this.idca}).then(response=>{
+                    }).catch(error=>{ this.sindato=true; });
+                    axios.post(this.academico,{id_carrera:this.idca,id_asigna_generacion:this.idasigna}).then(response=>{
                         this.ea=response.data;
                         Highcharts.chart('bach', {
                             chart: {
@@ -1195,7 +1148,7 @@
                         });
 
                     }).catch(error=>{ });
-                    axios.post(this.academico,{id_carrera:this.idca}).then(response=>{
+                    axios.post(this.academico,{id_carrera:this.idca,id_asigna_generacion:this.idasigna}).then(response=>{
                         this.ea=response.data;
                         Highcharts.chart('bach', {
                             chart: {

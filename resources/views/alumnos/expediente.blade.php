@@ -1054,6 +1054,7 @@
                 </div>
             </div>
         </div>
+
         @include("alumnos.partial.modalNSE")
     </div>
     <script type="application/javascript">
@@ -1071,7 +1072,6 @@
                 carreras:[],
                 grupo:[],
                 estadociv:[],
-                /*nivel:[],*/
                 bachiller:[],
                 vive:[],
                 union:[],
@@ -1114,7 +1114,6 @@
                         horario:null,
                         no_cuenta:null,
                         beca:null,
-                        /*tipo_beca:null,*/
                         estado:null,
                         turno:null,
                         id_expbeca:null,
