@@ -125,6 +125,26 @@ class PdfController extends Controller
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(15,4,"No. Hijos: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
+        if ($datosGenerales[0]->no_hijos==1)
+        {
+            $datosGenerales[0]->no_hijos='0';
+        }
+        if ($datosGenerales[0]->no_hijos==2)
+        {
+            $datosGenerales[0]->no_hijos='1';
+        }
+        if ($datosGenerales[0]->no_hijos==3)
+        {
+            $datosGenerales[0]->no_hijos='2';
+        }
+        if ($datosGenerales[0]->no_hijos==4)
+        {
+            $datosGenerales[0]->no_hijos='3';
+        }
+        if ($datosGenerales[0]->no_hijos=='4 o más')
+        {
+            $datosGenerales[0]->no_hijos='4 o más';
+        }
         $pdf->Cell(13,4,"". utf8_decode($datosGenerales[0]->no_hijos),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(15,4,utf8_decode("Dirección: "). utf8_decode(""),1,0,"L","true");
@@ -206,7 +226,7 @@ class PdfController extends Controller
         }
         if ($datosGenerales[0]->estado==3)
         {
-            $datosGenerales[0]->estado='Suspención';
+            $datosGenerales[0]->estado='Suspensión';
         }
         if ($datosGenerales[0]->estado==4)
         {
@@ -315,7 +335,7 @@ class PdfController extends Controller
         $pdf->Cell(112,4,"". utf8_decode($datosAntecedentes[0]->porque_carrera_elegida),1,0,"C");
         $pdf->Ln(4);
         $pdf->SetFont('Arial', 'B', 4.8);
-        $pdf->Cell(50,4,utf8_decode("¿Suspención después de terminar el bachillerato?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->Cell(50,4,utf8_decode("¿Suspensión después de terminar el bachillerato?: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
         $pdf->Cell(10,4,"". utf8_decode($datosAntecedentes[0]->suspension_estudios_bachillerato==1?'Si':'No'),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
@@ -900,6 +920,26 @@ class PdfController extends Controller
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(15,4,"No. Hijos: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
+        if ($datosGenerales[0]->no_hijos==1)
+        {
+            $datosGenerales[0]->no_hijos='0';
+        }
+        if ($datosGenerales[0]->no_hijos==2)
+        {
+            $datosGenerales[0]->no_hijos='1';
+        }
+        if ($datosGenerales[0]->no_hijos==3)
+        {
+            $datosGenerales[0]->no_hijos='2';
+        }
+        if ($datosGenerales[0]->no_hijos==4)
+        {
+            $datosGenerales[0]->no_hijos='3';
+        }
+        if ($datosGenerales[0]->no_hijos=='4 o más')
+        {
+            $datosGenerales[0]->no_hijos='4 o más';
+        }
         $pdf->Cell(13,4,"". utf8_decode($datosGenerales[0]->no_hijos),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(15,4,utf8_decode("Dirección: "). utf8_decode(""),1,0,"L","true");
@@ -981,7 +1021,7 @@ class PdfController extends Controller
         }
         if ($datosGenerales[0]->estado==3)
         {
-            $datosGenerales[0]->estado='Suspención';
+            $datosGenerales[0]->estado='Suspensión';
         }
         if ($datosGenerales[0]->estado==4)
         {
@@ -1090,7 +1130,7 @@ class PdfController extends Controller
         $pdf->Cell(112,4,"". utf8_decode($datosAntecedentes[0]->porque_carrera_elegida),1,0,"C");
         $pdf->Ln(4);
         $pdf->SetFont('Arial', 'B', 4.8);
-        $pdf->Cell(50,4,utf8_decode("¿Suspención después de terminar el bachillerato?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->Cell(50,4,utf8_decode("¿Suspensión después de terminar el bachillerato?: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
         $pdf->Cell(10,4,"". utf8_decode($datosAntecedentes[0]->suspension_estudios_bachillerato==1?'Si':'No'),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
