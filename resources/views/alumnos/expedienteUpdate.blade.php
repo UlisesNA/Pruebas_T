@@ -65,15 +65,23 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label for="EC">Estado Civil</label>
-                                            <select name="estado_civil" id="EC" class="custom-select custom-select-md" v-model="alu.generales.id_estado_civil">
+                                            <label for="EC">Estado Civil *</label>
+                                            <select name="estado_civil" id="EC" class="custom-select custom-select-md" v-model="alu.generales.id_estado_civil" required>
                                                 <option value="null" selected >Elija el estado civil</option>
                                                 <option v-bind:value="es.id_estado_civil" v-for="es in estadociv">@{{es.desc_ec}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.generales.id_estado_civil==null || alu.generales.id_estado_civil=="null"'>Elija una opción</small>
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="nh">No. Hijos *</label>
-                                            <input type="number" v-model="alu.generales.no_hijos" id="nh" name="no_hijos" class="form-control" placeholder="No. Hijos">
+                                            <label for="estado">No. Hijos *</label>
+                                            <select id="nh" name="no_hijos" v-model="alu.generales.no_hijos" class="custom-select custom-select-md" required>
+                                                <option value="null" selected>Elija una opción</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5 o más">5 o más</option>
+                                            </select>
                                             <small class="form-text text-danger" v-if='alu.generales.no_hijos=="" || alu.generales.no_hijos==null '>Colocar un número de hijos</small>
                                         </div>
                                         <div class="col-md-4">
@@ -166,12 +174,13 @@
                                             <button class="btn btn-outline-primary"  data-toggle="modal" data-target="#modalNSE"><i class="fa fa-file"></i></button>
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="trabaja">Trabaja</label>
-                                            <select name="trabaja" id="trabaja" v-model="alu.generales.trabaja" class="custom-select custom-select-md">
+                                            <label for="trabaja">Trabaja *</label>
+                                            <select name="trabaja" id="trabaja" v-model="alu.generales.trabaja" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija Opción</option>
                                                 <option value="1">Si</option>
                                                 <option value="2" @click="borra_trabaja()">No</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.generales.trabaja==null || alu.generales.trabaja=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row" v-if="alu.generales.trabaja==1">
@@ -208,18 +217,19 @@
                                             <select name="beca" id="beca" v-model="alu.generales.beca" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option value="1">Si</option>
-                                                <option value="2"  @click="alu.generales.tipo_beca=null">No</option>
+                                                <option value="2"  @click="borra_beca()">No</option>
                                             </select>
                                             <small class="form-text text-danger" v-if='alu.generales.beca==null || alu.generales.beca=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12" v-if="alu.generales.beca==1">
-                                            <label for="tbeca">¿Qué tipo de beca?</label>
-                                            <select name="tbeca" id="tbeca" class="custom-select custom-select-md" v-model="alu.generales.id_expbeca" >
+                                            <label for="tbeca">¿Qué tipo de beca? *</label>
+                                            <select name="tbeca" id="tbeca" class="custom-select custom-select-md" v-model="alu.generales.id_expbeca" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="bec.id_expbeca" v-for="bec in becas">@{{bec.descripcion_beca}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.generales.id_expbeca==null || alu.generales.id_expbeca=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -364,12 +374,13 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <label for="cae">¿Te gusta la carrera elegida?</label>
-                                            <select v-model="alu.academicos.tegusta_carrera_elegida" id="cae" class="custom-select custom-select-md">
+                                            <label for="cae">¿Te gusta la carrera elegida? *</label>
+                                            <select v-model="alu.academicos.tegusta_carrera_elegida" id="cae" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option value="1">Si</option>
                                                 <option value="2" @click="alu.academicos.porque_carrera_elegida=null">No</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.academicos.tegusta_carrera_elegida==null || alu.academicos.tegusta_carrera_elegida=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -396,12 +407,13 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label for="tefe">¿Te estimula tu familia en tus estudios?</label>
-                                            <select v-model="alu.academicos.teestimula_familia" id="tefe" class="custom-select custom-select-md">
+                                            <label for="tefe">¿Te estimula tu familia en tus estudios? *</label>
+                                            <select v-model="alu.academicos.teestimula_familia" id="tefe" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option value="1">Si</option>
                                                 <option value="2">No</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.academicos.teestimula_familia==null || alu.academicos.teestimula_familia=="null"'>Elija una opción</small>
                                         </div>
                                         <div class="col-md-8">
                                             <label for="ov">¿Tuviste otras opciones vocacionales o preferencias por otras carreras?</label>
@@ -426,11 +438,12 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <label for="oti">Otra carrera iniciada</label>
-                                            <select v-model="alu.academicos.otra_carrera_ini" id="oti" class="custom-select custom-select-md">
+                                            <select v-model="alu.academicos.otra_carrera_ini" id="oti" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option value="1">Si</option>
                                                 <option value="2" @click="borra_institucion()">No</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.academicos.otra_carrera_ini==null || alu.academicos.otra_carrera_ini=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row" v-if="alu.academicos.otra_carrera_ini==1">
@@ -518,11 +531,12 @@
                                             <input type="text" v-model="alu.familiares.lugar_ocupas" id="loe" name="lugar_que_ocupas" class="form-control" placeholder="Lugar que ocupas entre ellos">
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="av">Actualmente vives con: </label>
-                                            <select name="actualmente_vives" id="av" v-model="alu.familiares.id_opc_vives" class="custom-select custom-select-md">
+                                            <label for="av">Actualmente vives con: *</label>
+                                            <select name="actualmente_vives" id="av" v-model="alu.familiares.id_opc_vives" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="viv.id_opc_vives" v-for="viv in vive">@{{viv.desc_opc}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.familiares.id_opc_vives==null || alu.familiares.id_opc_vives=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -564,11 +578,12 @@
 
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label for="consideras">Consideras a tu familia</label>
-                                            <select id="consideras" name="consideras_a_familia" v-model="alu.familiares.id_familia_union" class="custom-select custom-select-md">
+                                            <label for="consideras">Consideras a tu familia *</label>
+                                            <select id="consideras" name="consideras_a_familia" v-model="alu.familiares.id_familia_union" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="uni.id_familia_union" v-for="uni in union">@{{uni.desc_union}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.familiares.id_familia_union==null || alu.familiares.id_familia_union=="null"'>Elija un grupo</small>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="nt">Nombre del Tutor</label>
@@ -595,11 +610,12 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <label for="tiempo">Tiempo dedicado a estudiar diariamente fuera de clase</label>
-                                            <select v-model="alu.estudio.tiempo_empleado_estudiar" id="tiempo" type="text" class="custom-select custom-select-md">
+                                            <label for="tiempo">Tiempo dedicado a estudiar diariamente fuera de clase *</label>
+                                            <select v-model="alu.estudio.tiempo_empleado_estudiar" id="tiempo" type="text" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="tiemp.id_opc_tiempo" v-for="tiemp in tiempo">@{{tiemp.desc_opc}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.estudio.tiempo_empleado_estudiar==null || alu.estudio.tiempo_empleado_estudiar=="null"'>Elija una opción</small>
                                         </div>
                                         <div class="col-md-6">
                                             <label for="fti">¿Cómo es tú forma de trabajo intelectual?</label>
@@ -655,12 +671,13 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <label for="depo">¿Practicas regularmente algún deporte?</label>
-                                            <select name="depo" id="depo" v-model="alu.integral.practica_deporte" class="custom-select custom-select-md">
+                                            <label for="depo">¿Practicas regularmente algún deporte? *</label>
+                                            <select name="depo" id="depo" v-model="alu.integral.practica_deporte" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option value="1">Si</option>
                                                 <option value="2" @click="alu.integral.especifica_deporte=null">No</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.integral.practica_deporte==null || alu.integral.practica_deporte=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -671,12 +688,13 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <label for="artistica">¿Practicas alguna actividad artística?</label>
-                                            <select name="artistica" id="artistica" v-model="alu.integral.practica_artistica" class="custom-select custom-select-md">
+                                            <label for="artistica">¿Practicas alguna actividad artística? *</label>
+                                            <select name="artistica" id="artistica" v-model="alu.integral.practica_artistica" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option value="1">Si</option>
                                                 <option value="2" @click="alu.integral.especifica_artistica=null">No</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.integral.practica_artistica==null || alu.integral.practica_artistica=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -687,12 +705,13 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <label for="actC">¿Participas en actividades culturales o sociales?</label>
-                                            <select  id="actC" name="actC" v-model="alu.integral.actividades_culturales" class="custom-select custom-select-md">
+                                            <label for="actC">¿Participas en actividades culturales o sociales? *</label>
+                                            <select  id="actC" name="actC" v-model="alu.integral.actividades_culturales" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option value="1">Si</option>
                                                 <option value="2" @click="alu.integral.cuales_act=null">No</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.integral.actividades_culturales==null || alu.integral.actividades_culturales=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -794,12 +813,13 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label for="lentes">¿Usas lentes?</label>
-                                            <select name="lentes" id="lentes" v-model="alu.integral.usas_lentes" class="custom-select custom-select-md">
+                                            <label for="lentes">¿Usas lentes? *</label>
+                                            <select name="lentes" id="lentes" v-model="alu.integral.usas_lentes" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option value="1">Si</option>
                                                 <option value="2">No</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.integral.usas_lentes==null || alu.integral.usas_lentes=="null"'>Elija una opción</small>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="estatura">Estatura</label>
@@ -856,11 +876,12 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-3">
-                                            <label for="rendEsco">Rendimiento Escolar</label>
-                                            <select name="rendimiento_escolar" v-model="alu.area.rendimiento_escolar" id="rendEsco" class="custom-select custom-select-md">
+                                            <label for="rendEsco">Rendimiento escolar *</label>
+                                            <select name="rendimiento_escolar" v-model="alu.area.rendimiento_escolar" id="rendEsco" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="esc.id_escala" v-for="esc in escala">@{{esc.desc_escala}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.area.rendimiento_escolar==null || alu.area.rendimiento_escolar=="null"'>Elija una opción</small>
                                         </div>
                                         <div class="col-md-3">
                                             <label for="dominio">Dominio del propio idioma</label>
@@ -870,41 +891,45 @@
                                             </select>
                                         </div>
                                         <div class="col-md-3">
-                                            <label for="otro">Otro idioma</label>
-                                            <select name="otro_idioma" id="otro" v-model="alu.area.otro_idioma" class="custom-select custom-select-md">
+                                            <label for="otro">Otro idioma *</label>
+                                            <select name="otro_idioma" id="otro" v-model="alu.area.otro_idioma" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="esc.id_escala" v-for="esc in escala">@{{esc.desc_escala}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.area.otro_idioma==null || alu.area.otro_idioma=="null"'>Elija una opción</small>
                                         </div>
                                         <div class="col-md-3">
-                                            <label for="conComp">Conocimentos en cómputo</label>
-                                            <select name="conocimiento_computo" id="conComp" v-model="alu.area.conocimiento_compu" class="custom-select custom-select-md">
+                                            <label for="conComp">Conocimentos en cómputo *</label>
+                                            <select name="conocimiento_computo" id="conComp" v-model="alu.area.conocimiento_compu" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="esc.id_escala" v-for="esc in escala">@{{esc.desc_escala}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.area.conocimiento_compu==null || alu.area.conocimiento_compu=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-3">
-                                            <label for="aptitudes">Aptitudes Especiales</label>
+                                            <label for="aptitudes">Aptitudes especiales</label>
                                             <select name="aptitudes" id="aptitudes" v-model="alu.area.aptitud_especial" class="custom-select custom-select-md">
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="esc.id_escala" v-for="esc in escala">@{{esc.desc_escala}}</option>
                                             </select>
                                         </div>
                                         <div class="col-md-3">
-                                            <label for="comprension">Comprensión y Retención en clase</label>
-                                            <select name="comprension" id="comprension" v-model="alu.area.comprension" class="custom-select custom-select-md">
+                                            <label for="comprension">Comprensión y retención en clase *</label>
+                                            <select name="comprension" id="comprension" v-model="alu.area.comprension" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="esc.id_escala" v-for="esc in escala">@{{esc.desc_escala}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.area.comprension==null || alu.area.comprension=="null"'>Elija una opción</small>
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="preparacion">Preparación y presentación de exámenes</label>
-                                            <select name="preparacion" id="preparacion" v-model="alu.area.preparacion" class="custom-select custom-select-md">
+                                            <label for="preparacion">Preparación y presentación de exámenes *</label>
+                                            <select name="preparacion" id="preparacion" v-model="alu.area.preparacion" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="esc.id_escala"  v-for="esc in escala">@{{esc.desc_escala}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.area.preparacion==null || alu.area.preparacion=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -923,20 +948,22 @@
                                             </select>
                                         </div>
                                         <div class="col-md-3">
-                                            <label for="concentracion">Concentración durante el estudio</label>
-                                            <select name="concentracion" id="concentracion" v-model="alu.area.concentracion" class="custom-select custom-select-md">
+                                            <label for="concentracion">Concentración durante el estudio *</label>
+                                            <select name="concentracion" id="concentracion" v-model="alu.area.concentracion" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="esc.id_escala" v-for="esc in escala">@{{esc.desc_escala}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.area.concentracion==null || alu.area.concentracion=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-5">
-                                            <label for="solucion">Solución de problemas y aprendizaje de las matemáticas</label>
-                                            <select name="solucion" id="solucion" v-model="alu.area.solucion_problemas" class="custom-select custom-select-md">
+                                            <label for="solucion">Solución de problemas y aprendizaje de las matemáticas *</label>
+                                            <select name="solucion" id="solucion" v-model="alu.area.solucion_problemas" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="esc.id_escala" v-for="esc in escala">@{{esc.desc_escala}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.area.solucion_problemas==null || alu.area.solucion_problemas=="null"'>Elija una opción</small>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="condiciones">Condiciones ambientales durante el estudio</label>
@@ -946,20 +973,22 @@
                                             </select>
                                         </div>
                                         <div class="col-md-3">
-                                            <label for="equipo">Trabajo en equipo</label>
-                                            <select name="equipo" id="equipo" v-model="alu.area.trabajo_equipo" class="custom-select custom-select-md">
+                                            <label for="equipo">Trabajo en equipo *</label>
+                                            <select name="equipo" id="equipo" v-model="alu.area.trabajo_equipo" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="esc.id_escala" v-for="esc in escala">@{{esc.desc_escala}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.area.trabajo_equipo==null || alu.area.trabajo_equipo=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-5">
-                                            <label for="bibliografica">Búsqueda bibliografica e integración de información</label>
-                                            <select name="bibliografica" id="bibliografica" v-model="alu.area.busqueda_bibliografica" class="custom-select custom-select-md">
+                                            <label for="bibliografica">Búsqueda bibliografica e integración de información *</label>
+                                            <select name="bibliografica" id="bibliografica" v-model="alu.area.busqueda_bibliografica" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="esc.id_escala"  v-for="esc in escala">@{{esc.desc_escala}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.area.busqueda_bibliografica==null || alu.area.busqueda_bibliografica=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                 </div>
@@ -1339,6 +1368,9 @@
                 borra_trabaja:function(){
                     this.alu.generales.ocupacion="";
                     this.alu.generales.horario="";
+                },
+                borra_beca:function(){
+                    this.alu.generales.id_expbeca=null
                 },
                 makeToast() {
                     this.$bvToast.toast('Datos', {

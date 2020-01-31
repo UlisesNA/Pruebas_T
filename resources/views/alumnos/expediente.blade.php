@@ -221,7 +221,7 @@
                                             <select name="beca" id="beca" v-model="alu.generales.beca" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option value="1">Si</option>
-                                                <option value="2"  @click="alu.generales.tipo_beca=null">No</option>
+                                                <option value="2"  @click="borra_beca()">No</option>
                                             </select>
                                             <small class="form-text text-danger" v-if='alu.generales.beca==null || alu.generales.beca=="null"'>Elija una opción</small>
                                         </div>
@@ -1300,6 +1300,9 @@
                 borra_trabaja:function(){
                     this.alu.generales.ocupacion="";
                     this.alu.generales.horario="";
+                },
+                borra_beca:function(){
+                    this.alu.generales.id_expbeca=null
                 },
                 siguiente:function (cat) {
                     switch ( cat) {
