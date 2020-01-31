@@ -135,23 +135,23 @@ class PdfController extends Controller
         $pdf->SetFont('Arial', '', 4.8);
         if ($datosGenerales[0]->no_hijos==1)
         {
-            $datosGenerales[0]->no_hijos='1';
+            $datosGenerales[0]->no_hijos='0';
         }
         if ($datosGenerales[0]->no_hijos==2)
         {
-            $datosGenerales[0]->no_hijos='2';
+            $datosGenerales[0]->no_hijos='1';
         }
         if ($datosGenerales[0]->no_hijos==3)
         {
-            $datosGenerales[0]->no_hijos='3';
+            $datosGenerales[0]->no_hijos='2';
         }
         if ($datosGenerales[0]->no_hijos==4)
         {
-            $datosGenerales[0]->no_hijos='4';
+            $datosGenerales[0]->no_hijos='3';
         }
-        if ($datosGenerales[0]->no_hijos=='5 o más')
+        if ($datosGenerales[0]->no_hijos=='4 o más')
         {
-            $datosGenerales[0]->no_hijos='5 o más';
+            $datosGenerales[0]->no_hijos='4 o más';
         }
         $pdf->Cell(13,4,"". utf8_decode($datosGenerales[0]->no_hijos),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
@@ -944,23 +944,23 @@ class PdfController extends Controller
         $pdf->SetFont('Arial', '', 4.8);
         if ($datosGenerales[0]->no_hijos==1)
         {
-            $datosGenerales[0]->no_hijos='1';
+            $datosGenerales[0]->no_hijos='0';
         }
         if ($datosGenerales[0]->no_hijos==2)
         {
-            $datosGenerales[0]->no_hijos='2';
+            $datosGenerales[0]->no_hijos='1';
         }
         if ($datosGenerales[0]->no_hijos==3)
         {
-            $datosGenerales[0]->no_hijos='3';
+            $datosGenerales[0]->no_hijos='2';
         }
         if ($datosGenerales[0]->no_hijos==4)
         {
-            $datosGenerales[0]->no_hijos='4';
+            $datosGenerales[0]->no_hijos='3';
         }
-        if ($datosGenerales[0]->no_hijos=='5 o más')
+        if ($datosGenerales[0]->no_hijos=='4 o más')
         {
-            $datosGenerales[0]->no_hijos='5 o más';
+            $datosGenerales[0]->no_hijos='4 o más';
         }
         $pdf->Cell(13,4,"". utf8_decode($datosGenerales[0]->no_hijos),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);

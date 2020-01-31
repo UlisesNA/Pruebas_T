@@ -76,11 +76,11 @@
                                             <label for="estado">No. Hijos *</label>
                                             <select id="nh" name="no_hijos" v-model="alu.generales.no_hijos" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5 o más">5 o más</option>
+                                                <option value="1">0</option>
+                                                <option value="2">1</option>
+                                                <option value="3">2</option>
+                                                <option value="4">3</option>
+                                                <option value="4 o más">4 o más</option>
                                             </select>
                                             <small class="form-text text-danger" v-if='alu.generales.no_hijos=="" || alu.generales.no_hijos==null '>Colocar un número de hijos</small>
                                         </div>
