@@ -133,6 +133,26 @@ class PdfController extends Controller
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(15,4,"No. Hijos: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
+        if ($datosGenerales[0]->no_hijos==1)
+        {
+            $datosGenerales[0]->no_hijos='1';
+        }
+        if ($datosGenerales[0]->no_hijos==2)
+        {
+            $datosGenerales[0]->no_hijos='2';
+        }
+        if ($datosGenerales[0]->no_hijos==3)
+        {
+            $datosGenerales[0]->no_hijos='3';
+        }
+        if ($datosGenerales[0]->no_hijos==4)
+        {
+            $datosGenerales[0]->no_hijos='4';
+        }
+        if ($datosGenerales[0]->no_hijos=='5 o más')
+        {
+            $datosGenerales[0]->no_hijos='5 o más';
+        }
         $pdf->Cell(13,4,"". utf8_decode($datosGenerales[0]->no_hijos),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(15,4,utf8_decode("Dirección: "). utf8_decode(""),1,0,"L","true");
@@ -922,6 +942,26 @@ class PdfController extends Controller
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(15,4,"No. Hijos: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
+        if ($datosGenerales[0]->no_hijos==1)
+        {
+            $datosGenerales[0]->no_hijos='1';
+        }
+        if ($datosGenerales[0]->no_hijos==2)
+        {
+            $datosGenerales[0]->no_hijos='2';
+        }
+        if ($datosGenerales[0]->no_hijos==3)
+        {
+            $datosGenerales[0]->no_hijos='3';
+        }
+        if ($datosGenerales[0]->no_hijos==4)
+        {
+            $datosGenerales[0]->no_hijos='4';
+        }
+        if ($datosGenerales[0]->no_hijos=='5 o más')
+        {
+            $datosGenerales[0]->no_hijos='5 o más';
+        }
         $pdf->Cell(13,4,"". utf8_decode($datosGenerales[0]->no_hijos),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(15,4,utf8_decode("Dirección: "). utf8_decode(""),1,0,"L","true");

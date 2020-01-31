@@ -589,7 +589,8 @@
                 carreras:[],
                 grupo:[],
                 estadociv:[],
-                nivel:[],
+                /*nivel:[],*/
+                becas:[],
                 bachiller:[],
                 vive:[],
                 union:[],
@@ -626,13 +627,14 @@
                         correo:"",
                         tel_casa:"",
                         cel:"",
-                        id_nivel_economico:"",
+                        nivel_economico:"",
                         trabaja:"",
                         ocupacion:"",
                         horario:"",
                         no_cuenta:"",
                         beca:"",
-                        tipo_beca:"",
+                        /*tipo_beca:"",*/
+                        id_expbeca:null,
                         estado:"",
                         turno:"",
                         id_grupo:"",
@@ -1896,13 +1898,13 @@
                         this.alu.generales.correo=response.data.generales[0].correo;
                         this.alu.generales.tel_casa=response.data.generales[0].tel_casa;
                         this.alu.generales.cel=response.data.generales[0].cel;
-                        this.alu.generales.id_nivel_economico=response.data.generales[0].id_nivel_economico;
+                        this.alu.generales.nivel_economico=response.data.generales[0].nivel_economico;
                         this.alu.generales.trabaja=response.data.generales[0].trabaja;
                         this.alu.generales.ocupacion=response.data.generales[0].ocupacion;
                         this.alu.generales.horario=response.data.generales[0].horario;
                         this.alu.generales.no_cuenta=response.data.generales[0].no_cuenta;
                         this.alu.generales.beca=response.data.generales[0].beca;
-                        this.alu.generales.tipo_beca=response.data.generales[0].tipo_beca;
+                        this.alu.generales.id_expbeca=response.data.generales[0].id_expbeca;
                         this.alu.generales.estado=response.data.generales[0].estado;
                         this.alu.generales.turno=response.data.generales[0].turno;
                         this.alu.generales.id_alumno=response.data.generales[0].id_alumno;
@@ -2036,6 +2038,13 @@
                 borra_institucion:function(){
                   this.alu.academicos.institucion=null;
                   this.alu.academicos.semestres_cursados=null;
+                },
+                borra_trabaja:function(){
+                    this.alu.generales.ocupacion="";
+                    this.alu.generales.horario="";
+                },
+                borra_beca:function(){
+                    this.alu.generales.id_expbeca=null
                 },
                 pdf:function () {
                     axios.post(this.pd,{id_asigna_generacion:this.idasigna,id_carrera:this.idca,generacion:this.gen},{
