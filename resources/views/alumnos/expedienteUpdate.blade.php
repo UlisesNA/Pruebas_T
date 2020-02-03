@@ -80,7 +80,7 @@
                                                 <option value="2">1</option>
                                                 <option value="3">2</option>
                                                 <option value="4">3</option>
-                                                <option value="4 o más">4 o más</option>
+                                                <option value="5">4 o más</option>
                                             </select>
                                             <small class="form-text text-danger" v-if='alu.generales.no_hijos=="" || alu.generales.no_hijos==null '>Colocar un número de hijos</small>
                                         </div>
