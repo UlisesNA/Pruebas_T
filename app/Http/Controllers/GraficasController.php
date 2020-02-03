@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use App\Profesor;
 use App\Grafica;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use function PHPSTORM_META\map;
 
 class GraficasController extends Controller
 {
@@ -19,10 +17,6 @@ class GraficasController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function index(Request $request)
-    {
-        return view('profesor.estadisticas');
-    }
     public function genero(Request $request)
     {
         ///ALUMNOS EXPEDIENTE LLENO
@@ -30,14 +24,12 @@ class GraficasController extends Controller
         $alumnos=DB::select('Select (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' and gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="M") as M, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M") as M, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' and gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="F") as F');
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F") as F');
         $totalcontestaron=$alumnos[0]->M+$alumnos[0]->F;
         Session::put('total_alumnos',$totalcontestaron==0?1:$totalcontestaron);
         Session::put('total_mujeres',$alumnos[0]->F==0?1:$alumnos[0]->F);
@@ -46,512 +38,433 @@ class GraficasController extends Controller
         ///ALUMNOS TOTALES
         $datos=DB::select('SELECT (select count(gnral_alumnos.id_alumno) as Masculino FROM gnral_alumnos 
         JOIN exp_asigna_alumnos ON gnral_alumnos.id_alumno=exp_asigna_alumnos.id_alumno 
-        JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
-        JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal 
+        JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
         WHERE gnral_alumnos.genero="M" AND exp_asigna_alumnos.deleted_at is null AND gnral_alumnos.id_carrera='.$request->id_carrera.' AND 
-        exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.')  as MAS,
+        exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.')  as MAS,
          (select count(gnral_alumnos.id_alumno) as Femenino FROM gnral_alumnos 
         JOIN exp_asigna_alumnos ON gnral_alumnos.id_alumno=exp_asigna_alumnos.id_alumno 
-        JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
-        JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal 
+        JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
         WHERE gnral_alumnos.genero="F" AND exp_asigna_alumnos.deleted_at is null AND gnral_alumnos.id_carrera='.$request->id_carrera.' AND 
-        exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.') as FEM');
+        exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.') as FEM');
 
         $total=$datos[0]->MAS+$datos[0]->FEM;
 
         return response()->json(
-            [["name"=>"Masculino","y"=>round(($datos[0]->MAS)*100/$total)],
-                ["name"=>"Femenino","y"=>round(($datos[0]->FEM)*100/$total)]],200
+            [["name"=>"Masculino","y"=>round(($datos[0]->MAS)*100/($total==0?1:$total))],
+                ["name"=>"Femenino","y"=>round(($datos[0]->FEM)*100/($total==0?1:$total))]],200
         );
     }
-
     public function generales(Request $request)
     {
-        ////TOTAL ALUMNOS RESPONDIO///
          ///ESTADO CIVIL///
         $estadogen=DB::select('SELECT (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_civil_estados ON exp_generales.id_estado_civil=exp_civil_estados.id_estado_civil 
                      JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.id_estado_civil=1) as soltero, (select COUNT(exp_generales.id_exp_general)
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_civil_estados.desc_ec="Soltero") as soltero, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_civil_estados ON exp_generales.id_estado_civil=exp_civil_estados.id_estado_civil 
                      JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.id_estado_civil=2) as casado,(select COUNT(exp_generales.id_exp_general)
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_civil_estados.desc_ec="Casado") as casado,(select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_civil_estados ON exp_generales.id_estado_civil=exp_civil_estados.id_estado_civil 
                      JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.id_estado_civil=3) as unionlibre,(select COUNT(exp_generales.id_exp_general)
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_civil_estados.desc_ec="Unión libre") as unionlibre,(select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_civil_estados ON exp_generales.id_estado_civil=exp_civil_estados.id_estado_civil 
                      JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.id_estado_civil=4) as divorsiado, (select COUNT(exp_generales.id_exp_general)
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_civil_estados.desc_ec="Divorsiado") as divorsiado, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_civil_estados ON exp_generales.id_estado_civil=exp_civil_estados.id_estado_civil 
                      JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.id_estado_civil=5) as viudo');
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_civil_estados.desc_ec="Viudo") as viudo');
         $estadoF=DB::select('SELECT (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_civil_estados ON exp_generales.id_estado_civil=exp_civil_estados.id_estado_civil 
                      JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.id_estado_civil=1 and exp_generales.sexo="F") as soltero, (select COUNT(exp_generales.id_exp_general)
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_civil_estados.desc_ec="Soltero" and exp_generales.sexo="F") as soltero, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_civil_estados ON exp_generales.id_estado_civil=exp_civil_estados.id_estado_civil 
                      JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.id_estado_civil=2 and exp_generales.sexo="F") as casado,(select COUNT(exp_generales.id_exp_general)
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_civil_estados.desc_ec="Casado" and exp_generales.sexo="F") as casado,(select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_civil_estados ON exp_generales.id_estado_civil=exp_civil_estados.id_estado_civil 
                      JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.id_estado_civil=3 and exp_generales.sexo="F") as unionlibre,(select COUNT(exp_generales.id_exp_general)
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_civil_estados.desc_ec="Unión libre" and exp_generales.sexo="F") as unionlibre,(select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_civil_estados ON exp_generales.id_estado_civil=exp_civil_estados.id_estado_civil 
                      JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.id_estado_civil=4 and exp_generales.sexo="F") as divorsiado, (select COUNT(exp_generales.id_exp_general)
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_civil_estados.desc_ec="Divorsiado" and exp_generales.sexo="F") as divorsiado, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_civil_estados ON exp_generales.id_estado_civil=exp_civil_estados.id_estado_civil 
                      JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.id_estado_civil=5 and exp_generales.sexo="F") as viudo');
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_civil_estados.desc_ec="Viudo" and exp_generales.sexo="F") as viudo');
         $estadoM=DB::select('SELECT (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_civil_estados ON exp_generales.id_estado_civil=exp_civil_estados.id_estado_civil 
                      JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.id_estado_civil=1 and exp_generales.sexo="M") as soltero, (select COUNT(exp_generales.id_exp_general)
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_civil_estados.desc_ec="Soltero" and exp_generales.sexo="M") as soltero, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_civil_estados ON exp_generales.id_estado_civil=exp_civil_estados.id_estado_civil 
                      JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.id_estado_civil=2 and exp_generales.sexo="M") as casado,(select COUNT(exp_generales.id_exp_general)
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_civil_estados.desc_ec="Casado" and exp_generales.sexo="M") as casado,(select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_civil_estados ON exp_generales.id_estado_civil=exp_civil_estados.id_estado_civil 
                      JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.id_estado_civil=3 and exp_generales.sexo="M") as unionlibre,(select COUNT(exp_generales.id_exp_general)
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_civil_estados.desc_ec="Unión libre" and exp_generales.sexo="M") as unionlibre,(select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_civil_estados ON exp_generales.id_estado_civil=exp_civil_estados.id_estado_civil 
                      JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.id_estado_civil=4 and exp_generales.sexo="M") as divorsiado, (select COUNT(exp_generales.id_exp_general)
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_civil_estados.desc_ec="Divorsiado" and exp_generales.sexo="M") as divorsiado, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_civil_estados ON exp_generales.id_estado_civil=exp_civil_estados.id_estado_civil 
                      JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.id_estado_civil=5 and exp_generales.sexo="M") as viudo');
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_civil_estados.desc_ec="Viudo" and exp_generales.sexo="M") as viudo');
 
         $nivelgen=DB::select('Select (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
                      JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.nivel_economico="A/B") as AB, (select COUNT(exp_generales.id_exp_general)
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.nivel_economico="A/B") as AB, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
                      JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.nivel_economico="C+") as CC,(select COUNT(exp_generales.id_exp_general)
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.nivel_economico="C+") as CC,(select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
                      JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.nivel_economico="C") as C, (select COUNT(exp_generales.id_exp_general)
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.nivel_economico="C") as C, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
                      JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.nivel_economico="C-") as CCC, (select COUNT(exp_generales.id_exp_general)
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.nivel_economico="C-") as CCC, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
                      JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.nivel_economico="D+") as DD, (select COUNT(exp_generales.id_exp_general)
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.nivel_economico="D+") as DD, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
                      JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.nivel_economico="D") as D,  (select COUNT(exp_generales.id_exp_general)
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.nivel_economico="D") as D,  (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
                      JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.nivel_economico="E") as E');
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.nivel_economico="E") as E');
         $nivelF=DB::select('Select (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="F" AND exp_generales.nivel_economico="A/B") as AB, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_generales.nivel_economico="A/B") as AB, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="F" AND exp_generales.nivel_economico="C+") as CC,(select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_generales.nivel_economico="C+") as CC,(select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="F" AND exp_generales.nivel_economico="C") as C, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_generales.nivel_economico="C") as C, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="F" AND exp_generales.nivel_economico="C-") as CCC, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_generales.nivel_economico="C-") as CCC, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="F" AND exp_generales.nivel_economico="D+") as DD, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_generales.nivel_economico="D+") as DD, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="F" AND exp_generales.nivel_economico="D") as D,  (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_generales.nivel_economico="D") as D,  (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="F" AND exp_generales.nivel_economico="E") as E');
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_generales.nivel_economico="E") as E');
         $nivelM=DB::select('Select (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="M" AND exp_generales.nivel_economico="A/B") as AB, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_generales.nivel_economico="A/B") as AB, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="M" AND exp_generales.nivel_economico="C+") as CC,(select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_generales.nivel_economico="C+") as CC,(select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="M" AND exp_generales.nivel_economico="C") as C, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_generales.nivel_economico="C") as C, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="M" AND exp_generales.nivel_economico="C-") as CCC, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_generales.nivel_economico="C-") as CCC, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="M" AND exp_generales.nivel_economico="D+") as DD, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_generales.nivel_economico="D+") as DD, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="M" AND exp_generales.nivel_economico="D") as D,  (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_generales.nivel_economico="D") as D,  (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="M" AND exp_generales.nivel_economico="E") as E');
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_generales.nivel_economico="E") as E');
 
         $trabajagen=DB::select('SELECT (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.trabaja=1) as SI, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.trabaja=1) as SI, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.trabaja=2) as NOO');
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.trabaja=2) as NOO');
         $trabajaF=DB::select('SELECT (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="F" AND exp_generales.trabaja=1) as SI, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_generales.trabaja=1) as SI, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="F" AND exp_generales.trabaja=2) as NOO');
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_generales.trabaja=2) as NOO');
         $trabajaM=DB::select('SELECT (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="M" AND exp_generales.trabaja=1) as SI, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_generales.trabaja=1) as SI, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="M" AND exp_generales.trabaja=2) as NOO');
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_generales.trabaja=2) as NOO');
 
         $academicogen=DB::select('SELECT (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.estado=1) as R, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.estado=1) as R, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.estado=2) as I, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.estado=2) as I, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.estado=3) as S, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.estado=3) as S, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.estado=4) as BJ, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.estado=4) as BJ, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.estado=5) as BD');
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.estado=5) as BD');
         $academicoF=DB::select('SELECT (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="F" AND exp_generales.estado=1) as R, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_generales.estado=1) as R, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="F" AND exp_generales.estado=2) as I, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_generales.estado=2) as I, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="F" AND exp_generales.estado=3) as S, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_generales.estado=3) as S, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="F" AND exp_generales.estado=4) as BJ, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_generales.estado=4) as BJ, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="F" AND exp_generales.estado=5) as BD');
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_generales.estado=5) as BD');
         $academicoM=DB::select('SELECT (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
                      JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="M" AND exp_generales.estado=1) as R, (select COUNT(exp_generales.id_exp_general)
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_generales.estado=1) as R, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
                      JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="M" AND exp_generales.estado=2) as I, (select COUNT(exp_generales.id_exp_general)
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_generales.estado=2) as I, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
                      JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="M" AND exp_generales.estado=3) as S, (select COUNT(exp_generales.id_exp_general)
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_generales.estado=3) as S, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
                      JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="M" AND exp_generales.estado=4) as BJ, (select COUNT(exp_generales.id_exp_general)
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_generales.estado=4) as BJ, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
                      JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="M" AND exp_generales.estado=5) as BD');
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_generales.estado=5) as BD');
 
         $becagen=DB::select('SELECT (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.beca=1) as SI, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.beca=1) as SI, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.beca=2) as NOO');
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.beca=2) as NOO');
         $becaF=DB::select('SELECT (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="F" AND exp_generales.beca=1) as SI, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_generales.beca=1) as SI, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="F" AND exp_generales.beca=2) as NOO');
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_generales.beca=2) as NOO');
         $becaM=DB::select('SELECT (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="M" AND exp_generales.beca=1) as SI, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_generales.beca=1) as SI, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="M" AND exp_generales.beca=2) as NOO');
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_generales.beca=2) as NOO');
 
         $tbecagen=DB::select('SELECT (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.id_expbeca=1) as Ma, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.id_expbeca=1) as Ma, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.id_expbeca=2) as Be, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.id_expbeca=2) as Be, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.id_expbeca=3) as Pe, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.id_expbeca=3) as Pe, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.id_expbeca=4) as Ea');
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.id_expbeca=4) as Ea');
         $tbecaF=DB::select('SELECT (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="F" AND exp_generales.id_expbeca=1) as Ma, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_generales.id_expbeca=1) as Ma, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="F" AND exp_generales.id_expbeca=2) as Be, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_generales.id_expbeca=2) as Be, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="F" AND exp_generales.id_expbeca=3) as Pe, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_generales.id_expbeca=3) as Pe, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="F" AND exp_generales.id_expbeca=4) as Ea');
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_generales.id_expbeca=4) as Ea');
         $tbecaM=DB::select('SELECT (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="M" AND exp_generales.id_expbeca=1) as Ma, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_generales.id_expbeca=1) as Ma, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="M" AND exp_generales.id_expbeca=2) as Be, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_generales.id_expbeca=2) as Be, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="M" AND exp_generales.id_expbeca=3) as Pe, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_generales.id_expbeca=3) as Pe, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="M" AND exp_generales.id_expbeca=4) as Ea');
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_generales.id_expbeca=4) as Ea');
 
         $hijosgen=DB::select('SELECT (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.no_hijos=1) as C, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.no_hijos=1) as C, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.no_hijos=2) as U, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.no_hijos=2) as U, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.no_hijos=3) as D, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.no_hijos=3) as D, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.no_hijos=4) as T, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.no_hijos=4) as T, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.no_hijos=5) as M');
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.no_hijos=5) as M');
         $hijosF=DB::select('SELECT (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="F" AND exp_generales.no_hijos=1) as C, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_generales.no_hijos=1) as C, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="F" AND exp_generales.no_hijos=2) as U, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_generales.no_hijos=2) as U, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="F" AND exp_generales.no_hijos=3) as D, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_generales.no_hijos=3) as D, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="F" AND exp_generales.no_hijos=4) as T, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_generales.no_hijos=4) as T, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="F" AND exp_generales.no_hijos=5) as M');
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_generales.no_hijos=5) as M');
         $hijosM=DB::select('SELECT (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="M" AND exp_generales.no_hijos=1) as C, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_generales.no_hijos=1) as C, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="M" AND exp_generales.no_hijos=2) as U, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_generales.no_hijos=2) as U, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="M" AND exp_generales.no_hijos=3) as D, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_generales.no_hijos=3) as D, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="M" AND exp_generales.no_hijos=4) as T, (select COUNT(exp_generales.id_exp_general)
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_generales.no_hijos=4) as T, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
-                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                     JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND gnral_personales.tipo_usuario='.Auth::user()->id.' AND exp_generales.sexo="M" AND exp_generales.no_hijos=5) as M');
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_generales.no_hijos=5) as M');
 
         return response()->json(
             [
                 [
                     [
-                       ["name"=>"Soltero","y"=>round(($estadogen[0]->soltero)*100/Session::get('total_alumnos'))],["name"=>"Casado","y"=>round(($estadogen[0]->casado)*100/Session::get('total_alumnos'))],["name"=>"Unión libre","y"=>round(($estadogen[0]->unionlibre)*100/Session::get('total_alumnos'))],["name"=>"Divorsiado","y"=>round(($estadogen[0]->divorsiado)*100/Session::get('total_alumnos'))],["name"=>"Viudo","y"=>round(($estadogen[0]->viudo)*100/Session::get('total_alumnos'))]
+                        ["name"=>"Soltero","y"=>round(($estadogen[0]->soltero)*100/Session::get('total_alumnos'))],["name"=>"Casado","y"=>round(($estadogen[0]->casado)*100/Session::get('total_alumnos'))],["name"=>"Unión libre","y"=>round(($estadogen[0]->unionlibre)*100/Session::get('total_alumnos'))],["name"=>"Divorsiado","y"=>round(($estadogen[0]->divorsiado)*100/Session::get('total_alumnos'))],["name"=>"Viudo","y"=>round(($estadogen[0]->viudo)*100/Session::get('total_alumnos'))]
                     ],
                     [
                         ["name"=>"Soltero","y"=>round(($estadoF[0]->soltero)*100/Session::get('total_mujeres'))],["name"=>"Casado","y"=>round(($estadoF[0]->casado)*100/Session::get('total_mujeres'))],["name"=>"Unión libre","y"=>round(($estadoF[0]->unionlibre)*100/Session::get('total_mujeres'))],["name"=>"Divorsiado","y"=>round(($estadoF[0]->divorsiado)*100/Session::get('total_mujeres'))],["name"=>"Viudo","y"=>round(($estadoF[0]->viudo)*100/Session::get('total_mujeres'))]
@@ -626,33 +539,10 @@ class GraficasController extends Controller
                         ["name"=>"0","y"=>round(($hijosM[0]->C)*100/Session::get('total_hombres'))],["name"=>"1","y"=>round(($hijosM[0]->U)*100/Session::get('total_hombres'))],["name"=>"2","y"=>round(($hijosM[0]->D)*100/Session::get('total_hombres'))],["name"=>"3","y"=>round(($hijosM[0]->T)*100/Session::get('total_hombres'))],["name"=>"4 o más","y"=>round(($hijosM[0]->M)*100/Session::get('total_hombres'))]
                     ]
                 ]
+
             ],200
         );
-
-
-/*
-
-
-         $trabaja=DB::select('select COUNT(exp_generales.id_exp_general) as cant,CASE exp_generales.trabaja 
-                    WHEN 1 THEN "Si" WHEN 2 THEN "No" END as trabajo FROM exp_generales JOIN exp_asigna_alumnos ON 
-                    exp_generales.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_asigna_tutor ON 
-                    exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion JOIN gnral_personales ON 
-                    gnral_personales.id_personal=exp_asigna_tutor.id_personal WHERE exp_generales.id_carrera='.$request->id_carrera.' AND 
-                    gnral_personales.tipo_usuario='.Auth::user()->id.' GROUP BY exp_generales.trabaja ');
-        $beca=DB::select('select COUNT(exp_generales.id_exp_general) as cant,CASE exp_generales.beca 
-                    WHEN 1 THEN "Si" WHEN 2 THEN "No" END as beca FROM exp_generales JOIN exp_asigna_alumnos ON 
-                    exp_generales.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_asigna_tutor ON 
-                    exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion JOIN gnral_personales ON 
-                    gnral_personales.id_personal=exp_asigna_tutor.id_personal WHERE exp_generales.id_carrera='.$request->id_carrera.' AND 
-                    gnral_personales.tipo_usuario='.Auth::user()->id.' GROUP BY exp_generales.beca ');
-
-        $estado=DB::select('select COUNT(exp_generales.id_exp_general) as cant,CASE exp_generales.estado 
-                    WHEN 1 THEN "Regular" WHEN 2 THEN "Irregular" END as estado FROM exp_generales JOIN exp_asigna_alumnos ON 
-                    exp_generales.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_asigna_tutor ON 
-                    exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion JOIN gnral_personales ON 
-                    gnral_personales.id_personal=exp_asigna_tutor.id_personal WHERE exp_generales.id_carrera='.$request->id_carrera.' AND 
-                    gnral_personales.tipo_usuario='.Auth::user()->id.' GROUP BY exp_generales.estado ');
-
+        /*
         return response()->json(
             ["categoria"=>array_pluck($nivel, 'nivel'),
                 "cantidad"=>array_pluck($nivel, 'cant'),
@@ -666,118 +556,559 @@ class GraficasController extends Controller
                 "cantcivil"=>array_pluck($estado, 'cant')],200
         );*/
     }
-
     public function academico(Request $request)
     {
-        $bachiller=DB::select('select COUNT(exp_antecedentes_academicos.id_exp_antecedentes_academicos)
-                     as cant, exp_bachillerato.desc_bachillerato as bachillerato FROM exp_bachillerato JOIN exp_antecedentes_academicos
-                      ON exp_bachillerato.id_bachillerato=exp_antecedentes_academicos.id_bachillerato JOIN exp_asigna_alumnos ON 
-                      exp_antecedentes_academicos.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_generales on
-                       exp_generales.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_asigna_tutor ON 
-                       exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion JOIN 
-                       gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal WHERE 
-                       exp_generales.id_carrera='.$request->id_carrera.' AND gnral_personales.tipo_usuario='.\Illuminate\Support\Facades\Auth::user()->id.' GROUP BY 
-                       exp_antecedentes_academicos.id_bachillerato ');
-        $otraca=DB::select('select COUNT(exp_antecedentes_academicos.id_exp_antecedentes_academicos) 
-                    as cant,CASE exp_antecedentes_academicos.otra_carrera_ini WHEN 1 THEN "Si" WHEN 2 THEN "No" END as otra 
-                    from exp_antecedentes_academicos JOIN exp_asigna_alumnos ON exp_antecedentes_academicos.id_alumno=exp_asigna_alumnos.id_alumno 
-                    JOIN exp_generales on exp_generales.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_asigna_tutor 
-                    ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion JOIN gnral_personales 
-                    ON gnral_personales.id_personal=exp_asigna_tutor.id_personal WHERE exp_generales.id_carrera='.$request->id_carrera.' AND 
-                    gnral_personales.tipo_usuario='.\Illuminate\Support\Facades\Auth::user()->id.' GROUP BY exp_antecedentes_academicos.otra_carrera_ini ');
+        $gustagen=DB::select('SELECT (select COUNT(exp_antecedentes_academicos.id_alumno)
+                      FROM exp_antecedentes_academicos JOIN exp_generales ON exp_generales.id_alumno=exp_antecedentes_academicos.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_antecedentes_academicos.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_antecedentes_academicos.tegusta_carrera_elegida=1) as SI, (select COUNT(exp_antecedentes_academicos.id_alumno)
+                      FROM exp_antecedentes_academicos JOIN exp_generales ON exp_generales.id_alumno=exp_antecedentes_academicos.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_antecedentes_academicos.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_antecedentes_academicos.tegusta_carrera_elegida=2) as NOO');
+        $gustaF=DB::select('SELECT (select COUNT(exp_antecedentes_academicos.id_alumno)
+                      FROM exp_antecedentes_academicos 
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_antecedentes_academicos.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_antecedentes_academicos.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_antecedentes_academicos.tegusta_carrera_elegida=1) as SI, (select COUNT(exp_antecedentes_academicos.id_alumno)
+                      FROM exp_antecedentes_academicos JOIN exp_generales ON exp_generales.id_alumno=exp_antecedentes_academicos.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_antecedentes_academicos.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_antecedentes_academicos.tegusta_carrera_elegida=2) as NOO');
+        $gustaM=DB::select('SELECT (select COUNT(exp_antecedentes_academicos.id_alumno)
+                      FROM exp_antecedentes_academicos 
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_antecedentes_academicos.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_antecedentes_academicos.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_antecedentes_academicos.tegusta_carrera_elegida=1) as SI, (select COUNT(exp_antecedentes_academicos.id_alumno)
+                      FROM exp_antecedentes_academicos JOIN exp_generales ON exp_generales.id_alumno=exp_antecedentes_academicos.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_antecedentes_academicos.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_antecedentes_academicos.tegusta_carrera_elegida=2) as NOO');
 
-        $gusta=DB::select('select COUNT(exp_antecedentes_academicos.id_exp_antecedentes_academicos) 
-                    as cant,CASE exp_antecedentes_academicos.tegusta_carrera_elegida WHEN 1 THEN "Si" WHEN 2 THEN "No" END as gusta 
-                    from exp_antecedentes_academicos JOIN exp_asigna_alumnos ON exp_antecedentes_academicos.id_alumno=exp_asigna_alumnos.id_alumno 
-                    JOIN exp_generales on exp_generales.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_asigna_tutor 
-                    ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion JOIN gnral_personales 
-                    ON gnral_personales.id_personal=exp_asigna_tutor.id_personal WHERE exp_generales.id_carrera='.$request->id_carrera.' AND 
-                    gnral_personales.tipo_usuario='.\Illuminate\Support\Facades\Auth::user()->id.' GROUP BY exp_antecedentes_academicos.tegusta_carrera_elegida ');
+        $estimulagen=DB::select('SELECT (select COUNT(exp_antecedentes_academicos.id_alumno)
+                      FROM exp_antecedentes_academicos JOIN exp_generales ON exp_generales.id_alumno=exp_antecedentes_academicos.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_antecedentes_academicos.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_antecedentes_academicos.teestimula_familia=1) as SI, (select COUNT(exp_antecedentes_academicos.id_alumno)
+                      FROM exp_antecedentes_academicos JOIN exp_generales ON exp_generales.id_alumno=exp_antecedentes_academicos.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_antecedentes_academicos.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_antecedentes_academicos.teestimula_familia=2) as NOO');
+        $estimulaF=DB::select('SELECT (select COUNT(exp_antecedentes_academicos.id_alumno)
+                      FROM exp_antecedentes_academicos 
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_antecedentes_academicos.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_antecedentes_academicos.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_antecedentes_academicos.teestimula_familia=1) as SI, (select COUNT(exp_antecedentes_academicos.id_alumno)
+                      FROM exp_antecedentes_academicos JOIN exp_generales ON exp_generales.id_alumno=exp_antecedentes_academicos.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_antecedentes_academicos.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_antecedentes_academicos.teestimula_familia=2) as NOO');
+        $estimulaM=DB::select('SELECT (select COUNT(exp_antecedentes_academicos.id_alumno)
+                      FROM exp_antecedentes_academicos 
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_antecedentes_academicos.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_antecedentes_academicos.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_antecedentes_academicos.teestimula_familia=1) as SI, (select COUNT(exp_antecedentes_academicos.id_alumno)
+                      FROM exp_antecedentes_academicos JOIN exp_generales ON exp_generales.id_alumno=exp_antecedentes_academicos.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_antecedentes_academicos.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_antecedentes_academicos.teestimula_familia=2) as NOO');
 
-        $estimula=DB::select('select COUNT(exp_antecedentes_academicos.id_exp_antecedentes_academicos) 
-                    as cant,CASE exp_antecedentes_academicos.teestimula_familia WHEN 1 THEN "Si" WHEN 2 THEN "No" END as estimula 
-                    from exp_antecedentes_academicos JOIN exp_asigna_alumnos ON exp_antecedentes_academicos.id_alumno=exp_asigna_alumnos.id_alumno 
-                    JOIN exp_generales on exp_generales.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_asigna_tutor 
-                    ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion JOIN gnral_personales 
-                    ON gnral_personales.id_personal=exp_asigna_tutor.id_personal WHERE exp_generales.id_carrera='.$request->id_carrera.' AND 
-                    gnral_personales.tipo_usuario='.\Illuminate\Support\Facades\Auth::user()->id.' GROUP BY exp_antecedentes_academicos.teestimula_familia ');
+        $otragen=DB::select('SELECT (select COUNT(exp_antecedentes_academicos.id_alumno)
+                      FROM exp_antecedentes_academicos JOIN exp_generales ON exp_generales.id_alumno=exp_antecedentes_academicos.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_antecedentes_academicos.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_antecedentes_academicos.otra_carrera_ini=1) as SI, (select COUNT(exp_antecedentes_academicos.id_alumno)
+                      FROM exp_antecedentes_academicos JOIN exp_generales ON exp_generales.id_alumno=exp_antecedentes_academicos.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_antecedentes_academicos.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_antecedentes_academicos.otra_carrera_ini=2) as NOO');
+        $otraF=DB::select('SELECT (select COUNT(exp_antecedentes_academicos.id_alumno)
+                      FROM exp_antecedentes_academicos 
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_antecedentes_academicos.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_antecedentes_academicos.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_antecedentes_academicos.otra_carrera_ini=1) as SI, (select COUNT(exp_antecedentes_academicos.id_alumno)
+                      FROM exp_antecedentes_academicos JOIN exp_generales ON exp_generales.id_alumno=exp_antecedentes_academicos.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_antecedentes_academicos.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_antecedentes_academicos.otra_carrera_ini=2) as NOO');
+        $otraM=DB::select('SELECT (select COUNT(exp_antecedentes_academicos.id_alumno)
+                      FROM exp_antecedentes_academicos 
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_antecedentes_academicos.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_antecedentes_academicos.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_antecedentes_academicos.otra_carrera_ini=1) as SI, (select COUNT(exp_antecedentes_academicos.id_alumno)
+                      FROM exp_antecedentes_academicos JOIN exp_generales ON exp_generales.id_alumno=exp_antecedentes_academicos.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_antecedentes_academicos.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_antecedentes_academicos.otra_carrera_ini=2) as NOO');
+
+        $bachgen=DB::select('SELECT (select COUNT(exp_antecedentes_academicos.id_alumno)
+                      FROM exp_antecedentes_academicos JOIN exp_generales ON exp_generales.id_alumno=exp_antecedentes_academicos.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_antecedentes_academicos.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_bachillerato ON exp_bachillerato.id_bachillerato=exp_antecedentes_academicos.id_bachillerato
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_bachillerato.desc_bachillerato="Técnico") as T, (select COUNT(exp_antecedentes_academicos.id_alumno)
+                      FROM exp_antecedentes_academicos JOIN exp_generales ON exp_generales.id_alumno=exp_antecedentes_academicos.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_antecedentes_academicos.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_bachillerato ON exp_bachillerato.id_bachillerato=exp_antecedentes_academicos.id_bachillerato
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_bachillerato.desc_bachillerato="General") as G');
+        $bachF=DB::select('SELECT (select COUNT(exp_antecedentes_academicos.id_alumno)
+                      FROM exp_antecedentes_academicos 
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_antecedentes_academicos.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_antecedentes_academicos.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_bachillerato ON exp_bachillerato.id_bachillerato=exp_antecedentes_academicos.id_bachillerato
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_bachillerato.desc_bachillerato="Técnico") as T, (select COUNT(exp_antecedentes_academicos.id_alumno)
+                      FROM exp_antecedentes_academicos JOIN exp_generales ON exp_generales.id_alumno=exp_antecedentes_academicos.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_antecedentes_academicos.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_bachillerato ON exp_bachillerato.id_bachillerato=exp_antecedentes_academicos.id_bachillerato
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_bachillerato.desc_bachillerato="General") as G');
+        $bachM=DB::select('SELECT (select COUNT(exp_antecedentes_academicos.id_alumno)
+                      FROM exp_antecedentes_academicos 
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_antecedentes_academicos.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_antecedentes_academicos.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_bachillerato ON exp_bachillerato.id_bachillerato=exp_antecedentes_academicos.id_bachillerato
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_bachillerato.desc_bachillerato="Técnico") as T, (select COUNT(exp_antecedentes_academicos.id_alumno)
+                      FROM exp_antecedentes_academicos JOIN exp_generales ON exp_generales.id_alumno=exp_antecedentes_academicos.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_antecedentes_academicos.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_bachillerato ON exp_bachillerato.id_bachillerato=exp_antecedentes_academicos.id_bachillerato
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_bachillerato.desc_bachillerato="General") as G');
+
+
+
 
         return response()->json(
-            ["catbachillerato"=>array_pluck($bachiller, 'bachillerato'),
-                "cantbachillerato"=>array_pluck($bachiller, 'cant'),
-                "catotra"=>array_pluck($otraca, 'otra'),
-                "cantotra"=>array_pluck($otraca, 'cant'),
-                "catgusta"=>array_pluck($gusta, 'gusta'),
-                "cantgusta"=>array_pluck($gusta, 'cant'),
-                "catestimula"=>array_pluck($estimula, 'estimula'),
-                "cantestimula"=>array_pluck($estimula, 'cant'),],200
+            [
+                [
+                    [
+                        ["name"=>"Si","y"=>round(($gustagen[0]->SI)*100/Session::get('total_alumnos'))],["name"=>"No","y"=>round(($gustagen[0]->NOO)*100/Session::get('total_alumnos'))]
+                    ],
+                    [
+                        ["name"=>"Si","y"=>round(($gustaF[0]->SI)*100/Session::get('total_mujeres'))],["name"=>"No","y"=>round(($gustaF[0]->NOO)*100/Session::get('total_mujeres'))]
+                    ],
+                    [
+                        ["name"=>"Si","y"=>round(($gustaM[0]->SI)*100/Session::get('total_hombres'))],["name"=>"No","y"=>round(($gustaM[0]->NOO)*100/Session::get('total_hombres'))]
+                    ]
+                ],
+                [
+                    [
+                        ["name"=>"Si","y"=>round(($estimulagen[0]->SI)*100/Session::get('total_alumnos'))],["name"=>"No","y"=>round(($estimulagen[0]->NOO)*100/Session::get('total_alumnos'))]
+                    ],
+                    [
+                        ["name"=>"Si","y"=>round(($estimulaF[0]->SI)*100/Session::get('total_mujeres'))],["name"=>"No","y"=>round(($estimulaF[0]->NOO)*100/Session::get('total_mujeres'))]
+                    ],
+                    [
+                        ["name"=>"Si","y"=>round(($estimulaM[0]->SI)*100/Session::get('total_hombres'))],["name"=>"No","y"=>round(($estimulaM[0]->NOO)*100/Session::get('total_hombres'))]
+                    ]
+                ],
+                [
+                    [
+                        ["name"=>"Si","y"=>round(($otragen[0]->SI)*100/Session::get('total_alumnos'))],["name"=>"No","y"=>round(($otragen[0]->NOO)*100/Session::get('total_alumnos'))]
+                    ],
+                    [
+                        ["name"=>"Si","y"=>round(($otraF[0]->SI)*100/Session::get('total_mujeres'))],["name"=>"No","y"=>round(($otraF[0]->NOO)*100/Session::get('total_mujeres'))]
+                    ],
+                    [
+                        ["name"=>"Si","y"=>round(($otraM[0]->SI)*100/Session::get('total_hombres'))],["name"=>"No","y"=>round(($otraM[0]->NOO)*100/Session::get('total_hombres'))]
+                    ]
+                ],
+                [
+                    [
+                        ["name"=>"Técnico","y"=>round(($bachgen[0]->T)*100/Session::get('total_alumnos'))],["name"=>"General","y"=>round(($bachgen[0]->G)*100/Session::get('total_alumnos'))]
+                    ],
+                    [
+                        ["name"=>"Técnico","y"=>round(($bachF[0]->T)*100/Session::get('total_mujeres'))],["name"=>"General","y"=>round(($bachF[0]->G)*100/Session::get('total_mujeres'))]
+                    ],
+                    [
+                        ["name"=>"Técnico","y"=>round(($bachM[0]->T)*100/Session::get('total_hombres'))],["name"=>"General","y"=>round(($bachM[0]->G)*100/Session::get('total_hombres'))]
+                    ]
+                ],
+            ],200
         );
     }
-
-    ///CORREGIDAS
     public function familiares(Request $request)
     {
 
-        $vive=DB::select('select COUNT(exp_datos_familiares.id_exp_datos_familiares) as 
-                cant,exp_opc_vives.desc_opc as vive from exp_opc_vives JOIN exp_datos_familiares 
-                ON exp_datos_familiares.id_opc_vives=exp_opc_vives.id_opc_vives JOIN exp_asigna_alumnos 
-                ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_generales 
-                on exp_generales.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_asigna_tutor ON 
-                exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion JOIN 
-                gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal WHERE 
-                exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' and exp_generales.id_carrera='.$request->id_carrera.' AND gnral_personales.tipo_usuario='.\Illuminate\Support\Facades\Auth::user()->id.' 
-                GROUP BY exp_opc_vives.desc_opc ');
-        $etnia=DB::select('select COUNT(exp_datos_familiares.id_exp_datos_familiares) as cant,
-                CASE exp_datos_familiares.etnia_indigena WHEN 1 THEN "Si" WHEN 2 THEN "No" END as etnia from exp_datos_familiares 
-                JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_generales 
-                on exp_generales.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_asigna_tutor ON 
-                exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion JOIN gnral_personales ON 
-                gnral_personales.id_personal=exp_asigna_tutor.id_personal WHERE exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' and 
-                exp_generales.id_carrera='.$request->id_carrera.' AND gnral_personales.tipo_usuario='.\Illuminate\Support\Facades\Auth::user()->id.' GROUP BY exp_datos_familiares.etnia_indigena ');
+        $vivesgen=DB::select('SELECT (select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+        			JOIN exp_opc_vives ON exp_opc_vives.id_opc_vives=exp_datos_familiares.id_opc_vives
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_opc_vives.desc_opc="Con los padres") as CP,  (select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+        			JOIN exp_opc_vives ON exp_opc_vives.id_opc_vives=exp_datos_familiares.id_opc_vives
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_opc_vives.desc_opc="Con otros estudiantes") as CE,
+                      (select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+        			JOIN exp_opc_vives ON exp_opc_vives.id_opc_vives=exp_datos_familiares.id_opc_vives
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_opc_vives.desc_opc="Con tios u otros familiares") as CT,  (select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+        			JOIN exp_opc_vives ON exp_opc_vives.id_opc_vives=exp_datos_familiares.id_opc_vives
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_opc_vives.desc_opc="Solo") as S');
 
-        $lengua=DB::select('select COUNT(exp_datos_familiares.id_exp_datos_familiares) as cant,
-                CASE exp_datos_familiares.hablas_lengua_indigena WHEN 1 THEN "Si" WHEN 2 THEN "No" END as lengua from exp_datos_familiares 
-                JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_generales 
-                on exp_generales.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_asigna_tutor ON 
-                exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion JOIN gnral_personales ON 
-                gnral_personales.id_personal=exp_asigna_tutor.id_personal WHERE exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' and 
-                exp_generales.id_carrera='.$request->id_carrera.' AND gnral_personales.tipo_usuario='.\Illuminate\Support\Facades\Auth::user()->id.' GROUP BY exp_datos_familiares.hablas_lengua_indigena');
+        $vivesF=DB::select('SELECT (select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+        			JOIN exp_opc_vives ON exp_opc_vives.id_opc_vives=exp_datos_familiares.id_opc_vives
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_opc_vives.desc_opc="Con los padres") as CP,  (select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+        			JOIN exp_opc_vives ON exp_opc_vives.id_opc_vives=exp_datos_familiares.id_opc_vives
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_opc_vives.desc_opc="Con otros estudiantes") as CE,
+                      (select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+        			JOIN exp_opc_vives ON exp_opc_vives.id_opc_vives=exp_datos_familiares.id_opc_vives
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_opc_vives.desc_opc="Con tios u otros familiares") as CT,  (select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+        			JOIN exp_opc_vives ON exp_opc_vives.id_opc_vives=exp_datos_familiares.id_opc_vives
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_opc_vives.desc_opc="Solo") as S');
+        $vivesM=DB::select('SELECT (select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+        			JOIN exp_opc_vives ON exp_opc_vives.id_opc_vives=exp_datos_familiares.id_opc_vives
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_opc_vives.desc_opc="Con los padres") as CP,  (select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+        			JOIN exp_opc_vives ON exp_opc_vives.id_opc_vives=exp_datos_familiares.id_opc_vives
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_opc_vives.desc_opc="Con otros estudiantes") as CE,
+                      (select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+        			JOIN exp_opc_vives ON exp_opc_vives.id_opc_vives=exp_datos_familiares.id_opc_vives
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_opc_vives.desc_opc="Con tios u otros familiares") as CT,  (select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+        			JOIN exp_opc_vives ON exp_opc_vives.id_opc_vives=exp_datos_familiares.id_opc_vives
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_opc_vives.desc_opc="Solo") as S');
+
+        $etgen=DB::select('SELECT (select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_datos_familiares.etnia_indigena=1) as SI,(select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_datos_familiares.etnia_indigena=2) as NOO');
+        $etF=DB::select('SELECT (select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_datos_familiares.etnia_indigena=1) as SI,(select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_datos_familiares.etnia_indigena=2) as NOO');
+        $etM=DB::select('SELECT (select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_datos_familiares.etnia_indigena=1) as SI,(select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_datos_familiares.etnia_indigena=2) as NOO');
+        $hagen=DB::select('SELECT (select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_datos_familiares.hablas_lengua_indigena=1) as SI,(select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_datos_familiares.hablas_lengua_indigena=2) as NOO');
+        $haF=DB::select('SELECT (select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_datos_familiares.hablas_lengua_indigena=1) as SI,(select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_datos_familiares.hablas_lengua_indigena=2) as NOO');
+        $haM=DB::select('SELECT (select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_datos_familiares.hablas_lengua_indigena=1) as SI,(select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_datos_familiares.hablas_lengua_indigena=2) as NOO');
+
+        $ufgen=DB::select('SELECT (select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+        			JOIN exp_familia_union ON exp_datos_familiares.id_familia_union=exp_familia_union.id_familia_union 
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_familia_union.desc_union="Unida") as U,  (select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+        			JOIN exp_familia_union ON exp_datos_familiares.id_familia_union=exp_familia_union.id_familia_union 
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_familia_union.desc_union="Muy unida") as MU,
+                      (select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+        			JOIN exp_familia_union ON exp_datos_familiares.id_familia_union=exp_familia_union.id_familia_union 
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_familia_union.desc_union="Disfuncional") as D');
+        $ufF=DB::select('SELECT (select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+        			JOIN exp_familia_union ON exp_datos_familiares.id_familia_union=exp_familia_union.id_familia_union 
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_familia_union.desc_union="Unida") as U,  (select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+        			JOIN exp_familia_union ON exp_datos_familiares.id_familia_union=exp_familia_union.id_familia_union 
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_familia_union.desc_union="Muy unida") as MU,
+                      (select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+        			JOIN exp_familia_union ON exp_datos_familiares.id_familia_union=exp_familia_union.id_familia_union 
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_familia_union.desc_union="Disfuncional") as D');
+        $ufM=DB::select('SELECT (select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+        			JOIN exp_familia_union ON exp_datos_familiares.id_familia_union=exp_familia_union.id_familia_union 
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_familia_union.desc_union="Unida") as U,  (select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+        			JOIN exp_familia_union ON exp_datos_familiares.id_familia_union=exp_familia_union.id_familia_union 
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_familia_union.desc_union="Muy unida") as MU,
+                      (select COUNT(exp_datos_familiares.id_alumno)
+                      FROM exp_datos_familiares
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_datos_familiares.id_alumno
+        			JOIN exp_familia_union ON exp_datos_familiares.id_familia_union=exp_familia_union.id_familia_union 
+                     JOIN exp_asigna_alumnos ON exp_datos_familiares.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_familia_union.desc_union="Disfuncional") as D');
+
 
         return response()->json(
-            ["catvive"=>array_pluck($vive, 'vive'),
-                "cantvive"=>array_pluck($vive, 'cant'),
-                "catetnia"=>array_pluck($etnia, 'etnia'),
-                "cantetnia"=>array_pluck($etnia, 'cant'),
-                "catlengua"=>array_pluck($lengua, 'lengua'),
-                "cantlengua"=>array_pluck($lengua, 'cant'),
-                ],200
+            [
+                [
+                    [
+                        ["name"=>"Con los padres","y"=>round(($vivesgen[0]->CP)*100/Session::get('total_alumnos'))],["name"=>"Con otros estudiantes","y"=>round(($vivesgen[0]->CE)*100/Session::get('total_alumnos'))],["name"=>"Con tios u otros familiares","y"=>round(($vivesgen[0]->CT)*100/Session::get('total_alumnos'))],["name"=>"Solo","y"=>round(($vivesgen[0]->S)*100/Session::get('total_alumnos'))]
+                    ],
+                    [
+                        ["name"=>"Con los padres","y"=>round(($vivesF[0]->CP)*100/Session::get('total_mujeres'))],["name"=>"Con otros estudiantes","y"=>round(($vivesF[0]->CE)*100/Session::get('total_mujeres'))],["name"=>"Con tios u otros familiares","y"=>round(($vivesF[0]->CT)*100/Session::get('total_mujeres'))],["name"=>"Solo","y"=>round(($vivesF[0]->S)*100/Session::get('total_mujeres'))]
+                    ],
+                    [
+                        ["name"=>"Con los padres","y"=>round(($vivesM[0]->CP)*100/Session::get('total_hombres'))],["name"=>"Con otros estudiantes","y"=>round(($vivesM[0]->CE)*100/Session::get('total_hombres'))],["name"=>"Con tios u otros familiares","y"=>round(($vivesM[0]->CT)*100/Session::get('total_hombres'))],["name"=>"Solo","y"=>round(($vivesM[0]->S)*100/Session::get('total_hombres'))]
+                    ]
+                ],
+                [
+                    [
+                        ["name"=>"Si","y"=>round(($etgen[0]->SI)*100/Session::get('total_alumnos'))],["name"=>"No","y"=>round(($etgen[0]->NOO)*100/Session::get('total_alumnos'))]
+                    ],
+                    [
+                        ["name"=>"Si","y"=>round(($etF[0]->SI)*100/Session::get('total_mujeres'))],["name"=>"No","y"=>round(($etF[0]->NOO)*100/Session::get('total_mujeres'))]
+                    ],
+                    [
+                        ["name"=>"Si","y"=>round(($etM[0]->SI)*100/Session::get('total_hombres'))],["name"=>"No","y"=>round(($etM[0]->NOO)*100/Session::get('total_hombres'))]
+                    ]
+                ],
+                [
+                    [
+                        ["name"=>"Si","y"=>round(($hagen[0]->SI)*100/Session::get('total_alumnos'))],["name"=>"No","y"=>round(($hagen[0]->NOO)*100/Session::get('total_alumnos'))]
+                    ],
+                    [
+                        ["name"=>"Si","y"=>round(($haF[0]->SI)*100/Session::get('total_mujeres'))],["name"=>"No","y"=>round(($haF[0]->NOO)*100/Session::get('total_mujeres'))]
+                    ],
+                    [
+                        ["name"=>"Si","y"=>round(($haM[0]->SI)*100/Session::get('total_hombres'))],["name"=>"No","y"=>round(($haM[0]->NOO)*100/Session::get('total_hombres'))]
+                    ]
+                ],
+                [
+                    [
+                        ["name"=>"Unida","y"=>round(($ufgen[0]->U)*100/Session::get('total_alumnos'))],["name"=>"Muy unida","y"=>round(($ufgen[0]->MU)*100/Session::get('total_alumnos'))],["name"=>"Disfuncional","y"=>round(($ufgen[0]->D)*100/Session::get('total_alumnos'))]
+                    ],
+                    [
+                        ["name"=>"Unida","y"=>round(($ufF[0]->U)*100/Session::get('total_mujeres'))],["name"=>"Muy unida","y"=>round(($ufF[0]->MU)*100/Session::get('total_mujeres'))],["name"=>"Disfuncional","y"=>round(($ufgen[0]->D)*100/Session::get('total_alumnos'))]
+                    ],
+                    [
+                        ["name"=>"Unida","y"=>round(($ufM[0]->U)*100/Session::get('total_hombres'))],["name"=>"Muy unida","y"=>round(($ufM[0]->MU)*100/Session::get('total_hombres'))],["name"=>"Disfuncional","y"=>round(($ufgen[0]->D)*100/Session::get('total_alumnos'))]
+                    ]
+                ],
+            ],200
         );
     }
     public function habitos(Request $request)
     {
-        $intelectual=DB::select('select COUNT(exp_habitos_estudio.id_exp_habitos_estudio) as cant,
-                    exp_opc_intelectual.desc_opc as intelectual from exp_opc_intelectual JOIN exp_habitos_estudio ON 
-                    exp_habitos_estudio.id_opc_intelectual=exp_opc_intelectual.id_opc_intelectual JOIN exp_asigna_alumnos ON 
-                    exp_habitos_estudio.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_generales on 
-                    exp_generales.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_asigna_tutor ON 
-                    exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion JOIN gnral_personales 
-                    ON gnral_personales.id_personal=exp_asigna_tutor.id_personal WHERE exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' 
-                    and exp_generales.id_carrera='.$request->id_carrera.' AND gnral_personales.tipo_usuario='.\Illuminate\Support\Facades\Auth::user()->id.' GROUP BY exp_opc_intelectual.desc_opc ');
 
-        $tiempo=DB::select('select COUNT(exp_habitos_estudio.id_exp_habitos_estudio) as cant,
-                exp_opc_tiempo.desc_opc as tiempo from exp_opc_tiempo JOIN exp_habitos_estudio ON 
-                exp_habitos_estudio.tiempo_empelado_estudiar=exp_opc_tiempo.id_opc_tiempo JOIN exp_asigna_alumnos ON 
-                exp_habitos_estudio.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_generales on 
-                exp_generales.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_asigna_tutor ON 
-                exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion JOIN gnral_personales ON 
-                gnral_personales.id_personal=exp_asigna_tutor.id_personal WHERE exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' 
-                and exp_generales.id_carrera='.$request->id_carrera.' AND gnral_personales.tipo_usuario='.\Illuminate\Support\Facades\Auth::user()->id.' GROUP BY exp_opc_tiempo.desc_opc ');
+        $tigen=DB::select('SELECT (select COUNT(exp_habitos_estudio.id_alumno)
+                      FROM exp_habitos_estudio
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_habitos_estudio.id_alumno
+        			JOIN exp_opc_tiempo ON exp_opc_tiempo.id_opc_tiempo=exp_habitos_estudio.tiempo_empleado_estudiar
+                     JOIN exp_asigna_alumnos ON exp_habitos_estudio.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_opc_tiempo.desc_opc="Menos de 1 hora") as M, (select COUNT(exp_habitos_estudio.id_alumno)
+                      FROM exp_habitos_estudio
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_habitos_estudio.id_alumno
+        			JOIN exp_opc_tiempo ON exp_opc_tiempo.id_opc_tiempo=exp_habitos_estudio.tiempo_empleado_estudiar
+                     JOIN exp_asigna_alumnos ON exp_habitos_estudio.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_opc_tiempo.desc_opc="1 hora") as U, (select COUNT(exp_habitos_estudio.id_alumno)
+                      FROM exp_habitos_estudio
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_habitos_estudio.id_alumno
+        			JOIN exp_opc_tiempo ON exp_opc_tiempo.id_opc_tiempo=exp_habitos_estudio.tiempo_empleado_estudiar
+                     JOIN exp_asigna_alumnos ON exp_habitos_estudio.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_opc_tiempo.desc_opc="2 horas") as D, (select COUNT(exp_habitos_estudio.id_alumno)
+                      FROM exp_habitos_estudio
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_habitos_estudio.id_alumno
+        			JOIN exp_opc_tiempo ON exp_opc_tiempo.id_opc_tiempo=exp_habitos_estudio.tiempo_empleado_estudiar
+                     JOIN exp_asigna_alumnos ON exp_habitos_estudio.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_opc_tiempo.desc_opc="3 horas") as T, (select COUNT(exp_habitos_estudio.id_alumno)
+                      FROM exp_habitos_estudio
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_habitos_estudio.id_alumno
+        			JOIN exp_opc_tiempo ON exp_opc_tiempo.id_opc_tiempo=exp_habitos_estudio.tiempo_empleado_estudiar
+                     JOIN exp_asigna_alumnos ON exp_habitos_estudio.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_opc_tiempo.desc_opc="Más de 4 horas") as C');
+
+        $tiF=DB::select('SELECT (select COUNT(exp_habitos_estudio.id_alumno)
+                      FROM exp_habitos_estudio
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_habitos_estudio.id_alumno
+        			JOIN exp_opc_tiempo ON exp_opc_tiempo.id_opc_tiempo=exp_habitos_estudio.tiempo_empleado_estudiar
+                     JOIN exp_asigna_alumnos ON exp_habitos_estudio.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_opc_tiempo.desc_opc="Menos de 1 hora") as M, (select COUNT(exp_habitos_estudio.id_alumno)
+                      FROM exp_habitos_estudio
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_habitos_estudio.id_alumno
+        			JOIN exp_opc_tiempo ON exp_opc_tiempo.id_opc_tiempo=exp_habitos_estudio.tiempo_empleado_estudiar
+                     JOIN exp_asigna_alumnos ON exp_habitos_estudio.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_opc_tiempo.desc_opc="1 hora") as U, (select COUNT(exp_habitos_estudio.id_alumno)
+                      FROM exp_habitos_estudio
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_habitos_estudio.id_alumno
+        			JOIN exp_opc_tiempo ON exp_opc_tiempo.id_opc_tiempo=exp_habitos_estudio.tiempo_empleado_estudiar
+                     JOIN exp_asigna_alumnos ON exp_habitos_estudio.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_opc_tiempo.desc_opc="2 horas") as D, (select COUNT(exp_habitos_estudio.id_alumno)
+                      FROM exp_habitos_estudio
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_habitos_estudio.id_alumno
+        			JOIN exp_opc_tiempo ON exp_opc_tiempo.id_opc_tiempo=exp_habitos_estudio.tiempo_empleado_estudiar
+                     JOIN exp_asigna_alumnos ON exp_habitos_estudio.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_opc_tiempo.desc_opc="3 horas") as T, (select COUNT(exp_habitos_estudio.id_alumno)
+                      FROM exp_habitos_estudio
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_habitos_estudio.id_alumno
+        			JOIN exp_opc_tiempo ON exp_opc_tiempo.id_opc_tiempo=exp_habitos_estudio.tiempo_empleado_estudiar
+                     JOIN exp_asigna_alumnos ON exp_habitos_estudio.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_opc_tiempo.desc_opc="Más de 4 horas") as C');
+
+        $tiM=DB::select('SELECT (select COUNT(exp_habitos_estudio.id_alumno)
+                      FROM exp_habitos_estudio
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_habitos_estudio.id_alumno
+        			JOIN exp_opc_tiempo ON exp_opc_tiempo.id_opc_tiempo=exp_habitos_estudio.tiempo_empleado_estudiar
+                     JOIN exp_asigna_alumnos ON exp_habitos_estudio.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_opc_tiempo.desc_opc="Menos de 1 hora") as M, (select COUNT(exp_habitos_estudio.id_alumno)
+                      FROM exp_habitos_estudio
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_habitos_estudio.id_alumno
+        			JOIN exp_opc_tiempo ON exp_opc_tiempo.id_opc_tiempo=exp_habitos_estudio.tiempo_empleado_estudiar
+                     JOIN exp_asigna_alumnos ON exp_habitos_estudio.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_opc_tiempo.desc_opc="1 hora") as U, (select COUNT(exp_habitos_estudio.id_alumno)
+                      FROM exp_habitos_estudio
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_habitos_estudio.id_alumno
+        			JOIN exp_opc_tiempo ON exp_opc_tiempo.id_opc_tiempo=exp_habitos_estudio.tiempo_empleado_estudiar
+                     JOIN exp_asigna_alumnos ON exp_habitos_estudio.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_opc_tiempo.desc_opc="2 horas") as D, (select COUNT(exp_habitos_estudio.id_alumno)
+                      FROM exp_habitos_estudio
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_habitos_estudio.id_alumno
+        			JOIN exp_opc_tiempo ON exp_opc_tiempo.id_opc_tiempo=exp_habitos_estudio.tiempo_empleado_estudiar
+                     JOIN exp_asigna_alumnos ON exp_habitos_estudio.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_opc_tiempo.desc_opc="3 horas") as T, (select COUNT(exp_habitos_estudio.id_alumno)
+                      FROM exp_habitos_estudio
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_habitos_estudio.id_alumno
+        			JOIN exp_opc_tiempo ON exp_opc_tiempo.id_opc_tiempo=exp_habitos_estudio.tiempo_empleado_estudiar
+                     JOIN exp_asigna_alumnos ON exp_habitos_estudio.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_opc_tiempo.desc_opc="Más de 4 horas") as C');
 
         return response()->json(
-            ["catintelectual"=>array_pluck($intelectual, 'intelectual'),
-                "cantintelectual"=>array_pluck($intelectual, 'cant'),
-                "cattiempo"=>array_pluck($tiempo, 'tiempo'),
-                "canttiempo"=>array_pluck($tiempo, 'cant'),
+            [
+                [
+                    [
+                        ["name"=>"Menos de 1 hora","y"=>round(($tigen[0]->M)*100/Session::get('total_alumnos'))],["name"=>"1 hora","y"=>round(($tigen[0]->U)*100/Session::get('total_alumnos'))],["name"=>"2 horas","y"=>round(($tigen[0]->D)*100/Session::get('total_alumnos'))],["name"=>"3 horas","y"=>round(($tigen[0]->T)*100/Session::get('total_alumnos'))],["name"=>"Más de 4 horas","y"=>round(($tigen[0]->C)*100/Session::get('total_alumnos'))]
+                    ],
+                    [
+                        ["name"=>"Menos de 1 hora","y"=>round(($tiF[0]->M)*100/Session::get('total_mujeres'))],["name"=>"1 hora","y"=>round(($tiF[0]->U)*100/Session::get('total_mujeres'))],["name"=>"2 horas","y"=>round(($tiF[0]->D)*100/Session::get('total_mujeres'))],["name"=>"3 horas","y"=>round(($tiF[0]->T)*100/Session::get('total_mujeres'))],["name"=>"Más de 4 horas","y"=>round(($tiF[0]->C)*100/Session::get('total_alumnos'))]
+                    ],
+                    [
+                        ["name"=>"Menos de 1 hora","y"=>round(($tiM[0]->M)*100/Session::get('total_hombres'))],["name"=>"1 hora","y"=>round(($tiM[0]->U)*100/Session::get('total_hombres'))],["name"=>"2 horas","y"=>round(($tiM[0]->D)*100/Session::get('total_hombres'))],["name"=>"3 horas","y"=>round(($tiM[0]->T)*100/Session::get('total_hombres'))],["name"=>"Más de 4 horas","y"=>round(($tiM[0]->C)*100/Session::get('total_alumnos'))]
+                    ]
+                ],
 
             ],200
         );
@@ -786,131 +1117,1240 @@ class GraficasController extends Controller
     public function salud(Request $request)
     {
 
-        $enfermedadc=DB::select('select COUNT(exp_formacion_integral.id_exp_formacion_integral) as cant,
-                CASE exp_formacion_integral.enfermedad_cronica WHEN 1 THEN "Si" WHEN 2 THEN "No" END as enfermedadc 
-                from exp_formacion_integral JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno
-                 JOIN exp_generales on exp_generales.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_asigna_tutor ON 
-                 exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion JOIN gnral_personales ON
-                  gnral_personales.id_personal=exp_asigna_tutor.id_personal WHERE exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' 
-                  and exp_generales.id_carrera='.$request->id_carrera.' AND gnral_personales.tipo_usuario='.\Illuminate\Support\Facades\Auth::user()->id.' GROUP BY exp_formacion_integral.enfermedad_cronica ');
+        $degen=DB::select('SELECT (select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_formacion_integral.practica_deporte=1) as SI,(select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_formacion_integral.practica_deporte=2) as NOO');
+        $deF=DB::select('SELECT (select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_formacion_integral.practica_deporte=1) as SI,(select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_formacion_integral.practica_deporte=2) as NOO');
+        $deM=DB::select('SELECT (select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_formacion_integral.practica_deporte=1) as SI,(select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_formacion_integral.practica_deporte=2) as NOO');
 
-        $enfermedadv=DB::select('select COUNT(exp_formacion_integral.id_exp_formacion_integral) as cant,
-                CASE exp_formacion_integral.enfer_visual WHEN 1 THEN "Si" WHEN 2 THEN "No" END as enfermedadv 
-                from exp_formacion_integral JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno
-                 JOIN exp_generales on exp_generales.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_asigna_tutor ON 
-                 exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion JOIN gnral_personales ON
-                  gnral_personales.id_personal=exp_asigna_tutor.id_personal WHERE exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' 
-                  and exp_generales.id_carrera='.$request->id_carrera.' AND gnral_personales.tipo_usuario='.\Illuminate\Support\Facades\Auth::user()->id.' GROUP BY exp_formacion_integral.enfer_visual ');
+        $argen=DB::select('SELECT (select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_formacion_integral.practica_artistica=1) as SI,(select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_formacion_integral.practica_artistica=2) as NOO');
+        $arF=DB::select('SELECT (select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_formacion_integral.practica_artistica=1) as SI,(select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_formacion_integral.practica_artistica=2) as NOO');
+        $arM=DB::select('SELECT (select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_formacion_integral.practica_artistica=1) as SI,(select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_formacion_integral.practica_artistica=2) as NOO');
+        $culturasgen=DB::select('SELECT (select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_formacion_integral.actividades_culturales=1) as SI,(select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_formacion_integral.actividades_culturales=2) as NOO');
+        $culturasF=DB::select('SELECT (select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_formacion_integral.actividades_culturales=1) as SI,(select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_formacion_integral.actividades_culturales=2) as NOO');
+        $culturasM=DB::select('SELECT (select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_formacion_integral.actividades_culturales=1) as SI,(select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_formacion_integral.actividades_culturales=2) as NOO');
 
-        $lentes=DB::select('select COUNT(exp_formacion_integral.id_exp_formacion_integral) as cant,
-                CASE exp_formacion_integral.usas_lentes WHEN 1 THEN "Si" WHEN 2 THEN "No" END as lentes 
-                from exp_formacion_integral JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno
-                 JOIN exp_generales on exp_generales.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_asigna_tutor ON 
-                 exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion JOIN gnral_personales ON
-                  gnral_personales.id_personal=exp_asigna_tutor.id_personal WHERE exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' 
-                  and exp_generales.id_carrera='.$request->id_carrera.' AND gnral_personales.tipo_usuario='.\Illuminate\Support\Facades\Auth::user()->id.' GROUP BY exp_formacion_integral.usas_lentes ');
+        $enfcgen=DB::select('SELECT (select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_formacion_integral.enfermedad_cronica=1) as SI,(select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_formacion_integral.enfermedad_cronica=2) as NOO');
+        $enfcF=DB::select('SELECT (select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_formacion_integral.enfermedad_cronica=1) as SI,(select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_formacion_integral.enfermedad_cronica=2) as NOO');
+        $enfcM=DB::select('SELECT (select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_formacion_integral.enfermedad_cronica=1) as SI,(select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_formacion_integral.enfermedad_cronica=2) as NOO');
+
+        $penfcgen=DB::select('SELECT (select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_formacion_integral.enf_cron_padre=1) as SI,(select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_formacion_integral.enf_cron_padre=2) as NOO');
+        $penfcF=DB::select('SELECT (select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_formacion_integral.enf_cron_padre=1) as SI,(select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_formacion_integral.enf_cron_padre=2) as NOO');
+        $penfcM=DB::select('SELECT (select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_formacion_integral.enf_cron_padre=1) as SI,(select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_formacion_integral.enf_cron_padre=2) as NOO');
+        $operaciongen=DB::select('SELECT (select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_formacion_integral.operacion=1) as SI,(select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_formacion_integral.operacion=2) as NOO');
+        $operacionF=DB::select('SELECT (select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_formacion_integral.operacion=1) as SI,(select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_formacion_integral.operacion=2) as NOO');
+        $operacionM=DB::select('SELECT (select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_formacion_integral.operacion=1) as SI,(select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_formacion_integral.operacion=2) as NOO');
+        $visualgen=DB::select('SELECT (select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_formacion_integral.enfer_visual=1) as SI,(select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_formacion_integral.enfer_visual=2) as NOO');
+        $visualF=DB::select('SELECT (select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_formacion_integral.enfer_visual=1) as SI,(select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_formacion_integral.enfer_visual=2) as NOO');
+        $visualM=DB::select('SELECT (select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_formacion_integral.enfer_visual=1) as SI,(select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_formacion_integral.enfer_visual=2) as NOO');
+        $lentesgen=DB::select('SELECT (select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_formacion_integral.usas_lentes=1) as SI,(select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_formacion_integral.usas_lentes=2) as NOO');
+        $lentesF=DB::select('SELECT (select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_formacion_integral.usas_lentes=1) as SI,(select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_formacion_integral.usas_lentes=2) as NOO');
+        $lentesM=DB::select('SELECT (select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_formacion_integral.usas_lentes=1) as SI,(select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_formacion_integral.usas_lentes=2) as NOO');
+
+        $medgen=DB::select('SELECT (select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_formacion_integral.medicamento_controlado=1) as SI,(select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_formacion_integral.medicamento_controlado=2) as NOO');
+        $medF=DB::select('SELECT (select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_formacion_integral.medicamento_controlado=1) as SI,(select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_formacion_integral.medicamento_controlado=2) as NOO');
+        $medM=DB::select('SELECT (select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_formacion_integral.medicamento_controlado=1) as SI,(select COUNT(exp_formacion_integral.id_alumno)
+                      FROM exp_formacion_integral
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_formacion_integral.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_formacion_integral.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_formacion_integral.medicamento_controlado=2) as NOO');
 
         return response()->json(
-            ["catenfermedadc"=>array_pluck($enfermedadc, 'enfermedadc'),
-                "cantenfermedadc"=>array_pluck($enfermedadc, 'cant'),
-                "catenfermedadv"=>array_pluck($enfermedadv, 'enfermedadv'),
-                "cantenfermedadv"=>array_pluck($enfermedadv, 'cant'),
-                "catlentes"=>array_pluck($lentes, 'lentes'),
-                "cantlentes"=>array_pluck($lentes, 'cant'),
-
+            [
+                [
+                    [
+                        ["name"=>"Si","y"=>round(($degen[0]->SI)*100/Session::get('total_alumnos'))],["name"=>"No","y"=>round(($degen[0]->NOO)*100/Session::get('total_alumnos'))]
+                    ],
+                    [
+                        ["name"=>"Si","y"=>round(($deF[0]->SI)*100/Session::get('total_mujeres'))],["name"=>"No","y"=>round(($deF[0]->NOO)*100/Session::get('total_mujeres'))]
+                    ],
+                    [
+                        ["name"=>"Si","y"=>round(($deM[0]->SI)*100/Session::get('total_hombres'))],["name"=>"No","y"=>round(($deM[0]->NOO)*100/Session::get('total_hombres'))]
+                    ]
+                ],
+                [
+                    [
+                        ["name"=>"Si","y"=>round(($argen[0]->SI)*100/Session::get('total_alumnos'))],["name"=>"No","y"=>round(($argen[0]->NOO)*100/Session::get('total_alumnos'))]
+                    ],
+                    [
+                        ["name"=>"Si","y"=>round(($arF[0]->SI)*100/Session::get('total_mujeres'))],["name"=>"No","y"=>round(($arF[0]->NOO)*100/Session::get('total_mujeres'))]
+                    ],
+                    [
+                        ["name"=>"Si","y"=>round(($arM[0]->SI)*100/Session::get('total_hombres'))],["name"=>"No","y"=>round(($arM[0]->NOO)*100/Session::get('total_hombres'))]
+                    ]
+                ],
+                [
+                    [
+                        ["name"=>"Si","y"=>round(($culturasgen[0]->SI)*100/Session::get('total_alumnos'))],["name"=>"No","y"=>round(($culturasgen[0]->NOO)*100/Session::get('total_alumnos'))]
+                    ],
+                    [
+                        ["name"=>"Si","y"=>round(($culturasF[0]->SI)*100/Session::get('total_mujeres'))],["name"=>"No","y"=>round(($culturasF[0]->NOO)*100/Session::get('total_mujeres'))]
+                    ],
+                    [
+                        ["name"=>"Si","y"=>round(($culturasM[0]->SI)*100/Session::get('total_hombres'))],["name"=>"No","y"=>round(($culturasM[0]->NOO)*100/Session::get('total_hombres'))]
+                    ]
+                ],
+                [
+                    [
+                        ["name"=>"Si","y"=>round(($enfcgen[0]->SI)*100/Session::get('total_alumnos'))],["name"=>"No","y"=>round(($enfcgen[0]->NOO)*100/Session::get('total_alumnos'))]
+                    ],
+                    [
+                        ["name"=>"Si","y"=>round(($enfcF[0]->SI)*100/Session::get('total_mujeres'))],["name"=>"No","y"=>round(($enfcF[0]->NOO)*100/Session::get('total_mujeres'))]
+                    ],
+                    [
+                        ["name"=>"Si","y"=>round(($enfcM[0]->SI)*100/Session::get('total_hombres'))],["name"=>"No","y"=>round(($enfcM[0]->NOO)*100/Session::get('total_hombres'))]
+                    ]
+                ],
+                [
+                    [
+                        ["name"=>"Si","y"=>round(($penfcgen[0]->SI)*100/Session::get('total_alumnos'))],["name"=>"No","y"=>round(($penfcgen[0]->NOO)*100/Session::get('total_alumnos'))]
+                    ],
+                    [
+                        ["name"=>"Si","y"=>round(($penfcF[0]->SI)*100/Session::get('total_mujeres'))],["name"=>"No","y"=>round(($penfcF[0]->NOO)*100/Session::get('total_mujeres'))]
+                    ],
+                    [
+                        ["name"=>"Si","y"=>round(($penfcM[0]->SI)*100/Session::get('total_hombres'))],["name"=>"No","y"=>round(($penfcM[0]->NOO)*100/Session::get('total_hombres'))]
+                    ]
+                ],
+                [
+                    [
+                        ["name"=>"Si","y"=>round(($operaciongen[0]->SI)*100/Session::get('total_alumnos'))],["name"=>"No","y"=>round(($operaciongen[0]->NOO)*100/Session::get('total_alumnos'))]
+                    ],
+                    [
+                        ["name"=>"Si","y"=>round(($operacionF[0]->SI)*100/Session::get('total_mujeres'))],["name"=>"No","y"=>round(($operacionF[0]->NOO)*100/Session::get('total_mujeres'))]
+                    ],
+                    [
+                        ["name"=>"Si","y"=>round(($operacionM[0]->SI)*100/Session::get('total_hombres'))],["name"=>"No","y"=>round(($operacionM[0]->NOO)*100/Session::get('total_hombres'))]
+                    ]
+                ],
+                [
+                    [
+                        ["name"=>"Si","y"=>round(($visualgen[0]->SI)*100/Session::get('total_alumnos'))],["name"=>"No","y"=>round(($visualgen[0]->NOO)*100/Session::get('total_alumnos'))]
+                    ],
+                    [
+                        ["name"=>"Si","y"=>round(($visualF[0]->SI)*100/Session::get('total_mujeres'))],["name"=>"No","y"=>round(($visualF[0]->NOO)*100/Session::get('total_mujeres'))]
+                    ],
+                    [
+                        ["name"=>"Si","y"=>round(($visualM[0]->SI)*100/Session::get('total_hombres'))],["name"=>"No","y"=>round(($visualM[0]->NOO)*100/Session::get('total_hombres'))]
+                    ]
+                ],
+                [
+                    [
+                        ["name"=>"Si","y"=>round(($lentesgen[0]->SI)*100/Session::get('total_alumnos'))],["name"=>"No","y"=>round(($lentesgen[0]->NOO)*100/Session::get('total_alumnos'))]
+                    ],
+                    [
+                        ["name"=>"Si","y"=>round(($lentesF[0]->SI)*100/Session::get('total_mujeres'))],["name"=>"No","y"=>round(($lentesF[0]->NOO)*100/Session::get('total_mujeres'))]
+                    ],
+                    [
+                        ["name"=>"Si","y"=>round(($lentesM[0]->SI)*100/Session::get('total_hombres'))],["name"=>"No","y"=>round(($lentesM[0]->NOO)*100/Session::get('total_hombres'))]
+                    ]
+                ],
+                [
+                    [
+                        ["name"=>"Si","y"=>round(($medgen[0]->SI)*100/Session::get('total_alumnos'))],["name"=>"No","y"=>round(($medgen[0]->NOO)*100/Session::get('total_alumnos'))]
+                    ],
+                    [
+                        ["name"=>"Si","y"=>round(($medF[0]->SI)*100/Session::get('total_mujeres'))],["name"=>"No","y"=>round(($medF[0]->NOO)*100/Session::get('total_mujeres'))]
+                    ],
+                    [
+                        ["name"=>"Si","y"=>round(($medM[0]->SI)*100/Session::get('total_hombres'))],["name"=>"No","y"=>round(($medM[0]->NOO)*100/Session::get('total_hombres'))]
+                    ]
+                ],
             ],200
         );
 
     }
-
     public function area(Request $request)
     {
 
-        $rendimiento=DB::select('select COUNT(exp_area_psicopedagogica.id_exp_area_psicopedagogica) as 
-                cant,exp_escalas.desc_escala as rendimiento from exp_escalas JOIN exp_area_psicopedagogica ON exp_escalas.id_escala=exp_area_psicopedagogica.rendimiento_escolar JOIN exp_asigna_alumnos 
-                ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_generales 
-                on exp_generales.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_asigna_tutor ON 
-                exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion JOIN 
-                gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal WHERE 
-                exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' and exp_generales.id_carrera='.$request->id_carrera.' AND gnral_personales.tipo_usuario='.\Illuminate\Support\Facades\Auth::user()->id.' 
-                GROUP BY exp_escalas.desc_escala');
+        $traegen=DB::select('SELECT (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.trabajo_equipo=1) as E,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.trabajo_equipo=2) as MB, (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.trabajo_equipo=3) as B,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.trabajo_equipo=4) as R,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.trabajo_equipo=5) as M');
 
-        $computo=DB::select('select COUNT(exp_area_psicopedagogica.id_exp_area_psicopedagogica) as 
-                cant,exp_escalas.desc_escala as computo from exp_escalas JOIN exp_area_psicopedagogica ON exp_escalas.id_escala=exp_area_psicopedagogica.conocimiento_compu JOIN exp_asigna_alumnos 
-                ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_generales 
-                on exp_generales.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_asigna_tutor ON 
-                exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion JOIN 
-                gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal WHERE 
-                exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' and exp_generales.id_carrera='.$request->id_carrera.' AND gnral_personales.tipo_usuario='.\Illuminate\Support\Facades\Auth::user()->id.' 
-                GROUP BY exp_escalas.desc_escala');
+        $traeF=DB::select('SELECT (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.trabajo_equipo=1) as E,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.trabajo_equipo=2) as MB, (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.trabajo_equipo=3) as B,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.trabajo_equipo=4) as R,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.trabajo_equipo=5) as M');
+        $traeM=DB::select('SELECT (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.trabajo_equipo=1) as E,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.trabajo_equipo=2) as MB, (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.trabajo_equipo=3) as B,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.trabajo_equipo=4) as R,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.trabajo_equipo=5) as M');
 
-        $comprension=DB::select('select COUNT(exp_area_psicopedagogica.id_exp_area_psicopedagogica) as 
-                cant,exp_escalas.desc_escala as comprension from exp_escalas JOIN exp_area_psicopedagogica ON exp_escalas.id_escala=exp_area_psicopedagogica.comprension JOIN exp_asigna_alumnos 
-                ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_generales 
-                on exp_generales.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_asigna_tutor ON 
-                exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion JOIN 
-                gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal WHERE 
-                exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' and exp_generales.id_carrera='.$request->id_carrera.' AND gnral_personales.tipo_usuario='.\Illuminate\Support\Facades\Auth::user()->id.' 
-                GROUP BY exp_escalas.desc_escala');
-        $preparacion=DB::select('select COUNT(exp_area_psicopedagogica.id_exp_area_psicopedagogica) as 
-                cant,exp_escalas.desc_escala as preparacion from exp_escalas JOIN exp_area_psicopedagogica ON exp_escalas.id_escala=exp_area_psicopedagogica.preparacion JOIN exp_asigna_alumnos 
-                ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_generales 
-                on exp_generales.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_asigna_tutor ON 
-                exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion JOIN 
-                gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal WHERE 
-                exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' and exp_generales.id_carrera='.$request->id_carrera.' AND gnral_personales.tipo_usuario='.\Illuminate\Support\Facades\Auth::user()->id.' 
-                GROUP BY exp_escalas.desc_escala');
+        $rengen=DB::select('SELECT (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.rendimiento_escolar=1) as E,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.rendimiento_escolar=2) as MB, (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.rendimiento_escolar=3) as B,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.rendimiento_escolar=4) as R,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.rendimiento_escolar=5) as M');
 
-        $concentracion=DB::select('select COUNT(exp_area_psicopedagogica.id_exp_area_psicopedagogica) as 
-                cant,exp_escalas.desc_escala as concentracion from exp_escalas JOIN exp_area_psicopedagogica ON exp_escalas.id_escala=exp_area_psicopedagogica.concentracion JOIN exp_asigna_alumnos 
-                ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_generales 
-                on exp_generales.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_asigna_tutor ON 
-                exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion JOIN 
-                gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal WHERE 
-                exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' and exp_generales.id_carrera='.$request->id_carrera.' AND gnral_personales.tipo_usuario='.\Illuminate\Support\Facades\Auth::user()->id.' 
-                GROUP BY exp_escalas.desc_escala');
-        $trabajo=DB::select('select COUNT(exp_area_psicopedagogica.id_exp_area_psicopedagogica) as 
-                cant,exp_escalas.desc_escala as trabajo from exp_escalas JOIN exp_area_psicopedagogica ON exp_escalas.id_escala=exp_area_psicopedagogica.trabajo_equipo JOIN exp_asigna_alumnos 
-                ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_generales 
-                on exp_generales.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_asigna_tutor ON 
-                exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion JOIN 
-                gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal WHERE 
-                exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' and exp_generales.id_carrera='.$request->id_carrera.' AND gnral_personales.tipo_usuario='.\Illuminate\Support\Facades\Auth::user()->id.' 
-                GROUP BY exp_escalas.desc_escala');
+        $renF=DB::select('SELECT (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.rendimiento_escolar=1) as E,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.rendimiento_escolar=2) as MB, (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.rendimiento_escolar=3) as B,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.rendimiento_escolar=4) as R,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.rendimiento_escolar=5) as M');
+        $renM=DB::select('SELECT (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.rendimiento_escolar=1) as E,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.rendimiento_escolar=2) as MB, (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.rendimiento_escolar=3) as B,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.rendimiento_escolar=4) as R,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.rendimiento_escolar=5) as M');
+        $comgen=DB::select('SELECT (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.conocimiento_compu=1) as E,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.conocimiento_compu=2) as MB, (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.conocimiento_compu=3) as B,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.conocimiento_compu=4) as R,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.conocimiento_compu=5) as M');
+
+        $comF=DB::select('SELECT (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.conocimiento_compu=1) as E,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.conocimiento_compu=2) as MB, (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.conocimiento_compu=3) as B,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.conocimiento_compu=4) as R,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.conocimiento_compu=5) as M');
+        $comM=DB::select('SELECT (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.conocimiento_compu=1) as E,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.conocimiento_compu=2) as MB, (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.conocimiento_compu=3) as B,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.conocimiento_compu=4) as R,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.conocimiento_compu=5) as M');
+        $retgen=DB::select('SELECT (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.comprension=1) as E,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.comprension=2) as MB, (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.comprension=3) as B,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.comprension=4) as R,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.comprension=5) as M');
+
+        $retF=DB::select('SELECT (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.comprension=1) as E,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.comprension=2) as MB, (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.comprension=3) as B,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.comprension=4) as R,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.comprension=5) as M');
+        $retM=DB::select('SELECT (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.comprension=1) as E,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.comprension=2) as MB, (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.comprension=3) as B,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.comprension=4) as R,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.comprension=5) as M');
+
+        $exagen=DB::select('SELECT (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.preparacion=1) as E,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.preparacion=2) as MB, (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.preparacion=3) as B,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.preparacion=4) as R,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.preparacion=5) as M');
+
+        $exaF=DB::select('SELECT (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.preparacion=1) as E,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.preparacion=2) as MB, (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.preparacion=3) as B,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.preparacion=4) as R,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.preparacion=5) as M');
+        $exaM=DB::select('SELECT (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.preparacion=1) as E,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.preparacion=2) as MB, (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.preparacion=3) as B,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.preparacion=4) as R,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.preparacion=5) as M');
+        $congen=DB::select('SELECT (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.concentracion=1) as E,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.concentracion=2) as MB, (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.concentracion=3) as B,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.concentracion=4) as R,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.concentracion=5) as M');
+
+        $conF=DB::select('SELECT (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.concentracion=1) as E,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.concentracion=2) as MB, (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.concentracion=3) as B,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.concentracion=4) as R,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.concentracion=5) as M');
+        $conM=DB::select('SELECT (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.concentracion=1) as E,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.concentracion=2) as MB, (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.concentracion=3) as B,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.concentracion=4) as R,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.concentracion=5) as M');
+        $bbgen=DB::select('SELECT (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.busqueda_bibliografica=1) as E,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.busqueda_bibliografica=2) as MB, (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.busqueda_bibliografica=3) as B,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.busqueda_bibliografica=4) as R,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.busqueda_bibliografica=5) as M');
+
+        $bbF=DB::select('SELECT (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.busqueda_bibliografica=1) as E,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.busqueda_bibliografica=2) as MB, (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.busqueda_bibliografica=3) as B,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.busqueda_bibliografica=4) as R,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.busqueda_bibliografica=5) as M');
+        $bbM=DB::select('SELECT (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.busqueda_bibliografica=1) as E,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.busqueda_bibliografica=2) as MB, (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.busqueda_bibliografica=3) as B,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.busqueda_bibliografica=4) as R,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.busqueda_bibliografica=5) as M');
+        $oigen=DB::select('SELECT (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.otro_idioma=1) as E,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.otro_idioma=2) as MB, (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.otro_idioma=3) as B,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.otro_idioma=4) as R,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.otro_idioma=5) as M');
+
+        $oiF=DB::select('SELECT (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.otro_idioma=1) as E,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.otro_idioma=2) as MB, (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.otro_idioma=3) as B,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.otro_idioma=4) as R,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.otro_idioma=5) as M');
+        $oiM=DB::select('SELECT (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.otro_idioma=1) as E,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.otro_idioma=2) as MB, (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.otro_idioma=3) as B,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.otro_idioma=4) as R,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.otro_idioma=5) as M');
+        $spgen=DB::select('SELECT (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.solucion_problemas=1) as E,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.solucion_problemas=2) as MB, (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.solucion_problemas=3) as B,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.solucion_problemas=4) as R,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_area_psicopedagogica.solucion_problemas=5) as M');
+
+        $spF=DB::select('SELECT (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.solucion_problemas=1) as E,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.solucion_problemas=2) as MB, (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.solucion_problemas=3) as B,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.solucion_problemas=4) as R,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="F" AND exp_area_psicopedagogica.solucion_problemas=5) as M');
+        $spM=DB::select('SELECT (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.solucion_problemas=1) as E,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.solucion_problemas=2) as MB, (select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.solucion_problemas=3) as B,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.solucion_problemas=4) as R,(select COUNT(exp_area_psicopedagogica.id_alumno)
+                      FROM exp_area_psicopedagogica
+                      JOIN exp_generales ON exp_generales.id_alumno=exp_area_psicopedagogica.id_alumno
+                     JOIN exp_asigna_alumnos ON exp_area_psicopedagogica.id_alumno=exp_asigna_alumnos.id_alumno 
+                     JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_generales.sexo="M" AND exp_area_psicopedagogica.solucion_problemas=5) as M');
 
 
         return response()->json(
-            ["catrendimiento"=>array_pluck($rendimiento, 'rendimiento'),
-                "cantrendimiento"=>array_pluck($rendimiento, 'cant'),
-                "catcomputo"=>array_pluck($computo, 'computo'),
-                "cantcomputo"=>array_pluck($computo, 'cant'),
-                "catcomprension"=>array_pluck($comprension, 'comprension'),
-                "cantcomprension"=>array_pluck($comprension, 'cant'),
-                "catpreparacion"=>array_pluck($preparacion, 'preparacion'),
-                "cantpreparacion"=>array_pluck($preparacion, 'cant'),
-                "catconcentracion"=>array_pluck($concentracion, 'concentracion'),
-                "cantconcentracion"=>array_pluck($concentracion, 'cant'),
-                "cattrabajo"=>array_pluck($trabajo, 'trabajo'),
-                "canttrabajo"=>array_pluck($trabajo, 'cant'),
+            [
+                [
+                    [
+                        ["name"=>"Excelente","y"=>round(($traegen[0]->E)*100/Session::get('total_alumnos'))],["name"=>"Muy bien","y"=>round(($traegen[0]->MB)*100/Session::get('total_alumnos'))],["name"=>"Bien","y"=>round(($traegen[0]->B)*100/Session::get('total_alumnos'))],["name"=>"Regular","y"=>round(($traegen[0]->R)*100/Session::get('total_alumnos'))],["name"=>"Mala","y"=>round(($traegen[0]->M)*100/Session::get('total_alumnos'))]
+                    ],
+                    [
+                        ["name"=>"Excelente","y"=>round(($traeF[0]->E)*100/Session::get('total_mujeres'))],["name"=>"Muy bien","y"=>round(($traeF[0]->MB)*100/Session::get('total_mujeres'))],["name"=>"Bien","y"=>round(($traeF[0]->B)*100/Session::get('total_mujeres'))],["name"=>"Regular","y"=>round(($traeF[0]->R)*100/Session::get('total_mujeres'))],["name"=>"Mala","y"=>round(($traeF[0]->M)*100/Session::get('total_mujeres'))]
+                    ],
+                    [
+                        ["name"=>"Excelente","y"=>round(($traeM[0]->E)*100/Session::get('total_hombres'))],["name"=>"Muy bien","y"=>round(($traeM[0]->MB)*100/Session::get('total_hombres'))],["name"=>"Bien","y"=>round(($traeM[0]->B)*100/Session::get('total_hombres'))],["name"=>"Regular","y"=>round(($traeM[0]->R)*100/Session::get('total_hombres'))],["name"=>"Mala","y"=>round(($traeM[0]->M)*100/Session::get('total_hombres'))]
+                    ]
+                ],
+                [
+                    [
+                        ["name"=>"Excelente","y"=>round(($rengen[0]->E)*100/Session::get('total_alumnos'))],["name"=>"Muy bien","y"=>round(($rengen[0]->MB)*100/Session::get('total_alumnos'))],["name"=>"Bien","y"=>round(($rengen[0]->B)*100/Session::get('total_alumnos'))],["name"=>"Regular","y"=>round(($rengen[0]->R)*100/Session::get('total_alumnos'))],["name"=>"Mala","y"=>round(($rengen[0]->M)*100/Session::get('total_alumnos'))]
+                    ],
+                    [
+                        ["name"=>"Excelente","y"=>round(($renF[0]->E)*100/Session::get('total_mujeres'))],["name"=>"Muy bien","y"=>round(($renF[0]->MB)*100/Session::get('total_mujeres'))],["name"=>"Bien","y"=>round(($renF[0]->B)*100/Session::get('total_mujeres'))],["name"=>"Regular","y"=>round(($renF[0]->R)*100/Session::get('total_mujeres'))],["name"=>"Mala","y"=>round(($renF[0]->M)*100/Session::get('total_mujeres'))]
+                    ],
+                    [
+                        ["name"=>"Excelente","y"=>round(($renM[0]->E)*100/Session::get('total_hombres'))],["name"=>"Muy bien","y"=>round(($renM[0]->MB)*100/Session::get('total_hombres'))],["name"=>"Bien","y"=>round(($renM[0]->B)*100/Session::get('total_hombres'))],["name"=>"Regular","y"=>round(($renM[0]->R)*100/Session::get('total_hombres'))],["name"=>"Mala","y"=>round(($renM[0]->M)*100/Session::get('total_hombres'))]
+                    ]
+                ],
+                [
+                    [
+                        ["name"=>"Excelente","y"=>round(($comgen[0]->E)*100/Session::get('total_alumnos'))],["name"=>"Muy bien","y"=>round(($comgen[0]->MB)*100/Session::get('total_alumnos'))],["name"=>"Bien","y"=>round(($comgen[0]->B)*100/Session::get('total_alumnos'))],["name"=>"Regular","y"=>round(($comgen[0]->R)*100/Session::get('total_alumnos'))],["name"=>"Mala","y"=>round(($comgen[0]->M)*100/Session::get('total_alumnos'))]
+                    ],
+                    [
+                        ["name"=>"Excelente","y"=>round(($comF[0]->E)*100/Session::get('total_mujeres'))],["name"=>"Muy bien","y"=>round(($comF[0]->MB)*100/Session::get('total_mujeres'))],["name"=>"Bien","y"=>round(($comF[0]->B)*100/Session::get('total_mujeres'))],["name"=>"Regular","y"=>round(($comF[0]->R)*100/Session::get('total_mujeres'))],["name"=>"Mala","y"=>round(($comF[0]->M)*100/Session::get('total_mujeres'))]
+                    ],
+                    [
+                        ["name"=>"Excelente","y"=>round(($comM[0]->E)*100/Session::get('total_hombres'))],["name"=>"Muy bien","y"=>round(($comM[0]->MB)*100/Session::get('total_hombres'))],["name"=>"Bien","y"=>round(($comM[0]->B)*100/Session::get('total_hombres'))],["name"=>"Regular","y"=>round(($comM[0]->R)*100/Session::get('total_hombres'))],["name"=>"Mala","y"=>round(($comM[0]->M)*100/Session::get('total_hombres'))]
+                    ]
+                ],
+                [
+                    [
+                        ["name"=>"Excelente","y"=>round(($retgen[0]->E)*100/Session::get('total_alumnos'))],["name"=>"Muy bien","y"=>round(($retgen[0]->MB)*100/Session::get('total_alumnos'))],["name"=>"Bien","y"=>round(($retgen[0]->B)*100/Session::get('total_alumnos'))],["name"=>"Regular","y"=>round(($retgen[0]->R)*100/Session::get('total_alumnos'))],["name"=>"Mala","y"=>round(($retgen[0]->M)*100/Session::get('total_alumnos'))]
+                    ],
+                    [
+                        ["name"=>"Excelente","y"=>round(($retF[0]->E)*100/Session::get('total_mujeres'))],["name"=>"Muy bien","y"=>round(($retF[0]->MB)*100/Session::get('total_mujeres'))],["name"=>"Bien","y"=>round(($retF[0]->B)*100/Session::get('total_mujeres'))],["name"=>"Regular","y"=>round(($retF[0]->R)*100/Session::get('total_mujeres'))],["name"=>"Mala","y"=>round(($retF[0]->M)*100/Session::get('total_mujeres'))]
+                    ],
+                    [
+                        ["name"=>"Excelente","y"=>round(($retM[0]->E)*100/Session::get('total_hombres'))],["name"=>"Muy bien","y"=>round(($retM[0]->MB)*100/Session::get('total_hombres'))],["name"=>"Bien","y"=>round(($retM[0]->B)*100/Session::get('total_hombres'))],["name"=>"Regular","y"=>round(($retM[0]->R)*100/Session::get('total_hombres'))],["name"=>"Mala","y"=>round(($retM[0]->M)*100/Session::get('total_hombres'))]
+                    ]
+                ],
+                [
+                    [
+                        ["name"=>"Excelente","y"=>round(($exagen[0]->E)*100/Session::get('total_alumnos'))],["name"=>"Muy bien","y"=>round(($exagen[0]->MB)*100/Session::get('total_alumnos'))],["name"=>"Bien","y"=>round(($exagen[0]->B)*100/Session::get('total_alumnos'))],["name"=>"Regular","y"=>round(($exagen[0]->R)*100/Session::get('total_alumnos'))],["name"=>"Mala","y"=>round(($exagen[0]->M)*100/Session::get('total_alumnos'))]
+                    ],
+                    [
+                        ["name"=>"Excelente","y"=>round(($exaF[0]->E)*100/Session::get('total_mujeres'))],["name"=>"Muy bien","y"=>round(($exaF[0]->MB)*100/Session::get('total_mujeres'))],["name"=>"Bien","y"=>round(($exaF[0]->B)*100/Session::get('total_mujeres'))],["name"=>"Regular","y"=>round(($exaF[0]->R)*100/Session::get('total_mujeres'))],["name"=>"Mala","y"=>round(($exaF[0]->M)*100/Session::get('total_mujeres'))]
+                    ],
+                    [
+                        ["name"=>"Excelente","y"=>round(($exaM[0]->E)*100/Session::get('total_hombres'))],["name"=>"Muy bien","y"=>round(($exaM[0]->MB)*100/Session::get('total_hombres'))],["name"=>"Bien","y"=>round(($exaM[0]->B)*100/Session::get('total_hombres'))],["name"=>"Regular","y"=>round(($exaM[0]->R)*100/Session::get('total_hombres'))],["name"=>"Mala","y"=>round(($exaM[0]->M)*100/Session::get('total_hombres'))]
+                    ]
+                ],
+                [
+                    [
+                        ["name"=>"Excelente","y"=>round(($congen[0]->E)*100/Session::get('total_alumnos'))],["name"=>"Muy bien","y"=>round(($congen[0]->MB)*100/Session::get('total_alumnos'))],["name"=>"Bien","y"=>round(($congen[0]->B)*100/Session::get('total_alumnos'))],["name"=>"Regular","y"=>round(($congen[0]->R)*100/Session::get('total_alumnos'))],["name"=>"Mala","y"=>round(($congen[0]->M)*100/Session::get('total_alumnos'))]
+                    ],
+                    [
+                        ["name"=>"Excelente","y"=>round(($conF[0]->E)*100/Session::get('total_mujeres'))],["name"=>"Muy bien","y"=>round(($conF[0]->MB)*100/Session::get('total_mujeres'))],["name"=>"Bien","y"=>round(($conF[0]->B)*100/Session::get('total_mujeres'))],["name"=>"Regular","y"=>round(($conF[0]->R)*100/Session::get('total_mujeres'))],["name"=>"Mala","y"=>round(($conF[0]->M)*100/Session::get('total_mujeres'))]
+                    ],
+                    [
+                        ["name"=>"Excelente","y"=>round(($conM[0]->E)*100/Session::get('total_hombres'))],["name"=>"Muy bien","y"=>round(($conM[0]->MB)*100/Session::get('total_hombres'))],["name"=>"Bien","y"=>round(($conM[0]->B)*100/Session::get('total_hombres'))],["name"=>"Regular","y"=>round(($conM[0]->R)*100/Session::get('total_hombres'))],["name"=>"Mala","y"=>round(($conM[0]->M)*100/Session::get('total_hombres'))]
+                    ]
+                ],
+                [
+                    [
+                        ["name"=>"Excelente","y"=>round(($bbgen[0]->E)*100/Session::get('total_alumnos'))],["name"=>"Muy bien","y"=>round(($bbgen[0]->MB)*100/Session::get('total_alumnos'))],["name"=>"Bien","y"=>round(($bbgen[0]->B)*100/Session::get('total_alumnos'))],["name"=>"Regular","y"=>round(($bbgen[0]->R)*100/Session::get('total_alumnos'))],["name"=>"Mala","y"=>round(($bbgen[0]->M)*100/Session::get('total_alumnos'))]
+                    ],
+                    [
+                        ["name"=>"Excelente","y"=>round(($bbF[0]->E)*100/Session::get('total_mujeres'))],["name"=>"Muy bien","y"=>round(($bbF[0]->MB)*100/Session::get('total_mujeres'))],["name"=>"Bien","y"=>round(($bbF[0]->B)*100/Session::get('total_mujeres'))],["name"=>"Regular","y"=>round(($bbF[0]->R)*100/Session::get('total_mujeres'))],["name"=>"Mala","y"=>round(($bbF[0]->M)*100/Session::get('total_mujeres'))]
+                    ],
+                    [
+                        ["name"=>"Excelente","y"=>round(($bbM[0]->E)*100/Session::get('total_hombres'))],["name"=>"Muy bien","y"=>round(($bbM[0]->MB)*100/Session::get('total_hombres'))],["name"=>"Bien","y"=>round(($bbM[0]->B)*100/Session::get('total_hombres'))],["name"=>"Regular","y"=>round(($bbM[0]->R)*100/Session::get('total_hombres'))],["name"=>"Mala","y"=>round(($bbM[0]->M)*100/Session::get('total_hombres'))]
+                    ]
+                ],
+                [
+                    [
+                        ["name"=>"Excelente","y"=>round(($oigen[0]->E)*100/Session::get('total_alumnos'))],["name"=>"Muy bien","y"=>round(($oigen[0]->MB)*100/Session::get('total_alumnos'))],["name"=>"Bien","y"=>round(($oigen[0]->B)*100/Session::get('total_alumnos'))],["name"=>"Regular","y"=>round(($oigen[0]->R)*100/Session::get('total_alumnos'))],["name"=>"Mala","y"=>round(($oigen[0]->M)*100/Session::get('total_alumnos'))]
+                    ],
+                    [
+                        ["name"=>"Excelente","y"=>round(($oiF[0]->E)*100/Session::get('total_mujeres'))],["name"=>"Muy bien","y"=>round(($oiF[0]->MB)*100/Session::get('total_mujeres'))],["name"=>"Bien","y"=>round(($oiF[0]->B)*100/Session::get('total_mujeres'))],["name"=>"Regular","y"=>round(($oiF[0]->R)*100/Session::get('total_mujeres'))],["name"=>"Mala","y"=>round(($oiF[0]->M)*100/Session::get('total_mujeres'))]
+                    ],
+                    [
+                        ["name"=>"Excelente","y"=>round(($oiM[0]->E)*100/Session::get('total_hombres'))],["name"=>"Muy bien","y"=>round(($oiM[0]->MB)*100/Session::get('total_hombres'))],["name"=>"Bien","y"=>round(($oiM[0]->B)*100/Session::get('total_hombres'))],["name"=>"Regular","y"=>round(($oiM[0]->R)*100/Session::get('total_hombres'))],["name"=>"Mala","y"=>round(($oiM[0]->M)*100/Session::get('total_hombres'))]
+                    ]
+                ],
+                [
+                    [
+                        ["name"=>"Excelente","y"=>round(($spgen[0]->E)*100/Session::get('total_alumnos'))],["name"=>"Muy bien","y"=>round(($spgen[0]->MB)*100/Session::get('total_alumnos'))],["name"=>"Bien","y"=>round(($spgen[0]->B)*100/Session::get('total_alumnos'))],["name"=>"Regular","y"=>round(($spgen[0]->R)*100/Session::get('total_alumnos'))],["name"=>"Mala","y"=>round(($spgen[0]->M)*100/Session::get('total_alumnos'))]
+                    ],
+                    [
+                        ["name"=>"Excelente","y"=>round(($spF[0]->E)*100/Session::get('total_mujeres'))],["name"=>"Muy bien","y"=>round(($spF[0]->MB)*100/Session::get('total_mujeres'))],["name"=>"Bien","y"=>round(($spF[0]->B)*100/Session::get('total_mujeres'))],["name"=>"Regular","y"=>round(($spF[0]->R)*100/Session::get('total_mujeres'))],["name"=>"Mala","y"=>round(($spF[0]->M)*100/Session::get('total_mujeres'))]
+                    ],
+                    [
+                        ["name"=>"Excelente","y"=>round(($spM[0]->E)*100/Session::get('total_hombres'))],["name"=>"Muy bien","y"=>round(($spM[0]->MB)*100/Session::get('total_hombres'))],["name"=>"Bien","y"=>round(($spM[0]->B)*100/Session::get('total_hombres'))],["name"=>"Regular","y"=>round(($spM[0]->R)*100/Session::get('total_hombres'))],["name"=>"Mala","y"=>round(($spM[0]->M)*100/Session::get('total_hombres'))]
+                    ]
+                ],
 
             ],200
         );
 
+
     }
 
-    public function getAll(){
-        $datos=Grafica::getGraficasTutor();
-        //dd($datos);
-        //$datosAlum=Profesor::getAlumnos();
-        //dd($datos);
-        return $datos;
-    }
 
-    public function updateEstado(Request $request){
-        //dd($request);
-        //Alumno::updateEst($request);
-        //return redirect('profesor');
-    }
     /**
      * Show the form for creating a new resource.
      *

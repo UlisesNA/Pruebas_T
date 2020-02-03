@@ -1297,8 +1297,8 @@
                     this.alu.academicos.semestres_cursados=null;
                 },
                 borra_trabaja:function(){
-                    this.alu.generales.ocupacion="";
-                    this.alu.generales.horario="";
+                    this.alu.generales.ocupacion=null;
+                    this.alu.generales.horario=null;
                 },
                 borra_beca:function(){
                     this.alu.generales.id_expbeca=null

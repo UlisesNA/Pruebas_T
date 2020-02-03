@@ -8,7 +8,7 @@
                         <div class="card-body">
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item">
-                                  <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab" @click="refrescar()" aria-controls="general" aria-selected="true">General</a>
+                                  <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true">General</a>
                                 </li>
                                 <li class="nav-item">
                                   <a class="nav-link" id="generacion-tab" data-toggle="tab" href="#generacion" role="tab"  aria-controls="generacion" aria-selected="false">Generacion</a>
@@ -35,10 +35,10 @@
                                             </div>
                                             <ul class="nav nav-pills mb-3" id="grupo-tab" role="tablist">
                                                 <li class="nav-item">
-                                                    <a class="nav-link border m-1" @click="getAlumnos(gen.generacion)" id="pills-generalgen-tab" data-toggle="pill" href="#generalgen" role="tab" aria-controls="'pills-generalgen" >General</a>
+                                                    <a class="nav-link border m-1" @click="getAlumnosGeneracion(gen.generacion)" id="pills-generalgen-tab" data-toggle="pill" href="#generalgen" role="tab" aria-controls="'pills-generalgen" >General</a>
                                                 </li>
                                                 <li class="nav-item btn-group" v-for="grupo in gen.grupos">
-                                                    <a class="nav-link border m-1 "  @click="getAlumnos(grupo.id_asigna_generacion)" :id="'pills-'+grupo.id_asigna_generacion+'-tab'" data-toggle="pill" :href="'#pills-'+grupo.id_asigna_generacion" role="tab" :aria-controls="'pills-'+grupo.id_asigna_generacion">Grupo @{{ grupo.grupo }}</a>
+                                                    <a class="nav-link border m-1 "  @click="getAlumnosGrupo(grupo.id_asigna_generacion)" :id="'pills-'+grupo.id_asigna_generacion+'-tab'" data-toggle="pill" :href="'#pills-'+grupo.id_asigna_generacion" role="tab" :aria-controls="'pills-'+grupo.id_asigna_generacion">Grupo @{{ grupo.grupo }}</a>
                                                     <a href="#"><i class="fas text-danger fa-times h4 pt-3" data-toggle="tooltip" data-placement="bottom" title="Eliminar Grupo" @click="ConfirmaBorrar(grupo)"></i></a></td>
                                                 </li>
                                             </ul>
@@ -49,7 +49,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="tab-content" id="grupo-tabContent" v-if="alumno.length>0">
+                                            <div class="tab-content" id="grupo-tabContent" v-if="(alumno.length>0)">
                                                 <div class="tableFixHead">
                                                     <table class="table">
                                                         <thead>
@@ -95,7 +95,8 @@
             },
             data:{
                 gene:'/generaciones',
-                alug:'/alumnosgeneracion',
+                alugeneracion:'/alumnosgeneracion',
+                alugrupo:'/alumnosgrupo',
                 grup:'/creargrupo',
                 borra:'/borragrupo',
                 buscar:'/buscaalumnos',
@@ -123,19 +124,19 @@
                         this.generacion=response.data;
                     }).catch(error=>{ });
                 },
-                getAlumnos:function (gene) {
-
-                    this.idasignageneracion=gene;
-                    if(gene>2000)
-                    {
-                        this.clicgrupo=false;
-                        this.clicgeneracion=true;
-                    }
-                    else {
-                        this.clicgrupo=true;
-                        this.clicgeneracion=false;
-                    }
-                    axios.post(this.alug,{generacion:gene}).then(response=>{
+                getAlumnosGrupo:function (grupo) {
+                    this.idasignageneracion=grupo;
+                    this.clicgrupo=true;
+                    this.clicgeneracion=false;
+                    axios.post(this.alugrupo,{generacion:grupo}).then(response=>{
+                        this.alumno=response.data;
+                    }).catch(error=>{ });
+                },
+                getAlumnosGeneracion:function(genera)
+                {
+                    this.clicgrupo=false;
+                    this.clicgeneracion=true;
+                    axios.post(this.alugeneracion,{generacion:genera}).then(response=>{
                         this.alumno=response.data;
                     }).catch(error=>{ });
                 },
@@ -167,6 +168,9 @@
                     var url = '/alumnos/'+this.idasignagen;
                     axios.delete(url).then(response => {
                         this.getGeneracion();
+                        this.alumno=[];
+                        this.clicgrupo=false;
+                        this.popToast("Grupo eliminado correctamente");
                     });
                 },
                 Agregar:function () {
@@ -180,8 +184,8 @@
                     axios.post(this.asignar,{alumnos:this.seleccionados,id_asigna_generacion:this.idasignageneracion}).then(response=>{
                         this.BorrarSeleccionados();
                         $('#Alumnos').modal('hide');
+                        this.getAlumnosGrupo(response.data);
                         this.popToast('Registro exitoso!');
-                        this.getAlumnos(response.data);
                     }).catch(error=>{ });
                 },
                 seleccionar_todos: function () {
@@ -231,9 +235,7 @@
 
                     });
                 },
-                refrescar:function () {
-                    window.location.reload();
-                }
+
             },
         });
 

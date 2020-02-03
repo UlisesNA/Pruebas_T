@@ -5,8 +5,9 @@
                 <h5 class="modal-title text-center" id="exampleModalLabel">Eliminar grupo</h5>
             </div>
             <div class="modal-body">
-                <h4 class="text-center">¿ Seguro que deseas eliminar el grupo <b class="h3 font-weight-bold"> @{{ nomg }}
-                    </b> ?</h4>
+                <h4 class="text-center"><p>Al eliminar el grupo se elimina:</p> <p class="font-weight-bold"> * Tutor asignado</p> <p class="font-weight-bold">* Alumnos asignados al grupo</p>
+                    <p>¿ Seguro que deseas eliminar el grupo <b class="h3 font-weight-bold"> @{{ nomg }}
+                        </b> ?</p></h4>
             </div>
             <div class="modal-footer">
                 <button type="button" @click="borrarGrupo()" data-dismiss="modal" class="btn btn-outline-primary">Confirmar</button>
