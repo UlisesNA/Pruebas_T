@@ -197,7 +197,6 @@
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="MenuCoordinador">
                                             <a class="dropdown-item" href="carreras">{{ \Illuminate\Support\Facades\Session::get('coordinador')>1 ? 'Carreras':'Carrera' }}</a>
-                                            <a class="dropdown-item" href="graficasCoordinador">Estadísticas Coordinador</a>
                                         </div>
                                     </div>
                                 @endif

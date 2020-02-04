@@ -33,7 +33,7 @@ class LoginController extends Controller
 
              $alumno=gnral_alumnos::where('id_usuario',Auth::user()->id)->get();
              Session::put('cuenta',$alumno[0]->cuenta);
-             Session::put('nombre',$alumno[0]->apaterno." ".$alumno[0]->amaterno." ".$alumno[0]->nombre);
+             Session::put('nombre',mb_strtoupper(($alumno[0]->apaterno." ".$alumno[0]->amaterno." ".$alumno[0]->nombre),'utf-8'));
              Session::put('id_alumno',$alumno[0]->id_alumno);
              return redirect('inicioalu');
             // return redirect('/panel');

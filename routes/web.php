@@ -107,6 +107,7 @@ Route::get('/AlumActualizar','ViewAlumnosController@actualizar');
 Route::post('/ver','ViewAlumnosController@veralumno');
 Route::post('/actualiza','ViewAlumnosController@actualiza');
 Route::post('/guardar','ViewAlumnosController@store');
+Route::post('/imagen','ViewAlumnosController@guardarImagen');
 
 
 Route::post('/UpdateAlum','ViewAlumnosController@updateExp');

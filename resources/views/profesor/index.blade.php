@@ -31,7 +31,7 @@
                         </div>
                         <div class="row"><div class="col-9 text-center">@{{ gen }}</div></div>
                     </div>
-                    <div class="card-body" v-if="(lista==true) && datos.length>0">
+                    <div class="card-body" v-if="(lista==true && datos.length>0)">
                         <div class="row">
                             <div class="col-12">
                                 <div class="row pb-2">
@@ -74,7 +74,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-body" v-else>
+                    <div class="card-body" v-if="datos.length==0">
                         <div class="row">
                             <div class="col-12 alert-info alert text-center">
                                 <h5 class="font-weight-bold">No se han asignado alumnos al grupo</h5>

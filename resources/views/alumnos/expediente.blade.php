@@ -34,6 +34,16 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
+                                        <div class="col-5">
+                                            <label for="foto">Fotografía personal * <p class="font-weight-bold">Nota: Solo una única vez subes la fotografía</p></label>
+                                            <input type="file" class="form-control" accept="image/*" @change="ObtenerImagen" required>
+                                            <small class="form-text text-danger" v-if='imagenMiniatura==null'>Subir fotografía personal</small>
+                                        </div>
+                                        <div class="col-4">
+                                            <img :src="imagenMiniatura" alt="" width="150px">
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-md-4">
                                             <label for="nombre">Estudiante </label>
                                             <input type="text" id="nombre" name="nombre" v-model="alu.generales.nombre" class="form-control" placeholder="Nombre" required disabled>
@@ -137,11 +147,12 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label for="turno">Turno</label>
-                                            <select name="turno" id="turno" v-model="alu.generales.turno" class="custom-select custom-select-md">
+                                            <label for="turno">Turno *</label>
+                                            <select name="turno" id="turno" v-model="alu.generales.turno" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija turno</option>
                                                 <option v-bind:value="turn.id_turno" v-for="turn in turno">@{{turn.descripcion_turno}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.generales.turno==null || alu.generales.turno=="null"'>Elija una opción</small>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="estado">Estado académico *</label>
@@ -294,8 +305,6 @@
                                 </div>
                             </div>
                         </div>
-
-
                         <div class="tab-pane fade" v-bind:class="{show:actacademico,active:actacademico}" id="exp-antecedentes" role="tabpanel" aria-labelledby="exp-antecedentes-tab">
                             <div class="" >
                                 <div class="row pt-3 pr-3 pl-3">
@@ -605,18 +614,20 @@
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="uni.id_familia_union" v-for="uni in union">@{{uni.desc_union}}</option>
                                             </select>
-                                            <small class="form-text text-danger" v-if='alu.familiares.id_familia_union==null || alu.familiares.id_familia_union=="null"'>Elija un grupo</small>
+                                            <small class="form-text text-danger" v-if='alu.familiares.id_familia_union==null || alu.familiares.id_familia_union=="null"'>Elija una opción</small>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="nt">Nombre del Tutor</label>
-                                            <input type="text" v-model="alu.familiares.nombre_tutor" name="nombre_tutor" id="nt" class="form-control" placeholder="Nombre del Tutor">
+                                            <input type="text" v-model="alu.familiares.nombre_tutor" name="nombre_tutor" id="nt" class="form-control" placeholder="Nombre del Tutor" required>
+                                            <small class="form-text text-danger" v-if='alu.familiares.nombre_tutor==null || alu.familiares.nombre_tutor=="null"'>Nombre del tutor</small>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="parentesco">Parentesco</label>
-                                            <select name="parentesco" id="" class="custom-select custom-select-md"  v-model="alu.familiares.id_parentesco">
+                                            <select name="parentesco" id="" class="custom-select custom-select-md"  v-model="alu.familiares.id_parentesco" required>
                                                 <option value="null">Elija un parentesco</option>
                                                 <option v-bind:value="par.id_parentesco" v-for="par in parentesco">@{{par.desc_parentesco}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.familiares.id_parentesco==null || alu.familiares.id_parentesco=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                 </div>
@@ -654,6 +665,7 @@
                                                 <option value="null" selected>Elija una Opción</option>
                                                 <option v-bind:value="int.id_opc_intelectual" v-for="int in intelectual">@{{int.desc_opc}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.estudio.id_opc_intelectual==null || alu.estudio.id_opc_intelectual=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -1054,7 +1066,7 @@
                 </div>
             </div>
         </div>
-
+        <pre>@{{ alu.generales }}</pre>
         @include("alumnos.partial.modalNSE")
     </div>
     <script type="application/javascript">
@@ -1128,6 +1140,7 @@
                         tot_espe:null,
                         gen_espe:null,
                         id_alumno:null,
+                        foto:null
                     },
                     academicos:{
                         id_bachillerato:null,
@@ -1249,6 +1262,8 @@
                     suma:null,
                     testlleno:true,
                 },
+                imagen:null,
+                imagenMiniatura:null,
 
             },
             methods: {
@@ -1306,7 +1321,6 @@
                 siguiente:function (cat) {
                     switch ( cat) {
                         case 'academico':
-
                             if(this.alu.generales.estado!=null
                                 && this.alu.generales.nivel_economico!=null
                                 && this.alu.generales.materias_especial!=null
@@ -1317,19 +1331,24 @@
                                 && this.alu.generales.id_grupo!=null
                                 && this.alu.generales.sexo!=null
                                 && this.alu.generales.id_estado_civil!=null
-                                && this.alu.generales.trabaja!=null)
+                                && this.alu.generales.trabaja!=null
+                                && this.imagenMiniatura!=null)
                             {
-                                if (this.alu.generales.beca==1 && this.alu.generales.id_expbeca!=null){
+                                if(this.alu.generales.turno==null)
+                                {
+                                    this.llenogen=false;
+                                }
+                                else if (this.alu.generales.beca==1 && this.alu.generales.id_expbeca!=null){
                                     this.actacademico=true;
                                     this.disacademico=false;
                                     this.actgenerales=false;
                                     this.llenogen=true;
                                 }
-                                if (this.alu.generales.beca==1 && this.alu.generales.id_expbeca==null){
+                                else if (this.alu.generales.beca==1 && this.alu.generales.id_expbeca==null){
                                     this.llenogen=false;
                                 }
 
-                                    if(this.alu.generales.beca==2 && this.alu.generales.id_expbeca==null)
+                                   else  if(this.alu.generales.beca==2 && this.alu.generales.id_expbeca==null)
                                     {
                                         this.actacademico=true;
                                         this.disacademico=false;
@@ -1352,8 +1371,6 @@
                                 this.disfamiliares=false;
                                 this.actacademico=false;
                                 this.llenoant=true;
-
-
                             }
                             else
                             {
@@ -1368,7 +1385,9 @@
                                 && this.alu.familiares.etnia_indigena!=null
                                 && this.alu.familiares.hablas_lengua_indigena!=null
                                 && this.alu.familiares.id_opc_vives!=null
-                                && this.alu.familiares.id_familia_union!=null)
+                                && this.alu.familiares.id_familia_union!=null
+                                && this.alu.familiares.nombre_tutor!=null
+                                && this.alu.familiares.id_parentesco!=null)
                             {
                                 this.actfamiliares=false;
                                 this.actestudio=true;
@@ -1382,7 +1401,8 @@
                             }
                             break;
                         case 'integral':
-                            if(this.alu.estudio.forma_estudio!=null && this.alu.estudio.tiempo_empleado_estudiar!=null)
+                            if(this.alu.estudio.forma_estudio!=null && this.alu.estudio.tiempo_empleado_estudiar!=null
+                            && this.alu.estudio.id_opc_intelectual!=null)
                             {
                                 this.actestudio=false;
                                 this.actintegral=true;
@@ -1484,8 +1504,17 @@
                         && this.alu.area.busqueda_bibliografica!=null)
                     {
                         this.lleno=true;
+                        let formData = new FormData();
+                        formData.append('imagen', this.imagen);
+                        formData.append('nombre',this.alu.generales.no_cuenta);
+                        formData.append('ext',this.alu.generales.foto);
+
+                        //console.log(formData);
+                        axios.post('/imagen',formData).then(response=>{
+                            //window.location='inicioalu';
+                        }).catch(error=>{  });
                         axios.post(this.ruta,{alu:this.alu}).then(response=>{
-                            window.location='inicioalu';
+                           window.location='inicioalu';
                         }).catch(error=>{  });
                     }
                     else
@@ -1541,6 +1570,19 @@
                     {
                         this.test.testlleno=false;
                     }
+                },
+                ObtenerImagen:function (img) {
+                    let file=img.target.files[0];
+                    this.imagen=file;
+                    this.alu.generales.foto=this.imagen.type;
+                    this.CargarImagen(file);
+                },
+                CargarImagen:function (file) {
+                    let reader= new FileReader();
+                    reader.onload=(e)=>{
+                        this.imagenMiniatura= e.target.result;
+                    }
+                    reader.readAsDataURL(file);
                 }
             }
         });

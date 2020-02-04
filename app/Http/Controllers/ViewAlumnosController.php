@@ -49,9 +49,35 @@ class ViewAlumnosController extends Controller
     {
         //
     }
+    public function guardarImagen(Request $request)
+    {
+
+
+        if($request->hasFile('imagen')){
+
+            $extension="";
+            switch ($request->ext){
+                case 'image/jpeg':
+                    $extension='.jpeg';
+                    break;
+                case 'image/png':
+                    $extension='.png';
+                    break;
+                case 'image/jpg':
+                    $extension='.jpg';
+                    break;
+            }
+            $file = $request->file('imagen');
+            $name = $request->nombre.$extension;
+            $file->move(public_path().'/Fotografias/', $name);
+        }
+        return $request->nombre;
+    }
     public function store(Request $request)
     {
-        Exp_generale::create($request->alu['generales']);
+        //dd($request->hasFile('imagen'));
+
+      Exp_generale::create($request->alu['generales']);
         Exp_antecedentes_academico::create($request->alu['academicos']);
         Exp_datos_familiare::create($request->alu['familiares']);
         Exp_habitos_estudio::create($request->alu['estudio']);
