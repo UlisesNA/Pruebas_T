@@ -94,6 +94,17 @@
                             </div>
                         </li>
                     @else
+                        @if (Session::get('desarrollo'))
+                            <div class="dropdown">
+                                <a class="dropdown-toggle btn border-0" type="button" id="MenuCoordinador" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Desarrollo Academico
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="MenuDesarrollo">
+                                    <a class="dropdown-item" href="desarrollovista">Coordinador General</a>
+                                    <a class="dropdown-item" href="asignacorgenvista">Asigna Coordinador General</a>
+                                </div>
+                            </div>
+                        @endif
                         @guest
                             <li class="nav-item">
                                 <a class="nav-link text-dark" href="{{ route('login') }}">{{ __('Iniciar Sesión') }}</a>
@@ -104,67 +115,6 @@
                                 </li>
                             @endif
                         @else
-                            @if (Auth::user()->id_rol ==1)
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" href="coordina_inst" >Crear Planeación</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" href="peticiones_inst" >Peticiones</a>
-                                </li>
-                            @endif
-                                @if (Auth::user()->id_rol ==2)
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" href="/planeacion" >Planeación</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" href="/eventos" >Eventos</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" href="/canalizacion" >Canalizar Tutorados</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" href="/canalizados" >Tutorados Canalizados</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" href="/profesor" >Deserción</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" href="/listado_alumnos" >Listado</a>
-                                    </li>
-
-                                @endif
-                                @if (Auth::user()->id_rol ==3)
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" href=home>Inicio</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" href=alumno>Expediente</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" href=actividad>Actividades</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" href=calendario>Calendario de Eventos</a>
-                                    </li>
-                                @endif
-                                @if (Auth::user()->id_rol ==4)
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" href="coordina_carrera" >Asignar Planeación</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" href="peticiones" >Peticiones</a>
-                                    </li>
-                                @endif
-                                @if (Auth::user()->id_rol ==5)
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" href="dep_desarrollo" >Revisión Planeación</a>
-                                    </li>
-                                @endif
-                                @if (Auth::user()->id_rol ==6)
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" href="jefe" >Asignar Tutores</a>
-                                    </li>
-                                @endif
                                 @if (Session::get('jefe'))
                                     <div class="dropdown">
                                         <a class="dropdown-toggle btn border-0" type="button" id="MenuJefe" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -192,27 +142,27 @@
                                         </div>
                                     </div>
                                 @endif
-                                @if (Session::get('coordinador'))
-                                    <div class="dropdown">
-                                        <a class="dropdown-toggle btn border-0" type="button" id="MenuCoordinador" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Coordinador
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="MenuCoordinador">
-                                            <a class="dropdown-item" href="carreras">{{ \Illuminate\Support\Facades\Session::get('coordinador')>1 ? 'Carreras':'Carrera' }}</a>
+                                    @if (Session::get('coordinador'))
+                                        <div class="dropdown">
+                                            <a class="dropdown-toggle btn border-0" type="button" id="MenuCoordinador" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Coordinador
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="MenuCoordinador">
+                                                <a class="dropdown-item" href="carreras">{{ \Illuminate\Support\Facades\Session::get('coordinador')>1 ? 'Carreras':'Carrera' }}</a>
+                                            </div>
                                         </div>
-                                    </div>
-                                @endif
-                                @if (Session::get('desarrollo'))
-                                    <div class="dropdown">
-                                        <a class="dropdown-toggle btn border-0" type="button" id="MenuCoordinador" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Desarrollo Academico
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="MenuDesarrollo">
-                                            <a class="dropdown-item" href="desarrollovista">Coordinador General</a>
-                                            <a class="dropdown-item" href="asignacorgenvista">Asigna Coordinador General</a>
+                                    @endif
+                                    @if (Session::get('coordinadorgeneral'))
+                                        <div class="dropdown">
+                                            <a class="dropdown-toggle btn border-0" type="button" id="MenuCoordinador" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Coordinador General
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="MenuCoordinadorGeneral">
+                                                <a class="dropdown-item" href="">Planeación</a>
+                                            </div>
                                         </div>
-                                    </div>
-                                @endif
+                                    @endif
+
 
 
                             <li class="nav-item dropdown">
