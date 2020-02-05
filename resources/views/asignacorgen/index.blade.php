@@ -4,13 +4,13 @@
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <div class="card">
-                    <div class="card-header">Asigna Coordinador </div>
+                    <div class="card-header">Asigna Coordinador General</div>
                         <div class="card-body" v-if="datos.check"  >
-                            Ya ha sido asignado un coordinador
+                            Ya ha sido asignado un coordinador general
                         </div>
                     <div v-else class="card-body text-center">
                         <div class="row">
-                            <h6 class="pl-4">Selecciona el docente que sera asignado como coordinador</h6>
+                            <h6 class="pl-4">Selecciona el docente que sera asignado como coordinador general</h6>
                         </div>
                         <div class="row" id="">
                             <div class="col-5 header_fijo" >
@@ -30,7 +30,7 @@
                                     <table class="table table-bordered">
                                         <thead>
                                         <tr>
-                                            <th scope="col" >Coordinador Asignado</th>
+                                            <th scope="col" >Coordinador a Asignar</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -65,7 +65,7 @@
 
         },
         data:{
-            coor:"{{url("/asignacoordinador")}}",
+            coor:"{{url("/asignacoordinadorgeneral")}}",
             datos:[],
             name:"",
             bselected:false,

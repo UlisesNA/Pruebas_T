@@ -53,12 +53,15 @@ Route::post('/ftp/Up', 'FtpController@upload');
 /////CONTROLADORES EXPEDIENTE
 
 Route::Resource('/jefevista','JefeVistaController');
+Route::Resource('/desarrollovista','DesarrolloVistaController');
 Route::Resource('/asignacovista','AsignaCoController');
+Route::Resource('/asignacorgenvista','AsignaCorGenController');
 Route::Resource('/asignatuvista','AsignaTuController');
 
 Route::Resource('/tutorvista','TutorVistaController');
 
 Route::Resource('/jefe','JefeController');
+Route::Resource('/desarrollo','DesarrolloController');
 Route::post('/jefeAct','JefeController@UpdateCoo');
 Route::post('/jefeActTuto','JefeController@UpdateTuto');
 
@@ -131,6 +134,7 @@ Route::get('/getAG','GraficasCoordinadorController@getAlCoo');
 
 Route::get('/getG', 'AsignaTutorController@getAllGrupoAct');
 Route::Resource('/asignacoordinador','AsignaCoordinadorController');
+Route::Resource('/asignacoordinadorgeneral','AsignaCoordinadorGeneralController');
 Route::get('/repo','AsignaCoordinadorController@repo');
 
 Route::Resource('asignatutores','AsignaTutorController');

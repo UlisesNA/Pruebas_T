@@ -47,7 +47,8 @@ class Planea_tutorController extends Controller
         $plan->estrategia = $request->estrategia;
         $plan->id_evidencia = $request->id_evidencia;
         $plan->save();
-        return redirect()->back();
+        //return redirect()->back();
+        //return('ok');
     }
 
 }

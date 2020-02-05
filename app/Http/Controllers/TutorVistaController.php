@@ -12,7 +12,7 @@ class TutorVistaController extends Controller
     //
     public function index(Request $request)
     {
-        $semestre=DB::select('select DISTINCT gnral_semestres.id_semestre,DATE_FORMAT(planeacion.fecha_inicio_sesion, "%d-%m-%Y") as fecha_inicio,DATE_FORMAT(fecha_fin_sesion, "%d-%m-%Y") as fecha_fin,planeacion.*
+        /*$semestre=DB::select('select DISTINCT gnral_semestres.id_semestre,DATE_FORMAT(planeacion.fecha_inicio_sesion, "%d-%m-%Y") as fecha_inicio,DATE_FORMAT(fecha_fin_sesion, "%d-%m-%Y") as fecha_fin,planeacion.*
                                 from gnral_semestres,gnral_alumnos,exp_asigna_alumnos,exp_asigna_tutor,exp_asigna_generacion,
                                 gnral_personales,users,planeacion
                                 where gnral_semestres.id_semestre=gnral_alumnos.id_semestre
@@ -38,7 +38,7 @@ class TutorVistaController extends Controller
                                 and gnral_personales.tipo_usuario=users.id
                                 and users.id='.Auth::user()->id);
         $semestre1=Gnral_semestre::all();
-        $areas=areas_canalizacion::all();
-        return view('profesor.index',compact('semestre','semestre1','tutor','areas'));
+        $areas=areas_canalizacion::all();*/
+        return view('profesor.index');
     }
 }

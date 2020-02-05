@@ -57,7 +57,7 @@ class LoginController extends Controller
              $escoordinador=DB::select('SELECT id_asigna_coordinador from exp_asigna_coordinador where id_personal='.$tutor[0]->id_personal.' 
              AND exp_asigna_coordinador.deleted_at is null and id_jefe_periodo in (Select id_jefe_periodo from gnral_jefes_periodos where id_periodo='.Session::get('id_periodo').')');
 
-
+             //$esdesarrollo=DB::select();
              if($jefe->count()>0 && $jefe[0]->id_departamento==2){
                  $periodo_carrera=DB::select('SELECT id_periodo_carrera from gnral_periodo_carreras where id_carrera='.$jefe[0]->id_carrera.' and id_periodo='.$jefe[0]->id_periodo);
                  //dd($periodo_carrera);
@@ -77,7 +77,12 @@ class LoginController extends Controller
                  //Session::put('coordinador',AsignaCoordinador::isCoordinador());
                  Session::put('coordinador',count($escoordinador));
                  Session::put('nombre',$tutor[0]->nombre);
-
+             }
+             if($tutor[0]->id_departamento=4){
+                 //Session::put('coordinador',AsignaCoordinador::isCoordinador());
+                 Session::put('desarrollo',$tutor[0]->id_personal);
+                 Session::put('nombre',$tutor[0]->nombre);
+                 //Session::put('departamento',$tutor[0]->id-);
              }
              return view('home');
          }

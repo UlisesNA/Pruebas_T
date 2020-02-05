@@ -201,6 +201,17 @@
                                         </div>
                                     </div>
                                 @endif
+                                @if (Session::get('desarrollo'))
+                                    <div class="dropdown">
+                                        <a class="dropdown-toggle btn border-0" type="button" id="MenuCoordinador" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Desarrollo Academico
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="MenuDesarrollo">
+                                            <a class="dropdown-item" href="desarrollovista">Coordinador General</a>
+                                            <a class="dropdown-item" href="asignacorgenvista">Asigna Coordinador General</a>
+                                        </div>
+                                    </div>
+                                @endif
 
 
                             <li class="nav-item dropdown">
