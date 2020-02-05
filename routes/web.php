@@ -97,6 +97,7 @@ Route::post('/semestre','ProfesorController@alumnos1');
 Route::post('/cambio','ProfesorController@cambio');
 Route::get('grupos','ProfesorController@grupos');
 Route::post('/alu','ProfesorController@alumnos');
+Route::Resource('/reporte','ReporteController');
 
 Route::get('/getAll','ProfesorController@getAll');
 Route::get('/setAlumnId','ProfesorController@setAlumnoId');

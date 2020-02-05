@@ -131,6 +131,7 @@
                                     <li class="nav-item">
                                         <a class="nav-link text-dark" href="/listado_alumnos" >Listado</a>
                                     </li>
+
                                 @endif
                                 @if (Auth::user()->id_rol ==3)
                                     <li class="nav-item">
@@ -187,6 +188,7 @@
                                             <a class="dropdown-item" href="eventos">Eventos</a>
                                             <a class="dropdown-item" href="profesor">Deserción</a>
                                             <a class="dropdown-item" href="listado_alumnos">Listado</a>
+                                            <a class="dropdown-item" href="reporte">Reporte</a>
                                         </div>
                                     </div>
                                 @endif
