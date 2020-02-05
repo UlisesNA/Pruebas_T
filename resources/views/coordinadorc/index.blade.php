@@ -30,7 +30,13 @@
                         </ul>
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
-
+                                <div class="row p-3">
+                                    <div class="col-12">
+                                        <div class="row">
+                                            <div class="col-4"><button @click="getGraficasCarrera()" class="btn btn-outline-success" data-toggle="tooltip" data-placement="bottom" title="Gráficas">Estadísticas <i class="fas fa-chart-pie"></i></button></div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="tab-pane fade pt-4" id="generacion" role="tabpanel" aria-labelledby="generacion-tab">
                                 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
@@ -42,13 +48,20 @@
                                     <div class="tab-pane fade " v-for="gen in generaciones" :id="'pills-'+gen.generacion" role="tabpanel" :aria-labelledby="'pills-'+gen.generacion+'-tab'">
                                         <ul class="nav nav-pills mb-3" id="grupo-tab" role="tablist">
                                             <li class="nav-item">
-                                                <a class="nav-link border m-1" @click="getAlumnos(gen.generacion)" id="pills-generalgen-tab" data-toggle="pill" href="#generalgen" role="tab" aria-controls="'pills-generalgen" >General</a>
+                                                <a class="nav-link border m-1" @click="getAlumnosGeneracion(gen.generacion)" id="pills-generalgen-tab" data-toggle="pill" href="#generalgen" role="tab" aria-controls="'pills-generalgen" >General</a>
                                             </li>
                                             <li class="nav-item btn-group" v-for="grupo in gen.grupos">
-                                                <a class="nav-link border m-1 "  @click="getAlumnos(grupo.id_asigna_generacion)" :id="'pills-'+grupo.id_asigna_generacion+'-tab'" data-toggle="pill" :href="'#pills-'+grupo.id_asigna_generacion" role="tab" :aria-controls="'pills-'+grupo.id_asigna_generacion">Grupo @{{ grupo.grupo }}</a>
+                                                <a class="nav-link border m-1 "  @click="getAlumnosGrupo(grupo.id_asigna_generacion)" :id="'pills-'+grupo.id_asigna_generacion+'-tab'" data-toggle="pill" :href="'#pills-'+grupo.id_asigna_generacion" role="tab" :aria-controls="'pills-'+grupo.id_asigna_generacion">Grupo @{{ grupo.grupo }}</a>
                                           </li>
                                         </ul>
                                         <div class="tab-content" id="grupo-tabContent" v-if="alumno.length>0">
+                                            <div class="row p-3">
+                                                <div class="col-12">
+                                                    <div class="row">
+                                                        <div class="col-4"><button @click="getGraficas()" class="btn btn-outline-success" data-toggle="tooltip" data-placement="bottom" title="Gráficas">Estadísticas <i class="fas fa-chart-pie"></i></button></div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="tableFixHead">
                                                 <table class="table">
                                                     <thead>
@@ -71,126 +84,14 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                    <!--<div class="row" v-show="graficas==true">
-                        <div class="col-12">
-                            <div class="row pt-3">
-                                <div class="col-11"></div>
-                                <div class="col-1"><a href="#!"  class="btn text-white btn-danger" ><i class="fas fa-file-pdf"></i></a></div>
-                            </div>
-                            <div class="row m-2"><div class="col-12 "><h5 class="alert alert-primary text-center">Estadísticas</h5></div></div>
-                            <div class="row text-center"><div class="col-4"></div><div class="col-4 graf" id="genero"></div></div>
-                            <div class="row pl-4">
-                                <div class="col-12 pt-4">
-                                    <div class="nav  nav-tabs" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                        <a class="nav-link active" id="v-pills-general-tab" data-toggle="pill"
-                                           href="#v-pills-general" role="tab" aria-controls="v-pills-general" aria-selected="true">Datos Generales</a>
-                                        <a class="nav-link" id="v-pills-antecedentes-tab" data-toggle="pill"
-                                           href="#v-pills-antecedentes" role="tab" aria-controls="v-pills-antecedentes" aria-selected="false">Antecedentes Acádemicos</a>
-                                        <a class="nav-link" id="v-pills-familiares-tab" data-toggle="pill"
-                                           href="#v-pills-familiares" role="tab" aria-controls="v-pills-familiares" aria-selected="false">Datos Familiares</a>
-                                        <a class="nav-link" id="v-pills-habitos-tab" data-toggle="pill"
-                                           href="#v-pills-habitos" role="tab" aria-controls="v-pills-habitos" aria-selected="false">Hábitos de Estudio</a>
-                                        <a class="nav-link" id="v-pills-formacion-tab" data-toggle="pill"
-                                           href="#v-pills-formacion" role="tab" aria-controls="v-pills-formacion" aria-selected="false">Formación Integral/Salud</a>
-                                        <a class="nav-link" id="v-pills-area-tab" data-toggle="pill"
-                                           href="#v-pills-area" role="tab" aria-controls="v-pills-area" aria-selected="false">Área Psicopedagógica</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row" id='cont-preg'>
-                                <div class="col-12">
-                                    <div class="tab-content text-justify" id="v-pills-tabContent">
-                                        <div class="tab-pane fade show active" id="v-pills-general" role="tabpanel" aria-labelledby="v-pills-general-tab">
-                                            <div class="row pt-4">
-                                                <div class="col-12">
-                                                    <div class="row">
-                                                        <div class="col-4 graf" id="estadoc"></div>
-                                                        <div class="col-4 graf" id="ne"></div>
-                                                        <div class="col-4 graf" id="tra"></div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-4 graf" id="bec"></div>
-                                                        <div class="col-4 graf" id="est"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="v-pills-antecedentes" role="tabpanel" aria-labelledby="v-pills-antecedentes-tab">
-                                            <div class="row pt-4">
-                                                <div class="col-12">
-                                                    <div class="row">
-                                                        <div class="col-4 graf " id="bach">Hola</div>
-                                                        <div class="col-4 graf" id="otraca"></div>
-                                                        <div class="col-4 graf" id="gusta"></div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-4 graf" id="estimula"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="v-pills-familiares" role="tabpanel" aria-labelledby="v-pills-familiares-tab">
-                                            <div class="row pt-4">
-                                                <div class="col-12">
-                                                    <div class="row">
-                                                        <div class="col-4 graf" id="vive"></div>
-                                                        <div class="col-4 graf" id="etnia"></div>
-                                                        <div class="col-4 graf" id="lengua"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="v-pills-habitos" role="tabpanel" aria-labelledby="v-pills-habitos-tab">
-                                            <div class="row pt-4">
-                                                <div class="col-12">
-                                                    <div class="row">
-                                                        <div class="col-4 graf" id="intelectual"></div>
-                                                        <div class="col-4 graf" id="tiempo"></div>
-                                                        <div class="col-4 graf" id=""></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="v-pills-formacion" role="tabpanel" aria-labelledby="v-pills-formacion-tab">
-                                            <div class="row pt-4">
-                                                <div class="col-12">
-                                                    <div class="row">
-                                                        <div class="col-4 graf" id="enfermedadc"></div>
-                                                        <div class="col-4 graf" id="enfermedadv"></div>
-                                                        <div class="col-4 graf" id="lentes"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="v-pills-area" role="tabpanel" aria-labelledby="v-pills-area-tab">
-                                            <div class="row pt-4">
-                                                <div class="col-12">
-                                                    <div class="row">
-                                                        <div class="col-4 graf" id="rendimiento"></div>
-                                                        <div class="col-4 graf" id="computo"></div>
-                                                        <div class="col-4 graf" id="comprension"></div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-4 graf" id="preparacion"></div>
-                                                        <div class="col-4 graf" id="concentracion"></div>
-                                                        <div class="col-4 graf" id="trabajo"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>-->
             </div>
+            @include('coordinadorc.estadisticas')
+
         </div>
     </div>
 
@@ -203,7 +104,8 @@
             data:{
                 rut:"/carrera",
                 gen:'/generacionca',
-                alu:'/alumnosgeneracion',
+                alugrupo:'/alumnosgrupo',
+                alugeneracion:'/alumnosgeneracion',
                 carreras:[],
                 alumno:[],
                 menu:true,
@@ -211,6 +113,50 @@
                 generaciones:[],
                 nombrecarrera:null,
                 clicgrupo:false,
+                id_asigna:null,
+                generacion:null,
+                id_carrera: null,
+                titulosGrafica:['General','Femenino','Masculino'],
+                general:[
+                    ['ecg','ecf','ecm'],['neg','nef','nem'],['trag','traf','tram'],
+                    ['eag','eaf','eam'],['bg','bf','bm'],['tbg','tbf','tbm'],['hg','hf','hm']
+                ],
+                academic:[['gg','gf','gm'],['esg','esf','esm'],['og','of','om'],['bag','baf','bam']],
+                famili:[['vg','vf','vm'],['etg','etf','etm'],['hag','haf','ham'],['ug','uf','um']],
+                habito:[['tg','tf','tm']],
+                integra:[['pdg','pdf','pdm'],['ag','af','am'],['csg','csf','csm'],['enfcg','enfcf','enfcm'],['penfcg','penfcf','penfcm'],
+                    ['opeg','opef','opem'],['visg','visf','vism'],['lg','lf','lm'],['meg','mef','mem']],
+                areap:[['trg','trf','trm'],['reng','renf','renm'],['comg','comf','comm'],['retg','retf','retm'],['exag','exaf','exam'],
+                    ['cong','conf','conm'],['bbg','bbf','bbm'],['oig','oif','oim'],['matg','matf','matm']],
+                alumnog:[],
+                eg:[],
+                ea:[],
+                ef:[],
+                eh:[],
+                es:[],
+                eas:[],
+                academico:'graphics/academico',
+                rutgen:"/graphics/genero",
+                generales:"/graphics/generales",
+                familiares:"/graphics/familiares",
+                habitos:"/graphics/habitos",
+                salud:"/graphics/salud",
+                area:"/graphics/area",
+                gengen:'/grafgeneracion/genero',
+                grafgen:'/grafgeneracion/generales',
+                grafaca:'/grafgeneracion/academico',
+                graffam:'/grafgeneracion/familiares',
+                grafhab:'/grafgeneracion/habitos',
+                grafsal:'/grafgeneracion/salud',
+                grafare:'/grafgeneracion/area',
+                grafcagene:'/grafcarrera/genero',
+                grafcagen:'/grafcarrera/generales',
+                grafcaaca:'/grafcarrera/academico',
+                grafcafam:'/grafcarrera/familiares',
+                grafcahab:'/grafcarrera/habitos',
+                grafcasal:'/grafcarrera/salud',
+                grafcaare:'/grafcarrera/area',
+
             },
             methods:{
                 getCarreras:function(){
@@ -222,22 +168,1149 @@
                     this.menu=false;
                     this.menucarrera=true;
                     this.nombrecarrera=carrera.nombre;
+                    this.id_carrera=carrera.id_carrera;
                     axios.post(this.gen,{id_carrera:carrera.id_carrera}).then(response=>{
                         this.generaciones=response.data;
                     }).catch(error=>{ });
                 },
-                getAlumnos:function (gene) {
+                getAlumnosGrupo:function (grupo) {
 
-                    if(gene>2000)
-                    {
-                        this.clicgrupo=false;
-                    }
-                    else {
-                        this.clicgrupo=true;
-                    }
-                    axios.post(this.alu,{generacion:gene}).then(response=>{
+                    this.clicgrupo=true;
+                    this.id_asigna=grupo;
+                    axios.post(this.alugrupo,{generacion:grupo}).then(response=>{
                         this.alumno=response.data;
                     }).catch(error=>{ });
+                },
+                getAlumnosGeneracion:function(genera)
+                {
+                    this.clicgrupo=false;
+                    this.generacion=genera;
+                    axios.post(this.alugeneracion,{generacion:genera}).then(response=>{
+                        this.alumno=response.data;
+                    }).catch(error=>{ });
+                },
+                getGraficas:function()
+                {
+                    if(this.clicgrupo==true)
+                    {
+                        axios.post(this.rutgen,{id_carrera:this.id_carrera,id_asigna_generacion:this.id_asigna}).then(response=>{
+                            this.alumnog=response.data;
+                            Highcharts.chart('genero', {
+                                chart: {
+                                    type: 'column'
+                                },
+                                title: {
+                                    text: 'Alumnos por sexo'
+                                },
+                                accessibility: {
+                                    announceNewData: {
+                                        enabled: true
+                                    }
+                                },
+                                xAxis: {
+                                    type: 'category'
+                                },
+                                yAxis: {
+                                    title: {
+                                        text: 'Total'
+                                    }
+                                },
+                                legend: {
+                                    enabled: false
+                                },
+                                plotOptions: {
+                                    series: {
+                                        borderWidth: 0,
+                                        dataLabels: {
+                                            enabled: true,
+                                            format: '{point.y:.1f}%'
+                                        }
+                                    }
+                                },
+                                tooltip: {
+                                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+                                },
+                                series: [
+                                    {
+                                        name: "Sexo",
+                                        colorByPoint: true,
+                                        data: this.alumnog
+                                    }
+                                ],
+                            });
+                        }).catch(error=>{ });
+                        axios.post(this.generales,{id_carrera:this.id_carrera,id_asigna_generacion:this.id_asigna}).then(response=>{
+                            this.eg=response.data;
+                            for (let i in  this.eg)
+                            {
+                                for (let z in this.titulosGrafica)
+                                {
+                                    Highcharts.chart(this.general[i][z], {
+                                        chart: {
+                                            type: 'column'
+                                        },
+                                        title: {
+                                            text: this.titulosGrafica[z]
+                                        },
+                                        accessibility: {
+                                            announceNewData: {
+                                                enabled: true
+                                            }
+                                        },
+                                        xAxis: {
+                                            type: 'category'
+                                        },
+                                        yAxis: {
+                                            title: {
+                                                text: 'Total'
+                                            }
+                                        },
+                                        legend: {
+                                            enabled: false
+                                        },
+                                        plotOptions: {
+                                            series: {
+                                                borderWidth: 0,
+                                                dataLabels: {
+                                                    enabled: true,
+                                                    format: '{point.y:.1f}%'
+                                                }
+                                            }
+                                        },
+                                        tooltip: {
+                                            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                                            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+                                        },
+                                        series: [
+                                            {
+                                                name: this.titulosGrafica[z],
+                                                colorByPoint: true,
+                                                data: this.eg[i][z]
+                                            }
+                                        ],
+                                    });
+                                }
+                            }
+                        }).catch(error=>{ });
+                        axios.post(this.academico,{id_carrera:this.id_carrera,id_asigna_generacion:this.id_asigna}).then(response=>{
+                            this.ea=response.data;
+                            for (let i in  this.ea)
+                            {
+                                for (let z in this.titulosGrafica)
+                                {
+                                    Highcharts.chart(this.academic[i][z], {
+                                        chart: {
+                                            type: 'column'
+                                        },
+                                        title: {
+                                            text: this.titulosGrafica[z]
+                                        },
+                                        accessibility: {
+                                            announceNewData: {
+                                                enabled: true
+                                            }
+                                        },
+                                        xAxis: {
+                                            type: 'category'
+                                        },
+                                        yAxis: {
+                                            title: {
+                                                text: 'Total'
+                                            }
+                                        },
+                                        legend: {
+                                            enabled: false
+                                        },
+                                        plotOptions: {
+                                            series: {
+                                                borderWidth: 0,
+                                                dataLabels: {
+                                                    enabled: true,
+                                                    format: '{point.y:.1f}%'
+                                                }
+                                            }
+                                        },
+                                        tooltip: {
+                                            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                                            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+                                        },
+                                        series: [
+                                            {
+                                                name: this.titulosGrafica[z],
+                                                colorByPoint: true,
+                                                data: this.ea[i][z]
+                                            }
+                                        ],
+                                    });
+                                }
+                            }
+
+                        }).catch(error=>{ });
+                        axios.post(this.familiares,{id_carrera:this.id_carrera,id_asigna_generacion:this.id_asigna}).then(response=>{
+                            this.ef=response.data;
+                            for (let i in  this.ef)
+                            {
+                                for (let z in this.titulosGrafica)
+                                {
+                                    Highcharts.chart(this.famili[i][z], {
+                                        chart: {
+                                            type: 'column'
+                                        },
+                                        title: {
+                                            text: this.titulosGrafica[z]
+                                        },
+                                        accessibility: {
+                                            announceNewData: {
+                                                enabled: true
+                                            }
+                                        },
+                                        xAxis: {
+                                            type: 'category'
+                                        },
+                                        yAxis: {
+                                            title: {
+                                                text: 'Total'
+                                            }
+                                        },
+                                        legend: {
+                                            enabled: false
+                                        },
+                                        plotOptions: {
+                                            series: {
+                                                borderWidth: 0,
+                                                dataLabels: {
+                                                    enabled: true,
+                                                    format: '{point.y:.1f}%'
+                                                }
+                                            }
+                                        },
+                                        tooltip: {
+                                            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                                            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+                                        },
+                                        series: [
+                                            {
+                                                name: this.titulosGrafica[z],
+                                                colorByPoint: true,
+                                                data: this.ef[i][z]
+                                            }
+                                        ],
+                                    });
+                                }
+                            }
+
+                        }).catch(error=>{ });
+                        axios.post(this.habitos,{id_carrera:this.id_carrera,id_asigna_generacion:this.id_asigna}).then(response=>{
+                            this.eh=response.data;
+                            for (let i in  this.eh)
+                            {
+                                for (let z in this.titulosGrafica)
+                                {
+                                    Highcharts.chart(this.habito[i][z], {
+                                        chart: {
+                                            type: 'column'
+                                        },
+                                        title: {
+                                            text: this.titulosGrafica[z]
+                                        },
+                                        accessibility: {
+                                            announceNewData: {
+                                                enabled: true
+                                            }
+                                        },
+                                        xAxis: {
+                                            type: 'category'
+                                        },
+                                        yAxis: {
+                                            title: {
+                                                text: 'Total'
+                                            }
+                                        },
+                                        legend: {
+                                            enabled: false
+                                        },
+                                        plotOptions: {
+                                            series: {
+                                                borderWidth: 0,
+                                                dataLabels: {
+                                                    enabled: true,
+                                                    format: '{point.y:.1f}%'
+                                                }
+                                            }
+                                        },
+                                        tooltip: {
+                                            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                                            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+                                        },
+                                        series: [
+                                            {
+                                                name: this.titulosGrafica[z],
+                                                colorByPoint: true,
+                                                data: this.eh[i][z]
+                                            }
+                                        ],
+                                    });
+                                }
+                            }
+
+                        }).catch(error=>{ });
+                        axios.post(this.salud,{id_carrera:this.id_carrera,id_asigna_generacion:this.id_asigna}).then(response=>{
+                            this.es=response.data;
+                            for (let i in  this.es)
+                            {
+                                for (let z in this.titulosGrafica)
+                                {
+                                    Highcharts.chart(this.integra[i][z], {
+                                        chart: {
+                                            type: 'column'
+                                        },
+                                        title: {
+                                            text: this.titulosGrafica[z]
+                                        },
+                                        accessibility: {
+                                            announceNewData: {
+                                                enabled: true
+                                            }
+                                        },
+                                        xAxis: {
+                                            type: 'category'
+                                        },
+                                        yAxis: {
+                                            title: {
+                                                text: 'Total'
+                                            }
+                                        },
+                                        legend: {
+                                            enabled: false
+                                        },
+                                        plotOptions: {
+                                            series: {
+                                                borderWidth: 0,
+                                                dataLabels: {
+                                                    enabled: true,
+                                                    format: '{point.y:.1f}%'
+                                                }
+                                            }
+                                        },
+                                        tooltip: {
+                                            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                                            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+                                        },
+                                        series: [
+                                            {
+                                                name: this.titulosGrafica[z],
+                                                colorByPoint: true,
+                                                data: this.es[i][z]
+                                            }
+                                        ],
+                                    });
+                                }
+                            }
+
+                        }).catch(error=>{ });
+                        axios.post(this.area,{id_carrera:this.id_carrera,id_asigna_generacion:this.id_asigna}).then(response=>{
+                            this.eas=response.data;
+                            for (let i in  this.eas)
+                            {
+                                for (let z in this.titulosGrafica)
+                                {
+                                    Highcharts.chart(this.areap[i][z], {
+                                        chart: {
+                                            type: 'column'
+                                        },
+                                        title: {
+                                            text: this.titulosGrafica[z]
+                                        },
+                                        accessibility: {
+                                            announceNewData: {
+                                                enabled: true
+                                            }
+                                        },
+                                        xAxis: {
+                                            type: 'category'
+                                        },
+                                        yAxis: {
+                                            title: {
+                                                text: 'Total'
+                                            }
+                                        },
+                                        legend: {
+                                            enabled: false
+                                        },
+                                        plotOptions: {
+                                            series: {
+                                                borderWidth: 0,
+                                                dataLabels: {
+                                                    enabled: true,
+                                                    format: '{point.y:.1f}%'
+                                                }
+                                            }
+                                        },
+                                        tooltip: {
+                                            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                                            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+                                        },
+                                        series: [
+                                            {
+                                                name: this.titulosGrafica[z],
+                                                colorByPoint: true,
+                                                data: this.eas[i][z]
+                                            }
+                                        ],
+                                    });
+                                }
+                            }
+                        }).catch(error=>{ });
+                        $('#modalgraficas').modal('show');
+                    } else if(this.clicgrupo==false)
+                    {
+                        axios.post(this.gengen,{id_carrera:this.id_carrera,generacion:this.generacion}).then(response=>{
+                            this.alumnog=response.data;
+                            Highcharts.chart('genero', {
+                                chart: {
+                                    type: 'column'
+                                },
+                                title: {
+                                    text: 'Alumnos por sexo'
+                                },
+                                accessibility: {
+                                    announceNewData: {
+                                        enabled: true
+                                    }
+                                },
+                                xAxis: {
+                                    type: 'category'
+                                },
+                                yAxis: {
+                                    title: {
+                                        text: 'Total'
+                                    }
+                                },
+                                legend: {
+                                    enabled: false
+                                },
+                                plotOptions: {
+                                    series: {
+                                        borderWidth: 0,
+                                        dataLabels: {
+                                            enabled: true,
+                                            format: '{point.y:.1f}%'
+                                        }
+                                    }
+                                },
+                                tooltip: {
+                                    headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                                    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+                                },
+                                series: [
+                                    {
+                                        name: "Sexo",
+                                        colorByPoint: true,
+                                        data: this.alumnog
+                                    }
+                                ],
+                            });
+                        }).catch(error=>{ });
+                        axios.post(this.grafgen,{id_carrera:this.id_carrera,generacion:this.generacion}).then(response=>{
+                            this.eg=response.data;
+                            for (let i in  this.eg)
+                            {
+                                for (let z in this.titulosGrafica)
+                                {
+                                    Highcharts.chart(this.general[i][z], {
+                                        chart: {
+                                            type: 'column'
+                                        },
+                                        title: {
+                                            text: this.titulosGrafica[z]
+                                        },
+                                        accessibility: {
+                                            announceNewData: {
+                                                enabled: true
+                                            }
+                                        },
+                                        xAxis: {
+                                            type: 'category'
+                                        },
+                                        yAxis: {
+                                            title: {
+                                                text: 'Total'
+                                            }
+                                        },
+                                        legend: {
+                                            enabled: false
+                                        },
+                                        plotOptions: {
+                                            series: {
+                                                borderWidth: 0,
+                                                dataLabels: {
+                                                    enabled: true,
+                                                    format: '{point.y:.1f}%'
+                                                }
+                                            }
+                                        },
+                                        tooltip: {
+                                            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                                            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+                                        },
+                                        series: [
+                                            {
+                                                name: this.titulosGrafica[z],
+                                                colorByPoint: true,
+                                                data: this.eg[i][z]
+                                            }
+                                        ],
+                                    });
+                                }
+                            }
+                        }).catch(error=>{ });
+                        axios.post(this.grafaca,{id_carrera:this.id_carrera,generacion:this.generacion}).then(response=>{
+                            this.ea=response.data;
+                            for (let i in  this.ea)
+                            {
+                                for (let z in this.titulosGrafica)
+                                {
+                                    Highcharts.chart(this.academic[i][z], {
+                                        chart: {
+                                            type: 'column'
+                                        },
+                                        title: {
+                                            text: this.titulosGrafica[z]
+                                        },
+                                        accessibility: {
+                                            announceNewData: {
+                                                enabled: true
+                                            }
+                                        },
+                                        xAxis: {
+                                            type: 'category'
+                                        },
+                                        yAxis: {
+                                            title: {
+                                                text: 'Total'
+                                            }
+                                        },
+                                        legend: {
+                                            enabled: false
+                                        },
+                                        plotOptions: {
+                                            series: {
+                                                borderWidth: 0,
+                                                dataLabels: {
+                                                    enabled: true,
+                                                    format: '{point.y:.1f}%'
+                                                }
+                                            }
+                                        },
+                                        tooltip: {
+                                            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                                            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+                                        },
+                                        series: [
+                                            {
+                                                name: this.titulosGrafica[z],
+                                                colorByPoint: true,
+                                                data: this.ea[i][z]
+                                            }
+                                        ],
+                                    });
+                                }
+                            }
+
+                        }).catch(error=>{ });
+                        axios.post(this.graffam,{id_carrera:this.id_carrera,generacion:this.generacion}).then(response=>{
+                            this.ef=response.data;
+                            for (let i in  this.ef)
+                            {
+                                for (let z in this.titulosGrafica)
+                                {
+                                    Highcharts.chart(this.famili[i][z], {
+                                        chart: {
+                                            type: 'column'
+                                        },
+                                        title: {
+                                            text: this.titulosGrafica[z]
+                                        },
+                                        accessibility: {
+                                            announceNewData: {
+                                                enabled: true
+                                            }
+                                        },
+                                        xAxis: {
+                                            type: 'category'
+                                        },
+                                        yAxis: {
+                                            title: {
+                                                text: 'Total'
+                                            }
+                                        },
+                                        legend: {
+                                            enabled: false
+                                        },
+                                        plotOptions: {
+                                            series: {
+                                                borderWidth: 0,
+                                                dataLabels: {
+                                                    enabled: true,
+                                                    format: '{point.y:.1f}%'
+                                                }
+                                            }
+                                        },
+                                        tooltip: {
+                                            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                                            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+                                        },
+                                        series: [
+                                            {
+                                                name: this.titulosGrafica[z],
+                                                colorByPoint: true,
+                                                data: this.ef[i][z]
+                                            }
+                                        ],
+                                    });
+                                }
+                            }
+
+                        }).catch(error=>{ });
+                        axios.post(this.grafhab,{id_carrera:this.id_carrera,generacion:this.generacion}).then(response=>{
+                            this.eh=response.data;
+                            for (let i in  this.eh)
+                            {
+                                for (let z in this.titulosGrafica)
+                                {
+                                    Highcharts.chart(this.habito[i][z], {
+                                        chart: {
+                                            type: 'column'
+                                        },
+                                        title: {
+                                            text: this.titulosGrafica[z]
+                                        },
+                                        accessibility: {
+                                            announceNewData: {
+                                                enabled: true
+                                            }
+                                        },
+                                        xAxis: {
+                                            type: 'category'
+                                        },
+                                        yAxis: {
+                                            title: {
+                                                text: 'Total'
+                                            }
+                                        },
+                                        legend: {
+                                            enabled: false
+                                        },
+                                        plotOptions: {
+                                            series: {
+                                                borderWidth: 0,
+                                                dataLabels: {
+                                                    enabled: true,
+                                                    format: '{point.y:.1f}%'
+                                                }
+                                            }
+                                        },
+                                        tooltip: {
+                                            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                                            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+                                        },
+                                        series: [
+                                            {
+                                                name: this.titulosGrafica[z],
+                                                colorByPoint: true,
+                                                data: this.eh[i][z]
+                                            }
+                                        ],
+                                    });
+                                }
+                            }
+
+                        }).catch(error=>{ });
+                        axios.post(this.grafsal,{id_carrera:this.id_carrera,generacion:this.generacion}).then(response=>{
+                            this.es=response.data;
+                            for (let i in  this.es)
+                            {
+                                for (let z in this.titulosGrafica)
+                                {
+                                    Highcharts.chart(this.integra[i][z], {
+                                        chart: {
+                                            type: 'column'
+                                        },
+                                        title: {
+                                            text: this.titulosGrafica[z]
+                                        },
+                                        accessibility: {
+                                            announceNewData: {
+                                                enabled: true
+                                            }
+                                        },
+                                        xAxis: {
+                                            type: 'category'
+                                        },
+                                        yAxis: {
+                                            title: {
+                                                text: 'Total'
+                                            }
+                                        },
+                                        legend: {
+                                            enabled: false
+                                        },
+                                        plotOptions: {
+                                            series: {
+                                                borderWidth: 0,
+                                                dataLabels: {
+                                                    enabled: true,
+                                                    format: '{point.y:.1f}%'
+                                                }
+                                            }
+                                        },
+                                        tooltip: {
+                                            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                                            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+                                        },
+                                        series: [
+                                            {
+                                                name: this.titulosGrafica[z],
+                                                colorByPoint: true,
+                                                data: this.es[i][z]
+                                            }
+                                        ],
+                                    });
+                                }
+                            }
+
+                        }).catch(error=>{ });
+                        axios.post(this.grafare,{id_carrera:this.id_carrera,generacion:this.generacion}).then(response=>{
+                            this.eas=response.data;
+                            for (let i in  this.eas)
+                            {
+                                for (let z in this.titulosGrafica)
+                                {
+                                    Highcharts.chart(this.areap[i][z], {
+                                        chart: {
+                                            type: 'column'
+                                        },
+                                        title: {
+                                            text: this.titulosGrafica[z]
+                                        },
+                                        accessibility: {
+                                            announceNewData: {
+                                                enabled: true
+                                            }
+                                        },
+                                        xAxis: {
+                                            type: 'category'
+                                        },
+                                        yAxis: {
+                                            title: {
+                                                text: 'Total'
+                                            }
+                                        },
+                                        legend: {
+                                            enabled: false
+                                        },
+                                        plotOptions: {
+                                            series: {
+                                                borderWidth: 0,
+                                                dataLabels: {
+                                                    enabled: true,
+                                                    format: '{point.y:.1f}%'
+                                                }
+                                            }
+                                        },
+                                        tooltip: {
+                                            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                                            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+                                        },
+                                        series: [
+                                            {
+                                                name: this.titulosGrafica[z],
+                                                colorByPoint: true,
+                                                data: this.eas[i][z]
+                                            }
+                                        ],
+                                    });
+                                }
+                            }
+                        }).catch(error=>{ });
+                        $('#modalgraficas').modal('show');
+                    }
+
+                },
+                getGraficasCarrera:function ()
+                {
+                    axios.post(this.grafcagene,{id_carrera:this.id_carrera}).then(response=>{
+                        this.alumnog=response.data;
+                        Highcharts.chart('genero', {
+                            chart: {
+                                type: 'column'
+                            },
+                            title: {
+                                text: 'Alumnos por sexo'
+                            },
+                            accessibility: {
+                                announceNewData: {
+                                    enabled: true
+                                }
+                            },
+                            xAxis: {
+                                type: 'category'
+                            },
+                            yAxis: {
+                                title: {
+                                    text: 'Total'
+                                }
+                            },
+                            legend: {
+                                enabled: false
+                            },
+                            plotOptions: {
+                                series: {
+                                    borderWidth: 0,
+                                    dataLabels: {
+                                        enabled: true,
+                                        format: '{point.y:.1f}%'
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+                            },
+                            series: [
+                                {
+                                    name: "Sexo",
+                                    colorByPoint: true,
+                                    data: this.alumnog
+                                }
+                            ],
+                        });
+                    }).catch(error=>{ });
+                    axios.post(this.grafcagen,{id_carrera:this.id_carrera}).then(response=>{
+                        this.eg=response.data;
+                        for (let i in  this.eg)
+                        {
+                            for (let z in this.titulosGrafica)
+                            {
+                                Highcharts.chart(this.general[i][z], {
+                                    chart: {
+                                        type: 'column'
+                                    },
+                                    title: {
+                                        text: this.titulosGrafica[z]
+                                    },
+                                    accessibility: {
+                                        announceNewData: {
+                                            enabled: true
+                                        }
+                                    },
+                                    xAxis: {
+                                        type: 'category'
+                                    },
+                                    yAxis: {
+                                        title: {
+                                            text: 'Total'
+                                        }
+                                    },
+                                    legend: {
+                                        enabled: false
+                                    },
+                                    plotOptions: {
+                                        series: {
+                                            borderWidth: 0,
+                                            dataLabels: {
+                                                enabled: true,
+                                                format: '{point.y:.1f}%'
+                                            }
+                                        }
+                                    },
+                                    tooltip: {
+                                        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                                        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+                                    },
+                                    series: [
+                                        {
+                                            name: this.titulosGrafica[z],
+                                            colorByPoint: true,
+                                            data: this.eg[i][z]
+                                        }
+                                    ],
+                                });
+                            }
+                        }
+                    }).catch(error=>{  });
+                    axios.post(this.grafcaaca,{id_carrera:this.id_carrera}).then(response=>{
+                        this.ea=response.data;
+                        for (let i in  this.ea)
+                        {
+                            for (let z in this.titulosGrafica)
+                            {
+                                Highcharts.chart(this.academic[i][z], {
+                                    chart: {
+                                        type: 'column'
+                                    },
+                                    title: {
+                                        text: this.titulosGrafica[z]
+                                    },
+                                    accessibility: {
+                                        announceNewData: {
+                                            enabled: true
+                                        }
+                                    },
+                                    xAxis: {
+                                        type: 'category'
+                                    },
+                                    yAxis: {
+                                        title: {
+                                            text: 'Total'
+                                        }
+                                    },
+                                    legend: {
+                                        enabled: false
+                                    },
+                                    plotOptions: {
+                                        series: {
+                                            borderWidth: 0,
+                                            dataLabels: {
+                                                enabled: true,
+                                                format: '{point.y:.1f}%'
+                                            }
+                                        }
+                                    },
+                                    tooltip: {
+                                        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                                        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+                                    },
+                                    series: [
+                                        {
+                                            name: this.titulosGrafica[z],
+                                            colorByPoint: true,
+                                            data: this.ea[i][z]
+                                        }
+                                    ],
+                                });
+                            }
+                        }
+
+                    }).catch(error=>{ });
+                    axios.post(this.grafcafam,{id_carrera:this.id_carrera}).then(response=>{
+                        this.ef=response.data;
+                        for (let i in  this.ef)
+                        {
+                            for (let z in this.titulosGrafica)
+                            {
+                                Highcharts.chart(this.famili[i][z], {
+                                    chart: {
+                                        type: 'column'
+                                    },
+                                    title: {
+                                        text: this.titulosGrafica[z]
+                                    },
+                                    accessibility: {
+                                        announceNewData: {
+                                            enabled: true
+                                        }
+                                    },
+                                    xAxis: {
+                                        type: 'category'
+                                    },
+                                    yAxis: {
+                                        title: {
+                                            text: 'Total'
+                                        }
+                                    },
+                                    legend: {
+                                        enabled: false
+                                    },
+                                    plotOptions: {
+                                        series: {
+                                            borderWidth: 0,
+                                            dataLabels: {
+                                                enabled: true,
+                                                format: '{point.y:.1f}%'
+                                            }
+                                        }
+                                    },
+                                    tooltip: {
+                                        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                                        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+                                    },
+                                    series: [
+                                        {
+                                            name: this.titulosGrafica[z],
+                                            colorByPoint: true,
+                                            data: this.ef[i][z]
+                                        }
+                                    ],
+                                });
+                            }
+                        }
+
+                    }).catch(error=>{ });
+                    axios.post(this.grafcahab,{id_carrera:this.id_carrera}).then(response=>{
+                        this.eh=response.data;
+                        for (let i in  this.eh)
+                        {
+                            for (let z in this.titulosGrafica)
+                            {
+                                Highcharts.chart(this.habito[i][z], {
+                                    chart: {
+                                        type: 'column'
+                                    },
+                                    title: {
+                                        text: this.titulosGrafica[z]
+                                    },
+                                    accessibility: {
+                                        announceNewData: {
+                                            enabled: true
+                                        }
+                                    },
+                                    xAxis: {
+                                        type: 'category'
+                                    },
+                                    yAxis: {
+                                        title: {
+                                            text: 'Total'
+                                        }
+                                    },
+                                    legend: {
+                                        enabled: false
+                                    },
+                                    plotOptions: {
+                                        series: {
+                                            borderWidth: 0,
+                                            dataLabels: {
+                                                enabled: true,
+                                                format: '{point.y:.1f}%'
+                                            }
+                                        }
+                                    },
+                                    tooltip: {
+                                        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                                        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+                                    },
+                                    series: [
+                                        {
+                                            name: this.titulosGrafica[z],
+                                            colorByPoint: true,
+                                            data: this.eh[i][z]
+                                        }
+                                    ],
+                                });
+                            }
+                        }
+
+                    }).catch(error=>{ });
+                    axios.post(this.grafcasal,{id_carrera:this.id_carrera}).then(response=>{
+                        this.es=response.data;
+                        for (let i in  this.es)
+                        {
+                            for (let z in this.titulosGrafica)
+                            {
+                                Highcharts.chart(this.integra[i][z], {
+                                    chart: {
+                                        type: 'column'
+                                    },
+                                    title: {
+                                        text: this.titulosGrafica[z]
+                                    },
+                                    accessibility: {
+                                        announceNewData: {
+                                            enabled: true
+                                        }
+                                    },
+                                    xAxis: {
+                                        type: 'category'
+                                    },
+                                    yAxis: {
+                                        title: {
+                                            text: 'Total'
+                                        }
+                                    },
+                                    legend: {
+                                        enabled: false
+                                    },
+                                    plotOptions: {
+                                        series: {
+                                            borderWidth: 0,
+                                            dataLabels: {
+                                                enabled: true,
+                                                format: '{point.y:.1f}%'
+                                            }
+                                        }
+                                    },
+                                    tooltip: {
+                                        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                                        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+                                    },
+                                    series: [
+                                        {
+                                            name: this.titulosGrafica[z],
+                                            colorByPoint: true,
+                                            data: this.es[i][z]
+                                        }
+                                    ],
+                                });
+                            }
+                        }
+
+                    }).catch(error=>{ });
+                    axios.post(this.grafcaare,{id_carrera:this.id_carrera}).then(response=>{
+                        this.eas=response.data;
+                        for (let i in  this.eas)
+                        {
+                            for (let z in this.titulosGrafica)
+                            {
+                                Highcharts.chart(this.areap[i][z], {
+                                    chart: {
+                                        type: 'column'
+                                    },
+                                    title: {
+                                        text: this.titulosGrafica[z]
+                                    },
+                                    accessibility: {
+                                        announceNewData: {
+                                            enabled: true
+                                        }
+                                    },
+                                    xAxis: {
+                                        type: 'category'
+                                    },
+                                    yAxis: {
+                                        title: {
+                                            text: 'Total'
+                                        }
+                                    },
+                                    legend: {
+                                        enabled: false
+                                    },
+                                    plotOptions: {
+                                        series: {
+                                            borderWidth: 0,
+                                            dataLabels: {
+                                                enabled: true,
+                                                format: '{point.y:.1f}%'
+                                            }
+                                        }
+                                    },
+                                    tooltip: {
+                                        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                                        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+                                    },
+                                    series: [
+                                        {
+                                            name: this.titulosGrafica[z],
+                                            colorByPoint: true,
+                                            data: this.eas[i][z]
+                                        }
+                                    ],
+                                });
+                            }
+                        }
+                    }).catch(error=>{ });
+                    $('#modalgraficas').modal('show');
+
                 },
                 borrarAlumno:function (nombre) {
                     this.alumno=[];
