@@ -1066,7 +1066,7 @@
                 </div>
             </div>
         </div>
-        <pre>@{{ alu.generales }}</pre>
+        <pre hidden>@{{ alu.generales }}</pre>
         @include("alumnos.partial.modalNSE")
     </div>
     <script type="application/javascript">
