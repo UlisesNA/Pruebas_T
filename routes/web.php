@@ -149,6 +149,9 @@ Route::get('/getAG','GraficasCoordinadorController@getAlCoo');
 Route::get('/getG', 'AsignaTutorController@getAllGrupoAct');
 Route::Resource('/asignacoordinador','AsignaCoordinadorController');
 Route::Resource('/asignacoordinadorgeneral','AsignaCoordinadorGeneralController');
+Route::Resource('/planeacioncoorgen','Coordina_instController');
+Route::Resource('/planeaciondesarrollo','Dep_desarrolloController');
+Route::Resource('/planeaciontutor','Planea_tutorController');
 Route::get('/repo','AsignaCoordinadorController@repo');
 
 Route::Resource('asignatutores','AsignaTutorController');

@@ -49,6 +49,7 @@ class LoginController extends Controller
                  ->select('gnral_personales.nombre','gnral_personales.id_departamento','gnral_jefes_periodos.id_carrera','gnral_jefes_periodos.id_personal',
                      'gnral_carreras.nombre as carrera','gnral_jefes_periodos.id_periodo','gnral_jefes_periodos.id_jefe_periodo')
                  ->get();
+             //dd($jefe);
              $tutor=GnralPersonales::where('tipo_usuario',Auth::user()->id)->get();
                 //dd($tutor[0]->id_departamento);
              $estutor=DB::select('SELECT id_asigna_tutor from exp_asigna_tutor where id_personal='.$tutor[0]->id_personal.' 

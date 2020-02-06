@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Desarrollo_asigna_coordinador_general;
+use App\Gnral_periodos;
+use App\Gnral_semestre;
 use App\GnralPersonales;
 use Illuminate\Http\Request;
+use App\AsignaCoordinador;
 use App\Periodo;
 use App\User;
 use App\DatosPersonales;
-use App\Desarrollo_asigna_coordinador_general;
+use App\Exp_asigna_coordinador;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -64,7 +68,7 @@ class AsignaCoordinadorGeneralController extends Controller
     {
         //
         Desarrollo_asigna_coordinador_general::create([
-            "id_personal_asigna"=>Session::get('desarrollo'),
+            "id_personal_asigna"=>Session::get('id_jefe_periodo'),
             "id_personal"=>$request->get("id_personal")
         ]);
 
@@ -112,7 +116,7 @@ class AsignaCoordinadorGeneralController extends Controller
      */
     public function destroy($id)
     {
-        Desarrollo_asigna_coordinador_general::find($id)->delete();
+        Exp_asigna_coordinador::find($id)->delete();
 
     }
 }

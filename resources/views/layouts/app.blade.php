@@ -102,6 +102,7 @@
                                 <div class="dropdown-menu" aria-labelledby="MenuDesarrollo">
                                     <a class="dropdown-item" href="desarrollovista">Coordinador General</a>
                                     <a class="dropdown-item" href="asignacorgenvista">Asigna Coordinador General</a>
+                                    <a class="dropdown-item" href="planeaciondesarrollo">Planeación</a>
                                 </div>
                             </div>
                         @endif
@@ -139,6 +140,7 @@
                                             <a class="dropdown-item" href="profesor">Deserción</a>
                                             <a class="dropdown-item" href="listado_alumnos">Listado</a>
                                             <a class="dropdown-item" href="reporte">Reporte</a>
+                                            <a class="dropdown-item" href="planeaciontutor">Planeacion</a>
                                         </div>
                                     </div>
                                 @endif
@@ -158,7 +160,7 @@
                                                 Coordinador General
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="MenuCoordinadorGeneral">
-                                                <a class="dropdown-item" href="">Planeación</a>
+                                                <a class="dropdown-item" href="planeacioncoorgen">Planeación</a>
                                             </div>
                                         </div>
                                     @endif
