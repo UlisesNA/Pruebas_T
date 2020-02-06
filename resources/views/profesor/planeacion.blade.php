@@ -42,16 +42,36 @@
                                                                 <td>{{$dat->ff_actividad}}</td>
                                                                 <td>{{$dat->desc_actividad}}</td>
                                                                 <td>{{$dat->objetivo_actividad}}</td>
-                                                                <td>
-                                                                    <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_plan_actividad}}_tar" style="background: #f0f0f0;">
-                                                                        <i class="fas fa-pen" style="color: black"></i>
-                                                                    </a>
-                                                                </td>
-                                                                <td>
-                                                                    <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_plan_actividad}}_tar" style="background: #f0f0f0;">
-                                                                        <i class="fas fa-pen" style="color: black"></i>
-                                                                    </a>
-                                                                </td>
+                                                                @if($dat->id_sugerencia==null)
+                                                                    <td>
+                                                                        <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_asigna_planeacion_tutor}}_su" style="background: #f0f0f0;">
+                                                                            <i class="fas fa-pen" style="color: black"></i>
+                                                                        </a>
+                                                                    </td>
+                                                                @else
+                                                                    @if($dat->id_sugerencia==2)
+                                                                        <td>
+                                                                            <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_asigna_planeacion_tutor}}_su" style="background: #f0f0f0;">
+                                                                                <i class="fas fa-eye" style="color: black"></i>
+                                                                            </a>
+                                                                        </td>
+                                                                    @endif
+                                                                @endif
+                                                                @if($dat->id_estrategia==null)
+                                                                    <td>
+                                                                        <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_asigna_planeacion_tutor}}_es" style="background: #f0f0f0;">
+                                                                            <i class="fas fa-pen" style="color: black"></i>
+                                                                        </a>
+                                                                    </td>
+                                                                @else
+                                                                    @if($dat->id_estrategia==2)
+                                                                        <td>
+                                                                            <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_asigna_planeacion_tutor}}_es" style="background: #f0f0f0;">
+                                                                                <i class="fas fa-eye" style="color: black"></i>
+                                                                            </a>
+                                                                        </td>
+                                                                    @endif
+                                                                @endif
                                                             </tr>
                                                         @endif
                                                     @endforeach
@@ -68,97 +88,74 @@
         </div>
     </div>
 
-    <!-- crear actividad-->
-    @foreach($tabla as $dato)
-        <div class="modal fade" id="myModal_{{$dato->id_generacion}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+
+    @foreach($tabla1 as $dato)
+        <div id="myModal_{{$dato->id_asigna_planeacion_tutor}}_es" class="modal fade" role="dialog">
+            <div class="modal-dialog">
                 <div class="modal-content">
-                    <form action="{{url('actividades')}}" method="post">
+                    <div class="modal-header">
+                        @if($dato->id_estrategia!=null)
+                            <h5 class="modal-title">Actualizar Estrategia</h5>
+                        @else
+                            <h5 class="modal-title">Estrategia</h5>
+                        @endif
+
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="{{route('tercer_sem.update',$dato->id_asigna_planeacion_tutor)}}" method="post">
+                        @csrf
+                        @method('PUT')
                         <div class="modal-body">
-
-                            {{ csrf_field() }}
-                            <div class="form-group">
-                                <div class="row">
-
-                                    <div class="col">
-                                        <label >Fecha Inicio</label>
-                                        <input type="date" class="form-control" id="fi_actividad" name="fi_actividad" min="">
-                                    </div>
-                                    <div class="col">
-                                        <label >Fecha Limite</label>
-                                        <input type="date" class="form-control"  id="ff_actividad" name="ff_actividad" min="" max="">
-                                    </div>
-
-                                </div>
+                            <div class="form-group col-md-12">
+                                <textarea class="form-control" rows="8" id="estrategia" name="estrategia">{{$dato->estrategia}}</textarea>
+                                <label>Requiere subir evidencia</label>
+                                @if($dato->requiere_evidencia==1)
+                                    <input type="checkbox" class="" id="requiere_evidencia" name="requiere_evidencia" value="1" checked>
+                                @else
+                                    <input type="checkbox" class="" id="requiere_evidencia" name="requiere_evidencia" value="1">
+                                @endif
+                                <input type="number" class="form-control" name="id_estrategia" value="2" hidden>
                             </div>
-                            <div class="form-group">
-                                <label>Descripción de la actividad</label>
-                                <textarea class="form-control" rows="3" id="desc_actividad" name="desc_actividad"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Objetivo</label>
-                                <textarea class="form-control" rows="3" id="objetivo_actividad" name="objetivo_actividad"></textarea>
-                            </div>
-                            <div style="display: none">
-                                <input type="number" class="form-control"  id="id_generacion" name="id_generacion" value="{{$dato->id_generacion}}">
-                                <input type="number" class="form-control"  id="id_estado" name="id_estado" value="2">
-                            </div>
-
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary" style="background: #0c7a0e" id="trg1">Guardar</button>
+                            <div align="center"><button type="submit" class="btn" style="background: #e0e0e0">Enviar</button></div>
                         </div>
                     </form>
-
                 </div>
             </div>
         </div>
     @endforeach
 
-    <!-- editar actividad-->
+    <!-- crear sugerencia-->
     @foreach($tabla1 as $dato)
-        <div class="modal fade" id="myModal_{{$dato->id_plan_actividad}}_tar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+        <div id="myModal_{{$dato->id_asigna_planeacion_tutor}}_su" class="modal fade" role="dialog">
+            <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Editar Actividad</h5>
+                        @if($dato->id_sugerencia!=null)
+                            <h5 class="modal-title">Actualizar Sugerencia</h5>
+                        @else
+                            <h5 class="modal-title">Sugerencia</h5>
+                        @endif
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
-                        <form action="{{route('actividades.update',$dato->id_plan_actividad)}}" method="post">
-                            @csrf
-                            @method('PUT')
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <div class="row">
-
-                                        <div class="col">
-                                            <label >Fecha Inicio: {{$dato->fi_actividad}}</label>
-                                            <input type="date" class="form-control" id="fi_actividad" name="fi_actividad" value="">
-                                        </div>
-                                        <div class="col">
-                                            <label >Fecha Limite: {{$dato->ff_actividad}}</label>
-                                            <input type="date" class="form-control"  id="ff_actividad" name="ff_actividad" value="">
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Descripción de la actividad</label>
-                                    <textarea class="form-control" rows="3" id="desc_actividad" name="desc_actividad">{{$dato->desc_actividad }}</textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label>Objetivo</label>
-                                    <textarea class="form-control" rows="3" id="objetivo_actividad" name="objetivo_actividad">{{$dato->objetivo_actividad}}</textarea>
-                                </div>
+                    <form action="{{route('cuarto_sem.update',$dato->id_asigna_planeacion_tutor)}}" method="post">
+                        @csrf
+                        @method('PUT')
+                        <div class="modal-body">
+                            <div class="form-group col-md-12">
+                                <textarea class="form-control" rows="8" name="sugerencia">{{$dato->sugerencia}}</textarea>
+                                <input type="number" class="form-control" name="id_sugerencia" value="2" hidden>
                             </div>
-                            <div class="modal-footer">
-                                <div align="center"><button type="submit" class="btn" style="background: #e0e0e0">Enviar</button></div>
-                            </div>
-                        </form>
-                    </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div align="center"><button type="submit" class="btn" style="background: #e0e0e0">Enviar</button></div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
