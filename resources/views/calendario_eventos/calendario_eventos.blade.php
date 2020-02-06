@@ -60,13 +60,12 @@
                 events: [
                         @foreach ($evento as $even)
                     {
-                        title: '{{ $even->des }}',
-                        start: '{{ $even->fi }}',
-                        end:'{{ $even->ff }}',
-                        color: '#52ad3a',
+                        title: '{{ $even->desc_actividad }}',
+                        start: '{{ $even->fi_actividad }}',
+                        end:'{{ $even->ff_actividad }}',
+                        color: '#adad6e',
                         textColor: '#080808',
-                        descripcion:'{!! $even->ins !!} ',
-                        objetivo:'{{ $even->ob }}'
+                        objetivo:'{{ $even->objetivo_actividad }}'
                     },
                     @endforeach
 

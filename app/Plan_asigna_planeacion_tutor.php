@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+
 use App\Exp_generacion;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
@@ -15,4 +16,5 @@ class Plan_asigna_planeacion_tutor extends Model
     protected $table='plan_asigna_planeacion_tutor';
     protected $primaryKey='id_asigna_planeacion_tutor';
     protected $fillable=[' 	id_asigna_planeacion_actividad','id_tutor ','id_estrategia ','estrategia','id_sugerencia','sugerencia','requiere_evidencia'];
+
 }

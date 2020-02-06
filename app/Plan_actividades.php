@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+
 use App\Exp_generacion;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
@@ -15,4 +16,5 @@ class Plan_actividades extends Model
     protected $table='plan_actividades';
     protected $primaryKey='id_plan_actividad';
     protected $fillable=['desc_actividad','objetivo_actividad','fi_actividad','ff_actividad'];
+
 }

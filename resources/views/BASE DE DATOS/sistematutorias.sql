@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-02-2020 a las 05:38:26
+-- Tiempo de generación: 06-02-2020 a las 02:13:25
 -- Versión del servidor: 10.1.31-MariaDB
 -- Versión de PHP: 7.2.4
 
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `sistematutorias-1`
+-- Base de datos: `sistematutorias`
 --
 
 DELIMITER $$
@@ -622,8 +622,7 @@ CREATE TABLE `eventos` (
 --
 
 INSERT INTO `eventos` (`id_evento`, `titulo_evento`, `desc_evento`, `fecha`, `hora`) VALUES
-(7, 'Platica Adicciones en Adolecentes2', 'Impartida por unidad de conductas adictiva en adolescentes2', '2020-03-19', '10:00:00'),
-(8, 'fa', 'fa', '2020-02-04', '11:11:00');
+(7, 'Platica Adicciones en Adolecentes', 'Impartida por unidad de conductas adictiva en adolescentes', '2020-03-19', '10:00:00');
 
 -- --------------------------------------------------------
 
@@ -5875,8 +5874,15 @@ CREATE TABLE `plan_asigna_evidencias` (
   `evidencia` text NOT NULL,
   `id_alumno` int(11) NOT NULL,
   `id_asigna_planeacion_tutor` int(11) NOT NULL,
-  `fecha_subio` int(11) NOT NULL
+  `fecha_subio` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `plan_asigna_evidencias`
+--
+
+INSERT INTO `plan_asigna_evidencias` (`id_evidencia`, `evidencia`, `id_alumno`, `id_asigna_planeacion_tutor`, `fecha_subio`) VALUES
+(1, '1580932234.pdf', 10, 1, '2020-02-05');
 
 -- --------------------------------------------------------
 
@@ -5929,9 +5935,9 @@ CREATE TABLE `plan_asigna_planeacion_tutor` (
 --
 
 INSERT INTO `plan_asigna_planeacion_tutor` (`id_asigna_planeacion_tutor`, `id_asigna_planaeacion_actividad`, `id_asigna_tutor`, `id_estrategia`, `estrategia`, `id_sugerencia`, `sugerencia`, `requiere_evidencia`) VALUES
-(1, 1, 8, 0, '', 0, '', 0),
-(2, 2, 8, 0, '', 0, '', 0),
-(3, 3, 8, 0, '', 0, '', 0);
+(1, 1, 8, 0, '', 0, '', 1),
+(2, 2, 8, 0, '', 0, '', 1),
+(3, 3, 8, 0, '', 0, '', 1);
 
 -- --------------------------------------------------------
 
@@ -5987,7 +5993,7 @@ CREATE TABLE `prediccion` (
   `etnia_indigena_v` double DEFAULT NULL,
   `lugar_nacimientos` varchar(50) DEFAULT NULL,
   `lugar_nacimientos_v` double DEFAULT NULL,
-  `id_nivel_economico` int(11) DEFAULT NULL,
+  `id_nivel_economico` varchar(11) DEFAULT NULL,
   `id_nivel_economico_v` double DEFAULT NULL,
   `sostiene_economia_hogar` int(11) DEFAULT NULL,
   `sostiene_economia_hogar_v` double DEFAULT NULL,
@@ -6018,15 +6024,6 @@ CREATE TABLE `prediccion` (
   `total` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcado de datos para la tabla `prediccion`
---
-
-INSERT INTO `prediccion` (`id_prediccion`, `nombre`, `no_cuenta`, `id_carrera`, `id_carrera_v`, `sexo`, `sexo_v`, `id_estado_civil`, `id_estado_civil_v`, `no_hijos`, `no_hijos_v`, `no_hermanos`, `no_hermanos_v`, `enfermedad_cronica`, `enfermedad_cronica_v`, `trabaja`, `trabaja_v`, `practica_deporte`, `practica_deporte_v`, `actividades_culturales`, `actividades_culturales_v`, `etnia_indigena`, `etnia_indigena_v`, `lugar_nacimientos`, `lugar_nacimientos_v`, `id_nivel_economico`, `id_nivel_economico_v`, `sostiene_economia_hogar`, `sostiene_economia_hogar_v`, `tegusta_carrera_elegida`, `tegusta_carrera_elegida_v`, `beca`, `beca_v`, `estado`, `estado_v`, `id_escala`, `id_escala_v`, `poblacion`, `poblacion_v`, `ant_inst`, `ant_inst_v`, `satisfaccion_c`, `satisfaccion_c_v`, `materias_repeticion`, `materias_repeticion_v`, `tot_repe`, `tot_repe_v`, `materias_especial`, `materias_especial_v`, `tot_espe`, `tot_espe_v`, `gen_espe`, `gen_espe_v`, `total`) VALUES
-(1, 'Raúl', 201507010, 1, 3.5, '1', 3.5, 2, 3.5, 2, 2.5, 2, 2, 2, 1.5, 2, 1.5, 2, 3.5, 2, 3.5, 2, 1.5, '1', 3.5, 2, 2.5, 2, 3.5, 2, 3.5, 2, 3.5, 2, 3.5, 2, 1.5, 2, 2, '2', 2, '2', 2.5, 2, 0.5, 2, 1.5, 2, 0.5, 2, 1.5, 2, 1.5, 60),
-(2, 'Tina', 201507020, 1, 3.5, '1', 3.5, 1, 0.8, 1, 1.5, 1, 1.5, 1, 3.5, 1, 3.5, 1, 1.5, 1, 1.5, 1, 3.5, '1', 3.5, 1, 1.5, 1, 3.5, 1, 1.5, 1, 1.5, 1, 1.5, 1, 0.8, 1, 3.5, '1', 1.5, '1', 3.5, 1, 3.5, 1, 0.1, 1, 3.5, 1, 0.1, 1, 0.1, 53.9),
-(3, 'Roger', 201507030, 1, 3.5, '1', 3.5, 1, 0.8, 1, 1.5, 1, 1.5, 1, 3.5, 1, 3.5, 1, 1.5, 1, 1.5, 1, 3.5, '1', 3.5, 1, 1.5, 1, 3.5, 1, 1.5, 1, 1.5, 1, 1.5, 1, 0.8, 1, 3.5, '1', 1.5, '1', 3.5, 1, 3.5, 1, 0.1, 1, 3.5, 1, 0.1, 1, 0.1, 53.9);
-
 -- --------------------------------------------------------
 
 --
@@ -6055,53 +6052,6 @@ CREATE TABLE `reporte_tutor` (
   `observaciones` text
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Volcado de datos para la tabla `reporte_tutor`
---
-
-INSERT INTO `reporte_tutor` (`id_reporte_tutor`, `id_asigna_tutor`, `alumno`, `appaterno`, `apmaterno`, `n_cuenta`, `tutoria_grupal`, `tutoria_individual`, `beca`, `repeticion`, `especial`, `academico`, `medico`, `psicologico`, `baja`, `ingles`, `complementarias`, `s_social`, `observaciones`) VALUES
-(1, 8, 'JOSE ALBERTO', 'ARIAS', 'ROBLES', 201607002, 'Si', 'No', 'No', 'Si', 'No', 'No', 'No', 'No', 'Si', 1, 1, 1, 'no'),
-(2, 8, 'GLORIA MARIA', 'ARIAS', 'TELLEZ', 201607003, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(3, 8, 'ARMANDO', 'AVILA', 'CRUZ', 201607004, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(4, 8, 'JOSE URIEL', 'AYBAR', 'HERNANDEZ', 201607005, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(5, 8, 'EMMANUEL', 'CARRANZA', 'BENITEZ', 201607007, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(6, 8, 'LIZBET', 'CATARINO', 'GALICA', 201607008, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(7, 8, 'ELIZABETH', 'CRUZ', 'ROJAS', 201607009, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(8, 8, 'CARLOS EMMANUEL', 'DOMINGUEZ', 'REYES', 201607010, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(9, 8, 'ISAIAS', 'ESPAÑA', 'FUENTES', 201607011, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(10, 8, 'LUIS ANGEL', 'ESQUIVEL', 'BENITO', 201607012, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(11, 8, 'SERGIO ERNESTO', 'ESQUIVEL', 'DE LA CRUZ', 201607013, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(12, 8, 'ARAEL', 'ESTRADA', 'CARDOSO', 201607014, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(13, 8, 'VICTOR MANUEL ', 'GARCIA ', 'ENRIQUEZ', 201607015, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(14, 8, 'ARTURO', 'GARCIA', 'GONZALEZ', 201607016, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(15, 8, 'JUAN PABLO', 'GARDUÑO', 'MARTINEZ', 201607018, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(16, 8, 'JOSE JONATHAN ', 'GARDUÑO', 'DE LA CRUZ', 201607017, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(17, 8, 'EDUARDO', 'GUADARRAMA', 'CARRANZA', 201607020, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(18, 8, 'ERIK ADONIS', 'HERNANDEZ ', 'SOLIS', 201607021, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(19, 8, 'ANA LUISA', 'JAIMES', 'BELTRÁN', 201607022, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(20, 8, 'LUIS ENRIQUE ', 'LONGINO', 'NICOLAS', 201607023, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(21, 8, 'JULIET', 'LOPEZ', 'RODRIGUEZ', 201607024, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(22, 8, 'ISRAEL', 'LOZA ', 'ALVARADO', 201607025, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(23, 8, 'DANIELA GUADALUPE', 'MARCOS', 'PIZAR', 201607026, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(24, 8, 'MIRIAM', 'MARTINEZ', 'SOLIS', 201607027, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(25, 8, 'MARIA DE LOS ANGELES', 'MAURO', 'ESPARZA', 201607028, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(26, 8, 'CESAR', 'MENDIETA', 'GONZALEZ', 201607029, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(27, 8, 'BRYANT', 'ORTEGA', 'RAMIREZ', 201607031, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(28, 8, 'ABNER EMIGDIO', 'PALMA', 'CARBAJAL', 201607032, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(29, 8, 'JONATHAN', 'PLATA', 'BLANCO', 201607033, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(30, 8, 'AGUSTIN', 'RAMIREZ', 'GARCIA', 201607034, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(31, 8, 'MITZI MAGDALENA', 'SALGADO', 'GOMEZ', 201607046, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(32, 8, 'LUIS DANIEL', 'SOLORZANO', 'MARTINEZ', 201607035, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(33, 8, 'JAVIER', 'TENORIO', 'LOPEZ', 201607036, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(34, 8, 'KAERY ISMAEL', 'TERAN', 'CASTILLO', 201607037, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(35, 8, 'NESTOR', 'TRINIDAD', 'AYBAR', 201607038, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(36, 8, 'MIRIAM', 'VARGAS', 'REYES', 201607039, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(37, 8, 'OMAR', 'VENTURA', 'SANTIAGO', 201607041, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(38, 8, 'YOSELIN', 'VERA', 'SOTERO', 201607042, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(39, 8, 'DANIELA MICHELLE', 'VILCHIS', 'MARTINEZ', 201607043, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(40, 8, 'ALEXIS', 'VILLALPANDO', 'HINOJOSA', 201607044, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(41, 8, 'DULCE MARIA', 'YAÑEZ', 'VILCHIS', 201607045, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -6127,10 +6077,10 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `email`, `password`, `activated`, `tipo_usuario`, `info_ok`, `remember_token`, `updated_at`, `created_at`) VALUES
 (3, 'subestproftevb@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'ImUkEhuWoutSYKxKZJ9uD9SXTA1aHA11z6HvCeENIMqeBMkiRBIHjt3lCDs3', '2019-05-09', '2017-03-04'),
 (4, 'teresa_monroy33@yahoo.com.mx', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'F9vypcAVtw1A0xVuYozuu5ma6Cy9XDN6UfZz8SBreyeh4N2g3gxqWzCLcuZq', '2019-09-12', '2017-03-07'),
-(6, 'iscprimerocesar@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, '8rWYoCbm38eClgVTnOWlxjACW9w2BTDUqWq8252HopjY64qynbmo32PwqnFi', '2018-05-23', '2017-03-07'),
+(6, 'iscprimerocesar@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'uAfi4Z61phfFsmmKPG3WeVmdmHsxMgetQ8LIStGhZC9hqRsPhlSOEH1C0QCa', '2018-05-23', '2017-03-07'),
 (7, 'ambar744@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'AE5LrRtvQqrCNvsPqh4dRmRkpvRPfDKUJZuunHT4A6n69oAOlr6JEysZCEEF', '2019-09-04', '2017-03-07'),
 (8, 'jarebollar_bermeo@hotmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'RGBC9QlxLgZAnPK1SWrTwsZvcfZDrZPPq9XAJ7AJzXDLvCNSBNFIige2djzG', '2018-08-08', '2017-03-07'),
-(9, 'AGUERRERO_AL@HOTMAIL.COM', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'nEOykPR7nWdaru0K6ohhkekEK6MSEGOTJNypYrr8ptcVSLZaylyluqy0wakK', '2019-10-08', '2017-03-07'),
+(9, 'AGUERRERO_AL@HOTMAIL.COM', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'OEja75XHj6hTVde4NF82tvjXeHrqTDGZGANiHAW6vjCBdqF1I2NtPMoblFh1', '2019-10-08', '2017-03-07'),
 (10, 'omasant02@hotmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'G40uIVN6bDmIzh7cuQ5fyp5ibzKBeBhmQvkPm48WtdkJtfQB96d0JgcYNFnE', '2018-10-20', '2017-03-07'),
 (11, 'alejandra.leon@hotmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'hXefwos1Btd2auUddxm037c12HPn8onNpZbDM0f31hvxPJdIusfmIDZ8RErX', '2017-06-27', '2017-03-07'),
 (12, 'monroy.c@tesvb.edu.mx', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, '4Wo0x28g8uZ9XlQmH3Bok1D0IxiNfiEP4MAAhRSvAfUJSThygPpOi1mYN1xW', '2019-09-10', '2017-03-07'),
@@ -6175,7 +6125,7 @@ INSERT INTO `users` (`id`, `email`, `password`, `activated`, `tipo_usuario`, `in
 (61, 'val.dearest20@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'Q1Vmvqv8gShDY3gfpWAtg3Vx9eUSEJBANDJCZoi8E4hY8Om1UOqOYeg4lKEy', '2020-01-21', '2017-03-30'),
 (62, 'chuy123rock@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'F33MFenQrZLeBW12GkldkCxsGlB4ph3ZUPftP9zXuVmkY8VG18aBggWDPGNJ', '2018-11-22', '2017-03-30'),
 (64, 'yosesotero@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'PLXyyqAKi6anRzjeBhEXdNUBbjWjxtwQ94Hw20yevPKq5q3RiyMyBE5CXO5g', '2018-11-14', '2017-03-31'),
-(65, 'danysmichi@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, '7EHf4L3Ld0sfjMoDcAFPedIFef7WqZqNP6qwRpLPEYDYeGKLWVVYxC2a5MAj', '2018-11-14', '2017-03-31'),
+(65, 'danysmichi@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'MBNiqpptpQpVMFpIGHVCUGkbJFWS2mKQUlUr02qwGNdJrbK6YxKLFdCMIJdb', '2018-11-14', '2017-03-31'),
 (66, 'israel_0_1@hotmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'h5kVyQqcXzDFtweaU98UroLd2jluqBjldj3DJ3Ilag4F09mNPKwBpG6Nywml', '2018-11-14', '2017-03-31'),
 (67, 'alevhbjte@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'RFCydyuZADcfSsJBaM1oyKv6Q5bJuo7NdU1C67yYUseCeQ1F6mrTATgq2LEE', '2018-05-17', '2017-03-31'),
 (68, 'kaeryisma@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 0, 1, 0, NULL, '2017-03-31', '2017-03-31'),
@@ -6228,7 +6178,7 @@ INSERT INTO `users` (`id`, `email`, `password`, `activated`, `tipo_usuario`, `in
 (115, 'oscarinbau@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'hRuYXMUkUuml3geIkOdlOU0NyhTfnqyRAxsvtN3coYWNIPcomhObR3SxlaKc', '2018-11-26', '2017-04-06'),
 (116, 'navorangelesulises@gmai.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 0, 1, 0, 'oZ2XZYVOT3KZkB7bPfCMxOZQdcwDIaVp5vbH4gzpqwYkrevIwBHbID96llQo', '2017-04-06', '2017-04-06'),
 (117, 'navorulises@gmai.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 0, 1, 0, NULL, '2017-04-06', '2017-04-06'),
-(118, 'mutsotool@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'xljk2sEzEl2mAjLAyU5kxM78yXFVAmU0b3ZJIKJ4eezfJsTUoSZE2vixp1Gc', '2018-11-15', '2017-04-06'),
+(118, 'mutsotool@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'z6l1ml14hi4n61EI6GbPCHU3gdv5cMipaoqhUQmgpKTp5LAWIRT2MfFUyIV3', '2018-11-15', '2017-04-06'),
 (120, 'chris.vicrey15@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 0, 1, 0, NULL, '2017-04-06', '2017-04-06'),
 (121, 'briant.vicrey15@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, '5HPaAc25iOOpfCYPt64u1Ak1DpE7gxFZb5YGZdiFzGqo8lMshXJtvU6LY9jq', '2018-12-04', '2017-04-06'),
 (122, 'josiisss83@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, '5skA2oBl9TYeTLqE4ac9kC1PlqSD5RyILT9jCY0TJTwUVOkpwyyfRLviq1GC', '2018-12-07', '2017-04-06'),
@@ -6859,11 +6809,11 @@ INSERT INTO `users` (`id`, `email`, `password`, `activated`, `tipo_usuario`, `in
 (763, 'jsvg01@hotmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'xamUmKVLrhu3EQiNZIYjcXE0zEVk72BdYxz4I5LJIEY0Y5N0kCiBcJTcp2J0', '2019-09-12', '2017-06-15'),
 (764, 'gis_sv00@hotmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'xfpMIfz5XrLXM22f4olPN0LLsfJECbMZbmXRvvAMq7NQcbh27TDkoWITJeSX', '2019-09-12', '2017-06-15'),
 (765, 'jesroblesm@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, '5wWn1wqAKwGOXWq5KvYC4nDcH9rpUbrmKWKSx2UJJvGY112Jp4XVPNDkK0yJ', '2017-07-11', '2017-06-15'),
-(766, 'juankrlos1231@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'g47cYF8clYmjf8zf4pJF9qtfRqmi1KA2BNcbhYjE7ttgFe8r65ne4VRiLGDU', '2018-07-24', '2017-06-15'),
+(766, 'juankrlos1231@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'hbifxafsAcbDRLRY77FIuqEBBDpBwbxwVDkxHG7Kxaey86fUOBbVKXVuN4kG', '2018-07-24', '2017-06-15'),
 (767, 'gabodifpsicologia@hotmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'MT2kqPbn9C2M8zC5v5tXBeT0dj1esafOlhMH3NbfbKpVMg6QRr50fdXe4ZRj', '2017-06-16', '2017-06-16'),
 (768, 'echavarria.h@tesvb.edu.mx', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, '06aXeIQcALVOT3EEB0vIeIVkwpsGh7xkLYBW3i32hibZ2aSeDbQvPIajISA4', '2019-09-09', '2017-06-16'),
 (769, 'oxedgarxo@hotmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'SqQ04kTMtIFWrxL6dOxvc7xaFkSXEfeNmEPVL5Z8EXnEAgkPcX5RxhRQ0Stx', '2017-06-16', '2017-06-16'),
-(770, 'soto_la@hotmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'cZgQYZWAENECfEAFQKiFf5avrxtTnQZR9NW3wAC4UDlJWoshHgYO7bnCYoL8', '2019-09-04', '2017-06-17'),
+(770, 'soto_la@hotmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'oFxthgwtPDdwNgYL85n3131Zk2GPgsXkVxmlB29hRr1hI1nH6ZRdHEjhPpeJ', '2019-09-04', '2017-06-17'),
 (771, 'cuacopaco@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'Su8gVk5DZctraQS9rlGU29DPZmSaBkLojDyRab0gNurliViCWi3FmNSN7sHA', '2017-06-17', '2017-06-17'),
 (772, 'falviterdominguez@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, NULL, '2017-06-17', '2017-06-17'),
 (773, 'misc.luisleon@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'Jpoe05V9PXyp7TZFwkBjjiRjedhbIOs3KJfqVt358IC0798tp06EBGH5WFPj', '2017-06-17', '2017-06-17'),
@@ -9755,7 +9705,7 @@ ALTER TABLE `canalizacion`
 -- AUTO_INCREMENT de la tabla `eventos`
 --
 ALTER TABLE `eventos`
-  MODIFY `id_evento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_evento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `exp_antecedentes_academicos`
@@ -9935,7 +9885,7 @@ ALTER TABLE `plan_actividades`
 -- AUTO_INCREMENT de la tabla `plan_asigna_evidencias`
 --
 ALTER TABLE `plan_asigna_evidencias`
-  MODIFY `id_evidencia` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_evidencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `plan_asigna_planeacion_actividad`
@@ -9965,7 +9915,7 @@ ALTER TABLE `prediccion`
 -- AUTO_INCREMENT de la tabla `reporte_tutor`
 --
 ALTER TABLE `reporte_tutor`
-  MODIFY `id_reporte_tutor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `id_reporte_tutor` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
