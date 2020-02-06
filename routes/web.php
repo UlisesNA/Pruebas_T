@@ -159,7 +159,7 @@ Route::get('asignatutores/{id}/destroy',[
 Route::get("pdf/all","PdfController@pdf_all")->name("pdf_all");
 Route::post("pdf/lista","PdfController@pdf_lista")->name("pdf_lista");
 Route::post("pdf/alumno","PdfController@pdf_alumno")->name("pdf_alumno");
-
+Route::get("reporte_pdf","ReporteController@reporte_pdf")->name("reporte_pdf");
 
 Route::Resource('/Lista','ListaController');
 ?>

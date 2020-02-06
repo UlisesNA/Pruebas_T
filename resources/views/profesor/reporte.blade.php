@@ -21,7 +21,7 @@
                     <i class="fas fa-search" aria-hidden="true"></i>
                     <input type="text" placeholder="Buscar Alumno" id="reporte" onkeyup="buscar()" style="border: hidden">
                 </th>
-                <th> <a class="btn btn-lg"  style="background:#bc0a44"><i class="far fa-file-pdf" style="color:#ffffcc ;"></i></a></th>
+                <th> <a class="btn btn-lg"  style="background:#bc0a44" href="{{route('reporte_pdf')}}" target="_blank"><i class="far fa-file-pdf" style="color:#ffffcc ;"></i></a></th>
             </tr>
             </thead>
             <tbody id="alums">
@@ -54,112 +54,112 @@
                         <form action="{{route('reporte.update',$c->id)}}" method="post">
                             @csrf
                             @method('PUT')
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <div align="center">
-                                            <h5>Tutoría</h5>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label>Grupal</label>
-                                        <div>
-                                            <label class="radio-inline"><input type="radio" name="tutoria_grupal" value="Si">Si</label>
-                                            <label></label>
-                                            <label class="radio-inline"><input type="radio" name="tutoria_grupal" value="No">No</label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label>Individual</label>
-                                        <div>
-                                            <label class="radio-inline"><input type="radio" name="tutoria_individual" value="Si">Si</label>
-                                            <label></label>
-                                            <label class="radio-inline"><input type="radio" name="tutoria_individual" value="No">No</label>
-                                        </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <div align="center">
+                                        <h5>Tutoría</h5>
                                     </div>
                                 </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <div align="center">
-                                            <h5>Con Beca</h5>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <div>
-                                            <label class="radio-inline"><input type="radio" name="beca" value="Si">Si</label>
-                                            <label></label>
-                                            <label class="radio-inline"><input type="radio" name="beca" value="No">No</label>
-                                        </div>
+                                <div class="form-group col-md-3">
+                                    <label>Grupal</label>
+                                    <div>
+                                        <label class="radio-inline"><input type="radio" name="tutoria_grupal" value="Si">Si</label>
+                                        <label></label>
+                                        <label class="radio-inline"><input type="radio" name="tutoria_grupal" value="No">No</label>
                                     </div>
                                 </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <div align="center">
-                                            <h5>En curso</h5>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label>Repetición</label>
-                                        <div>
-                                            <label class="radio-inline"><input type="radio" name="repeticion" value="Si">Si</label>
-                                            <label></label>
-                                            <label class="radio-inline"><input type="radio" name="repeticion" value="No">No</label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <label>Especial</label>
-                                        <div>
-                                            <label class="radio-inline"><input type="radio" name="especial" value="Si">Si</label>
-                                            <label></label>
-                                            <label class="radio-inline"><input type="radio" name="especial" value="No">No</label>
-                                        </div>
+                                <div class="form-group col-md-3">
+                                    <label>Individual</label>
+                                    <div>
+                                        <label class="radio-inline"><input type="radio" name="tutoria_individual" value="Si">Si</label>
+                                        <label></label>
+                                        <label class="radio-inline"><input type="radio" name="tutoria_individual" value="No">No</label>
                                     </div>
                                 </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <div align="center">
-                                            <h5>Canalizados en el semestre</h5>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-2">
-                                        <label>Asesoría Académica</label>
-                                        <div>
-                                            <label class="radio-inline"><input type="radio" name="academico" value="Si">Si</label>
-                                            <label></label>
-                                            <label class="radio-inline"><input type="radio" name="academico" value="No">No</label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-2">
-                                        <label>Apoyo Médico</label>
-                                        <div>
-                                            <label class="radio-inline"><input type="radio" name="medico" value="Si">Si</label>
-                                            <label></label>
-                                            <label class="radio-inline"><input type="radio" name="medico" value="No">No</label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-2">
-                                        <label>Apoyo Psicológico</label>
-                                        <div>
-                                            <label class="radio-inline"><input type="radio" name="psicologico" value="Si">Si</label>
-                                            <label></label>
-                                            <label class="radio-inline"><input type="radio" name="psicologico" value="No">No</label>
-                                        </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <div align="center">
+                                        <h5>Con Beca</h5>
                                     </div>
                                 </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <div align="center">
-                                            <h5>Baja</h5>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-3">
-                                        <div>
-                                            <label class="radio-inline"><input type="radio" name="baja" value="Si">Si</label>
-                                            <label></label>
-                                            <label class="radio-inline"><input type="radio" name="baja" value="No">No</label>
-                                        </div>
+                                <div class="form-group col-md-3">
+                                    <div>
+                                        <label class="radio-inline"><input type="radio" name="beca" value="Si">Si</label>
+                                        <label></label>
+                                        <label class="radio-inline"><input type="radio" name="beca" value="No">No</label>
                                     </div>
                                 </div>
-                                <div class="form-row">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <div align="center">
+                                        <h5>En curso</h5>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>Repetición</label>
+                                    <div>
+                                        <label class="radio-inline"><input type="radio" name="repeticion" value="Si">Si</label>
+                                        <label></label>
+                                        <label class="radio-inline"><input type="radio" name="repeticion" value="No">No</label>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>Especial</label>
+                                    <div>
+                                        <label class="radio-inline"><input type="radio" name="especial" value="Si">Si</label>
+                                        <label></label>
+                                        <label class="radio-inline"><input type="radio" name="especial" value="No">No</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <div align="center">
+                                        <h5>Canalizados en el semestre</h5>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>Asesoría Académica</label>
+                                    <div>
+                                        <label class="radio-inline"><input type="radio" name="academico" value="Si">Si</label>
+                                        <label></label>
+                                        <label class="radio-inline"><input type="radio" name="academico" value="No">No</label>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>Apoyo Médico</label>
+                                    <div>
+                                        <label class="radio-inline"><input type="radio" name="medico" value="Si">Si</label>
+                                        <label></label>
+                                        <label class="radio-inline"><input type="radio" name="medico" value="No">No</label>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>Apoyo Psicológico</label>
+                                    <div>
+                                        <label class="radio-inline"><input type="radio" name="psicologico" value="Si">Si</label>
+                                        <label></label>
+                                        <label class="radio-inline"><input type="radio" name="psicologico" value="No">No</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <div align="center">
+                                        <h5>Baja</h5>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <div>
+                                        <label class="radio-inline"><input type="radio" name="baja" value="Si">Si</label>
+                                        <label></label>
+                                        <label class="radio-inline"><input type="radio" name="baja" value="No">No</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <div align="center">
                                         <h5>Nivel de Inglés</h5>
@@ -180,7 +180,7 @@
                                     </select>
                                 </div>
                             </div>
-                                <div class="form-row">
+                            <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <div align="center">
                                         <h5>Creditos Complementarios</h5>
@@ -198,7 +198,7 @@
                                     </select>
                                 </div>
                             </div>
-                                <div class="form-row">
+                            <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <div align="center">
                                         <h5>Servicio Social</h5>
@@ -213,16 +213,16 @@
                                     </select>
                                 </div>
                             </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <div align="center">
-                                            <h5>Observaciones</h5>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-6">
-                                        <textarea rows="4" cols="23" name="observaciones"></textarea>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <div align="center">
+                                        <h5>Observaciones</h5>
                                     </div>
                                 </div>
+                                <div class="form-group col-md-6">
+                                    <textarea rows="4" cols="23" name="observaciones"></textarea>
+                                </div>
+                            </div>
                             <div class="modal-footer">
                                 <div align="center"><button type="submit" class="btn" style="background: #e0e0e0">Actualizar</button></div>
                             </div>
@@ -264,14 +264,14 @@
                         </thead>
                         <tbody>
                         @foreach($consulta as $d)
-                        <tr>
-                            <td>{{$d->alum}} {{$d->ap}} {{$d->am}}</td>
-                            @if($d->ti!=NULL && $d->tg!=NULL && $d->beca!=NULL && $d->repe!=NULL && $d->espe!=NULL && $d->aca!=NULL && $d->med!=NULL && $d->ps!=NULL && $d->baja!=NULL && $d->ing!=NULL && $d->comp!=NULL && $d->social!=NULL)
-                            <td style="background:#5bc013">Datos completos</td>
-                            @else
-                                <td>Datos incompletos</td>
-                            @endif
-                        </tr>
+                            <tr>
+                                <td>{{$d->alum}} {{$d->ap}} {{$d->am}}</td>
+                                @if($d->ti!=NULL && $d->tg!=NULL && $d->beca!=NULL && $d->repe!=NULL && $d->espe!=NULL && $d->aca!=NULL && $d->med!=NULL && $d->ps!=NULL && $d->baja!=NULL && $d->ing!=NULL && $d->comp!=NULL && $d->social!=NULL)
+                                    <td style="background:#5bc013">Datos completos</td>
+                                @else
+                                    <td>Datos incompletos</td>
+                                @endif
+                            </tr>
                         @endforeach
                         </tbody>
                     </table>
@@ -320,3 +320,4 @@
         }
     }
 </script>
+
