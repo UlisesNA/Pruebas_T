@@ -143,7 +143,7 @@
                                         <div class="dropdown-menu" aria-labelledby="MenuTutor">
                                             <a class="dropdown-item" href="tutorvista">Grupos Tutorias</a>
                                             <a class="dropdown-item" href="eventos">Eventos</a>
-                                            <a class="dropdown-item" href="profesor">Deserción</a>
+                                            <a class="dropdown-item" href="desercion">Deserción</a>
                                             <a class="dropdown-item" href="listado_alumnos">Listado</a>
                                             <a class="dropdown-item" href="reporte">Reporte</a>
                                             <a class="dropdown-item" href="planeaciontutor">Planeacion</a>
