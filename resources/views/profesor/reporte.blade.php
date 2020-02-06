@@ -245,7 +245,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <a class="btn btn-primary" id="final_rep" data-dismiss="modal" style="color: white">Aceptar</a>
+                    <a class="btn btn-primary" id="final_rep" data-dismiss="modal" style="color: white" onclick="reload(2);">Aceptar</a>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 </div>
             </div>
@@ -300,6 +300,11 @@
             });
         });
     });
+    function reload(segs) {
+        setTimeout(function() {
+            location.reload();
+        }, parseInt(segs) * 1000);
+    }
     function buscar() {
         var input, filter, table, tr, td, i, txtValue;
         input = document.getElementById("reporte");

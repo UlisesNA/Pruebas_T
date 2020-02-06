@@ -81,6 +81,22 @@ class ReporteController extends Controller
     {
         $pr=Auth::user()->email;
         $fecha=DB::select('select Date_format(now(),"%d/%m/%Y") as fecha');
+        ////encabezado
+        $encabezado=DB::table('reporte_tutor')
+            ->join('exp_asigna_tutor', 'exp_asigna_tutor.id_asigna_tutor', '=', 'reporte_tutor.id_asigna_tutor')
+            ->join('gnral_personales','gnral_personales.id_personal', '=', 'exp_asigna_tutor.id_personal')
+            ->join('exp_asigna_generacion','exp_asigna_generacion.id_asigna_generacion','=','exp_asigna_tutor.id_asigna_generacion')
+            ->join('exp_asigna_alumnos','exp_asigna_alumnos.id_asigna_generacion','=','exp_asigna_generacion.id_asigna_generacion')
+            ->join('gnral_alumnos','gnral_alumnos.id_alumno','=','exp_asigna_alumnos.id_alumno')
+            ->join('gnral_carreras','gnral_carreras.id_carrera','=','gnral_alumnos.id_carrera')
+            ->join('gnral_grupos','gnral_grupos.id_grupo','=','gnral_alumnos.grupo')
+            ->join('gnral_jefes_periodos','gnral_jefes_periodos.id_jefe_periodo','=','exp_asigna_tutor.id_jefe_periodo')
+            ->join('gnral_periodos','gnral_periodos.id_periodo','=','gnral_jefes_periodos.id_periodo')
+            ->join('users','users.email','=','gnral_personales.correo')
+            ->where('users.email','=',$pr)
+            ->select('gnral_carreras.nombre','gnral_grupos.grupo','gnral_periodos.periodo')
+            ->get();
+        /// contenido de la tabla
         $consulta=DB::table('reporte_tutor')
             ->join('exp_asigna_tutor', 'exp_asigna_tutor.id_asigna_tutor', '=', 'reporte_tutor.id_asigna_tutor')
             ->join('gnral_personales','gnral_personales.id_personal', '=', 'exp_asigna_tutor.id_personal')
@@ -92,6 +108,7 @@ class ReporteController extends Controller
                 'reporte_tutor.especial','reporte_tutor.academico','reporte_tutor.medico',
                 'reporte_tutor.psicologico','reporte_tutor.baja','reporte_tutor.observaciones')
             ->get();
+        /// Resultados de la tabla
         $totales1 = DB::table('reporte_tutor')
             ->join('exp_asigna_tutor', 'exp_asigna_tutor.id_asigna_tutor', '=', 'reporte_tutor.id_asigna_tutor')
             ->join('gnral_personales','gnral_personales.id_personal', '=', 'exp_asigna_tutor.id_personal')
@@ -104,7 +121,7 @@ class ReporteController extends Controller
             ->join('gnral_personales','gnral_personales.id_personal', '=', 'exp_asigna_tutor.id_personal')
             ->join('users','users.email','=','gnral_personales.correo')
             ->where('users.email','=',$pr)
-            ->select(DB::raw("count(reporte_tutor.tutoria_grupal) AS individual"))
+            ->select(DB::raw("count(reporte_tutor.tutoria_individual) AS individual"))
             ->get();
         $totales3 = DB::table('reporte_tutor')
             ->join('exp_asigna_tutor', 'exp_asigna_tutor.id_asigna_tutor', '=', 'reporte_tutor.id_asigna_tutor')
@@ -155,6 +172,7 @@ class ReporteController extends Controller
             ->where('users.email','=',$pr)
             ->select(DB::raw("count(reporte_tutor.baja) AS baja"))
             ->get();
+        /////////
         $pdf = new PDF();
         $pdf->AddPage();
         $pdf->ln(10);
@@ -167,10 +185,10 @@ class ReporteController extends Controller
         $pdf->SetFillColor(255,255,255);
         $pdf->Cell(($pdf->GetPageWidth()-20),5,"Tutor:  ".utf8_decode($consulta[0]->nombre),1,1,"L","true");
 
-        $pdf->Cell(80,4,utf8_decode("Programa educativo:  "). utf8_decode(""),1,0,"L","true");
-        $pdf->Cell(25,4,utf8_decode("Grupo:  "). utf8_decode(""),1,0,"L","true");
-        $pdf->Cell(49,4,utf8_decode("Periodo:  "). utf8_decode(""),1,0,"L","true");
-        $pdf->Cell(36,4,utf8_decode("Fecha:  "). utf8_decode($fecha[0]->fecha),1,0,"L","true");
+        $pdf->Cell(88,4,utf8_decode("Programa educativo:  "). utf8_decode($encabezado[0]->nombre),1,0,"L","true");
+        $pdf->Cell(17,4,utf8_decode("Grupo:  "). utf8_decode($encabezado[0]->grupo),1,0,"L","true");
+        $pdf->Cell(56,4,utf8_decode("Periodo:  "). utf8_decode($encabezado[0]->periodo),1,0,"L","true");
+        $pdf->Cell(29,4,utf8_decode("Fecha:  "). utf8_decode($fecha[0]->fecha),1,0,"L","true");
         $pdf->ln();
         $pdf->ln();
         $pdf->Cell(15,12,utf8_decode("No.Cuenta"),1,0,"L","true");
