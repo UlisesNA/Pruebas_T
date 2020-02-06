@@ -61,9 +61,8 @@ class Exp_asigna_generacion extends Model
                                 AND plan_actividades.id_plan_actividad=plan_asigna_planeacion_actividad.id_plan_actividad
                                 AND plan_planeacion.id_planeacion=plan_asigna_planeacion_actividad.id_planeacion
                                 AND plan_asigna_planeacion_actividad.id_asigna_planeacion_actividad=plan_asigna_planeacion_tutor.id_asigna_planeacion_actividad
-                                AND plan_asigna_planeacion_tutor.id_tutor=exp_asigna_tutor.id_personal
+                                AND plan_asigna_planeacion_tutor.id_asigna_tutor=exp_asigna_tutor.id_asigna_tutor
                                 AND exp_asigna_tutor.id_asigna_generacion=exp_asigna_generacion.id_asigna_generacion
-                                AND plan_asigna_planeacion_tutor.id_tutor=gnral_personales.id_personal
                                 and gnral_personales.tipo_usuario='.Auth::user()->id.'
                                 GROUP BY exp_generacion.generacion');
         return $datos;
@@ -80,7 +79,6 @@ class Exp_asigna_generacion extends Model
                                     AND plan_asigna_planeacion_actividad.deleted_at is null
                                     AND plan_asigna_planeacion_actividad.id_estado=1
                                     AND plan_asigna_planeacion_tutor.id_asigna_planeacion_actividad=plan_asigna_planeacion_actividad.id_asigna_planeacion_actividad
-                                    AND plan_asigna_planeacion_tutor.id_tutor=gnral_personales.id_personal
                                     and exp_generacion.id_generacion=plan_planeacion.id_generacion
                                     and plan_asigna_planeacion_tutor.id_asigna_planeacion_actividad=plan_asigna_planeacion_actividad.id_asigna_planeacion_actividad
                                     and gnral_personales.tipo_usuario=users.id

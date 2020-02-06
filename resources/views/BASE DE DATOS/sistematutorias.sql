@@ -6030,7 +6030,25 @@ CREATE TABLE `prediccion` (
 -- Estructura de tabla para la tabla `reporte_tutor`
 --
 
-CREATE TABLE `reporte_tutor` (
+
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `email` varchar(45) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `activated` int(11) DEFAULT NULL,
+  `tipo_usuario` int(11) DEFAULT NULL,
+  `info_ok` int(11) DEFAULT NULL,
+  `remember_token` varchar(255) DEFAULT NULL,
+  `updated_at` date DEFAULT NULL,
+  `created_at` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;CREATE TABLE `reporte_tutor` (
   `id_reporte_tutor` int(11) NOT NULL,
   `id_asigna_tutor` int(11) DEFAULT NULL,
   `alumno` varchar(50) DEFAULT NULL,
@@ -6050,24 +6068,6 @@ CREATE TABLE `reporte_tutor` (
   `complementarias` int(11) DEFAULT NULL,
   `s_social` int(11) DEFAULT NULL,
   `observaciones` text
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `users`
---
-
-CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
-  `email` varchar(45) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
-  `activated` int(11) DEFAULT NULL,
-  `tipo_usuario` int(11) DEFAULT NULL,
-  `info_ok` int(11) DEFAULT NULL,
-  `remember_token` varchar(255) DEFAULT NULL,
-  `updated_at` date DEFAULT NULL,
-  `created_at` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
