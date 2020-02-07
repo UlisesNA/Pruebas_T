@@ -24,66 +24,60 @@
                             <td>{{$plan->fi_actividad}}</td>
                             <td>{{$plan->ff_actividad}}</td>
                             <td>{{$plan->estrategia}}</td>
-                            @foreach($datos1 as $plan1)
-                                @if($plan->requiere_evidencia==1)
-
-                                    @if($plan1->evidencia==null)
-                                        <td>Evidencia no agregada</td>
-                                    @else
-                                        <td><a href="{{url("/img/",$plan1->evidencia)}}" target="_blank">Evidencia</a></td>
+                            <td>
+                                @if($plan->requiere_evidencia==null)
+                                    <h6>No requiere evidencia</h6>
+                                @endif
+                                @if(isset($plan->evidencia[0]))
+                                    <a href="{{url("/img/",$plan->evidencia[0]->evidencia)}}" target="_blank">Evidencia</a>
+                                @else
+                                    @if($plan->requiere_evidencia==1)
+                                            <button type="button" class="btn btn-success edit" value="{{$plan->id_asigna_planeacion_tutor}}">
+                                                <span class="glyphicon-edit"></span>Subir evidencia</button>
                                     @endif
-                                @else
-
                                 @endif
-
-                                @if($plan->requiere_evidencia==1)
-                                    <td>
-                                        <a class="btn btn-light" data-toggle="modal" data-target="#myModal_{{$plan1->id_evidencia}}_tar">
-                                            Subir Evidencia
-                                        </a>
-                                    </td>
-                                @else
-                                    <td>Esta actividad no requiere evidencia</td>
-                                @endif
+                            </td>
                         </tr>
-                    @endforeach
                     @endforeach
                 </table>
             </div>
         </div>
     </div>
 
-    @foreach($datos1 as $dato)
-        <div class="modal fade" id="myModal_{{$dato->id_evidencia}}_tar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Evidencia</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="{{route('actividad.update',$dato->id_evidencia)}}" method="post" enctype="multipart/form-data">
-                            @csrf
-                            @method('PUT')
-                            <div class="modal-body">
-                                <div class="form-group col-md-12">
-                                    <input type="file" class="form-control" name="evidencia">
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <div align="center">
-                                    <button type="submit" class="btn" style="background: #e0e0e0">Enviar</button>
-                                </div>
-                            </div>
-                        </form>
+    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <form action="{{url('actividad')}}" method="post">
+                <div class="modal-body">
+                    {{ csrf_field() }}
+                    <div class="container-fluid">
+                        <div class="form-group col-md-12">
+                            <input type="file" class="form-control" name="evidencia" id="evidencia" >
+                            <input type="number" id="id_asigna_planeacion_tutor" hidden>
+                        </div>
                     </div>
                 </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+                    <button type="submit" class="btn btn-primary" style="background: #0c7a0e" id="trg1"><span class="glyphicon glyphicon-edit"></span>Guardar</button>
+                </div>
+                </form>
             </div>
         </div>
-    @endforeach
+    </div>
+    <script>
+        $(document).ready(function(){
+            $(document).on('click', '.edit', function(){
+                var id=$(this).val();
+
+                $('#edit').modal('show');
+                $('#id_asigna_planeacion_tutor').val(id);
+            });
+        });
+    </script>
 @endsection
 
 

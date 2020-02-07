@@ -34,14 +34,8 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-5">
-                                            <label for="foto">Fotografía personal * <p class="font-weight-bold">Nota: Solo una única vez subes la fotografía</p></label>
-                                            <input type="file" class="form-control" accept="image/*" @change="ObtenerImagen" required>
-                                            <small class="form-text text-danger" v-if='imagenMiniatura==null'>Subir fotografía personal</small>
-                                        </div>
-                                        <div class="col-4">
-                                            <img :src="imagenMiniatura" alt="" width="150px">
-                                        </div>
+
+
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4">
@@ -1140,7 +1134,7 @@
                         tot_espe:null,
                         gen_espe:null,
                         id_alumno:null,
-                        foto:null
+
                     },
                     academicos:{
                         id_bachillerato:null,
@@ -1505,14 +1499,15 @@
                     {
                         this.lleno=true;
                         let formData = new FormData();
-                        formData.append('imagen', this.imagen);
+                        //formData.append('imagen', this.imagen);
                         formData.append('nombre',this.alu.generales.no_cuenta);
-                        formData.append('ext',this.alu.generales.foto);
+                      //
+                        //  formData.append('ext',this.alu.generales.foto);
 
                         //console.log(formData);
-                        axios.post('/imagen',formData).then(response=>{
+                        /*axios.post('/imagen',formData).then(response=>{
                             //window.location='inicioalu';
-                        }).catch(error=>{  });
+                        }).catch(error=>{  });*/
                         axios.post(this.ruta,{alu:this.alu}).then(response=>{
                            window.location='inicioalu';
                         }).catch(error=>{  });
@@ -1571,7 +1566,7 @@
                         this.test.testlleno=false;
                     }
                 },
-                ObtenerImagen:function (img) {
+                /*ObtenerImagen:function (img) {
                     let file=img.target.files[0];
                     this.imagen=file;
                     this.alu.generales.foto=this.imagen.type;
@@ -1583,7 +1578,7 @@
                         this.imagenMiniatura= e.target.result;
                     }
                     reader.readAsDataURL(file);
-                }
+                }*/
             }
         });
     </script>

@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 use App\gnral_alumnos;
 use App\Plan_actividades;
 use App\Plan_asigna_evidencias;
+use App\Plan_asigna_planeacion_tutor;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -36,33 +37,45 @@ class actividades_alumnoController extends Controller
             ->where('users.email','=',$id)
             -> select('plan_actividades.desc_actividad', 'plan_actividades.objetivo_actividad',
                 'plan_actividades.fi_actividad', 'plan_actividades.ff_actividad','plan_asigna_planeacion_tutor.estrategia',
-                'plan_asigna_planeacion_tutor.requiere_evidencia')
+                'plan_asigna_planeacion_tutor.requiere_evidencia','plan_asigna_planeacion_tutor.id_asigna_planeacion_tutor')
             ->get();
 
         //dd($datos);
 
-        $datos1=DB::table('plan_asigna_evidencias')
-            ->join ('plan_asigna_planeacion_tutor','plan_asigna_planeacion_tutor.id_asigna_planeacion_tutor','=',
-                'plan_asigna_evidencias.id_asigna_planeacion_tutor')
-            ->join('gnral_alumnos','gnral_alumnos.id_alumno','=','plan_asigna_evidencias.id_alumno')
-            ->join('users', 'users.email', '=', 'gnral_alumnos.correo_al')
-            ->where('users.email','=',$id)
-            ->select('plan_asigna_planeacion_tutor.id_asigna_planeacion_tutor', 'plan_asigna_evidencias.id_evidencia',
-                'plan_asigna_evidencias.evidencia')
-            ->get();
-       /* $datos1=DB::select('SELECT DISTINCT  plan_asigna_planeacion_tutor.id_asigna_planeacion_tutor, id_evidencia, evidencia
-           from plan_asigna_planeacion_tutor, plan_asigna_evidencias
-           where id_alumno=10
-           and plan_asigna_planeacion_tutor.id_asigna_planeacion_tutor=plan_asigna_evidencias.id_asigna_planeacion_tutor');*/
-        return view('actividades_alumno.actividades_alumno',compact("datos","datos1"));
+
+
+        $datos->map(function($value)use ($id){
+            //dd($value);
+            return $value["evidencia"]=Plan_asigna_evidencias::join('gnral_alumnos','plan_asigna_evidencias.id_alumno' , '=',  'gnral_alumnos.id_alumno')
+                ->join('users','gnral_alumnos.id_usuario', '=', 'users.id')
+                ->where('users.email','=',$id)
+                ->where('plan_asigna_evidencias.id_asigna_planeacion_tutor',$value->id_asigna_planeacion_tutor)
+                ->select('plan_asigna_evidencias.id_evidencia', 'plan_asigna_evidencias.evidencia')
+                ->get();
+        });
+
+
+
+        return view('actividades_alumno.actividades_alumno',compact("datos"));
     }
-    public function create()
-    {
-        //
-    }
+
     public function store(Request $request)
     {
+        /*$id=DB::select('SELECT id_alumno FROM gnral_alumnos WHERE id_usuario='.Auth::user()->id);
+        //dd($id);
+        //$plan = Plan_asigna_evidencias::find($id);
+        $file=$request->file('evidencia');
 
+        dd($file);
+        $name=time().".".$file->getClientOriginalExtension();
+        $file->move(public_path().'/img/',$name);
+
+        Plan_asigna_evidencias::create([
+            "evidencia" => $name,
+            "id_alumno" => $id[0]->id_alumno,
+            "id_asigna_planeacion_tutor"=>$request->id_asigna_planeacion_tutor,
+        ]);
+        return redirect()->back();*/
     }
     public function updateExp(Request $request)
     {
@@ -88,12 +101,12 @@ class actividades_alumnoController extends Controller
 
     public function update(Request $request, $id)
     {
-        $plan1 = Plan_asigna_evidencias::find($id);
+        $plan = Plan_asigna_evidencias::find($id);
         if($request->hasFile('evidencia'))
         {
             $file=$request->file('evidencia');
             $name=time().".".$file->getClientOriginalExtension();
-            $plan1->evidencia = $name;
+            $plan->evidencia = $name;
             $file->move(public_path().'/img/',$name);
         }else {
                 $file=$request->file('evidencia');
@@ -102,7 +115,7 @@ class actividades_alumnoController extends Controller
                 $file->move(public_path().'/img/',$name);
         }
         //$plan->evidencia = $request->evidencia;;
-        $plan1->save();
+        $plan->save();
         return redirect()->back();
     }
     public function destroy($id)

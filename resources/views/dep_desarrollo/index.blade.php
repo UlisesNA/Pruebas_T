@@ -30,7 +30,7 @@
                                                     <tr>
                                                         <th>Fecha Inicio</th>
                                                         <th>Fecha Fin</th>
-                                                        <th>Decripción Actividad</th>
+                                                        <th>Nombre de Actividad</th>
                                                         <th>Revisar</th>
                                                     </tr>
                                                     @foreach($tabla1 as $dat)
@@ -102,7 +102,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Descripción de la actividad</label>
+                                <label>Nombre de Actividad</label>
                                 <textarea class="form-control" rows="3" id="desc_actividad" name="desc_actividad"></textarea>
                             </div>
                             <div class="form-group">
@@ -166,7 +166,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label>Descripción de la actividad</label>
+                                    <label>Nombre de Actividad</label>
                                     <textarea class="form-control" rows="3" id="desc_actividad" name="desc_actividad" disabled>{{$dato->desc_actividad }}</textarea>
                                 </div>
                                 <div class="form-group">
