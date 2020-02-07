@@ -44,7 +44,7 @@ class Actividades_tutorController extends Controller
         Plan_actividades::create($planea);
         return response()->json();*/
         $num=DB::select('SELECT id_planeacion FROM plan_planeacion WHERE id_generacion='.$request->id_generacion);
-        $gen=DB::select('SELECT exp_asigna_tutor.id_personal
+        $gen=DB::select('SELECT exp_asigna_tutor.id_asigna_tutor
                                     FROM exp_asigna_tutor,exp_asigna_generacion,exp_generacion
                                     WHERE exp_generacion.id_generacion=exp_asigna_generacion.id_generacion
                                     AND exp_asigna_generacion.id_asigna_generacion=exp_asigna_tutor.id_asigna_generacion
@@ -85,12 +85,12 @@ class Actividades_tutorController extends Controller
             for ($i = 0; $i <$ic; $i++) {
                 Plan_asigna_planeacion_tutor::create([
                     "id_asigna_planeacion_actividad"=>$id[0]->id,
-                    "id_tutor"=>$gen[$i]->id_personal,
+                    "id_asigna_tutor"=>$gen[$i]->id_asigna_tutor,
                 ]);
                 $idt=DB::select('SELECT @@identity as idt');
                 $plan = Plan_asigna_planeacion_tutor::find($idt[0]->idt);
                 $plan->id_asigna_planeacion_actividad = $id[0]->id;
-                $plan->id_tutor = $gen[$i]->id_personal;
+                $plan->id_asigna_tutor = $gen[$i]->id_asigna_tutor;
                 $plan->save();
             }
             //dd($plan);
@@ -127,12 +127,12 @@ class Actividades_tutorController extends Controller
             for ($i = 0; $i <$ic; $i++) {
                 Plan_asigna_planeacion_tutor::create([
                     "id_asigna_planeacion_actividad"=>$id[0]->id,
-                    "id_tutor"=>$gen[$i]->id_personal,
+                    "id_asigna_tutor"=>$gen[$i]->id_asigna_tutor,
                 ]);
                 $idt=DB::select('SELECT @@identity as idt');
                 $plan = Plan_asigna_planeacion_tutor::find($idt[0]->idt);
                 $plan->id_asigna_planeacion_actividad = $id[0]->id;
-                $plan->id_tutor = $gen[$i]->id_personal;
+                $plan->id_asigna_tutor = $gen[$i]->id_asigna_tutor;
                 $plan->save();
             }
             //dd($i);
