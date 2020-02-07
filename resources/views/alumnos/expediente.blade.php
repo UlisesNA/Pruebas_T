@@ -34,8 +34,14 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
-
-
+                                        <div class="col-5">
+                                            <label for="foto">Fotografía personal * <p class="font-weight-bold">Nota: Solo una única vez subes la fotografía</p></label>
+                                            <input type="file" class="form-control" accept="image/*" @change="ObtenerImagen" required>
+                                            <small class="form-text text-danger" v-if='imagenMiniatura==null'>Subir fotografía personal</small>
+                                        </div>
+                                        <div class="col-4">
+                                            <img :src="imagenMiniatura" alt="" width="150px">
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4">
@@ -1060,7 +1066,7 @@
                 </div>
             </div>
         </div>
-        <pre hidden>@{{ alu.generales }}</pre>
+        <pre>@{{ alu.generales }}</pre>
         @include("alumnos.partial.modalNSE")
     </div>
     <script type="application/javascript">
@@ -1134,7 +1140,7 @@
                         tot_espe:null,
                         gen_espe:null,
                         id_alumno:null,
-
+                        foto:null
                     },
                     academicos:{
                         id_bachillerato:null,
@@ -1258,7 +1264,6 @@
                 },
                 imagen:null,
                 imagenMiniatura:null,
-
             },
             methods: {
                 getDatos: function () {
@@ -1267,7 +1272,7 @@
                         this.alu.generales.nombre=response.data.datos[0].nombre +' '+response.data.datos[0].apaterno+' '+response.data.datos[0].amaterno;
                         this.alu.generales.no_cuenta=response.data.datos[0].cuenta;
                         this.alu.generales.id_periodo={{\Illuminate\Support\Facades\Session::get('id_periodo')}}
-                        this.alu.generales.sexo=response.data.datos[0].genero;
+                            this.alu.generales.sexo=response.data.datos[0].genero;
                         this.alu.generales.fecha_nacimientos=response.data.datos[0].fecha_nac;
                         this.alu.generales.edad=response.data.datos[0].edad;
                         this.alu.generales.correo=response.data.email;
@@ -1341,21 +1346,19 @@
                                 else if (this.alu.generales.beca==1 && this.alu.generales.id_expbeca==null){
                                     this.llenogen=false;
                                 }
-
-                                   else  if(this.alu.generales.beca==2 && this.alu.generales.id_expbeca==null)
-                                    {
-                                        this.actacademico=true;
-                                        this.disacademico=false;
-                                        this.actgenerales=false;
-                                        this.llenogen=true;
-                                    }
-
+                                else  if(this.alu.generales.beca==2 && this.alu.generales.id_expbeca==null)
+                                {
+                                    this.actacademico=true;
+                                    this.disacademico=false;
+                                    this.actgenerales=false;
+                                    this.llenogen=true;
+                                }
                             }
                             else
                             {
                                 this.llenogen=false;
                             }
-                                break;
+                            break;
                         case 'familiares':
                             if(this.alu.academicos.teestimula_familia!=null
                                 && this.alu.academicos.tegusta_carrera_elegida!=null
@@ -1387,7 +1390,6 @@
                                 this.actestudio=true;
                                 this.disestudio=false;
                                 this.llenofam=true;
-
                             }
                             else
                             {
@@ -1396,13 +1398,12 @@
                             break;
                         case 'integral':
                             if(this.alu.estudio.forma_estudio!=null && this.alu.estudio.tiempo_empleado_estudiar!=null
-                            && this.alu.estudio.id_opc_intelectual!=null)
+                                && this.alu.estudio.id_opc_intelectual!=null)
                             {
                                 this.actestudio=false;
                                 this.actintegral=true;
                                 this.disintegral=false;
                                 this.llenohab=true;
-
                             }
                             else
                             {
@@ -1424,7 +1425,6 @@
                                 this.actarea=true;
                                 this.disarea=false;
                                 this.llenofor=true;
-
                             }
                             else
                             {
@@ -1483,7 +1483,6 @@
                             this.actintegral=false;
                             this.actestudio=false;
                             break;
-
                     }
                 },
                 Guardar:function () {
@@ -1499,27 +1498,23 @@
                     {
                         this.lleno=true;
                         let formData = new FormData();
-                        //formData.append('imagen', this.imagen);
+                        formData.append('imagen', this.imagen);
                         formData.append('nombre',this.alu.generales.no_cuenta);
-                      //
-                        //  formData.append('ext',this.alu.generales.foto);
-
+                        formData.append('ext',this.alu.generales.foto);
                         //console.log(formData);
-                        /*axios.post('/imagen',formData).then(response=>{
+                        axios.post('/imagen',formData).then(response=>{
                             //window.location='inicioalu';
-                        }).catch(error=>{  });*/
+                        }).catch(error=>{  });
                         axios.post(this.ruta,{alu:this.alu}).then(response=>{
-                           window.location='inicioalu';
+                            window.location='inicioalu';
                         }).catch(error=>{  });
                     }
                     else
                     {
                         this.llenoare=false;
                     }
-
                 },
                 CalculaNivel:function () {
-
                     if(this.test.p1!=null &&
                         this.test.p2!=null &&
                         this.test.p3!=null &&
@@ -1529,7 +1524,6 @@
                     {
                         this.test.testlleno=true;
                         this.test.suma=(this.test.p1)+(this.test.p2)+(this.test.p3)+(this.test.p4)+(this.test.p5)+(this.test.p6);
-
                         if(this.test.suma>204 && this.test.suma<=300)
                         {
                             this.alu.generales.nivel_economico="A/B";
@@ -1559,14 +1553,13 @@
                             this.alu.generales.nivel_economico="E";
                         }
                         $('#modalNSE').modal('hide');
-
                     }
                     else
                     {
                         this.test.testlleno=false;
                     }
                 },
-                /*ObtenerImagen:function (img) {
+                ObtenerImagen:function (img) {
                     let file=img.target.files[0];
                     this.imagen=file;
                     this.alu.generales.foto=this.imagen.type;
@@ -1578,7 +1571,7 @@
                         this.imagenMiniatura= e.target.result;
                     }
                     reader.readAsDataURL(file);
-                }*/
+                }
             }
         });
     </script>

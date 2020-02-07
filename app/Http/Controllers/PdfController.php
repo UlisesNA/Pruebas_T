@@ -708,7 +708,7 @@ class PdfController extends Controller
         exit();
     }
 
-   public function pdf_lista(Request $request)
+    public function pdf_lista(Request $request)
     {
         $datos=DB::table('gnral_alumnos')
             ->join('exp_asigna_alumnos','exp_asigna_alumnos.id_alumno','=','gnral_alumnos.id_alumno')

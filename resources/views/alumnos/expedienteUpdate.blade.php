@@ -992,9 +992,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                    <div class="row pt-5">
-                                        <button class="btn col-12 btn-outline-primary" @click="updateDatos()">Actualizar datos</button>
-                                    </div>
+                                <div class="row pt-5">
+                                    <button class="btn col-12 btn-outline-primary" @click="updateDatos()">Actualizar datos</button>
+                                </div>
 
                             </div>
                         </div>
@@ -1062,7 +1062,7 @@
                         horario:null,
                         no_cuenta:null,
                         beca:null,
-                       /* tipo_beca:null,*/
+                        /* tipo_beca:null,*/
                         id_expbeca:null,
                         estado:null,
                         turno:null,
