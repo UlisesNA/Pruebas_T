@@ -39,8 +39,8 @@
                                                     @foreach($tabla1 as $dat)
                                                         @if($dato->id_generacion==$dat->id_generacion)
                                                             <tr onmouseover="this.style.backgroundColor='#DBE7F3'" onmouseout="this.style.backgroundColor='white'">
-                                                                <td>{{$dat->fi_actividad}}</td>
-                                                                <td>{{$dat->ff_actividad}}</td>
+                                                                <td>{{$dat->fi_acti}}</td>
+                                                                <td>{{$dat->ff_acti}}</td>
                                                                 <td>{{$dat->desc_actividad}}</td>
                                                                 <td>{{$dat->objetivo_actividad}}</td>
                                                                 @if($dat->id_estado == 2)
@@ -163,16 +163,17 @@
                             @csrf
                             @method('PUT')
                             <div class="modal-body">
+
                                 <div class="form-group">
                                     <div class="row">
 
                                         <div class="col">
-                                            <label >Fecha Inicio: {{$dato->fi_actividad}}</label>
-                                            <input type="date" class="form-control" id="fi_actividad" name="fi_actividad" value="">
+                                            <label >Fecha Inicio</label>
+                                            <input type="date" class="form-control" id="fi_actividad" name="fi_actividad" value={{$dato->fi_actividad}}>
                                         </div>
                                         <div class="col">
-                                            <label >Fecha Limite: {{$dato->ff_actividad}}</label>
-                                            <input type="date" class="form-control"  id="ff_actividad" name="ff_actividad" value="">
+                                            <label >Fecha Limite</label>
+                                            <input type="date" class="form-control"  id="ff_actividad" name="ff_actividad" value="{{$dato->ff_actividad}}">
                                         </div>
 
                                     </div>

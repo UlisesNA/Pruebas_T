@@ -43,8 +43,8 @@ class Exp_asigna_generacion extends Model
     }
     public static function getDatos(){
 
-        $datos=DB::select('SELECT plan_actividades.id_plan_actividad,plan_actividades.desc_actividad,plan_actividades.objetivo_actividad,DATE_FORMAT(plan_actividades.fi_actividad, \'%d/%m/%Y\') as fi_actividad,
-                                  DATE_FORMAT(plan_actividades.ff_actividad, \'%d/%m/%Y\') as ff_actividad,plan_planeacion.id_generacion,plan_asigna_planeacion_actividad.comentario,plan_asigna_planeacion_actividad.id_estado,plan_asigna_planeacion_actividad.id_asigna_planeacion_actividad
+        $datos=DB::select('SELECT plan_actividades.id_plan_actividad,plan_actividades.desc_actividad,plan_actividades.objetivo_actividad,DATE_FORMAT(plan_actividades.fi_actividad, \'%d/%m/%Y\') as fi_acti,
+                                  DATE_FORMAT(plan_actividades.ff_actividad, \'%d/%m/%Y\') as ff_acti,plan_planeacion.id_generacion,plan_asigna_planeacion_actividad.comentario,plan_asigna_planeacion_actividad.id_estado,plan_asigna_planeacion_actividad.id_asigna_planeacion_actividad,plan_actividades.fi_actividad,plan_actividades.fi_actividad,plan_actividades.ff_actividad
                                     FROM plan_actividades,plan_planeacion,plan_asigna_planeacion_actividad
                                     WHERE plan_asigna_planeacion_actividad.id_planeacion=plan_planeacion.id_planeacion
                                     AND plan_asigna_planeacion_actividad.id_plan_actividad=plan_actividades.id_plan_actividad
