@@ -34,8 +34,14 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
-
-
+                                        <div class="col-5">
+                                            <label for="foto">Fotografía personal * <p class="font-weight-bold">Nota: Solo una única vez subes la fotografía</p></label>
+                                            <input type="file" class="form-control" accept="image/*" @change="ObtenerImagen" required>
+                                            <small class="form-text text-danger" v-if='imagenMiniatura==null'>Subir fotografía personal</small>
+                                        </div>
+                                        <div class="col-4">
+                                            <img :src="imagenMiniatura" alt="" width="150px">
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4">
@@ -59,7 +65,7 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label for="edad">Edad</label>
-                                            <input type="number" class="form-control" v-model="alu.generales.edad" id="edad" name="edad" placeholder="Edad">
+                                            <input type="text" class="form-control" v-model="alu.generales.edad" id="edad" name="edad" placeholder="Edad">
                                         </div>
                                         <div class="col-md-4">
                                             <label for="ln">Lugar de nacimiento</label>
@@ -100,11 +106,11 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label for="tel-casa">Tel. Casa</label>
-                                            <input type="tel" title="Sólo números, máximo 10 dígitos." pattern="[0-9]{10}"  v-model="alu.generales.tel_casa" id="tel-casa" name="tel_casa" class="form-control" placeholder="Tel. Casa">
+                                            <input type="text" v-model="alu.generales.tel_casa" id="tel-casa" name="tel_casa" class="form-control" placeholder="Tel. Casa">
                                         </div>
                                         <div class="col-md-3">
                                             <label for="cel">Celular *</label>
-                                            <input type="tel" title="Sólo números, máximo 10 dígitos." pattern="[0-9]{10}" v-model="alu.generales.cel"  id="cel" name="cel" class="form-control" placeholder="Cel" required>
+                                            <input type="text" v-model="alu.generales.cel"  id="cel" name="cel" class="form-control" placeholder="Cel" required>
                                             <small class="form-text text-danger" v-if='alu.generales.cel==null || alu.generales.cel==""'>Colocar un número celular</small>
                                         </div>
                                         <div class="col-md-5">
@@ -340,7 +346,7 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label for="at">Año de terminación</label>
-                                            <input type="number" v-model="alu.academicos.ano_terminacion" name="ano_terminacion" id="at" class="form-control" placeholder="Año de terminación">
+                                            <input type="text" v-model="alu.academicos.ano_terminacion" name="ano_terminacion" id="at" class="form-control" placeholder="Año Terminación">
                                         </div>
                                     </div>
                                     <div class="row">
@@ -350,7 +356,7 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label for="promedio">Promedio</label>
-                                            <input type="number" name="promedio" v-model="alu.academicos.promedio" id="promedio" class="form-control" placeholder="Promedio">
+                                            <input name="promedio" v-model="alu.academicos.promedio" id="promedio" class="form-control" placeholder="Promedio">
                                         </div>
                                         <div class="col-md-4">
                                             <label for="mrb">Materias reprobadas en bachillerato</label>
@@ -512,11 +518,11 @@
                                             <input name="nombre_padre" v-model="alu.familiares.nombre_padre" id="np" type="text" class="form-control" placeholder="Nombre del padre" required>
                                             <small class="form-text text-danger" v-if='alu.familiares.nombre_padre==null || alu.familiares.nombre_padre=="" '>Colocar nombre del padre</small>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-1">
                                             <label for="edadP">Edad</label>
-                                            <input type="number" v-model="alu.familiares.edad_padre" name="edad_padre" id="edadP" class="form-control" placeholder="Edad">
+                                            <input type="text" v-model="alu.familiares.edad_padre" name="edad_padre" id="edadP" class="form-control" placeholder="Edad">
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-3">
                                             <label for="ocupacionP">Ocupación</label>
                                             <input name="ocupacion_padre" v-model="alu.familiares.ocupacion_padre" id="ocupacionP" type="text" placeholder="Ocupación" class="form-control">
                                         </div>
@@ -532,11 +538,11 @@
                                             <input type="text" v-model="alu.familiares.nombre_madre" name="nombre_madre" id="nm" class="form-control" placeholder="Nombre de la madre" required>
                                             <small class="form-text text-danger" v-if='alu.familiares.nombre_madre==null || alu.familiares.nombre_madre=="" '>Colocar nombre de la madre</small>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-1">
                                             <label for="edadM">Edad</label>
-                                            <input type="number" v-model="alu.familiares.edad_madre" name="edad_madre" id="edadM" class="form-control" placeholder="Edad">
+                                            <input type="text" v-model="alu.familiares.edad_madre" name="edad_madre" id="edadM" class="form-control" placeholder="Edad">
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-3">
                                             <label for="ocupacionM">Ocupación</label>
                                             <input id="ocupacionM" v-model="alu.familiares.ocupacion_madre" name="ocupacion_madre" type="text" placeholder="Ocupación" class="form-control">
                                         </div>
@@ -549,11 +555,11 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label for="nh">Número de hermanos, incluyéndote:</label>
-                                            <input type="number" v-model="alu.familiares.no_hermanos" id="nh" name="no_hermanos" class="form-control" placeholder="No. de Hermanos">
+                                            <input type="text" v-model="alu.familiares.no_hermanos" id="nh" name="no_hermanos" class="form-control" placeholder="No. de Hermanos">
                                         </div>
                                         <div class="col-md-4">
                                             <label for="loe">¿Qué lugar que ocupas entre ellos?</label>
-                                            <input type="number" v-model="alu.familiares.lugar_ocupas" id="loe" name="lugar_que_ocupas" class="form-control" placeholder="Lugar que ocupas entre ellos">
+                                            <input type="text" v-model="alu.familiares.lugar_ocupas" id="loe" name="lugar_que_ocupas" class="form-control" placeholder="Lugar que ocupas entre ellos">
                                         </div>
                                         <div class="col-md-4">
                                             <label for="av">Actualmente vives con: *</label>
@@ -567,7 +573,7 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <label for="nop">Número total de personas con las que vives</label>
-                                            <input type="number" v-model="alu.familiares.no_personas" name="no_persona" id="nop" class="form-control" placeholder="No. de personas">
+                                            <input type="text" v-model="alu.familiares.no_personas" name="no_persona" id="nop" class="form-control" placeholder="No. de personas">
                                         </div>
                                         <div class="col-md-6">
                                             <label for="etnia">Perteneces a una etnia indígena *</label>
@@ -869,11 +875,11 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label for="estatura">Estatura</label>
-                                            <input type="number" step="0.001" name="estatura" v-model="alu.integral.estatura"  id="estatura" placeholder="Estatura" class="form-control">
+                                            <input name="estatura" v-model="alu.integral.estatura"  id="estatura" type="text" placeholder="Estatura" class="form-control">
                                         </div>
                                         <div class="col-md-4">
                                             <label for="peso">Peso</label>
-                                            <input type="number" v-model="alu.integral.peso" id="peso" name="peso" class="form-control" placeholder="Peso">
+                                            <input type="text" v-model="alu.integral.peso" id="peso" name="peso" class="form-control" placeholder="Peso">
                                         </div>
                                     </div>
                                     <div class="row">
@@ -967,14 +973,14 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <label for="aptitudes">Aptitudes especiales</label>
                                             <select name="aptitudes" id="aptitudes" v-model="alu.area.aptitud_especial" class="custom-select custom-select-md">
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="esc.id_escala" v-for="esc in escala">@{{esc.desc_escala}}</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <label for="comprension">Comprensión y retención en clase *</label>
                                             <select name="comprension" id="comprension" v-model="alu.area.comprension" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
@@ -992,8 +998,8 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-4">
-                                            <label for="estrategias">Aplicación de estrategias de aprendizaje</label>
+                                        <div class="col-md-5">
+                                            <label for="estrategias">Aplicación de estrategias de aprendizaje y estudio</label>
                                             <select name="estrategias" id="estrategias" v-model="alu.area.estrategias_aprendizaje" class="custom-select custom-select-md">
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="esc.id_escala"  v-for="esc in escala">@{{esc.desc_escala}}</option>
@@ -1006,7 +1012,7 @@
                                                 <option v-bind:value="esc.id_escala" v-for="esc in escala">@{{esc.desc_escala}}</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <label for="concentracion">Concentración durante el estudio *</label>
                                             <select name="concentracion" id="concentracion" v-model="alu.area.concentracion" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
@@ -1016,8 +1022,8 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-6">
-                                            <label for="solucion">Solución de problemas y aprendizaje de las matemáticas*</label>
+                                        <div class="col-md-5">
+                                            <label for="solucion">Solución de problemas y aprendizaje de las matemáticas *</label>
                                             <select name="solucion" id="solucion" v-model="alu.area.solucion_problemas" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="esc.id_escala" v-for="esc in escala">@{{esc.desc_escala}}</option>
@@ -1031,7 +1037,7 @@
                                                 <option v-bind:value="esc.id_escala"  v-for="esc in escala">@{{esc.desc_escala}}</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-2">
+                                        <div class="col-md-3">
                                             <label for="equipo">Trabajo en equipo *</label>
                                             <select name="equipo" id="equipo" v-model="alu.area.trabajo_equipo" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
@@ -1060,7 +1066,7 @@
                 </div>
             </div>
         </div>
-        <pre hidden>@{{ alu.generales }}</pre>
+        <pre>@{{ alu.generales }}</pre>
         @include("alumnos.partial.modalNSE")
     </div>
     <script type="application/javascript">
@@ -1134,7 +1140,7 @@
                         tot_espe:null,
                         gen_espe:null,
                         id_alumno:null,
-
+                        foto:null
                     },
                     academicos:{
                         id_bachillerato:null,
@@ -1258,7 +1264,6 @@
                 },
                 imagen:null,
                 imagenMiniatura:null,
-
             },
             methods: {
                 getDatos: function () {
@@ -1267,7 +1272,7 @@
                         this.alu.generales.nombre=response.data.datos[0].nombre +' '+response.data.datos[0].apaterno+' '+response.data.datos[0].amaterno;
                         this.alu.generales.no_cuenta=response.data.datos[0].cuenta;
                         this.alu.generales.id_periodo={{\Illuminate\Support\Facades\Session::get('id_periodo')}}
-                        this.alu.generales.sexo=response.data.datos[0].genero;
+                            this.alu.generales.sexo=response.data.datos[0].genero;
                         this.alu.generales.fecha_nacimientos=response.data.datos[0].fecha_nac;
                         this.alu.generales.edad=response.data.datos[0].edad;
                         this.alu.generales.correo=response.data.email;
@@ -1341,21 +1346,19 @@
                                 else if (this.alu.generales.beca==1 && this.alu.generales.id_expbeca==null){
                                     this.llenogen=false;
                                 }
-
-                                   else  if(this.alu.generales.beca==2 && this.alu.generales.id_expbeca==null)
-                                    {
-                                        this.actacademico=true;
-                                        this.disacademico=false;
-                                        this.actgenerales=false;
-                                        this.llenogen=true;
-                                    }
-
+                                else  if(this.alu.generales.beca==2 && this.alu.generales.id_expbeca==null)
+                                {
+                                    this.actacademico=true;
+                                    this.disacademico=false;
+                                    this.actgenerales=false;
+                                    this.llenogen=true;
+                                }
                             }
                             else
                             {
                                 this.llenogen=false;
                             }
-                                break;
+                            break;
                         case 'familiares':
                             if(this.alu.academicos.teestimula_familia!=null
                                 && this.alu.academicos.tegusta_carrera_elegida!=null
@@ -1387,7 +1390,6 @@
                                 this.actestudio=true;
                                 this.disestudio=false;
                                 this.llenofam=true;
-
                             }
                             else
                             {
@@ -1396,13 +1398,12 @@
                             break;
                         case 'integral':
                             if(this.alu.estudio.forma_estudio!=null && this.alu.estudio.tiempo_empleado_estudiar!=null
-                            && this.alu.estudio.id_opc_intelectual!=null)
+                                && this.alu.estudio.id_opc_intelectual!=null)
                             {
                                 this.actestudio=false;
                                 this.actintegral=true;
                                 this.disintegral=false;
                                 this.llenohab=true;
-
                             }
                             else
                             {
@@ -1424,7 +1425,6 @@
                                 this.actarea=true;
                                 this.disarea=false;
                                 this.llenofor=true;
-
                             }
                             else
                             {
@@ -1483,7 +1483,6 @@
                             this.actintegral=false;
                             this.actestudio=false;
                             break;
-
                     }
                 },
                 Guardar:function () {
@@ -1499,27 +1498,23 @@
                     {
                         this.lleno=true;
                         let formData = new FormData();
-                        //formData.append('imagen', this.imagen);
+                        formData.append('imagen', this.imagen);
                         formData.append('nombre',this.alu.generales.no_cuenta);
-                      //
-                        //  formData.append('ext',this.alu.generales.foto);
-
+                        formData.append('ext',this.alu.generales.foto);
                         //console.log(formData);
-                        /*axios.post('/imagen',formData).then(response=>{
+                        axios.post('/imagen',formData).then(response=>{
                             //window.location='inicioalu';
-                        }).catch(error=>{  });*/
+                        }).catch(error=>{  });
                         axios.post(this.ruta,{alu:this.alu}).then(response=>{
-                           window.location='inicioalu';
+                            window.location='inicioalu';
                         }).catch(error=>{  });
                     }
                     else
                     {
                         this.llenoare=false;
                     }
-
                 },
                 CalculaNivel:function () {
-
                     if(this.test.p1!=null &&
                         this.test.p2!=null &&
                         this.test.p3!=null &&
@@ -1529,7 +1524,6 @@
                     {
                         this.test.testlleno=true;
                         this.test.suma=(this.test.p1)+(this.test.p2)+(this.test.p3)+(this.test.p4)+(this.test.p5)+(this.test.p6);
-
                         if(this.test.suma>204 && this.test.suma<=300)
                         {
                             this.alu.generales.nivel_economico="A/B";
@@ -1559,14 +1553,13 @@
                             this.alu.generales.nivel_economico="E";
                         }
                         $('#modalNSE').modal('hide');
-
                     }
                     else
                     {
                         this.test.testlleno=false;
                     }
                 },
-                /*ObtenerImagen:function (img) {
+                ObtenerImagen:function (img) {
                     let file=img.target.files[0];
                     this.imagen=file;
                     this.alu.generales.foto=this.imagen.type;
@@ -1578,7 +1571,7 @@
                         this.imagenMiniatura= e.target.result;
                     }
                     reader.readAsDataURL(file);
-                }*/
+                }
             }
         });
     </script>

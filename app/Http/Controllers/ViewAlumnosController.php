@@ -140,10 +140,10 @@ class ViewAlumnosController extends Controller
         $t_e=implode($tot_esp);
         $g_e=implode($gen_es);
 
-        DB::select('call algoritmo_insert(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',array($nom,$no_cue,$id_carr,$sex,$id_estado,
+       /* DB::select('call algoritmo_insert(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',array($nom,$no_cue,$id_carr,$sex,$id_estado,
             $no_hijo,$no_hermano, $enfermedad,$trabajo,$practica_dep,$actividad_cult,$etnia_ind,$lugar_nac,$id_nivel_eco,$sotiene,
             $tegusta,$bec,$estad,$scal,$pob,$ante,$sat,$ma_re,$to_r,$mat_e,$t_e,$g_e));
-        return $area;
+        return $area;*/
     }
 
     public  function veralumno(Request $request)
