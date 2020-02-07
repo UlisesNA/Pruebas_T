@@ -1,17 +1,19 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Lista;
+
+use App\Reporte;
 use Illuminate\Http\Request;
 use Codedge\Fpdf\Fpdf\Fpdf as FPDF;
+
 class PDF extends FPDF
 {
 
     //CABECERA DE LA PAGINA
     function Header()
     {
-       $this->Image('img/ff.jpg',120,5,10);
-       // $this->Image('img/edom.png',20,5,50);
+        $this->Image('img/ff.jpg',120,5,10);
+        // $this->Image('img/edom.png',20,5,50);
         $this->Ln();
     }
     //PIE DE PAGINA
@@ -24,8 +26,7 @@ class PDF extends FPDF
     }
 
 }
-
-class ListaController extends Controller
+class ReporteController extends Controller
 {
     public function index()
     {
@@ -41,5 +42,4 @@ class ListaController extends Controller
         $pdf->Output();
         exit();
     }
-
 }
