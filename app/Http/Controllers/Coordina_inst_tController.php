@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Controllers;
+use App\Plan_asigna_planeacion_tutor;
 use App\Planeacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,6 +28,17 @@ class Coordina_inst_tController extends Controller
         );
         Planeacion::create($planea);
         return response()->json();
+    }
+
+    public function update(Request $request, $id)
+    {
+        $plan = Plan_asigna_planeacion_tutor::find($id);
+        //dd($plan);
+        $plan->estrategia = $request->estrategia;
+        $plan->requiere_evidencia = $request->requiere_evidencia;
+        $plan->id_estrategia = $request->id_estrategia;
+        $plan->save();
+        return redirect()->back();
     }
 
 }

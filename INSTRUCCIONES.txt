@@ -1,5 +1,0 @@
-Al copear el proyecto hacer lo siguiente:
-
----composer install
----cp .env.example .env
----php artisan key:generate

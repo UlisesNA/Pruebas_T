@@ -8,6 +8,7 @@ use App\Exp_escalas;
 use App\Exp_formacion_integral;
 use App\Exp_generale;
 use App\Exp_habitos_estudio;
+use App\Exp_turno;
 use App\Gnral_carreras;
 use App\Gnral_grupos;
 use App\Gnral_periodos;
@@ -46,6 +47,7 @@ class PdfController extends Controller
 {
     public function pdf_all()
     {
+
         $datosGenerales= Exp_generale::where('id_alumno',Session::get('id_alumno'))->get();
         $datosAntecedentes= Exp_antecedentes_academico::where('id_alumno',Session::get('id_alumno'))->get();
         $datosFamiliares= Exp_datos_familiare::where('id_alumno',Session::get('id_alumno'))->get();
@@ -75,7 +77,19 @@ class PdfController extends Controller
         $pdf->Cell(($pdf->GetPageWidth()-20),8,"DATOS GENERALES".utf8_decode(""),1,4,"C","true");
         $pdf->SetDrawColor(010,010,010);
         $pdf->Rect(180, 10, 15, 15, 'DF');
-        $pdf->Image('img/ff.jpg',180,10,20,19);
+
+        switch ($datosGenerales[0]->foto){
+            case 'image/jpeg':
+                $ext='.jpeg';
+                break;
+            case 'image/png':
+                $ext='.png';
+                break;
+            case 'image/jpg':
+                $ext='.jpg';
+                break;
+        }
+        $pdf->Image('Fotografias/'.$datosGenerales[0]->no_cuenta.$ext,180,10,20,19);
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->SetTextColor(010,010,010);
         $pdf->SetFillColor(204,204,204);
@@ -637,7 +651,7 @@ class PdfController extends Controller
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(35,4,"Dominio del propio idioma: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->dominioidioma->desc_escala),1,0,"C");
+        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->dominioidioma==null?"":$datosArea[0]->dominioidioma->desc_escala),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(18,4,"Otro idioma: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
@@ -650,7 +664,7 @@ class PdfController extends Controller
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(35,4,"Aptitudes especiales: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->aptitudespecial->desc_escala),1,0,"C");
+        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->aptitudespecial==null?"":$datosArea[0]->aptitudespecial->desc_escala),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(45,4,utf8_decode("Comprensión y retención en clase: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
@@ -663,11 +677,11 @@ class PdfController extends Controller
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,utf8_decode("Aplicación de estrategias de aprendizaje y estudio: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,"". utf8_decode($datosArea[0]->estrategiasaprendizaje->desc_escala),1,0,"C");
+        $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,"". utf8_decode($datosArea[0]->estrategiasaprendizaje==null?"":$datosArea[0]->estrategiasaprendizaje->desc_escala),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,utf8_decode("Organización en las actividades de estudio: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,"". utf8_decode($datosArea[0]->organizacionactividades->desc_escala),1,0,"C");
+        $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,"". utf8_decode($datosArea[0]->organizacionactividades==null?"":$datosArea[0]->organizacionactividades->desc_escala),1,0,"C");
         $pdf->Ln(4);
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(65,4,utf8_decode("Consentración durante el estudio: "). utf8_decode(""),1,0,"L","true");
@@ -681,7 +695,7 @@ class PdfController extends Controller
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(45,4,"Condiciones ambientales durante el estudio: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->condicionesambientales->desc_escala),1,0,"C");
+        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->condicionesambientales==null?"":$datosArea[0]->condicionesambientales->desc_escala),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(50,4,utf8_decode("Búsqueda bibliografica e integración de información: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
@@ -853,7 +867,7 @@ class PdfController extends Controller
         $datosFamiliares->load('vives','union','parentesco');
         $datosGenerales->load('turno1','carrera','grupo','semestre','civil');
         $datosHabitos->load('intelectual');
-
+        $ext="";
 
         $pdf= new \Codedge\Fpdf\Fpdf\Fpdf();
         $pdf->AddPage();
@@ -869,7 +883,18 @@ class PdfController extends Controller
         $pdf->Cell(($pdf->GetPageWidth()-20),8,"DATOS GENERALES".utf8_decode(""),1,4,"C","true");
         $pdf->SetDrawColor(010,010,010);
         $pdf->Rect(180, 10, 15, 15, 'DF');
-        $pdf->Image('img/ff.jpg',180,10,20,19);
+        switch ($datosGenerales[0]->foto){
+            case 'image/jpeg':
+                $ext='.jpeg';
+                break;
+            case 'image/png':
+                $ext='.png';
+                break;
+            case 'image/jpg':
+                $ext='.jpg';
+                break;
+        }
+        $pdf->Image('Fotografias/'.$datosGenerales[0]->no_cuenta.$ext,180,10,20,19);
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->SetTextColor(010,010,010);
         $pdf->SetFillColor(204,204,204);
@@ -1037,8 +1062,6 @@ class PdfController extends Controller
         $pdf->SetFont('Arial', '', 4.8);
         $pdf->Cell(13,4,"". utf8_decode($datosGenerales[0]->turno1->descripcion_turno),1,0,"C");
         $pdf->Ln(4);
-
-
 
         $pdf->SetFont('Arial', 'B', 7);
         $pdf->SetTextColor(255,255,255);
@@ -1432,7 +1455,7 @@ class PdfController extends Controller
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(35,4,"Dominio del propio idioma: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->dominioidioma->desc_escala),1,0,"C");
+        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->dominioidioma==null?"":$datosArea[0]->dominioidioma->desc_escala),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(18,4,"Otro idioma: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
@@ -1445,7 +1468,7 @@ class PdfController extends Controller
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(35,4,"Aptitudes especiales: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->aptitudespecial->desc_escala),1,0,"C");
+        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->aptitudespecial==null?"":$datosArea[0]->aptitudespecial->desc_escala),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(45,4,utf8_decode("Comprensión y retención en clase: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
@@ -1458,11 +1481,11 @@ class PdfController extends Controller
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,utf8_decode("Aplicación de estrategias de aprendizaje y estudio: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,"". utf8_decode($datosArea[0]->estrategiasaprendizaje->desc_escala),1,0,"C");
+        $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,"". utf8_decode($datosArea[0]->estrategiasaprendizaje==null?"":$datosArea[0]->estrategiasaprendizaje->desc_escala),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,utf8_decode("Organización en las actividades de estudio: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,"". utf8_decode($datosArea[0]->organizacionactividades->desc_escala),1,0,"C");
+        $pdf->Cell(($pdf->GetPageWidth()-20)/4,4,"". utf8_decode($datosArea[0]->organizacionactividades==null?"":$datosArea[0]->organizacionactividades->desc_escala),1,0,"C");
         $pdf->Ln(4);
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(65,4,utf8_decode("Consentración durante el estudio: "). utf8_decode(""),1,0,"L","true");
@@ -1476,7 +1499,7 @@ class PdfController extends Controller
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(45,4,"Condiciones ambientales durante el estudio: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->condicionesambientales->desc_escala),1,0,"C");
+        $pdf->Cell(20,4,"". utf8_decode($datosArea[0]->condicionesambientales==null?"":$datosArea[0]->condicionesambientales->desc_escala),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(50,4,utf8_decode("Búsqueda bibliografica e integración de información: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);

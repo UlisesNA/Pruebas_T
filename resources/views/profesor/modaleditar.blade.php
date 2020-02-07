@@ -307,7 +307,7 @@
                                                         <div class="col-md-4">
                                                             <label for="bachillerato">Tipo de bachillerato</label>
                                                             <select name="bachillerato" v-model="alu.academicos.id_bachillerato" id="bachillerato" class="custom-select custom-select-md">
-                                                                <option value="null" selected>Elija una opcoón</option>
+                                                                <option value="null" selected>Elija una opción</option>
                                                                 <option v-bind:value="bach.id_bachillerato" v-for="bach in bachiller">@{{bach.desc_bachillerato}}</option>
                                                             </select>
                                                         </div>

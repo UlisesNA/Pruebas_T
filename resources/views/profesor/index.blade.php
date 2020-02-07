@@ -31,7 +31,7 @@
                         </div>
                         <div class="row"><div class="col-9 text-center">@{{ gen }}</div></div>
                     </div>
-                    <div class="card-body" v-show="lista==true" v-if="datos.length>0">
+                    <div class="card-body" v-if="(lista==true && datos.length>0)">
                         <div class="row">
                             <div class="col-12">
                                 <div class="row pb-2">
@@ -63,6 +63,7 @@
                                            <!-- <i class="fas h2 text-success fa-check-circle pt-2"></i>-->
                                         </td>
                                         <td class="text-center" v-if="alumno.expediente">
+                                            @{{ alumno.expediente}}
                                             <button class="btn btn-outline-primary m-1" @click="ver(alumno)" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="far fa-edit"></i></button>
                                             <button class="btn btn-outline-danger" @click="pdfAlumno(alumno)" data-toggle="tooltip" data-placement="bottom" title="Expediente"><i class="far fa-file-pdf"></i></button>
                                         </td>
@@ -74,7 +75,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-body" v-else>
+                    <div class="card-body" v-if="datos.length==0">
                         <div class="row">
                             <div class="col-12 alert-info alert text-center">
                                 <h5 class="font-weight-bold">No se han asignado alumnos al grupo</h5>
@@ -82,273 +83,9 @@
                         </div>
                     </div>
 
-                    <div class="card-body" v-show="listaa==true" >
-                        <div class="row">
-                            <div class="col-md-12">
-                                <br>
-                                <div class="tab-content" id="nav-tabContent">
-                                    <div class="tab-pane fade show active" id="primero" role="tabpanel" aria-labelledby="primero-tab">
-                                        <br>
-                                        <div class="form-group row">
-                                            <div class="col-sm-11" align="center"><h5>Planeación</h5></div>
-                                        </div>
-                                        <table class="table table-hover table-sm">
-                                            <tr>
-                                                <th>Fecha Inicio</th>
-                                                <th>Fecha Fin</th>
-                                                <th>Decripción Actividad</th>
-                                                <th>Objetivo</th>
-                                                <th>Instrucciones</th>
-                                                <th>Semestre</th>
-                                                <th>Sugerencia</th>
-                                                <th>Estrategia</th>
-                                            </tr>
-                                            @foreach($semestre as $dat)
-                                                <tr onmouseover="this.style.backgroundColor='#DBE7F3'" onmouseout="this.style.backgroundColor='white'">
-                                                    <td class="date">{{$dat->fecha_inicio}}</td>
-                                                    <td>{{$dat->fecha_fin}}</td>
-                                                    <td>{{$dat->desc_actividad}}</td>
-                                                    <td>{{$dat->objetivo}}</td>
-                                                    <td>{{$dat->instrucciones}}</td>
-                                                    <td>
-                                                        @foreach($semestre1 as $semes)
-                                                            @if($semes->id_semestre == $dat->id_semestre)
-                                                                {{$semes->descripcion}}
-                                                            @endif
-                                                        @endforeach
-                                                    </td>
-                                                    @if($dat->id_estrategia==0)
-                                                        @if($dat->id_sugerencia==0)
-                                                            <td>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span class="btn btn-primary" data-toggle="modal" data-target="#myModal_{{$dat->id_planeacion}}_tar" style="background: #067a39;color: white">Sugerir cambio</span>
-                                                                </button>
-                                                            </td>
-                                                            <td>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span class="btn btn-primary" data-toggle="modal" data-target="#myModal_{{$dat->id_planeacion}}_estrate" style="background: #067a39;color: white">Asignar estrategia</span>
-                                                                </button>
-                                                            </td>
-                                                        @else
-                                                            @if($dat->id_sugerencia==1)
-                                                                <td>
-                                                                    <a>Sugerencia Aceptada</a>
-                                                                </td>
-                                                                <td>
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                        <span class="btn btn-primary" data-toggle="modal" data-target="#myModal_{{$dat->id_planeacion}}_estrate" style="background: #067a39;color: white">Asignar estrategia</span>
-                                                                    </button>
-                                                                </td>
-                                                            @else
-                                                                @if($dat->id_sugerencia==3)
-                                                                    <td>
-                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                            <span class="btn btn-primary" data-toggle="modal" data-target="#myModal_{{$dat->id_planeacion}}_tar" style="background: #067a39;color: white">Revisar sugerencia</span>
-                                                                        </button>
-                                                                    </td>
-                                                                    <td>
-                                                                        <a>Sugerencia No Aceptada, Corregir</a>
-                                                                    </td>
-                                                                @else
-                                                                    @if($dat->id_sugerencia==2)
-                                                                        <td>
-                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                                <span class="btn btn-primary" data-toggle="modal" data-target="#myModal_{{$dat->id_planeacion}}_tar" style="background: #067a39;color: white">Editar sugerencia</span>
-                                                                            </button>
-                                                                        </td>
-                                                                        <td>
-                                                                            <a>Sugerencia Aun no Revisada</a>
-                                                                        </td>
-                                                                    @endif
-                                                                @endif
-                                                            @endif
-                                                        @endif
-                                                    @else
-                                                        @if($dat->id_estrategia==2)
-                                                            <td>
-                                                                <a>Sin Sugerencias</a>
-                                                            </td>
-                                                            <td>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span class="btn btn-primary" data-toggle="modal" data-target="#myModal_{{$dat->id_planeacion}}_estrate" style="background: #067a39;color: white">Revisar estrategia</span>
-                                                                </button>
-                                                            </td>
-                                                        @else
-                                                            @if($dat->id_estrategia==1)
-                                                                <td>
-                                                                    <a>Sin Sugerencias</a>
-                                                                </td>
-                                                                <td>
-                                                                    <a>Estrategia Aceptada</a>
-                                                                </td>
-                                                            @endif
-                                                        @endif
-                                                    @endif
-                                                </tr>
-                                            @endforeach
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body" v-show="listacanaliza==true" >
-                        <div  v-for="alumno in datos1">
-                            <form action="{{url('canalizacion')}}" method="post">
-                                {{ csrf_field() }}
-                                <div class="container">
-                                    <div class="row justify-content-center">
-                                        <div class="col-md-12">
-                                            <div class="card">
-                                                <div class="card-header"></div>
-                                                <div class="card-body">
-                                                    <div class="row">
-                                                        <div class="col-md-12 ">
-                                                            <table class="table table-bordered">
-                                                                <thead>
-                                                                <tr>
-                                                                    <th scope="col" colspan="4" class="text-center">DATOS DEL ESTUDIANTE</th>
-                                                                </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                <tr>
-                                                                    <td scope="col" colspan="3">
-                                                                        CARRERA: @{{alumno.carre}}
-                                                                    </td>
-                                                                    <td scope="col">SEMESTRE: @{{alumno.sem}}
-                                                                    </td>
-                                                                    <td scope="col" >FECHA CITA ANTERIOR: <input type="date" class="form-control" id="fecha_canalizacion_anterior" name="fecha_canalizacion_anterior"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td scope="row" colspan="3">NOMBRE DEL ESTUDIANTE: @{{alumno.nombre}} @{{alumno.apaterno}} @{{alumno.amaterno}}</td>
-                                                                    <td>GRUPO:
-                                                                        @{{alumno.grup}}
-                                                                    </td>
-                                                                    <td scope="col" >FECHA CITA: <input type="date" class="form-control" id="fecha_canalizacion" name="fecha_canalizacion"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td scope="row" colspan="3">NOMBRE DEL TUTOR:
-                                                                        @foreach ($tutor as $dato)
-                                                                            {{$dato->nombre}}
-                                                                        @endforeach
-                                                                    </td>
-                                                                    <td>HORA: <input type="time" class="form-control" id="hora" name="hora" ></td>
-                                                                    </td>
-                                                                    <td scope="col" >FECHA DE SIGUIENTE CITA: <input type="date" class="form-control" id="fecha_canalizacion_siguiente" name="fecha_canalizacion"></td>
-                                                                </tr>
-                                                                </tbody>
-                                                            </table>
 
 
-                                                            <table class="table table-bordered">
-                                                                <thead>
-                                                                <tr>
-                                                                    <th scope="col" colspan="4" class="text-center">OBSERVACIONES</th>
-                                                                    <th scope="col" class="text-center">OBSERVACIONES GENERALES</th>
-                                                                </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                <tr>
-                                                                    <th scope="row" colspan="3" >Aspectos sociológicos</th>
-                                                                    <th scope="row" colspan="6" rowspan="9" ><textarea type="text" id="observaciones" name="observaciones" class="form-control"></textarea></th>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Indisciplina:</td>
-                                                                    <td> <input type="checkbox" class="" id="aspectos_sociologicos1" name="aspectos_sociologicos1" value="1"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Problemas de integración:</td>
-                                                                    <td> <input type="checkbox" class="" id="aspectos_sociologicos2" name="aspectos_sociologicos2" value="1"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Problemas familiares:</td>
-                                                                    <td> <input type="checkbox" class="" id="aspectos_sociologicos3" name="aspectos_sociologicos3" value="1"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th scope="row" colspan="3" >Aspectos académicos</th>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Dificultades de concentración:</td>
-                                                                    <td> <input type="checkbox" class="" id="aspectos_academicos1" name="aspectos_academicos1" value="1"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Falta de motivación académica:</td>
-                                                                    <td> <input type="checkbox" class="" id="aspectos_academicos2" name="aspectos_academicos2" value="1"></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Bajo rendimiento académico:</td>
-                                                                    <td> <input type="checkbox" class="" id="aspectos_academicos3" name="aspectos_academicos3" value="1"></td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <th scope="row" colspan="3">OTROS (especifique):<br><textarea type="text" id="otros" name="otros" class="form-control"></textarea></th>
-                                                                </tr>
-                                                                </tbody>
-                                                            </table>
-
-                                                            <table class="table table-bordered">
-                                                                <thead>
-                                                                <tr>
-                                                                    <th scope="col" colspan="4" class="text-center">Status</th>
-                                                                </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                <tr>
-                                                                    <td>
-                                                                        <div class="form-check">
-                                                                            <input type="radio" class="form-check-input" id="status" name="status" value="0">
-                                                                            <label class="form-check-label" for="materialGroupExample2">En Proceso</label>
-                                                                        </div>
-
-                                                                        <div class="form-check">
-                                                                            <input type="radio" class="form-check-input" id="status" name="status" value="1">
-                                                                            <label class="form-check-label" for="materialGroupExample3">Terminado</label>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                </tbody>
-                                                            </table>
-
-                                                            <table class="table table-bordered">
-                                                                <thead>
-                                                                <tr>
-                                                                    <th scope="col" colspan="3">Área a canalizar tutorado</th>
-                                                                </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                <tr>
-                                                                    <td>
-                                                                        <select name="id_area" id="id_area" class="custom-select custom-select-md">
-                                                                            <option value="" selected>Elija área a canalizar</option>
-                                                                            @foreach ($areas as $dato)
-                                                                                <option value="{{$dato->id_area}}" >{{$dato->descripcion_area}}</option>
-                                                                            @endforeach
-                                                                        </select>
-                                                                    </td>
-                                                                </tr>
-                                                                </tbody>
-                                                            </table>
-                                                            <div style="display: none">
-                                                                <textarea type="number" class="form-control"  id="id_alumno" name="id_alumno">@{{alumno.id_alumno}}</textarea>
-                                                                @foreach ($tutor as $dato)
-                                                                    <input type="number" class="form-control"  id="id_personal" name="id_personal" value="{{$dato->id_personal}}">
-                                                                @endforeach
-
-                                                            </div>
-                                                            <div align="center">
-                                                                <input type="submit" value="Agregar">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="row" v-show="graficas==true">
+                        <div class="row" v-if="graficas==true">
                         <div class="col-12">
                             <div class="row pt-3">
                                 <div class="col-11"></div>
@@ -383,7 +120,7 @@
                                                     <div class="row">
                                                         <div class="col-12">
                                                             <div class="row">
-                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Estado Civil</h5></div>
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Estado civil</h5></div>
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-4 graf" id="ecg"></div>
@@ -395,7 +132,7 @@
                                                     <div class="row pt-3">
                                                         <div class="col-12">
                                                             <div class="row">
-                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Nivel Socioeconómico</h5></div>
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Nivel socioeconómico</h5></div>
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-4 graf" id="neg"></div>
@@ -419,7 +156,7 @@
                                                     <div class="row pt-3">
                                                         <div class="col-12">
                                                             <div class="row">
-                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Estado Académico</h5></div>
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Estado académico</h5></div>
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-4 graf" id="eag"></div>
@@ -470,13 +207,53 @@
                                         <div class="tab-pane fade" id="v-pills-antecedentes" role="tabpanel" aria-labelledby="v-pills-antecedentes-tab">
                                             <div class="row pt-4">
                                                 <div class="col-12">
-                                                    <div class="row">
-                                                        <div class="col-4 graf " id="bach">Hola</div>
-                                                        <div class="col-4 graf" id="otraca"></div>
-                                                        <div class="col-4 graf" id="gusta"></div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">¿Te gusta la carrera elegida?</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 graf" id="gg"></div>
+                                                                <div class="col-4 graf" id="gf"></div>
+                                                                <div class="col-4 graf" id="gm"></div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="col-4 graf" id="estimula"></div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">¿Te gusta estimula tu familia?</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 graf" id="esg"></div>
+                                                                <div class="col-4 graf" id="esf"></div>
+                                                                <div class="col-4 graf" id="esm"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">¿Otra carrera iniciada?</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 graf" id="og"></div>
+                                                                <div class="col-4 graf" id="of"></div>
+                                                                <div class="col-4 graf" id="om"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Tipo de bachillerato</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 grafmd" id="bag"></div>
+                                                                <div class="col-4 grafmd" id="baf"></div>
+                                                                <div class="col-4 grafmd" id="bam"></div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -484,10 +261,53 @@
                                         <div class="tab-pane fade" id="v-pills-familiares" role="tabpanel" aria-labelledby="v-pills-familiares-tab">
                                             <div class="row pt-4">
                                                 <div class="col-12">
-                                                    <div class="row">
-                                                        <div class="col-4 graf" id="vive"></div>
-                                                        <div class="col-4 graf" id="etnia"></div>
-                                                        <div class="col-4 graf" id="lengua"></div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Actualmente viven con</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 grafmd" id="vg"></div>
+                                                                <div class="col-4 grafmd" id="vf"></div>
+                                                                <div class="col-4 grafmd" id="vm"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Pertenecen a etnia indígena</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 graf" id="etg"></div>
+                                                                <div class="col-4 graf" id="etf"></div>
+                                                                <div class="col-4 graf" id="etm"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Hablan lengua indígena</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 graf" id="hag"></div>
+                                                                <div class="col-4 graf" id="haf"></div>
+                                                                <div class="col-4 graf" id="ham"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Unión familiar</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 graf" id="ug"></div>
+                                                                <div class="col-4 graf" id="uf"></div>
+                                                                <div class="col-4 graf" id="um"></div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -495,10 +315,17 @@
                                         <div class="tab-pane fade" id="v-pills-habitos" role="tabpanel" aria-labelledby="v-pills-habitos-tab">
                                             <div class="row pt-4">
                                                 <div class="col-12">
-                                                    <div class="row">
-                                                        <div class="col-4 graf" id="intelectual"></div>
-                                                        <div class="col-4 graf" id="tiempo"></div>
-                                                        <div class="col-4 graf" id=""></div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Tiempo dedicado a estudiar</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 grafmd" id="tg"></div>
+                                                                <div class="col-4 grafmd" id="tf"></div>
+                                                                <div class="col-4 grafmd" id="tm"></div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -506,10 +333,113 @@
                                         <div class="tab-pane fade" id="v-pills-formacion" role="tabpanel" aria-labelledby="v-pills-formacion-tab">
                                             <div class="row pt-4">
                                                 <div class="col-12">
-                                                    <div class="row">
-                                                        <div class="col-4 graf" id="enfermedadc"></div>
-                                                        <div class="col-4 graf" id="enfermedadv"></div>
-                                                        <div class="col-4 graf" id="lentes"></div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Practican deporte</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 graf" id="pdg"></div>
+                                                                <div class="col-4 graf" id="pdf"></div>
+                                                                <div class="col-4 graf" id="pdm"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Practican alguna actividad artística</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 graf" id="ag"></div>
+                                                                <div class="col-4 graf" id="af"></div>
+                                                                <div class="col-4 graf" id="am"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Participación en actividades culturales o sociales</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 graf" id="csg"></div>
+                                                                <div class="col-4 graf" id="csf"></div>
+                                                                <div class="col-4 graf" id="csm"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Padecen enfermedad crónica</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 graf" id="enfcg"></div>
+                                                                <div class="col-4 graf" id="enfcf"></div>
+                                                                <div class="col-4 graf" id="enfcm"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Padres que padecen enfermedad crónica</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 graf" id="penfcg"></div>
+                                                                <div class="col-4 graf" id="penfcf"></div>
+                                                                <div class="col-4 graf" id="penfcm"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Han tenido una operación médico-quirúrgica</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 graf" id="opeg"></div>
+                                                                <div class="col-4 graf" id="opef"></div>
+                                                                <div class="col-4 graf" id="opem"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Padecen enfermedad visual</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 graf" id="visg"></div>
+                                                                <div class="col-4 graf" id="visf"></div>
+                                                                <div class="col-4 graf" id="vism"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Usan lentes</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 graf" id="lg"></div>
+                                                                <div class="col-4 graf" id="lf"></div>
+                                                                <div class="col-4 graf" id="lm"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Toman medicamento controlado</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 graf" id="meg"></div>
+                                                                <div class="col-4 graf" id="mef"></div>
+                                                                <div class="col-4 graf" id="mem"></div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -517,15 +447,113 @@
                                         <div class="tab-pane fade" id="v-pills-area" role="tabpanel" aria-labelledby="v-pills-area-tab">
                                             <div class="row pt-4">
                                                 <div class="col-12">
-                                                    <div class="row">
-                                                        <div class="col-4 graf" id="rendimiento"></div>
-                                                        <div class="col-4 graf" id="computo"></div>
-                                                        <div class="col-4 graf" id="comprension"></div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Trabajo en equipo</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 graf" id="trg"></div>
+                                                                <div class="col-4 graf" id="trf"></div>
+                                                                <div class="col-4 graf" id="trm"></div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="col-4 graf" id="preparacion"></div>
-                                                        <div class="col-4 graf" id="concentracion"></div>
-                                                        <div class="col-4 graf" id="trabajo"></div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Rendimiento escolar</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 graf" id="reng"></div>
+                                                                <div class="col-4 graf" id="renf"></div>
+                                                                <div class="col-4 graf" id="renm"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Conocimientos en cómputo</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 graf" id="comg"></div>
+                                                                <div class="col-4 graf" id="comf"></div>
+                                                                <div class="col-4 graf" id="comm"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Comprensión y retención en clase</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 graf" id="retg"></div>
+                                                                <div class="col-4 graf" id="retf"></div>
+                                                                <div class="col-4 graf" id="retm"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Preparación de examenes</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 graf" id="exag"></div>
+                                                                <div class="col-4 graf" id="exaf"></div>
+                                                                <div class="col-4 graf" id="exam"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Concentración durante el estudio</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 graf" id="cong"></div>
+                                                                <div class="col-4 graf" id="conf"></div>
+                                                                <div class="col-4 graf" id="conm"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Búsqueda biliográfica</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 graf" id="bbg"></div>
+                                                                <div class="col-4 graf" id="bbf"></div>
+                                                                <div class="col-4 graf" id="bbm"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Otro idioma</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 graf" id="oig"></div>
+                                                                <div class="col-4 graf" id="oif"></div>
+                                                                <div class="col-4 graf" id="oim"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row pt-3">
+                                                        <div class="col-12">
+                                                            <div class="row">
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Solución de problemas y aprendizaje de las matemáticas</h5></div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-4 graf" id="matg"></div>
+                                                                <div class="col-4 graf" id="matf"></div>
+                                                                <div class="col-4 graf" id="matm"></div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -539,89 +567,8 @@
             </div>
         </div>
         @include('profesor.modaleditar')
+
     </div>
-
-
-    @foreach($semestre as $dato)
-        <div class="modal fade" id="myModal_{{$dato->id_planeacion}}_tar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Sugerencia</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="{{route('planeacion.update',$dato->id_planeacion)}}" method="post">
-                            @csrf
-                            @method('PUT')
-                            <div class="modal-body">
-                                <div class="form-group col-md-12">
-                                    <textarea class="form-control" rows="12" name="sugerencia">{{$dato->sugerencia}}</textarea>
-                                    <textarea class="form-control" rows="12" name="comentarios" hidden>{{$dato->comentarios}}</textarea>
-                                    <textarea class="form-control" rows="12" name="estrategia" hidden>{{$dato->estrategia}}</textarea>
-                                    <input type="number" class="form-control" name="id_estado" value="1" hidden>
-                                    <input type="number" class="form-control" name="id_sugerencia" value="2" hidden>
-                                    <input type="number" class="form-control" name="id_estrategia" value="{{$dato->id_estrategia}}" hidden>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <div align="center">
-                                    <button type="submit" class="btn" style="background: #e0e0e0">Enviar</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endforeach
-
-    <!--Modal Crear Estrategia -->
-    @foreach($semestre as $dato)
-        <div class="modal fade" id="myModal_{{$dato->id_planeacion}}_estrate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Estrategia</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action="{{route('planeacion.update',$dato->id_planeacion)}}" method="post">
-                            @csrf
-                            @method('PUT')
-                            <div class="modal-body">
-                                <div class="form-group col-md-12">
-                                    <textarea class="form-control" rows="12" name="estrategia">{{$dato->estrategia}}</textarea>
-                                    <div class="form-group">
-                                        <label>Seleccionar si el tutorado equiere subir evidencia</label>
-                                        @if($dato->id_estado==1)
-                                            <input type="checkbox" class="" id="id_evidencia" name="id_evidencia" value="1" checked>
-                                        @else
-                                            <input type="checkbox" class="" id="id_evidencia" name="id_evidencia" value="1">
-                                        @endif
-                                    </div>
-                                    <textarea class="form-control" rows="12" name="comentarios" hidden>{{$dato->comentarios}}</textarea>
-                                    <textarea class="form-control" rows="12" name="sugerencia" hidden>{{$dato->sugerencia}}</textarea>
-                                    <input type="number" class="form-control" name="id_estado" value="1" hidden>
-                                    <input type="number" class="form-control" name="id_sugerencia" value="{{$dato->id_sugerencia}}" hidden>
-                                    <input type="number" class="form-control" name="id_estrategia" value="2" hidden>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <div align="center">
-                                    <button type="submit" class="btn" style="background: #e0e0e0">Enviar</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endforeach
     <script>
         new Vue({
             el:"#ind",
@@ -835,8 +782,18 @@
 
                 },
                 titulosGrafica:['General','Femenino','Masculino'],
-                general:[['ecg','ecf','ecm'],['neg','nef','nem'],['trag','traf','tram'],
-                         ['eag','eaf','eam'],['bg','bf','bm'],['tbg','tbf','tbm'],['hg','hf','hm']],
+                general:[
+                            ['ecg','ecf','ecm'],['neg','nef','nem'],['trag','traf','tram'],
+                            ['eag','eaf','eam'],['bg','bf','bm'],['tbg','tbf','tbm'],['hg','hf','hm']
+                        ],
+                academic:[['gg','gf','gm'],['esg','esf','esm'],['og','of','om'],['bag','baf','bam']],
+                famili:[['vg','vf','vm'],['etg','etf','etm'],['hag','haf','ham'],['ug','uf','um']],
+                habito:[['tg','tf','tm']],
+                integra:[['pdg','pdf','pdm'],['ag','af','am'],['csg','csf','csm'],['enfcg','enfcf','enfcm'],['penfcg','penfcf','penfcm'],
+                    ['opeg','opef','opem'],['visg','visf','vism'],['lg','lf','lm'],['meg','mef','mem']],
+                areap:[['trg','trf','trm'],['reng','renf','renm'],['comg','comf','comm'],['retg','retf','retm'],['exag','exaf','exam'],
+                ['cong','conf','conm'],['bbg','bbf','bbm'],['oig','oif','oim'],['matg','matf','matm']]
+
             },
             methods:{
                 getTut:function(){
@@ -899,7 +856,6 @@
                     this.listacanaliza=false;
                     axios.post(this.rutgen,{id_carrera:this.idca,id_asigna_generacion:this.idasigna}).then(response=>{
                         this.alumnog=response.data;
-                        // Create the chart
                         Highcharts.chart('genero', {
                             chart: {
                                 type: 'column'
@@ -998,823 +954,276 @@
                                 });
                             }
                         }
-
                     }).catch(error=>{ this.sindato=true; });
                     axios.post(this.academico,{id_carrera:this.idca,id_asigna_generacion:this.idasigna}).then(response=>{
                         this.ea=response.data;
-                        Highcharts.chart('bach', {
-                            chart: {
-                                type: 'column'
-                            },
-                            title: {
-                                text: 'Bachillerato'
-                            },
-                            xAxis: {
-                                categories:this.ea.catbachillerato,
-                                crosshair: true
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: 'Total'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: [{
-                                name: 'Tipo de bachillerato',
-                                data: this.ea.cantbachillerato,
-                            }]
-                        });
-                        Highcharts.chart('otraca', {
-                            chart: {
-                                type: 'column'
-                            },
-                            title: {
-                                text: 'Otra carrera iniciada'
-                            },
-                            xAxis: {
-                                categories:this.ea.catotra,
-                                crosshair: true
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: 'Total'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: [{
-                                name: 'Carrera iniciada',
-                                data: this.ea.cantotra,
-                            }]
-                        });
-                        Highcharts.chart('gusta', {
-                            chart: {
-                                type: 'column'
-                            },
-                            title: {
-                                text: 'Gusto por la carrera'
-                            },
-                            xAxis: {
-                                categories:this.ea.catgusta,
-                                crosshair: true
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: 'Total'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: [{
-                                name: 'Gusto por la carrera',
-                                data: this.ea.cantgusta,
-                            }]
-                        });
-                        Highcharts.chart('estimula', {
-                            chart: {
-                                type: 'column'
-                            },
-                            title: {
-                                text: 'Estimula la familia'
-                            },
-                            xAxis: {
-                                categories:this.ea.catestimula,
-                                crosshair: true
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: 'Total'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: [{
-                                name: 'Estimula',
-                                data: this.ea.cantestimula,
-                            }]
-                        });
-
-                    }).catch(error=>{ });
-                    axios.post(this.academico,{id_carrera:this.idca,id_asigna_generacion:this.idasigna}).then(response=>{
-                        this.ea=response.data;
-                        Highcharts.chart('bach', {
-                            chart: {
-                                type: 'column'
-                            },
-                            title: {
-                                text: 'Bachillerato'
-                            },
-                            xAxis: {
-                                categories:this.ea.catbachillerato,
-                                crosshair: true
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: 'Total'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: [{
-                                name: 'Tipo de bachillerato',
-                                data: this.ea.cantbachillerato,
-                            }]
-                        });
-                        Highcharts.chart('otraca', {
-                            chart: {
-                                type: 'column'
-                            },
-                            title: {
-                                text: 'Otra carrera iniciada'
-                            },
-                            xAxis: {
-                                categories:this.ea.catotra,
-                                crosshair: true
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: 'Total'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: [{
-                                name: 'Carrera iniciada',
-                                data: this.ea.cantotra,
-                            }]
-                        });
-                        Highcharts.chart('gusta', {
-                            chart: {
-                                type: 'column'
-                            },
-                            title: {
-                                text: 'Gusto por la carrera'
-                            },
-                            xAxis: {
-                                categories:this.ea.catgusta,
-                                crosshair: true
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: 'Total'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: [{
-                                name: 'Gusto por la carrera',
-                                data: this.ea.cantgusta,
-                            }]
-                        });
-                        Highcharts.chart('estimula', {
-                            chart: {
-                                type: 'column'
-                            },
-                            title: {
-                                text: 'Estimula la familia'
-                            },
-                            xAxis: {
-                                categories:this.ea.catestimula,
-                                crosshair: true
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: 'Total'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: [{
-                                name: 'Estimula',
-                                data: this.ea.cantestimula,
-                            }]
-                        });
+                        for (let i in  this.ea)
+                        {
+                            for (let z in this.titulosGrafica)
+                            {
+                                Highcharts.chart(this.academic[i][z], {
+                                    chart: {
+                                        type: 'column'
+                                    },
+                                    title: {
+                                        text: this.titulosGrafica[z]
+                                    },
+                                    accessibility: {
+                                        announceNewData: {
+                                            enabled: true
+                                        }
+                                    },
+                                    xAxis: {
+                                        type: 'category'
+                                    },
+                                    yAxis: {
+                                        title: {
+                                            text: 'Total'
+                                        }
+                                    },
+                                    legend: {
+                                        enabled: false
+                                    },
+                                    plotOptions: {
+                                        series: {
+                                            borderWidth: 0,
+                                            dataLabels: {
+                                                enabled: true,
+                                                format: '{point.y:.1f}%'
+                                            }
+                                        }
+                                    },
+                                    tooltip: {
+                                        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                                        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+                                    },
+                                    series: [
+                                        {
+                                            name: this.titulosGrafica[z],
+                                            colorByPoint: true,
+                                            data: this.ea[i][z]
+                                        }
+                                    ],
+                                });
+                            }
+                        }
 
                     }).catch(error=>{ });
                     axios.post(this.familiares,{id_carrera:this.idca,id_asigna_generacion:this.idasigna}).then(response=>{
                         this.ef=response.data;
-                        Highcharts.chart('vive', {
-                            chart: {
-                                type: 'column'
-                            },
-                            title: {
-                                text: 'Actualmente viven con'
-                            },
-                            xAxis: {
-                                categories:this.ef.catvive,
-                                crosshair: true
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: 'Total'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: [{
-                                name: 'Vive',
-                                data: this.ef.cantvive,
-                            }]
-                        });
-                        Highcharts.chart('etnia', {
-                            chart: {
-                                type: 'column'
-                            },
-                            title: {
-                                text: 'Pertenece a etnia indígena'
-                            },
-                            xAxis: {
-                                categories:this.ef.catetnia,
-                                crosshair: true
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: 'Total'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: [{
-                                name: 'Etnia',
-                                data: this.ef.cantetnia,
-                            }]
-                        });
-                        Highcharts.chart('lengua', {
-                            chart: {
-                                type: 'column'
-                            },
-                            title: {
-                                text: 'Hablan lengua indígena'
-                            },
-                            xAxis: {
-                                categories:this.ef.catlengua,
-                                crosshair: true
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: 'Total'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: [{
-                                name: 'Lengua indígena',
-                                data: this.ef.cantlengua,
-                            }]
-                        });
+                        for (let i in  this.ef)
+                        {
+                            for (let z in this.titulosGrafica)
+                            {
+                                Highcharts.chart(this.famili[i][z], {
+                                    chart: {
+                                        type: 'column'
+                                    },
+                                    title: {
+                                        text: this.titulosGrafica[z]
+                                    },
+                                    accessibility: {
+                                        announceNewData: {
+                                            enabled: true
+                                        }
+                                    },
+                                    xAxis: {
+                                        type: 'category'
+                                    },
+                                    yAxis: {
+                                        title: {
+                                            text: 'Total'
+                                        }
+                                    },
+                                    legend: {
+                                        enabled: false
+                                    },
+                                    plotOptions: {
+                                        series: {
+                                            borderWidth: 0,
+                                            dataLabels: {
+                                                enabled: true,
+                                                format: '{point.y:.1f}%'
+                                            }
+                                        }
+                                    },
+                                    tooltip: {
+                                        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                                        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+                                    },
+                                    series: [
+                                        {
+                                            name: this.titulosGrafica[z],
+                                            colorByPoint: true,
+                                            data: this.ef[i][z]
+                                        }
+                                    ],
+                                });
+                            }
+                        }
+
                     }).catch(error=>{ });
 
                     axios.post(this.habitos,{id_carrera:this.idca,id_asigna_generacion:this.idasigna}).then(response=>{
                         this.eh=response.data;
-                        Highcharts.chart('intelectual', {
-                            chart: {
-                                type: 'column'
-                            },
-                            title: {
-                                text: 'Forma de trabajo intelectual'
-                            },
-                            xAxis: {
-                                categories:this.eh.catintelectual,
-                                crosshair: true
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: 'Total'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: [{
-                                name: 'Forma',
-                                data: this.eh.cantintelectual,
-                            }]
-                        });
-                        Highcharts.chart('tiempo', {
-                            chart: {
-                                type: 'column'
-                            },
-                            title: {
-                                text: 'Tiempo dedicado a estudiar'
-                            },
-                            xAxis: {
-                                categories:this.eh.cattiempo,
-                                crosshair: true
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: 'Total'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: [{
-                                name: 'Tiempo',
-                                data: this.eh.canttiempo,
-                            }]
-                        });
+                        for (let i in  this.eh)
+                        {
+                            for (let z in this.titulosGrafica)
+                            {
+                                Highcharts.chart(this.habito[i][z], {
+                                    chart: {
+                                        type: 'column'
+                                    },
+                                    title: {
+                                        text: this.titulosGrafica[z]
+                                    },
+                                    accessibility: {
+                                        announceNewData: {
+                                            enabled: true
+                                        }
+                                    },
+                                    xAxis: {
+                                        type: 'category'
+                                    },
+                                    yAxis: {
+                                        title: {
+                                            text: 'Total'
+                                        }
+                                    },
+                                    legend: {
+                                        enabled: false
+                                    },
+                                    plotOptions: {
+                                        series: {
+                                            borderWidth: 0,
+                                            dataLabels: {
+                                                enabled: true,
+                                                format: '{point.y:.1f}%'
+                                            }
+                                        }
+                                    },
+                                    tooltip: {
+                                        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                                        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+                                    },
+                                    series: [
+                                        {
+                                            name: this.titulosGrafica[z],
+                                            colorByPoint: true,
+                                            data: this.eh[i][z]
+                                        }
+                                    ],
+                                });
+                            }
+                        }
 
                     }).catch(error=>{ });
                     axios.post(this.salud,{id_carrera:this.idca,id_asigna_generacion:this.idasigna}).then(response=>{
                         this.es=response.data;
-                        Highcharts.chart('enfermedadc', {
-                            chart: {
-                                type: 'column'
-                            },
-                            title: {
-                                text: 'Enfermedad Crónica'
-                            },
-                            xAxis: {
-                                categories:this.es.catenfermedadc,
-                                crosshair: true
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: 'Total'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: [{
-                                name: 'Enfermedad Crónica',
-                                data: this.es.cantenfermedadc,
-                            }]
-                        });
-                        Highcharts.chart('enfermedadv', {
-                            chart: {
-                                type: 'column'
-                            },
-                            title: {
-                                text: 'Enfermedad Visual'
-                            },
-                            xAxis: {
-                                categories:this.es.catenfermedadv,
-                                crosshair: true
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: 'Total'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: [{
-                                name: 'Enfermedad Visual',
-                                data: this.es.cantenfermedadv,
-                            }]
-                        });
-                        Highcharts.chart('lentes', {
-                            chart: {
-                                type: 'column'
-                            },
-                            title: {
-                                text: 'Uso de lentes'
-                            },
-                            xAxis: {
-                                categories:this.es.catlentes,
-                                crosshair: true
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: 'Total'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: [{
-                                name: 'Uso de lentes',
-                                data: this.es.cantlentes,
-                            }]
-                        });
+                        for (let i in  this.es)
+                        {
+                            for (let z in this.titulosGrafica)
+                            {
+                                Highcharts.chart(this.integra[i][z], {
+                                    chart: {
+                                        type: 'column'
+                                    },
+                                    title: {
+                                        text: this.titulosGrafica[z]
+                                    },
+                                    accessibility: {
+                                        announceNewData: {
+                                            enabled: true
+                                        }
+                                    },
+                                    xAxis: {
+                                        type: 'category'
+                                    },
+                                    yAxis: {
+                                        title: {
+                                            text: 'Total'
+                                        }
+                                    },
+                                    legend: {
+                                        enabled: false
+                                    },
+                                    plotOptions: {
+                                        series: {
+                                            borderWidth: 0,
+                                            dataLabels: {
+                                                enabled: true,
+                                                format: '{point.y:.1f}%'
+                                            }
+                                        }
+                                    },
+                                    tooltip: {
+                                        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                                        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+                                    },
+                                    series: [
+                                        {
+                                            name: this.titulosGrafica[z],
+                                            colorByPoint: true,
+                                            data: this.es[i][z]
+                                        }
+                                    ],
+                                });
+                            }
+                        }
 
                     }).catch(error=>{ });
                     axios.post(this.area,{id_carrera:this.idca,id_asigna_generacion:this.idasigna}).then(response=>{
                         this.eas=response.data;
-                        Highcharts.chart('rendimiento', {
-                            chart: {
-                                type: 'column'
-                            },
-                            title: {
-                                text: 'Rendimiento escolar'
-                            },
-                            xAxis: {
-                                categories:this.eas.catrendimiento,
-                                crosshair: true
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: 'Total'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: [{
-                                name: 'Rendimiento escolar',
-                                data: this.eas.cantrendimiento,
-                            }]
-                        });
-                        Highcharts.chart('computo', {
-                            chart: {
-                                type: 'column'
-                            },
-                            title: {
-                                text: 'Conocimientos en cómputo'
-                            },
-                            xAxis: {
-                                categories:this.eas.catcomputo,
-                                crosshair: true
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: 'Total'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: [{
-                                name: 'Conocimientos en cómputo',
-                                data: this.eas.cantcomputo,
-                            }]
-                        });
-                        Highcharts.chart('comprension', {
-                            chart: {
-                                type: 'column'
-                            },
-                            title: {
-                                text: 'Comprensión y retención en clase'
-                            },
-                            xAxis: {
-                                categories:this.eas.catcomprension,
-                                crosshair: true
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: 'Total'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: [{
-                                name: 'Comprensión',
-                                data: this.eas.cantcomprension,
-                            }]
-                        });
-                        Highcharts.chart('preparacion', {
-                            chart: {
-                                type: 'column'
-                            },
-                            title: {
-                                text: 'Preparación y presentación de exámenes'
-                            },
-                            xAxis: {
-                                categories:this.eas.catpreparacion,
-                                crosshair: true
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: 'Total'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: [{
-                                name: 'Preparación',
-                                data: this.eas.cantpreparacion,
-                            }]
-                        });
-                        Highcharts.chart('concentracion', {
-                            chart: {
-                                type: 'column'
-                            },
-                            title: {
-                                text: 'Concentración durante el estudio'
-                            },
-                            xAxis: {
-                                categories:this.eas.catconcentracion,
-                                crosshair: true
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: 'Total'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: [{
-                                name: 'Concentración',
-                                data: this.eas.cantconcentracion,
-                            }]
-                        });
-                        Highcharts.chart('trabajo', {
-                            chart: {
-                                type: 'column'
-                            },
-                            title: {
-                                text: 'Trabajo en equipo'
-                            },
-                            xAxis: {
-                                categories:this.eas.cattrabajo,
-                                crosshair: true
-                            },
-                            yAxis: {
-                                min: 0,
-                                title: {
-                                    text: 'Total'
-                                }
-                            },
-                            tooltip: {
-                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                                footerFormat: '</table>',
-                                shared: true,
-                                useHTML: true
-                            },
-                            plotOptions: {
-                                column: {
-                                    pointPadding: 0.2,
-                                    borderWidth: 0
-                                }
-                            },
-                            series: [{
-                                name: 'Trabajo en equipo',
-                                data: this.eas.canttrabajo,
-                            }]
-                        });
-
+                        for (let i in  this.eas)
+                        {
+                            for (let z in this.titulosGrafica)
+                            {
+                                Highcharts.chart(this.areap[i][z], {
+                                    chart: {
+                                        type: 'column'
+                                    },
+                                    title: {
+                                        text: this.titulosGrafica[z]
+                                    },
+                                    accessibility: {
+                                        announceNewData: {
+                                            enabled: true
+                                        }
+                                    },
+                                    xAxis: {
+                                        type: 'category'
+                                    },
+                                    yAxis: {
+                                        title: {
+                                            text: 'Total'
+                                        }
+                                    },
+                                    legend: {
+                                        enabled: false
+                                    },
+                                    plotOptions: {
+                                        series: {
+                                            borderWidth: 0,
+                                            dataLabels: {
+                                                enabled: true,
+                                                format: '{point.y:.1f}%'
+                                            }
+                                        }
+                                    },
+                                    tooltip: {
+                                        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                                        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+                                    },
+                                    series: [
+                                        {
+                                            name: this.titulosGrafica[z],
+                                            colorByPoint: true,
+                                            data: this.eas[i][z]
+                                        }
+                                    ],
+                                });
+                            }
+                        }
                     }).catch(error=>{ });
 
 
@@ -1993,8 +1402,8 @@
                   this.alu.academicos.semestres_cursados=null;
                 },
                 borra_trabaja:function(){
-                    this.alu.generales.ocupacion="";
-                    this.alu.generales.horario="";
+                    this.alu.generales.ocupacion=null;
+                    this.alu.generales.horario=null;
                 },
                 borra_beca:function(){
                     this.alu.generales.id_expbeca=null

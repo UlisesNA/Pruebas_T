@@ -89,7 +89,6 @@
             },
             agregarCo:function () {
                 axios.post(this.coor,{id_personal:this.idname}).then(response=>{
-
                     this.getDatos();
                 });
             }
