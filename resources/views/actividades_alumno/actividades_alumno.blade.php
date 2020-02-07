@@ -31,10 +31,12 @@
                                 @endif
                                 @if(isset($plan->evidencia[0]))
                                     <a href="{{url("/img/",$plan->evidencia[0]->evidencia)}}" target="_blank">Evidencia</a>
+                                        <a href="#!" data-id="{{$plan->evidencia[0]->id_evidencia}}" class="edit_evidencia">Modificar evidencia</a>
                                 @else
                                     @if($plan->requiere_evidencia==1)
-                                            <button type="button" class="btn btn-success edit" value="{{$plan->id_asigna_planeacion_tutor}}">
+                                            <button type="button" class="btn btn-success edit" data-id="{{$plan->id_asigna_planeacion_tutor}}">
                                                 <span class="glyphicon-edit"></span>Subir evidencia</button>
+
                                     @endif
                                 @endif
                             </td>
@@ -58,6 +60,8 @@
                         <div class="form-group col-md-12">
                             <input type="file" class="form-control" name="evidencia" id="evidencia" >
                             <input type="number" id="id_asigna_planeacion_tutor" name="id_asigna_planeacion_tutor" hidden>
+                            <input type="number" id="id_evidencia" name="id_evidencia" hidden>
+
                         </div>
                     </div>
                 </div>
@@ -72,10 +76,22 @@
     <script>
         $(document).ready(function(){
             $('.edit').click(function(){
-                var id=$(this).val();
 
+                $('#id_asigna_planeacion_tutor').val("");
+                $('#id_evidencia').val("");
+
+                var id=$(this).data("id");
                 $('#edit').modal('show');
                 $('#id_asigna_planeacion_tutor').val(id);
+            });
+            $('.edit_evidencia').click(function(){
+                $('#id_asigna_planeacion_tutor').val("");
+                $('#id_evidencia').val("");
+
+                var id=$(this).data("id");
+
+                $('#edit').modal('show');
+                $('#id_evidencia').val(id);
             });
         });
     </script>

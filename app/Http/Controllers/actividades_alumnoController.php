@@ -61,6 +61,8 @@ class actividades_alumnoController extends Controller
 
     public function store(Request $request)
     {
+       // dd($request->all());
+
         $id=DB::select('SELECT id_alumno FROM gnral_alumnos WHERE id_usuario='.Auth::user()->id);
         //dd($id);
         //$plan = Plan_asigna_evidencias::find($id);
@@ -70,11 +72,17 @@ class actividades_alumnoController extends Controller
         $name=time().".".$file->getClientOriginalExtension();
         $file->move(public_path().'/img/',$name);
 
+        if($request->id_evidencia==null){
         Plan_asigna_evidencias::create([
             "evidencia" => $name,
             "id_alumno" => $id[0]->id_alumno,
             "id_asigna_planeacion_tutor"=>$request->id_asigna_planeacion_tutor,
         ]);
+        }
+        else{
+            Plan_asigna_evidencias::find($request->id_evidencia)->update(["evidencia"=>$name]);
+        }
+
         return redirect()->back();
     }
     public function updateExp(Request $request)
