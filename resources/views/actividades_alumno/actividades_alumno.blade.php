@@ -16,6 +16,7 @@
                         <th>Fecha Inicio</th>
                         <th>Fecha Fin</th>
                         <th>Estrategia</th>
+                        <th>Evidencia</th>
                     </tr>
                     @foreach ($datos as $plan)
                         <tr onmouseover="this.style.backgroundColor='#DBE7F3'" onmouseout="this.style.backgroundColor='white'">
@@ -50,13 +51,13 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
-                <form action="{{url('actividad')}}" method="post">
+                <form action="{{url('actividad')}}" method="post" enctype="multipart/form-data">
                 <div class="modal-body">
                     {{ csrf_field() }}
                     <div class="container-fluid">
                         <div class="form-group col-md-12">
                             <input type="file" class="form-control" name="evidencia" id="evidencia" >
-                            <input type="number" id="id_asigna_planeacion_tutor" hidden>
+                            <input type="number" id="id_asigna_planeacion_tutor" name="id_asigna_planeacion_tutor" hidden>
                         </div>
                     </div>
                 </div>
@@ -70,7 +71,7 @@
     </div>
     <script>
         $(document).ready(function(){
-            $(document).on('click', '.edit', function(){
+            $('.edit').click(function(){
                 var id=$(this).val();
 
                 $('#edit').modal('show');

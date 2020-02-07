@@ -61,12 +61,12 @@ class actividades_alumnoController extends Controller
 
     public function store(Request $request)
     {
-        /*$id=DB::select('SELECT id_alumno FROM gnral_alumnos WHERE id_usuario='.Auth::user()->id);
+        $id=DB::select('SELECT id_alumno FROM gnral_alumnos WHERE id_usuario='.Auth::user()->id);
         //dd($id);
         //$plan = Plan_asigna_evidencias::find($id);
         $file=$request->file('evidencia');
 
-        dd($file);
+        //dd($request->id_asigna_planeacion_tutor);
         $name=time().".".$file->getClientOriginalExtension();
         $file->move(public_path().'/img/',$name);
 
@@ -75,7 +75,7 @@ class actividades_alumnoController extends Controller
             "id_alumno" => $id[0]->id_alumno,
             "id_asigna_planeacion_tutor"=>$request->id_asigna_planeacion_tutor,
         ]);
-        return redirect()->back();*/
+        return redirect()->back();
     }
     public function updateExp(Request $request)
     {
