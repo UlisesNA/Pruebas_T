@@ -17,6 +17,7 @@ class PDF extends FPDF
         $this->Image('img/tecnm.jpg',81,3,30,12);
         $this->Image('img/TESVB.png',145,3,28,11);
         $this->Image('img/edomex1.png',176,2,30,13);
+        $this->Line(175,2.5,175,14);
         $this->SetFont('Times', '', 8);
         $this->Cell(175,6,utf8_decode('2020. "Año de Laura Méndez de Cuenca; emblema de la mujer Mexiquense".'),0,4,"C");
 
