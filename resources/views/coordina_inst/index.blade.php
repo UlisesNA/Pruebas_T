@@ -60,7 +60,7 @@
                                                                 @else
                                                                     @if($dat->id_estado == 1)
                                                                     <td>
-                                                                    <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_plan_actividad}}_tar" style="background: #f0f0f0;">
+                                                                    <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_plan_actividad}}_ver" style="background: #f0f0f0;">
                                                                         <i class="fas fa-eye" style="color: black"></i>
                                                                     </a>
                                                                     </td>
@@ -72,7 +72,7 @@
                                                                     @else
                                                                         @if($dat->id_estado == 3)
                                                                             <td>
-                                                                                <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_plan_actividad}}_ver" style="background: #f0f0f0;">
+                                                                                <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_plan_actividad}}_tar" style="background: #f0f0f0;">
                                                                                     <i class="fas fa-edit" style="color: black"></i>
                                                                                 </a>
                                                                             </td>
