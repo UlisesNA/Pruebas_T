@@ -30,13 +30,13 @@
                                     <h6>No requiere evidencia</h6>
                                 @endif
                                 @if(isset($plan->evidencia[0]))
-                                    <a href="{{url("/img/",$plan->evidencia[0]->evidencia)}}" target="_blank">Evidencia</a>
-                                        <a href="#!" data-id="{{$plan->evidencia[0]->id_evidencia}}" class="edit_evidencia">Modificar evidencia</a>
-                                @else
+                                    <a href="{{url("/img/",$plan->evidencia[0]->evidencia)}}" target="_blank">Visualizar</a>
+                                    <button type="button" class="edit_evidencia" data-id="{{$plan->evidencia[0]->id_evidencia}}">
+                                            <i class="fas fa-pen" style="background: #f0f0f0;"></i></button>
+                                    @else
                                     @if($plan->requiere_evidencia==1)
-                                            <button type="button" class="btn btn-success edit" data-id="{{$plan->id_asigna_planeacion_tutor}}">
-                                                <span class="glyphicon-edit"></span>Subir evidencia</button>
-
+                                            <button type="button" class="btn edit" data-id="{{$plan->id_asigna_planeacion_tutor}}" style="background: #f0f0f0;">
+                                                <i class="fas fa-file-pdf"></i></button>
                                     @endif
                                 @endif
                             </td>
@@ -58,7 +58,7 @@
                     {{ csrf_field() }}
                     <div class="container-fluid">
                         <div class="form-group col-md-12">
-                            <input type="file" class="form-control" name="evidencia" id="evidencia" >
+                            <input type="file" class="form-control" name="evidencia" id="evidencia" accept=".pdf">
                             <input type="number" id="id_asigna_planeacion_tutor" name="id_asigna_planeacion_tutor" hidden>
                             <input type="number" id="id_evidencia" name="id_evidencia" hidden>
 

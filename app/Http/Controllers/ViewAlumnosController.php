@@ -84,66 +84,7 @@ class ViewAlumnosController extends Controller
         Exp_formacion_integral::create($request->alu['integral']);
         $area=Exp_area_psicopedagogica::create($request->alu['area']);
 
-        $nombre=array("nombre" => $request->nombre);
-        $no_cuenta=array("noC" => $request->no_cuenta);
-        $id_carrera=array( "carrera"=>$request->carrera);
-        $sexo=array("sexo" => $request->sexo);
-        $id_estado_civil=array("EC" => $request->estado_civil);
-        $no_hijos=array( "nh" => $request->no_hijos);
-        $no_hermanos=array("nh" => $request->no_hermanos);
-        $enfermedad_cronica=array( "enferCron" => $request->enferCron);
-        $trabaja=array("trabaja" => $request->trabaja);
-        $practica_deporte=array( "depo" => $request->depo);
-        $actividades_culturales=array( "actC" => $request->actC);
-        $etnia_indigena=array("etnia" => $request->etnia);
-        $lugar_nacimientos=array("ln" => $request->lugar_nacimiento);
-        $id_nivel_economico=array( "NSE" => $request->nivel_socioeconomico);
-        $sostiene_economia_hogar=array( "sostiene" => $request->sosten_hogar);
-        $tegusta_carrera_elegida=array( "cae" => $request->cae);
-        $beca=array( "beca" => $request->beca);
-        $estado=array("estado" => $request->estado);
-        $scala=array( "id_escala"=>$request->id_escala);
-        $pobla=array("poblacion"=> $request->poblacion);
-        $ante_i=array("ant_inst"=> $request->ant_inst);
-        $satis=array("satisfaccion_c"=> $request->satisfaccion_c);
-        $mat_repe=array("materias_repeticion"=> $request->materias_repeticion);
-        $tot_re=array("tot_repe"=> $request->tot_repe);
-        $mat_espe=array("materias_especial"=> $request->materias_especial);
-        $tot_esp=array("tot_espe"=> $request->tot_espe);
-        $gen_es=array("gen_espe"=> $request->gen_espe);
-
-        $nom=implode($nombre);
-        $no_cue=implode($no_cuenta);
-        $id_carr=implode($id_carrera);
-        $sex=implode($sexo);
-        $id_estado=implode($id_estado_civil);
-        $no_hijo=implode($no_hijos);
-        $no_hermano=implode($no_hermanos);
-        $enfermedad=implode($enfermedad_cronica);
-        $trabajo=implode($trabaja);
-        $practica_dep=implode($practica_deporte);
-        $actividad_cult=implode($actividades_culturales);
-        $etnia_ind=implode($etnia_indigena);
-        $lugar_nac=implode($lugar_nacimientos);
-        $id_nivel_eco=implode($id_nivel_economico);
-        $sotiene=implode($sostiene_economia_hogar);
-        $tegusta=implode($tegusta_carrera_elegida);
-        $bec=implode($beca);
-        $estad=implode($estado);
-        $scal=implode($scala);
-        $pob=implode($pobla);
-        $ante=implode($ante_i);
-        $sat=implode($satis);
-        $ma_re=implode($mat_repe);
-        $to_r=implode($tot_re);
-        $mat_e=implode($mat_espe);
-        $t_e=implode($tot_esp);
-        $g_e=implode($gen_es);
-
-       /* DB::select('call algoritmo_insert(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',array($nom,$no_cue,$id_carr,$sex,$id_estado,
-            $no_hijo,$no_hermano, $enfermedad,$trabajo,$practica_dep,$actividad_cult,$etnia_ind,$lugar_nac,$id_nivel_eco,$sotiene,
-            $tegusta,$bec,$estad,$scal,$pob,$ante,$sat,$ma_re,$to_r,$mat_e,$t_e,$g_e));
-        return $area;*/
+        return $area;
     }
 
     public  function veralumno(Request $request)
@@ -189,65 +130,6 @@ class ViewAlumnosController extends Controller
         $area = Exp_area_psicopedagogica::find($request->alu['area']['id_exp_area_psicopedagogica']);
         $area->update($request->alu['area']);
 
-        $nombre=array("nombre" => $request->nombre);
-        $no_cuenta=array("noC" => $request->no_cuenta);
-        $id_carrera=array( "carrera"=>$request->carrera);
-        $sexo=array("sexo" => $request->sexo);
-        $id_estado_civil=array("EC" => $request->estado_civil);
-        $no_hijos=array( "nh" => $request->no_hijos);
-        $no_hermanos=array("nh" => $request->no_hermanos);
-        $enfermedad_cronica=array( "enferCron" => $request->enferCron);
-        $trabaja=array("trabaja" => $request->trabaja);
-        $practica_deporte=array( "depo" => $request->depo);
-        $actividades_culturales=array( "actC" => $request->actC);
-        $etnia_indigena=array("etnia" => $request->etnia);
-        $lugar_nacimientos=array("ln" => $request->lugar_nacimiento);
-        $id_nivel_economico=array( "NSE" => $request->nivel_socioeconomico);
-        $sostiene_economia_hogar=array( "sostiene" => $request->sosten_hogar);
-        $tegusta_carrera_elegida=array( "cae" => $request->cae);
-        $beca=array( "beca" => $request->beca);
-        $estado=array("estado" => $request->estado);
-        $scala=array( "id_escala"=>$request->id_escala);
-        $pobla=array("poblacion"=> $request->poblacion);
-        $ante_i=array("ant_inst"=> $request->ant_inst);
-        $satis=array("satisfaccion_c"=> $request->satisfaccion_c);
-        $mat_repe=array("materias_repeticion"=> $request->materias_repeticion);
-        $tot_re=array("tot_repe"=> $request->tot_repe);
-        $mat_espe=array("materias_especial"=> $request->materias_especial);
-        $tot_esp=array("tot_espe"=> $request->tot_espe);
-        $gen_es=array("gen_espe"=> $request->gen_espe);
-
-        $nom=implode($nombre);
-        $no_cue=implode($no_cuenta);
-        $id_carr=implode($id_carrera);
-        $sex=implode($sexo);
-        $id_estado=implode($id_estado_civil);
-        $no_hijo=implode($no_hijos);
-        $no_hermano=implode($no_hermanos);
-        $enfermedad=implode($enfermedad_cronica);
-        $trabajo=implode($trabaja);
-        $practica_dep=implode($practica_deporte);
-        $actividad_cult=implode($actividades_culturales);
-        $etnia_ind=implode($etnia_indigena);
-        $lugar_nac=implode($lugar_nacimientos);
-        $id_nivel_eco=implode($id_nivel_economico);
-        $sotiene=implode($sostiene_economia_hogar);
-        $tegusta=implode($tegusta_carrera_elegida);
-        $bec=implode($beca);
-        $estad=implode($estado);
-        $scal=implode($scala);
-        $pob=implode($pobla);
-        $ante=implode($ante_i);
-        $sat=implode($satis);
-        $ma_re=implode($mat_repe);
-        $to_r=implode($tot_re);
-        $mat_e=implode($mat_espe);
-        $t_e=implode($tot_esp);
-        $g_e=implode($gen_es);
-
-        DB::select('call algoritmo_update(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',array($nom,$no_cue,$id_carr,$sex,$id_estado,
-            $no_hijo,$no_hermano, $enfermedad,$trabajo,$practica_dep,$actividad_cult,$etnia_ind,$lugar_nac,$id_nivel_eco,$sotiene,
-            $tegusta,$bec,$estad,$scal,$pob,$ante,$sat,$ma_re,$to_r,$mat_e,$t_e,$g_e));
         return('ok');
     }
 

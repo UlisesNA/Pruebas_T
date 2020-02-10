@@ -30,11 +30,10 @@ class ReporteController extends Controller
             ->join('users','users.email','=','gnral_personales.correo')
             ->where('users.email','=',$pr)
             ->select('reporte_tutor.id_reporte_tutor as id','reporte_tutor.n_cuenta as cuenta','reporte_tutor.alumno as alum','reporte_tutor.appaterno as ap',
-                'reporte_tutor.apmaterno as am','reporte_tutor.tutoria_grupal as ti',
-                'reporte_tutor.tutoria_individual as tg','reporte_tutor.beca  as beca','reporte_tutor.repeticion as repe',
+                'reporte_tutor.apmaterno as am','reporte_tutor.tutoria_grupal as tg',
+                'reporte_tutor.tutoria_individual as ti','reporte_tutor.beca  as beca','reporte_tutor.repeticion as repe',
                 'reporte_tutor.especial as espe','reporte_tutor.academico as aca','reporte_tutor.medico  as med',
-                'reporte_tutor.psicologico as ps','reporte_tutor.baja as baja','reporte_tutor.ingles as ing',
-                'reporte_tutor.complementarias as comp','reporte_tutor.s_social as social')
+                'reporte_tutor.psicologico as ps','reporte_tutor.baja as baja')
             ->get();
         return view('profesor.reporte',compact("consulta"));
     }
@@ -68,9 +67,6 @@ class ReporteController extends Controller
         $c->psicologico=$request->get('psicologico');
         $c->baja=$request->get('baja');
         $c->observaciones=$request->get('observaciones');
-        $c->ingles=$request->get('ingles');
-        $c->complementarias=$request->get('complementarias');
-        $c->s_social=$request->get('s_social');
         $c->save();
         return redirect()->to('reporte');
     }

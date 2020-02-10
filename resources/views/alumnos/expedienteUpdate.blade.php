@@ -51,7 +51,7 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label for="edad">Edad</label>
-                                            <input type="text" class="form-control" v-model="alu.generales.edad" id="edad" name="edad" placeholder="Edad">
+                                            <input type="number" class="form-control" v-model="alu.generales.edad" id="edad" name="edad" placeholder="Edad">
                                         </div>
                                         <div class="col-md-4">
                                             <label for="ln">Lugar de nacimiento</label>
@@ -937,8 +937,8 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-5">
-                                            <label for="estrategias">Aplicación de estrategias de aprendizaje y estudio</label>
+                                        <div class="col-md-4">
+                                            <label for="estrategias">Aplicación de estrategias de aprendizaje</label>
                                             <select name="estrategias" id="estrategias" v-model="alu.area.estrategias_aprendizaje" class="custom-select custom-select-md">
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="esc.id_escala"  v-for="esc in escala">@{{esc.desc_escala}}</option>
@@ -951,7 +951,7 @@
                                                 <option v-bind:value="esc.id_escala" v-for="esc in escala">@{{esc.desc_escala}}</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                             <label for="concentracion">Concentración durante el estudio *</label>
                                             <select name="concentracion" id="concentracion" v-model="alu.area.concentracion" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
@@ -961,7 +961,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-5">
+                                        <div class="col-md-6">
                                             <label for="solucion">Solución de problemas y aprendizaje de las matemáticas*</label>
                                             <select name="solucion" id="solucion" v-model="alu.area.solucion_problemas" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
@@ -976,7 +976,7 @@
                                                 <option v-bind:value="esc.id_escala"  v-for="esc in escala">@{{esc.desc_escala}}</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-2">
                                             <label for="equipo">Trabajo en equipo *</label>
                                             <select name="equipo" id="equipo" v-model="alu.area.trabajo_equipo" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>

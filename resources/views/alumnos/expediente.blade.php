@@ -60,7 +60,7 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label for="edad">Edad</label>
-                                            <input type="text" class="form-control" v-model="alu.generales.edad" id="edad" name="edad" placeholder="Edad">
+                                            <input type="number" class="form-control" v-model="alu.generales.edad" id="edad" name="edad" placeholder="Edad">
                                         </div>
                                         <div class="col-md-4">
                                             <label for="ln">Lugar de nacimiento</label>
@@ -1069,7 +1069,6 @@
                 </div>
             </div>
         </div>
-        <pre>@{{ alu.generales }}</pre>
         @include("alumnos.partial.modalNSE")
     </div>
     <script type="application/javascript">

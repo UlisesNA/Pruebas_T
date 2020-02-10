@@ -77,7 +77,7 @@ class GraficasController extends Controller
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
                      JOIN exp_civil_estados ON exp_generales.id_estado_civil=exp_civil_estados.id_estado_civil 
                      JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_civil_estados.desc_ec="Divorsiado") as divorsiado, (select COUNT(exp_generales.id_exp_general)
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_civil_estados.desc_ec="Divorciado") as divorsiado, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
                      JOIN exp_civil_estados ON exp_generales.id_estado_civil=exp_civil_estados.id_estado_civil 
@@ -103,7 +103,7 @@ class GraficasController extends Controller
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
                      JOIN exp_civil_estados ON exp_generales.id_estado_civil=exp_civil_estados.id_estado_civil 
                      JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_civil_estados.desc_ec="Divorsiado" and exp_generales.sexo="F") as divorsiado, (select COUNT(exp_generales.id_exp_general)
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_civil_estados.desc_ec="Divorciado" and exp_generales.sexo="F") as divorsiado, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
                      JOIN exp_civil_estados ON exp_generales.id_estado_civil=exp_civil_estados.id_estado_civil 
@@ -129,7 +129,7 @@ class GraficasController extends Controller
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
                      JOIN exp_civil_estados ON exp_generales.id_estado_civil=exp_civil_estados.id_estado_civil 
                      JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion  
-                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_civil_estados.desc_ec="Divorsiado" and exp_generales.sexo="M") as divorsiado, (select COUNT(exp_generales.id_exp_general)
+                      WHERE  exp_generales.id_carrera='.$request->id_carrera.' AND exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.' AND exp_civil_estados.desc_ec="Divorciado" and exp_generales.sexo="M") as divorsiado, (select COUNT(exp_generales.id_exp_general)
                       FROM exp_generales
                      JOIN exp_asigna_alumnos ON exp_generales.id_alumno=exp_asigna_alumnos.id_alumno 
                      JOIN exp_civil_estados ON exp_generales.id_estado_civil=exp_civil_estados.id_estado_civil 
@@ -475,13 +475,13 @@ class GraficasController extends Controller
                 ],
                 [
                     [
-                        ["name"=>"A/B","y"=>round(($nivelgen[0]->AB)*100/Session::get('total_alumnos'))],["name"=>"C+","y"=>round(($nivelgen[0]->CC)*100/Session::get('total_alumnos'))],["name"=>"C","y"=>round(($nivelgen[0]->C)*100/Session::get('total_alumnos'))],["name"=>"C-","y"=>round(($nivelgen[0]->CCC)*100/Session::get('total_alumnos'))],["name"=>"D+","y"=>round(($nivelgen[0]->DD)*100/Session::get('total_alumnos'))],["name"=>"D","y"=>round(($nivelgen[0]->D)*100/Session::get('total_alumnos'))],["name"=>"E","y"=>round(($nivelgen[0]->E)*100/Session::get('total_alumnos'))]
+                        ["name"=>"E","y"=>round(($nivelgen[0]->E)*100/Session::get('total_alumnos'))],["name"=>"D","y"=>round(($nivelgen[0]->D)*100/Session::get('total_alumnos'))],["name"=>"D+","y"=>round(($nivelgen[0]->DD)*100/Session::get('total_alumnos'))],["name"=>"C-","y"=>round(($nivelgen[0]->CCC)*100/Session::get('total_alumnos'))],["name"=>"C","y"=>round(($nivelgen[0]->C)*100/Session::get('total_alumnos'))],["name"=>"C+","y"=>round(($nivelgen[0]->CC)*100/Session::get('total_alumnos'))],["name"=>"A/B","y"=>round(($nivelgen[0]->AB)*100/Session::get('total_alumnos'))]
                     ],
                     [
-                        ["name"=>"A/B","y"=>round(($nivelF[0]->AB)*100/Session::get('total_mujeres'))],["name"=>"C+","y"=>round(($nivelF[0]->CC)*100/Session::get('total_mujeres'))],["name"=>"C","y"=>round(($nivelF[0]->C)*100/Session::get('total_mujeres'))],["name"=>"C-","y"=>round(($nivelF[0]->CCC)*100/Session::get('total_mujeres'))],["name"=>"D+","y"=>round(($nivelF[0]->DD)*100/Session::get('total_mujeres'))],["name"=>"D","y"=>round(($nivelF[0]->D)*100/Session::get('total_mujeres'))],["name"=>"E","y"=>round(($nivelF[0]->E)*100/Session::get('total_mujeres'))]
+                        ["name"=>"E","y"=>round(($nivelF[0]->E)*100/Session::get('total_mujeres'))],["name"=>"D","y"=>round(($nivelF[0]->D)*100/Session::get('total_mujeres'))],["name"=>"D+","y"=>round(($nivelF[0]->DD)*100/Session::get('total_mujeres'))],["name"=>"C-","y"=>round(($nivelF[0]->CCC)*100/Session::get('total_mujeres'))],["name"=>"C","y"=>round(($nivelF[0]->C)*100/Session::get('total_mujeres'))],["name"=>"C+","y"=>round(($nivelF[0]->CC)*100/Session::get('total_mujeres'))],["name"=>"A/B","y"=>round(($nivelF[0]->AB)*100/Session::get('total_mujeres'))]
                     ],
                     [
-                        ["name"=>"A/B","y"=>round(($nivelM[0]->AB)*100/Session::get('total_hombres'))],["name"=>"C+","y"=>round(($nivelM[0]->CC)*100/Session::get('total_hombres'))],["name"=>"C","y"=>round(($nivelM[0]->C)*100/Session::get('total_hombres'))],["name"=>"C-","y"=>round(($nivelM[0]->CCC)*100/Session::get('total_hombres'))],["name"=>"D+","y"=>round(($nivelM[0]->DD)*100/Session::get('total_hombres'))],["name"=>"D","y"=>round(($nivelM[0]->D)*100/Session::get('total_hombres'))],["name"=>"E","y"=>round(($nivelM[0]->E)*100/Session::get('total_hombres'))]
+                        ["name"=>"E","y"=>round(($nivelM[0]->E)*100/Session::get('total_hombres'))],["name"=>"D","y"=>round(($nivelM[0]->D)*100/Session::get('total_hombres'))],["name"=>"D+","y"=>round(($nivelM[0]->DD)*100/Session::get('total_hombres'))],["name"=>"C-","y"=>round(($nivelM[0]->CCC)*100/Session::get('total_hombres'))],["name"=>"C","y"=>round(($nivelM[0]->C)*100/Session::get('total_hombres'))],["name"=>"C+","y"=>round(($nivelM[0]->CC)*100/Session::get('total_hombres'))],["name"=>"A/B","y"=>round(($nivelM[0]->AB)*100/Session::get('total_hombres'))]
                     ],
                 ],
                 [
@@ -985,13 +985,13 @@ class GraficasController extends Controller
                 ],
                 [
                     [
-                        ["name"=>"Unida","y"=>round(($ufgen[0]->U)*100/Session::get('total_alumnos'))],["name"=>"Muy unida","y"=>round(($ufgen[0]->MU)*100/Session::get('total_alumnos'))],["name"=>"Disfuncional","y"=>round(($ufgen[0]->D)*100/Session::get('total_alumnos'))]
+                        ["name"=>"Disfuncional","y"=>round(($ufgen[0]->D)*100/Session::get('total_alumnos'))],["name"=>"Unida","y"=>round(($ufgen[0]->U)*100/Session::get('total_alumnos'))],["name"=>"Muy unida","y"=>round(($ufgen[0]->MU)*100/Session::get('total_alumnos'))]
                     ],
                     [
-                        ["name"=>"Unida","y"=>round(($ufF[0]->U)*100/Session::get('total_mujeres'))],["name"=>"Muy unida","y"=>round(($ufF[0]->MU)*100/Session::get('total_mujeres'))],["name"=>"Disfuncional","y"=>round(($ufgen[0]->D)*100/Session::get('total_alumnos'))]
+                        ["name"=>"Disfuncional","y"=>round(($ufF[0]->D)*100/Session::get('total_mujeres'))],["name"=>"Unida","y"=>round(($ufF[0]->U)*100/Session::get('total_mujeres'))],["name"=>"Muy unida","y"=>round(($ufgen[0]->MU)*100/Session::get('total_alumnos'))]
                     ],
                     [
-                        ["name"=>"Unida","y"=>round(($ufM[0]->U)*100/Session::get('total_hombres'))],["name"=>"Muy unida","y"=>round(($ufM[0]->MU)*100/Session::get('total_hombres'))],["name"=>"Disfuncional","y"=>round(($ufgen[0]->D)*100/Session::get('total_alumnos'))]
+                        ["name"=>"Disfuncional","y"=>round(($ufM[0]->D)*100/Session::get('total_hombres'))],["name"=>"Unida","y"=>round(($ufM[0]->U)*100/Session::get('total_hombres'))],["name"=>"Muy unida","y"=>round(($ufgen[0]->MU)*100/Session::get('total_alumnos'))]
                     ]
                 ],
             ],200
@@ -2246,101 +2246,101 @@ class GraficasController extends Controller
             [
                 [
                     [
-                        ["name"=>"Excelente","y"=>round(($traegen[0]->E)*100/Session::get('total_alumnos'))],["name"=>"Muy bien","y"=>round(($traegen[0]->MB)*100/Session::get('total_alumnos'))],["name"=>"Bien","y"=>round(($traegen[0]->B)*100/Session::get('total_alumnos'))],["name"=>"Regular","y"=>round(($traegen[0]->R)*100/Session::get('total_alumnos'))],["name"=>"Mala","y"=>round(($traegen[0]->M)*100/Session::get('total_alumnos'))]
+                        ["name"=>"Mala","y"=>round(($traegen[0]->M)*100/Session::get('total_alumnos'))],["name"=>"Regular","y"=>round(($traegen[0]->R)*100/Session::get('total_alumnos'))],["name"=>"Bien","y"=>round(($traegen[0]->B)*100/Session::get('total_alumnos'))],["name"=>"Muy bien","y"=>round(($traegen[0]->MB)*100/Session::get('total_alumnos'))],["name"=>"Excelente","y"=>round(($traegen[0]->E)*100/Session::get('total_alumnos'))]
                     ],
                     [
-                        ["name"=>"Excelente","y"=>round(($traeF[0]->E)*100/Session::get('total_mujeres'))],["name"=>"Muy bien","y"=>round(($traeF[0]->MB)*100/Session::get('total_mujeres'))],["name"=>"Bien","y"=>round(($traeF[0]->B)*100/Session::get('total_mujeres'))],["name"=>"Regular","y"=>round(($traeF[0]->R)*100/Session::get('total_mujeres'))],["name"=>"Mala","y"=>round(($traeF[0]->M)*100/Session::get('total_mujeres'))]
+                        ["name"=>"Mala","y"=>round(($traeF[0]->M)*100/Session::get('total_mujeres'))],["name"=>"Regular","y"=>round(($traeF[0]->R)*100/Session::get('total_mujeres'))],["name"=>"Bien","y"=>round(($traeF[0]->B)*100/Session::get('total_mujeres'))],["name"=>"Muy bien","y"=>round(($traeF[0]->MB)*100/Session::get('total_mujeres'))],["name"=>"Excelente","y"=>round(($traeF[0]->E)*100/Session::get('total_mujeres'))]
                     ],
                     [
-                        ["name"=>"Excelente","y"=>round(($traeM[0]->E)*100/Session::get('total_hombres'))],["name"=>"Muy bien","y"=>round(($traeM[0]->MB)*100/Session::get('total_hombres'))],["name"=>"Bien","y"=>round(($traeM[0]->B)*100/Session::get('total_hombres'))],["name"=>"Regular","y"=>round(($traeM[0]->R)*100/Session::get('total_hombres'))],["name"=>"Mala","y"=>round(($traeM[0]->M)*100/Session::get('total_hombres'))]
+                        ["name"=>"Mala","y"=>round(($traeM[0]->M)*100/Session::get('total_hombres'))],["name"=>"Regular","y"=>round(($traeM[0]->R)*100/Session::get('total_hombres'))],["name"=>"Bien","y"=>round(($traeM[0]->B)*100/Session::get('total_hombres'))],["name"=>"Muy bien","y"=>round(($traeM[0]->MB)*100/Session::get('total_hombres'))],["name"=>"Excelente","y"=>round(($traeM[0]->E)*100/Session::get('total_hombres'))]
                     ]
                 ],
                 [
                     [
-                        ["name"=>"Excelente","y"=>round(($rengen[0]->E)*100/Session::get('total_alumnos'))],["name"=>"Muy bien","y"=>round(($rengen[0]->MB)*100/Session::get('total_alumnos'))],["name"=>"Bien","y"=>round(($rengen[0]->B)*100/Session::get('total_alumnos'))],["name"=>"Regular","y"=>round(($rengen[0]->R)*100/Session::get('total_alumnos'))],["name"=>"Mala","y"=>round(($rengen[0]->M)*100/Session::get('total_alumnos'))]
+                        ["name"=>"Mala","y"=>round(($rengen[0]->M)*100/Session::get('total_alumnos'))],["name"=>"Regular","y"=>round(($rengen[0]->R)*100/Session::get('total_alumnos'))],["name"=>"Bien","y"=>round(($rengen[0]->B)*100/Session::get('total_alumnos'))],["name"=>"Muy bien","y"=>round(($rengen[0]->MB)*100/Session::get('total_alumnos'))],["name"=>"Excelente","y"=>round(($rengen[0]->E)*100/Session::get('total_alumnos'))]
                     ],
                     [
-                        ["name"=>"Excelente","y"=>round(($renF[0]->E)*100/Session::get('total_mujeres'))],["name"=>"Muy bien","y"=>round(($renF[0]->MB)*100/Session::get('total_mujeres'))],["name"=>"Bien","y"=>round(($renF[0]->B)*100/Session::get('total_mujeres'))],["name"=>"Regular","y"=>round(($renF[0]->R)*100/Session::get('total_mujeres'))],["name"=>"Mala","y"=>round(($renF[0]->M)*100/Session::get('total_mujeres'))]
+                        ["name"=>"Mala","y"=>round(($renF[0]->M)*100/Session::get('total_mujeres'))],["name"=>"Regular","y"=>round(($renF[0]->R)*100/Session::get('total_mujeres'))],["name"=>"Bien","y"=>round(($renF[0]->B)*100/Session::get('total_mujeres'))],["name"=>"Muy bien","y"=>round(($renF[0]->MB)*100/Session::get('total_mujeres'))],["name"=>"Excelente","y"=>round(($renF[0]->E)*100/Session::get('total_mujeres'))]
                     ],
                     [
-                        ["name"=>"Excelente","y"=>round(($renM[0]->E)*100/Session::get('total_hombres'))],["name"=>"Muy bien","y"=>round(($renM[0]->MB)*100/Session::get('total_hombres'))],["name"=>"Bien","y"=>round(($renM[0]->B)*100/Session::get('total_hombres'))],["name"=>"Regular","y"=>round(($renM[0]->R)*100/Session::get('total_hombres'))],["name"=>"Mala","y"=>round(($renM[0]->M)*100/Session::get('total_hombres'))]
+                        ["name"=>"Mala","y"=>round(($renM[0]->M)*100/Session::get('total_hombres'))],["name"=>"Regular","y"=>round(($renM[0]->R)*100/Session::get('total_hombres'))],["name"=>"Bien","y"=>round(($renM[0]->B)*100/Session::get('total_hombres'))],["name"=>"Muy bien","y"=>round(($renM[0]->MB)*100/Session::get('total_hombres'))],["name"=>"Excelente","y"=>round(($renM[0]->E)*100/Session::get('total_hombres'))]
                     ]
                 ],
                 [
                     [
-                        ["name"=>"Excelente","y"=>round(($comgen[0]->E)*100/Session::get('total_alumnos'))],["name"=>"Muy bien","y"=>round(($comgen[0]->MB)*100/Session::get('total_alumnos'))],["name"=>"Bien","y"=>round(($comgen[0]->B)*100/Session::get('total_alumnos'))],["name"=>"Regular","y"=>round(($comgen[0]->R)*100/Session::get('total_alumnos'))],["name"=>"Mala","y"=>round(($comgen[0]->M)*100/Session::get('total_alumnos'))]
+                        ["name"=>"Mala","y"=>round(($comgen[0]->M)*100/Session::get('total_alumnos'))],["name"=>"Regular","y"=>round(($comgen[0]->R)*100/Session::get('total_alumnos'))],["name"=>"Bien","y"=>round(($comgen[0]->B)*100/Session::get('total_alumnos'))],["name"=>"Muy bien","y"=>round(($comgen[0]->MB)*100/Session::get('total_alumnos'))],["name"=>"Excelente","y"=>round(($comgen[0]->E)*100/Session::get('total_alumnos'))]
                     ],
                     [
-                        ["name"=>"Excelente","y"=>round(($comF[0]->E)*100/Session::get('total_mujeres'))],["name"=>"Muy bien","y"=>round(($comF[0]->MB)*100/Session::get('total_mujeres'))],["name"=>"Bien","y"=>round(($comF[0]->B)*100/Session::get('total_mujeres'))],["name"=>"Regular","y"=>round(($comF[0]->R)*100/Session::get('total_mujeres'))],["name"=>"Mala","y"=>round(($comF[0]->M)*100/Session::get('total_mujeres'))]
+                        ["name"=>"Mala","y"=>round(($comF[0]->M)*100/Session::get('total_mujeres'))],["name"=>"Regular","y"=>round(($comF[0]->R)*100/Session::get('total_mujeres'))],["name"=>"Bien","y"=>round(($comF[0]->B)*100/Session::get('total_mujeres'))],["name"=>"Muy bien","y"=>round(($comF[0]->MB)*100/Session::get('total_mujeres'))],["name"=>"Excelente","y"=>round(($comF[0]->E)*100/Session::get('total_mujeres'))]
                     ],
                     [
-                        ["name"=>"Excelente","y"=>round(($comM[0]->E)*100/Session::get('total_hombres'))],["name"=>"Muy bien","y"=>round(($comM[0]->MB)*100/Session::get('total_hombres'))],["name"=>"Bien","y"=>round(($comM[0]->B)*100/Session::get('total_hombres'))],["name"=>"Regular","y"=>round(($comM[0]->R)*100/Session::get('total_hombres'))],["name"=>"Mala","y"=>round(($comM[0]->M)*100/Session::get('total_hombres'))]
+                        ["name"=>"Mala","y"=>round(($comM[0]->M)*100/Session::get('total_hombres'))],["name"=>"Regular","y"=>round(($comM[0]->R)*100/Session::get('total_hombres'))],["name"=>"Bien","y"=>round(($comM[0]->B)*100/Session::get('total_hombres'))],["name"=>"Muy bien","y"=>round(($comM[0]->MB)*100/Session::get('total_hombres'))],["name"=>"Excelente","y"=>round(($comM[0]->E)*100/Session::get('total_hombres'))]
                     ]
                 ],
                 [
                     [
-                        ["name"=>"Excelente","y"=>round(($retgen[0]->E)*100/Session::get('total_alumnos'))],["name"=>"Muy bien","y"=>round(($retgen[0]->MB)*100/Session::get('total_alumnos'))],["name"=>"Bien","y"=>round(($retgen[0]->B)*100/Session::get('total_alumnos'))],["name"=>"Regular","y"=>round(($retgen[0]->R)*100/Session::get('total_alumnos'))],["name"=>"Mala","y"=>round(($retgen[0]->M)*100/Session::get('total_alumnos'))]
+                        ["name"=>"Mala","y"=>round(($retgen[0]->M)*100/Session::get('total_alumnos'))],["name"=>"Regular","y"=>round(($retgen[0]->R)*100/Session::get('total_alumnos'))],["name"=>"Bien","y"=>round(($retgen[0]->B)*100/Session::get('total_alumnos'))],["name"=>"Muy bien","y"=>round(($retgen[0]->MB)*100/Session::get('total_alumnos'))],["name"=>"Excelente","y"=>round(($retgen[0]->E)*100/Session::get('total_alumnos'))]
                     ],
                     [
-                        ["name"=>"Excelente","y"=>round(($retF[0]->E)*100/Session::get('total_mujeres'))],["name"=>"Muy bien","y"=>round(($retF[0]->MB)*100/Session::get('total_mujeres'))],["name"=>"Bien","y"=>round(($retF[0]->B)*100/Session::get('total_mujeres'))],["name"=>"Regular","y"=>round(($retF[0]->R)*100/Session::get('total_mujeres'))],["name"=>"Mala","y"=>round(($retF[0]->M)*100/Session::get('total_mujeres'))]
+                        ["name"=>"Mala","y"=>round(($retF[0]->M)*100/Session::get('total_mujeres'))],["name"=>"Regular","y"=>round(($retF[0]->R)*100/Session::get('total_mujeres'))],["name"=>"Bien","y"=>round(($retF[0]->B)*100/Session::get('total_mujeres'))],["name"=>"Muy bien","y"=>round(($retF[0]->MB)*100/Session::get('total_mujeres'))],["name"=>"Excelente","y"=>round(($retF[0]->E)*100/Session::get('total_mujeres'))]
                     ],
                     [
-                        ["name"=>"Excelente","y"=>round(($retM[0]->E)*100/Session::get('total_hombres'))],["name"=>"Muy bien","y"=>round(($retM[0]->MB)*100/Session::get('total_hombres'))],["name"=>"Bien","y"=>round(($retM[0]->B)*100/Session::get('total_hombres'))],["name"=>"Regular","y"=>round(($retM[0]->R)*100/Session::get('total_hombres'))],["name"=>"Mala","y"=>round(($retM[0]->M)*100/Session::get('total_hombres'))]
+                        ["name"=>"Mala","y"=>round(($retM[0]->M)*100/Session::get('total_hombres'))],["name"=>"Regular","y"=>round(($retM[0]->R)*100/Session::get('total_hombres'))],["name"=>"Bien","y"=>round(($retM[0]->B)*100/Session::get('total_hombres'))],["name"=>"Muy bien","y"=>round(($retM[0]->MB)*100/Session::get('total_hombres'))],["name"=>"Excelente","y"=>round(($retM[0]->E)*100/Session::get('total_hombres'))]
                     ]
                 ],
                 [
                     [
-                        ["name"=>"Excelente","y"=>round(($exagen[0]->E)*100/Session::get('total_alumnos'))],["name"=>"Muy bien","y"=>round(($exagen[0]->MB)*100/Session::get('total_alumnos'))],["name"=>"Bien","y"=>round(($exagen[0]->B)*100/Session::get('total_alumnos'))],["name"=>"Regular","y"=>round(($exagen[0]->R)*100/Session::get('total_alumnos'))],["name"=>"Mala","y"=>round(($exagen[0]->M)*100/Session::get('total_alumnos'))]
+                        ["name"=>"Mala","y"=>round(($exagen[0]->M)*100/Session::get('total_alumnos'))],["name"=>"Regular","y"=>round(($exagen[0]->R)*100/Session::get('total_alumnos'))],["name"=>"Bien","y"=>round(($exagen[0]->B)*100/Session::get('total_alumnos'))],["name"=>"Muy bien","y"=>round(($exagen[0]->MB)*100/Session::get('total_alumnos'))],["name"=>"Excelente","y"=>round(($exagen[0]->E)*100/Session::get('total_alumnos'))]
                     ],
                     [
-                        ["name"=>"Excelente","y"=>round(($exaF[0]->E)*100/Session::get('total_mujeres'))],["name"=>"Muy bien","y"=>round(($exaF[0]->MB)*100/Session::get('total_mujeres'))],["name"=>"Bien","y"=>round(($exaF[0]->B)*100/Session::get('total_mujeres'))],["name"=>"Regular","y"=>round(($exaF[0]->R)*100/Session::get('total_mujeres'))],["name"=>"Mala","y"=>round(($exaF[0]->M)*100/Session::get('total_mujeres'))]
+                        ["name"=>"Mala","y"=>round(($exaF[0]->M)*100/Session::get('total_mujeres'))],["name"=>"Regular","y"=>round(($exaF[0]->R)*100/Session::get('total_mujeres'))],["name"=>"Bien","y"=>round(($exaF[0]->B)*100/Session::get('total_mujeres'))],["name"=>"Muy bien","y"=>round(($exaF[0]->MB)*100/Session::get('total_mujeres'))],["name"=>"Excelente","y"=>round(($exaF[0]->E)*100/Session::get('total_mujeres'))]
                     ],
                     [
-                        ["name"=>"Excelente","y"=>round(($exaM[0]->E)*100/Session::get('total_hombres'))],["name"=>"Muy bien","y"=>round(($exaM[0]->MB)*100/Session::get('total_hombres'))],["name"=>"Bien","y"=>round(($exaM[0]->B)*100/Session::get('total_hombres'))],["name"=>"Regular","y"=>round(($exaM[0]->R)*100/Session::get('total_hombres'))],["name"=>"Mala","y"=>round(($exaM[0]->M)*100/Session::get('total_hombres'))]
+                        ["name"=>"Mala","y"=>round(($exaM[0]->M)*100/Session::get('total_hombres'))],["name"=>"Regular","y"=>round(($exaM[0]->R)*100/Session::get('total_hombres'))],["name"=>"Bien","y"=>round(($exaM[0]->B)*100/Session::get('total_hombres'))],["name"=>"Muy bien","y"=>round(($exaM[0]->MB)*100/Session::get('total_hombres'))],["name"=>"Excelente","y"=>round(($exaM[0]->E)*100/Session::get('total_hombres'))]
                     ]
                 ],
                 [
                     [
-                        ["name"=>"Excelente","y"=>round(($congen[0]->E)*100/Session::get('total_alumnos'))],["name"=>"Muy bien","y"=>round(($congen[0]->MB)*100/Session::get('total_alumnos'))],["name"=>"Bien","y"=>round(($congen[0]->B)*100/Session::get('total_alumnos'))],["name"=>"Regular","y"=>round(($congen[0]->R)*100/Session::get('total_alumnos'))],["name"=>"Mala","y"=>round(($congen[0]->M)*100/Session::get('total_alumnos'))]
+                        ["name"=>"Mala","y"=>round(($congen[0]->M)*100/Session::get('total_alumnos'))],["name"=>"Regular","y"=>round(($congen[0]->R)*100/Session::get('total_alumnos'))],["name"=>"Bien","y"=>round(($congen[0]->B)*100/Session::get('total_alumnos'))],["name"=>"Muy bien","y"=>round(($congen[0]->MB)*100/Session::get('total_alumnos'))],["name"=>"Excelente","y"=>round(($congen[0]->E)*100/Session::get('total_alumnos'))]
                     ],
                     [
-                        ["name"=>"Excelente","y"=>round(($conF[0]->E)*100/Session::get('total_mujeres'))],["name"=>"Muy bien","y"=>round(($conF[0]->MB)*100/Session::get('total_mujeres'))],["name"=>"Bien","y"=>round(($conF[0]->B)*100/Session::get('total_mujeres'))],["name"=>"Regular","y"=>round(($conF[0]->R)*100/Session::get('total_mujeres'))],["name"=>"Mala","y"=>round(($conF[0]->M)*100/Session::get('total_mujeres'))]
+                        ["name"=>"Mala","y"=>round(($conF[0]->M)*100/Session::get('total_mujeres'))],["name"=>"Regular","y"=>round(($conF[0]->R)*100/Session::get('total_mujeres'))],["name"=>"Bien","y"=>round(($conF[0]->B)*100/Session::get('total_mujeres'))],["name"=>"Muy bien","y"=>round(($conF[0]->MB)*100/Session::get('total_mujeres'))],["name"=>"Excelente","y"=>round(($conF[0]->E)*100/Session::get('total_mujeres'))]
                     ],
                     [
-                        ["name"=>"Excelente","y"=>round(($conM[0]->E)*100/Session::get('total_hombres'))],["name"=>"Muy bien","y"=>round(($conM[0]->MB)*100/Session::get('total_hombres'))],["name"=>"Bien","y"=>round(($conM[0]->B)*100/Session::get('total_hombres'))],["name"=>"Regular","y"=>round(($conM[0]->R)*100/Session::get('total_hombres'))],["name"=>"Mala","y"=>round(($conM[0]->M)*100/Session::get('total_hombres'))]
+                        ["name"=>"Mala","y"=>round(($conM[0]->M)*100/Session::get('total_hombres'))],["name"=>"Regular","y"=>round(($conM[0]->R)*100/Session::get('total_hombres'))],["name"=>"Bien","y"=>round(($conM[0]->B)*100/Session::get('total_hombres'))],["name"=>"Muy bien","y"=>round(($conM[0]->MB)*100/Session::get('total_hombres'))],["name"=>"Excelente","y"=>round(($conM[0]->E)*100/Session::get('total_hombres'))]
                     ]
                 ],
                 [
                     [
-                        ["name"=>"Excelente","y"=>round(($bbgen[0]->E)*100/Session::get('total_alumnos'))],["name"=>"Muy bien","y"=>round(($bbgen[0]->MB)*100/Session::get('total_alumnos'))],["name"=>"Bien","y"=>round(($bbgen[0]->B)*100/Session::get('total_alumnos'))],["name"=>"Regular","y"=>round(($bbgen[0]->R)*100/Session::get('total_alumnos'))],["name"=>"Mala","y"=>round(($bbgen[0]->M)*100/Session::get('total_alumnos'))]
+                        ["name"=>"Mala","y"=>round(($bbgen[0]->M)*100/Session::get('total_alumnos'))],["name"=>"Regular","y"=>round(($bbgen[0]->R)*100/Session::get('total_alumnos'))],["name"=>"Bien","y"=>round(($bbgen[0]->B)*100/Session::get('total_alumnos'))],["name"=>"Muy bien","y"=>round(($bbgen[0]->MB)*100/Session::get('total_alumnos'))],["name"=>"Excelente","y"=>round(($bbgen[0]->E)*100/Session::get('total_alumnos'))]
                     ],
                     [
-                        ["name"=>"Excelente","y"=>round(($bbF[0]->E)*100/Session::get('total_mujeres'))],["name"=>"Muy bien","y"=>round(($bbF[0]->MB)*100/Session::get('total_mujeres'))],["name"=>"Bien","y"=>round(($bbF[0]->B)*100/Session::get('total_mujeres'))],["name"=>"Regular","y"=>round(($bbF[0]->R)*100/Session::get('total_mujeres'))],["name"=>"Mala","y"=>round(($bbF[0]->M)*100/Session::get('total_mujeres'))]
+                        ["name"=>"Mala","y"=>round(($bbF[0]->M)*100/Session::get('total_mujeres'))],["name"=>"Regular","y"=>round(($bbF[0]->R)*100/Session::get('total_mujeres'))],["name"=>"Bien","y"=>round(($bbF[0]->B)*100/Session::get('total_mujeres'))],["name"=>"Muy bien","y"=>round(($bbF[0]->MB)*100/Session::get('total_mujeres'))],["name"=>"Excelente","y"=>round(($bbF[0]->E)*100/Session::get('total_mujeres'))]
                     ],
                     [
-                        ["name"=>"Excelente","y"=>round(($bbM[0]->E)*100/Session::get('total_hombres'))],["name"=>"Muy bien","y"=>round(($bbM[0]->MB)*100/Session::get('total_hombres'))],["name"=>"Bien","y"=>round(($bbM[0]->B)*100/Session::get('total_hombres'))],["name"=>"Regular","y"=>round(($bbM[0]->R)*100/Session::get('total_hombres'))],["name"=>"Mala","y"=>round(($bbM[0]->M)*100/Session::get('total_hombres'))]
+                        ["name"=>"Mala","y"=>round(($bbM[0]->M)*100/Session::get('total_hombres'))],["name"=>"Regular","y"=>round(($bbM[0]->R)*100/Session::get('total_hombres'))],["name"=>"Bien","y"=>round(($bbM[0]->B)*100/Session::get('total_hombres'))],["name"=>"Muy bien","y"=>round(($bbM[0]->MB)*100/Session::get('total_hombres'))],["name"=>"Excelente","y"=>round(($bbM[0]->E)*100/Session::get('total_hombres'))]
                     ]
                 ],
                 [
                     [
-                        ["name"=>"Excelente","y"=>round(($oigen[0]->E)*100/Session::get('total_alumnos'))],["name"=>"Muy bien","y"=>round(($oigen[0]->MB)*100/Session::get('total_alumnos'))],["name"=>"Bien","y"=>round(($oigen[0]->B)*100/Session::get('total_alumnos'))],["name"=>"Regular","y"=>round(($oigen[0]->R)*100/Session::get('total_alumnos'))],["name"=>"Mala","y"=>round(($oigen[0]->M)*100/Session::get('total_alumnos'))]
+                        ["name"=>"Mala","y"=>round(($oigen[0]->M)*100/Session::get('total_alumnos'))],["name"=>"Regular","y"=>round(($oigen[0]->R)*100/Session::get('total_alumnos'))],["name"=>"Bien","y"=>round(($oigen[0]->B)*100/Session::get('total_alumnos'))],["name"=>"Muy bien","y"=>round(($oigen[0]->MB)*100/Session::get('total_alumnos'))],["name"=>"Excelente","y"=>round(($oigen[0]->E)*100/Session::get('total_alumnos'))]
                     ],
                     [
-                        ["name"=>"Excelente","y"=>round(($oiF[0]->E)*100/Session::get('total_mujeres'))],["name"=>"Muy bien","y"=>round(($oiF[0]->MB)*100/Session::get('total_mujeres'))],["name"=>"Bien","y"=>round(($oiF[0]->B)*100/Session::get('total_mujeres'))],["name"=>"Regular","y"=>round(($oiF[0]->R)*100/Session::get('total_mujeres'))],["name"=>"Mala","y"=>round(($oiF[0]->M)*100/Session::get('total_mujeres'))]
+                        ["name"=>"Mala","y"=>round(($oiF[0]->M)*100/Session::get('total_mujeres'))],["name"=>"Regular","y"=>round(($oiF[0]->R)*100/Session::get('total_mujeres'))],["name"=>"Bien","y"=>round(($oiF[0]->B)*100/Session::get('total_mujeres'))],["name"=>"Muy bien","y"=>round(($oiF[0]->MB)*100/Session::get('total_mujeres'))],["name"=>"Excelente","y"=>round(($oiF[0]->E)*100/Session::get('total_mujeres'))]
                     ],
                     [
-                        ["name"=>"Excelente","y"=>round(($oiM[0]->E)*100/Session::get('total_hombres'))],["name"=>"Muy bien","y"=>round(($oiM[0]->MB)*100/Session::get('total_hombres'))],["name"=>"Bien","y"=>round(($oiM[0]->B)*100/Session::get('total_hombres'))],["name"=>"Regular","y"=>round(($oiM[0]->R)*100/Session::get('total_hombres'))],["name"=>"Mala","y"=>round(($oiM[0]->M)*100/Session::get('total_hombres'))]
+                        ["name"=>"Mala","y"=>round(($oiM[0]->M)*100/Session::get('total_hombres'))],["name"=>"Regular","y"=>round(($oiM[0]->R)*100/Session::get('total_hombres'))],["name"=>"Bien","y"=>round(($oiM[0]->B)*100/Session::get('total_hombres'))],["name"=>"Muy bien","y"=>round(($oiM[0]->MB)*100/Session::get('total_hombres'))],["name"=>"Excelente","y"=>round(($oiM[0]->E)*100/Session::get('total_hombres'))]
                     ]
                 ],
                 [
                     [
-                        ["name"=>"Excelente","y"=>round(($spgen[0]->E)*100/Session::get('total_alumnos'))],["name"=>"Muy bien","y"=>round(($spgen[0]->MB)*100/Session::get('total_alumnos'))],["name"=>"Bien","y"=>round(($spgen[0]->B)*100/Session::get('total_alumnos'))],["name"=>"Regular","y"=>round(($spgen[0]->R)*100/Session::get('total_alumnos'))],["name"=>"Mala","y"=>round(($spgen[0]->M)*100/Session::get('total_alumnos'))]
+                        ["name"=>"Mala","y"=>round(($spgen[0]->M)*100/Session::get('total_alumnos'))],["name"=>"Regular","y"=>round(($spgen[0]->R)*100/Session::get('total_alumnos'))],["name"=>"Bien","y"=>round(($spgen[0]->B)*100/Session::get('total_alumnos'))],["name"=>"Muy bien","y"=>round(($spgen[0]->MB)*100/Session::get('total_alumnos'))],["name"=>"Excelente","y"=>round(($spgen[0]->E)*100/Session::get('total_alumnos'))]
                     ],
                     [
-                        ["name"=>"Excelente","y"=>round(($spF[0]->E)*100/Session::get('total_mujeres'))],["name"=>"Muy bien","y"=>round(($spF[0]->MB)*100/Session::get('total_mujeres'))],["name"=>"Bien","y"=>round(($spF[0]->B)*100/Session::get('total_mujeres'))],["name"=>"Regular","y"=>round(($spF[0]->R)*100/Session::get('total_mujeres'))],["name"=>"Mala","y"=>round(($spF[0]->M)*100/Session::get('total_mujeres'))]
+                        ["name"=>"Mala","y"=>round(($spF[0]->M)*100/Session::get('total_mujeres'))],["name"=>"Regular","y"=>round(($spF[0]->R)*100/Session::get('total_mujeres'))],["name"=>"Bien","y"=>round(($spF[0]->B)*100/Session::get('total_mujeres'))],["name"=>"Muy bien","y"=>round(($spF[0]->MB)*100/Session::get('total_mujeres'))],["name"=>"Excelente","y"=>round(($spF[0]->E)*100/Session::get('total_mujeres'))]
                     ],
                     [
-                        ["name"=>"Excelente","y"=>round(($spM[0]->E)*100/Session::get('total_hombres'))],["name"=>"Muy bien","y"=>round(($spM[0]->MB)*100/Session::get('total_hombres'))],["name"=>"Bien","y"=>round(($spM[0]->B)*100/Session::get('total_hombres'))],["name"=>"Regular","y"=>round(($spM[0]->R)*100/Session::get('total_hombres'))],["name"=>"Mala","y"=>round(($spM[0]->M)*100/Session::get('total_hombres'))]
+                        ["name"=>"Mala","y"=>round(($spM[0]->M)*100/Session::get('total_hombres'))],["name"=>"Regular","y"=>round(($spM[0]->R)*100/Session::get('total_hombres'))],["name"=>"Bien","y"=>round(($spM[0]->B)*100/Session::get('total_hombres'))],["name"=>"Muy bien","y"=>round(($spM[0]->MB)*100/Session::get('total_hombres'))],["name"=>"Excelente","y"=>round(($spM[0]->E)*100/Session::get('total_hombres'))]
                     ]
                 ],
 
