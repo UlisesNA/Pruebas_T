@@ -109,6 +109,7 @@
                                     <a class="dropdown-item" href="desarrollovista">Coordinador General</a>
                                     <a class="dropdown-item" href="asignacorgenvista">Asigna Coordinador General</a>
                                     <a class="dropdown-item" href="planeaciondesarrollo">Planeación</a>
+                                    <a class="dropdown-item" href="/estadisticas/carreras">Carreras</a>
                                 </div>
                             </div>
                         @endif
@@ -167,6 +168,7 @@
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="MenuCoordinadorGeneral">
                                                 <a class="dropdown-item" href="planeacioncoorgen">Planeación</a>
+                                                <a class="dropdown-item" href="/estadisticas/carreras">Carreras</a>
                                             </div>
                                         </div>
                                     @endif

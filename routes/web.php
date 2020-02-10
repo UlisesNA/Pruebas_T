@@ -93,6 +93,15 @@ Route::group(['prefix'=>'grafcarrera'],function (){
     Route::post('salud', 'GraficasCarreraController@salud');
     Route::post('area', 'GraficasCarreraController@area');
 });
+Route::group(['prefix'=>'grafinstitut'],function (){
+    Route::get('genero', 'GraficasInstitucionController@genero');
+    Route::get('academico', 'GraficasInstitucionController@academico');
+    Route::get('generales', 'GraficasInstitucionController@generales');
+    Route::get('familiares', 'GraficasInstitucionController@familiares');
+    Route::get('habitos', 'GraficasInstitucionController@habitos');
+    Route::get('salud', 'GraficasInstitucionController@salud');
+    Route::get('area', 'GraficasInstitucionController@area');
+});
 
 
 Route::post('/profesor','ProfesorController@alumnos');
@@ -140,6 +149,9 @@ Route::get('/carrera','CoordinadorCarreraController@carreras');
 Route::get('/carreras', function () {
     return view('coordinadorc.index');
 });
+Route::get('/estadisticas/carreras', function () {
+    return view('coordina_inst.carreras');
+});
 Route::post('/generacionca','CoordinadorCarreraController@generaciones');
 
 
@@ -151,6 +163,7 @@ Route::get('/getG', 'AsignaTutorController@getAllGrupoAct');
 Route::Resource('/asignacoordinador','AsignaCoordinadorController');
 Route::Resource('/asignacoordinadorgeneral','AsignaCoordinadorGeneralController');
 Route::Resource('/planeacioncoorgen','Coordina_instController');
+Route::get('/tes/carreras','Coordina_instController@carreras');
 Route::Resource('/planeaciondesarrollo','Dep_desarrolloController');
 Route::Resource('/planeaciontutor','Planea_tutorController');
 Route::get('/repo','AsignaCoordinadorController@repo');
