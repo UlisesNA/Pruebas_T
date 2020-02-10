@@ -72,8 +72,8 @@
                                                                     @else
                                                                         @if($dat->id_estado == 3)
                                                                             <td>
-                                                                                <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_plan_actividad}}_tar" style="background: #f0f0f0;">
-                                                                                    <i class="fas fa-eye" style="color: black"></i>
+                                                                                <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_plan_actividad}}_ver" style="background: #f0f0f0;">
+                                                                                    <i class="fas fa-edit" style="color: black"></i>
                                                                                 </a>
                                                                             </td>
                                                                             <td>
@@ -197,6 +197,55 @@
         </div>
     @endforeach
 
+    @foreach($tabla1 as $dato)
+        <div class="modal fade" id="myModal_{{$dato->id_plan_actividad}}_ver" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Ver Actividad</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form  method="post">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <div class="row">
+
+                                        <div class="col">
+                                            <label >Fecha Inicio</label>
+                                            <input type="date" class="form-control" id="fi_actividad" name="fi_actividad" disabled value={{$dato->fi_actividad}}>
+                                        </div>
+                                        <div class="col">
+                                            <label >Fecha Limite</label>
+                                            <input type="date" class="form-control"  id="ff_actividad" name="ff_actividad" disabled value="{{$dato->ff_actividad}}">
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Nombre de Actividad</label>
+                                    <textarea class="form-control" rows="3" id="desc_actividad" disabled name="desc_actividad">{{$dato->desc_actividad }}</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Objetivo</label>
+                                    <textarea class="form-control" rows="3" id="objetivo_actividad" disabled name="objetivo_actividad">{{$dato->objetivo_actividad}}</textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div align="center">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <a class="btn" style="background: #e0e0e0">Cerrar</a>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
 
 @endsection
 <script src="{{asset('js/jquery.js')}}"></script>
