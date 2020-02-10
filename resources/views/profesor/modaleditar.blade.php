@@ -67,7 +67,7 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-4">
-                                                            <label for="EC">Estado Civil *</label>
+                                                            <label for="EC">Estado civil *</label>
                                                             <select name="estado_civil" id="EC" class="custom-select custom-select-md" v-model="alu.generales.id_estado_civil" required>
                                                                 <option value="null" selected >Elija el estado civil</option>
                                                                 <option v-bind:value="es.id_estado_civil" v-for="es in estadociv">@{{es.desc_ec}}</option>
@@ -94,7 +94,7 @@
                                                     <div class="row">
                                                         <div class="col-md-4">
                                                             <label for="tel-casa">Tel. Casa</label>
-                                                            <input type="tel" title="Sólo números, máximo 10 dígitos." pattern="[0-9]{10}" v-model="alu.generales.tel_casa" id="tel-casa" name="tel_casa" class="form-control" placeholder="Tel. Casa">
+                                                            <input type="tel" title="Sólo números, máximo 10 dígitos." pattern="[0-9]{10}"  v-model="alu.generales.tel_casa" id="tel-casa" name="tel_casa" class="form-control" placeholder="Tel. Casa">
                                                         </div>
                                                         <div class="col-md-3">
                                                             <label for="cel">Celular *</label>
@@ -409,7 +409,7 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-4">
-                                                            <label for="tefe">¿Te estimula tu familia en tus estudios? *</label>
+                                                            <label for="tefe">¿Te motiva tu familia en tus estudios? *</label>
                                                             <select v-model="alu.academicos.teestimula_familia" id="tefe" class="custom-select custom-select-md" required>
                                                                 <option value="null" selected>Elija una opción</option>
                                                                 <option value="1">Si</option>
@@ -434,7 +434,7 @@
                                                     </div>
                                                     <div class="row pt-3 pr-3 pl-3">
                                                         <div class=" col-12 align-content-center">
-                                                            <h5 class="text-center alert alert-secondary pt-2"><b>Otros Estudios</b></h5>
+                                                            <h5 class="text-center alert alert-secondary pt-2"><b>Otros estudios</b></h5>
                                                         </div>
                                                     </div>
                                                     <div class="row">
@@ -469,7 +469,11 @@
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <label for="oe">Otros Estudios</label>
-                                                            <input name="otro_estudio" v-model="alu.academicos.otros_estudios" id="oe" class="form-control" placeholder="Otros Estudios">
+                                                            <select v-model="alu.academicos.otros_estudios" id="oe" class="custom-select custom-select-md" required>
+                                                                <option value="null" selected>Elija una opción</option>
+                                                                <option value="1">Si</option>
+                                                                <option value="2">No</option>
+                                                            </select>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -588,11 +592,11 @@
                                                             <small class="form-text text-danger" v-if='alu.familiares.id_familia_union==null || alu.familiares.id_familia_union=="null"'>Elija un grupo</small>
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <label for="nt">Nombre del Tutor</label>
-                                                            <input type="text" v-model="alu.familiares.nombre_tutor" name="nombre_tutor" id="nt" class="form-control" placeholder="Nombre del Tutor">
+                                                            <label for="nt">Nombre del tutor *</label>
+                                                            <input type="text" v-model="alu.familiares.nombre_tutor" name="nombre_tutor" id="nt" class="form-control" placeholder="Nombre del tutor">
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <label for="parentesco">Parentesco</label>
+                                                            <label for="parentesco">Parentesco *</label>
                                                             <select name="parentesco" id="" class="custom-select custom-select-md"  v-model="alu.familiares.id_parentesco">
                                                                 <option value="null">Elija un parentesco</option>
                                                                 <option v-bind:value="par.id_parentesco" v-for="par in parentesco">@{{par.desc_parentesco}}</option>
