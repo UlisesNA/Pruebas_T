@@ -1,28 +1,27 @@
 <?php
 namespace App\Http\Controllers;
+use App\Exp_asigna_generacion;
+use App\Plan_asigna_planeacion_actividad;
+use App\Plan_Planeacion;
 use App\Planeacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use DB;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 class Dep_desarrolloController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $planeacion = Planeacion::all();
-        $fecha=DB::select('SELECT date(sysdate()) as dia,date(DATE_ADD(sysdate(), interval 365 day)) as max;');
-        return view('dep_desarrollo.index', compact('planeacion','fecha'));
+        $tabla=Exp_asigna_generacion::getGeneraciont1();
+        $tabla1=Exp_asigna_generacion::getDatos();
+        return view('dep_desarrollo.index',compact('tabla','tabla1'));
     }
-    public function edit($id)
-    {
-        $plan = Planeacion::find($id);
-        return view('dep_desarrollo.edit', compact('plan'));
-    }
+
     public function update(Request $request, $id)
     {
-        $plan = Planeacion::find($id);
-        $plan->id_estado = $request->get('id_estado');
-        $plan->comentarios = $request->get('comentarios');
+        $plan = Plan_asigna_planeacion_actividad::find($id);
+        $plan->id_estado = $request->id_estado;
         $plan->save();
-        return redirect()->route('dep_desarrollo.index');
+        return redirect()->back();
     }
 }

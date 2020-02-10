@@ -53,12 +53,15 @@ Route::post('/ftp/Up', 'FtpController@upload');
 /////CONTROLADORES EXPEDIENTE
 
 Route::Resource('/jefevista','JefeVistaController');
+Route::Resource('/desarrollovista','DesarrolloVistaController');
 Route::Resource('/asignacovista','AsignaCoController');
+Route::Resource('/asignacorgenvista','AsignaCorGenController');
 Route::Resource('/asignatuvista','AsignaTuController');
 
 Route::Resource('/tutorvista','TutorVistaController');
 
 Route::Resource('/jefe','JefeController');
+Route::Resource('/desarrollo','DesarrolloController');
 Route::post('/jefeAct','JefeController@UpdateCoo');
 Route::post('/jefeActTuto','JefeController@UpdateTuto');
 
@@ -97,6 +100,8 @@ Route::post('/semestre','ProfesorController@alumnos1');
 Route::post('/cambio','ProfesorController@cambio');
 Route::get('grupos','ProfesorController@grupos');
 Route::post('/alu','ProfesorController@alumnos');
+Route::Resource('/reporte','ReporteController');
+Route::Resource('/desercion','DesercionController');
 
 Route::get('/getAll','ProfesorController@getAll');
 Route::get('/setAlumnId','ProfesorController@setAlumnoId');
@@ -144,6 +149,10 @@ Route::get('/getAG','GraficasCoordinadorController@getAlCoo');
 
 Route::get('/getG', 'AsignaTutorController@getAllGrupoAct');
 Route::Resource('/asignacoordinador','AsignaCoordinadorController');
+Route::Resource('/asignacoordinadorgeneral','AsignaCoordinadorGeneralController');
+Route::Resource('/planeacioncoorgen','Coordina_instController');
+Route::Resource('/planeaciondesarrollo','Dep_desarrolloController');
+Route::Resource('/planeaciontutor','Planea_tutorController');
 Route::get('/repo','AsignaCoordinadorController@repo');
 
 Route::Resource('asignatutores','AsignaTutorController');
@@ -154,7 +163,7 @@ Route::get('asignatutores/{id}/destroy',[
 Route::get("pdf/all","PdfController@pdf_all")->name("pdf_all");
 Route::post("pdf/lista","PdfController@pdf_lista")->name("pdf_lista");
 Route::post("pdf/alumno","PdfController@pdf_alumno")->name("pdf_alumno");
-
+Route::get("reporte_pdf","ReporteController@reporte_pdf")->name("reporte_pdf");
 
 Route::Resource('/Lista','ListaController');
 ?>

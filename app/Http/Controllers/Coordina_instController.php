@@ -1,19 +1,30 @@
 <?php
 namespace App\Http\Controllers;
+use App\Exp_asigna_generacion;
+use App\Exp_asigna_tutor;
+use App\Plan_Planeacion;
 use App\Planeacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use DB;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
+
 
 class Coordina_instController extends Controller
 {
     public function index(Request $request)
     {
-        $planeacion = Planeacion::all();
-        $fecha=DB::select('SELECT date(sysdate()) as dia,date(DATE_ADD(sysdate(), interval 365 day)) as max;');
-        return view('coordina_inst.index', compact('planeacion','fecha'));
+        /*Plan_Planeacion::create([
+        "id_periodo"=>Session::get('id_periodo'),
+        //"id_personal"=>$request->get("id_personal")
+        ]);
+        $id=DB::select('SELECT @@identity as id');
+        //dd($id);*/
+        $tabla=Exp_asigna_generacion::getGeneraciont();
+        $tabla1=Exp_asigna_generacion::getDatos();
+        return view('coordina_inst.index',compact('tabla','tabla1'));
     }
-    public function store(Request $request)
+    /*public function store(Request $request)
     {
         $planea = array(
             "fecha_inicio"=>$request->fecha_inicio,
@@ -48,5 +59,5 @@ class Coordina_instController extends Controller
         $plan = Planeacion::find($id);
         $plan->delete();
         return redirect()->back();
-    }
+    }*/
 }
