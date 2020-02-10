@@ -63,17 +63,37 @@
                                 <div class="form-group col-md-3">
                                     <label>Grupal</label>
                                     <div>
-                                        <label class="radio-inline"><input type="radio" name="tutoria_grupal" value="Si">Si</label>
-                                        <label></label>
-                                        <label class="radio-inline"><input type="radio" name="tutoria_grupal" value="No">No</label>
+                                        @if($c->tg==NULL)
+                                            <label class="radio-inline"><input type="radio" name="tutoria_grupal" value="Si" required>Si</label>
+                                            <label></label>
+                                            <label class="radio-inline"><input type="radio" name="tutoria_grupal" value="No" required>No</label>
+                                        @elseif($c->tg=='Si')
+                                            <label class="radio-inline"><input type="radio" name="tutoria_grupal" value="Si" checked>Si</label>
+                                            <label></label>
+                                            <label class="radio-inline"><input type="radio" name="tutoria_grupal" value="No">No</label>
+                                        @else
+                                            <label class="radio-inline"><input type="radio" name="tutoria_grupal" value="Si">Si</label>
+                                            <label></label>
+                                            <label class="radio-inline"><input type="radio" name="tutoria_grupal" value="No" checked>No</label>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label>Individual</label>
                                     <div>
-                                        <label class="radio-inline"><input type="radio" name="tutoria_individual" value="Si">Si</label>
+                                        @if($c->ti==NULL)
+                                        <label class="radio-inline"><input type="radio" name="tutoria_individual" value="Si" required>Si</label>
                                         <label></label>
-                                        <label class="radio-inline"><input type="radio" name="tutoria_individual" value="No">No</label>
+                                        <label class="radio-inline"><input type="radio" name="tutoria_individual" value="No" required>No</label>
+                                        @elseif($c->ti=='Si')
+                                            <label class="radio-inline"><input type="radio" name="tutoria_individual" value="Si" checked>Si</label>
+                                            <label></label>
+                                            <label class="radio-inline"><input type="radio" name="tutoria_individual" value="No">No</label>
+                                        @else
+                                            <label class="radio-inline"><input type="radio" name="tutoria_individual" value="Si">Si</label>
+                                            <label></label>
+                                            <label class="radio-inline"><input type="radio" name="tutoria_individual" value="No" checked>No</label>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -85,9 +105,19 @@
                                 </div>
                                 <div class="form-group col-md-3">
                                     <div>
-                                        <label class="radio-inline"><input type="radio" name="beca" value="Si">Si</label>
+                                        @if($c->beca==NULL)
+                                        <label class="radio-inline"><input type="radio" name="beca" value="Si" required>Si</label>
                                         <label></label>
-                                        <label class="radio-inline"><input type="radio" name="beca" value="No">No</label>
+                                        <label class="radio-inline"><input type="radio" name="beca" value="No" required>No</label>
+                                        @elseif($c->beca=='Si')
+                                            <label class="radio-inline"><input type="radio" name="beca" value="Si" checked>Si</label>
+                                            <label></label>
+                                            <label class="radio-inline"><input type="radio" name="beca" value="No">No</label>
+                                        @else
+                                            <label class="radio-inline"><input type="radio" name="beca" value="Si">Si</label>
+                                            <label></label>
+                                            <label class="radio-inline"><input type="radio" name="beca" value="No" checked>No</label>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -100,17 +130,37 @@
                                 <div class="form-group col-md-3">
                                     <label>Repetición</label>
                                     <div>
-                                        <label class="radio-inline"><input type="radio" name="repeticion" value="Si">Si</label>
+                                        @if($c->repe==NULL)
+                                        <label class="radio-inline"><input type="radio" name="repeticion" value="Si" required>Si</label>
                                         <label></label>
-                                        <label class="radio-inline"><input type="radio" name="repeticion" value="No">No</label>
+                                        <label class="radio-inline"><input type="radio" name="repeticion" value="No" required>No</label>
+                                        @elseif($c->repe=='Si')
+                                            <label class="radio-inline"><input type="radio" name="repeticion" value="Si" checked>Si</label>
+                                            <label></label>
+                                            <label class="radio-inline"><input type="radio" name="repeticion" value="No">No</label>
+                                        @else
+                                            <label class="radio-inline"><input type="radio" name="repeticion" value="Si">Si</label>
+                                            <label></label>
+                                            <label class="radio-inline"><input type="radio" name="repeticion" value="No" checked>No</label>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="form-group col-md-3">
                                     <label>Especial</label>
                                     <div>
-                                        <label class="radio-inline"><input type="radio" name="especial" value="Si">Si</label>
+                                        @if($c->espe==NULL)
+                                        <label class="radio-inline"><input type="radio" name="especial" value="Si" required>Si</label>
                                         <label></label>
-                                        <label class="radio-inline"><input type="radio" name="especial" value="No">No</label>
+                                        <label class="radio-inline"><input type="radio" name="especial" value="No" required>No</label>
+                                        @elseif($c->espe=='Si')
+                                            <label class="radio-inline"><input type="radio" name="especial" value="Si" checked>Si</label>
+                                            <label></label>
+                                            <label class="radio-inline"><input type="radio" name="especial" value="No">No</label>
+                                        @else
+                                            <label class="radio-inline"><input type="radio" name="especial" value="Si">Si</label>
+                                            <label></label>
+                                            <label class="radio-inline"><input type="radio" name="especial" value="No" checked>No</label>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -123,25 +173,55 @@
                                 <div class="form-group col-md-2">
                                     <label>Asesoría Académica</label>
                                     <div>
-                                        <label class="radio-inline"><input type="radio" name="academico" value="Si">Si</label>
+                                        @if($c->aca==NULL)
+                                        <label class="radio-inline"><input type="radio" name="academico" value="Si" required>Si</label>
                                         <label></label>
-                                        <label class="radio-inline"><input type="radio" name="academico" value="No">No</label>
+                                        <label class="radio-inline"><input type="radio" name="academico" value="No" required>No</label>
+                                        @elseif($c->aca=='Si')
+                                            <label class="radio-inline"><input type="radio" name="academico" value="Si" checked>Si</label>
+                                            <label></label>
+                                            <label class="radio-inline"><input type="radio" name="academico" value="No">No</label>
+                                        @else
+                                            <label class="radio-inline"><input type="radio" name="academico" value="Si">Si</label>
+                                            <label></label>
+                                            <label class="radio-inline"><input type="radio" name="academico" value="No" checked>No</label>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="form-group col-md-2">
                                     <label>Apoyo Médico</label>
                                     <div>
-                                        <label class="radio-inline"><input type="radio" name="medico" value="Si">Si</label>
+                                        @if($c->med==NULL)
+                                        <label class="radio-inline"><input type="radio" name="medico" value="Si" required>Si</label>
                                         <label></label>
-                                        <label class="radio-inline"><input type="radio" name="medico" value="No">No</label>
+                                        <label class="radio-inline"><input type="radio" name="medico" value="No" required>No</label>
+                                         @elseif($c->med=='Si')
+                                            <label class="radio-inline"><input type="radio" name="medico" value="Si" checked>Si</label>
+                                            <label></label>
+                                            <label class="radio-inline"><input type="radio" name="medico" value="No">No</label>
+                                         @else
+                                            <label class="radio-inline"><input type="radio" name="medico" value="Si">Si</label>
+                                            <label></label>
+                                            <label class="radio-inline"><input type="radio" name="medico" value="No" checked>No</label>
+                                         @endif
                                     </div>
                                 </div>
                                 <div class="form-group col-md-2">
                                     <label>Apoyo Psicológico</label>
                                     <div>
-                                        <label class="radio-inline"><input type="radio" name="psicologico" value="Si">Si</label>
+                                        @if($c->ps==NULL)
+                                        <label class="radio-inline"><input type="radio" name="psicologico" value="Si" required>Si</label>
                                         <label></label>
-                                        <label class="radio-inline"><input type="radio" name="psicologico" value="No">No</label>
+                                        <label class="radio-inline"><input type="radio" name="psicologico" value="No" required>No</label>
+                                        @elseif($c->ps=='Si')
+                                            <label class="radio-inline"><input type="radio" name="psicologico" value="Si" checked>Si</label>
+                                            <label></label>
+                                            <label class="radio-inline"><input type="radio" name="psicologico" value="No">No</label>
+                                        @else
+                                            <label class="radio-inline"><input type="radio" name="psicologico" value="Si">Si</label>
+                                            <label></label>
+                                            <label class="radio-inline"><input type="radio" name="psicologico" value="No" checked>No</label>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -153,64 +233,20 @@
                                 </div>
                                 <div class="form-group col-md-3">
                                     <div>
-                                        <label class="radio-inline"><input type="radio" name="baja" value="Si">Si</label>
+                                        @if($c->baja==NULL)
+                                        <label class="radio-inline"><input type="radio" name="baja" value="Si" required>Si</label>
                                         <label></label>
-                                        <label class="radio-inline"><input type="radio" name="baja" value="No">No</label>
+                                        <label class="radio-inline"><input type="radio" name="baja" value="No" required>No</label>
+                                        @elseif($c->baja=='Si')
+                                            <label class="radio-inline"><input type="radio" name="baja" value="Si" checked>Si</label>
+                                            <label></label>
+                                            <label class="radio-inline"><input type="radio" name="baja" value="No">No</label>
+                                        @else
+                                            <label class="radio-inline"><input type="radio" name="baja" value="Si">Si</label>
+                                            <label></label>
+                                            <label class="radio-inline"><input type="radio" name="baja" value="No" checked>No</label>
+                                        @endif
                                     </div>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <div align="center">
-                                        <h5>Nivel de Inglés</h5>
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <select class="mdb-select md-form" name="ingles">
-                                        <option selected >-Seleccione</option>
-                                        <option value="1">Nivel 1</option>
-                                        <option value="2">Nivel 2</option>
-                                        <option value="3">Nivel 3</option>
-                                        <option value="4">Nivel 4</option>
-                                        <option value="5">Nivel 5</option>
-                                        <option value="6">Nivel 6</option>
-                                        <option value="7">Nivel 7</option>
-                                        <option value="8">Nivel 8</option>
-                                        <option value="9">Finalizado</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <div align="center">
-                                        <h5>Creditos Complementarios</h5>
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <select class="mdb-select md-form" name="complementarias">
-                                        <option selected>-Seleccione</option>
-                                        <option value="1">0</option>
-                                        <option value="2">1</option>
-                                        <option value="3">2</option>
-                                        <option value="4">3</option>
-                                        <option value="5">4</option>
-                                        <option value="6">5</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <div align="center">
-                                        <h5>Servicio Social</h5>
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <select class="mdb-select md-form" name="s_social">
-                                        <option selected>-Seleccione</option>
-                                        <option value="1">No</option>
-                                        <option value="2">En curso</option>
-                                        <option value="3">Finalizado</option>
-                                    </select>
                                 </div>
                             </div>
                             <div class="form-row">
@@ -224,7 +260,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <div align="center"><button type="submit" class="btn" style="background: #e0e0e0">Actualizar</button></div>
+                                <div align="center"><button type="submit" class="btn" style="background: #e0e0e0">Enviar</button></div>
                             </div>
                         </form>
                     </div>
@@ -266,7 +302,7 @@
                         @foreach($consulta as $d)
                             <tr>
                                 <td>{{$d->alum}} {{$d->ap}} {{$d->am}}</td>
-                                @if($d->ti!=NULL && $d->tg!=NULL && $d->beca!=NULL && $d->repe!=NULL && $d->espe!=NULL && $d->aca!=NULL && $d->med!=NULL && $d->ps!=NULL && $d->baja!=NULL && $d->ing!=NULL && $d->comp!=NULL && $d->social!=NULL)
+                                @if($d->ti!=NULL && $d->tg!=NULL && $d->beca!=NULL && $d->repe!=NULL && $d->espe!=NULL && $d->aca!=NULL && $d->med!=NULL && $d->ps!=NULL && $d->baja!=NULL)
                                     <td style="background:#5bc013">Datos completos</td>
                                 @else
                                     <td>Datos incompletos</td>

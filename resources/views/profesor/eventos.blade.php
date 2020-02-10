@@ -100,19 +100,19 @@
                         {{ csrf_field() }}
                         <div class="form-group">
                             <label >Fecha Evento</label>
-                            <input type="date" class="form-control" id="fecha" name="fecha">
+                            <input type="date" class="form-control" id="fecha" name="fecha" required>
                         </div>
                         <div class="form-group">
                             <label>Titulo del Evento</label>
-                            <input class="form-control" type="text" id="titulo_evento" name="titulo_evento">
+                            <input class="form-control" type="text" id="titulo_evento" name="titulo_evento" required>
                         </div>
                         <div class="form-group">
                             <label>Descripción del Evento</label>
-                            <textarea class="form-control" rows="3" id="desc_evento" name="desc_evento"></textarea>
+                            <textarea class="form-control" rows="3" id="desc_evento" name="desc_evento"  required></textarea >
                         </div>
                         <div class="form-group">
                             <label>Hora del Evento</label>
-                            <input class="form-control" type="time" id="hora" name="hora">
+                            <input class="form-control" type="time" id="hora" name="hora" required>
                         </div>
                     </form>
                 </div>
@@ -145,7 +145,7 @@
                     console.log(request);
                     console.log(status);
                     console.log(data);
-                    alert("Hubo un error al insertar el dato, intentelo de nuevo");
+                    alert("Falto 1 o más campos por llenar");
                 }
             });
         });

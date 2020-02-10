@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.0
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-02-2020 a las 00:25:43
--- Versión del servidor: 10.1.31-MariaDB
--- Versión de PHP: 7.2.4
+-- Tiempo de generación: 09-02-2020 a las 01:49:51
+-- Versión del servidor: 10.1.38-MariaDB
+-- Versión de PHP: 7.3.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,539 +19,38 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `sistematutorias`
+-- Base de datos: `sistematutorias6`
 --
 
 DELIMITER $$
 --
 -- Procedimientos
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `algoritmo_insert` (IN `nombre` VARCHAR(80), IN `n_cuenta` INT, IN `id_carrera` INT, IN `sexo` VARCHAR(30), IN `id_estado_civil` INT, IN `no_hijos` INT, IN `no_hermanos` INT, IN `enfermedad_cronica` INT, IN `trabaja` INT, IN `practica_deporte` INT, IN `actividades_culturales` INT, IN `etnia_indigena` INT, IN `lugar_nacimientos` VARCHAR(30), IN `id_nivel_economico` VARCHAR(5), IN `sostiene_economia_hogar` VARCHAR(30), IN `tegusta_carrera_elegida` INT, IN `beca` INT, IN `estado` INT, IN `id_escala` INT, IN `poblacion` INT, IN `ant_inst` VARCHAR(50), IN `satisfaccion_c` VARCHAR(50), IN `materias_repeticion` INT, IN `tot_repe` INT, IN `materias_especial` INT, IN `tot_espe` INT, IN `gen_espe` INT)  BEGIN
-   DECLARE id_carrera_v double;
-   DECLARE sexo_v double ;
-   DECLARE id_estado_civil_v double;
-   DECLARE no_hijos_v double;
-   DECLARE no_hermanos_v double;
-   DECLARE enfermedad_cronica_v double;
-   DECLARE trabaja_v double;
-   DECLARE practica_deporte_v double;
-   DECLARE actividades_culturales_v double;
-   DECLARE etnia_indigena_v double;
-   DECLARE lugar_nacimientos_v double;
-   DECLARE id_nivel_economico_v double;
-   DECLARE sostiene_economia_hogar_v double;
-   DECLARE tegusta_carrera_elegida_v double;
-   DECLARE beca_v double;
-   DECLARE estado_v double;
-   DECLARE id_escala_v double;
-   DECLARE poblacion_v double;
-   DECLARE ant_inst_v double;
-   DECLARE satisfaccion_c_v double;
-   DECLARE materias_repeticion_v double;
-   DECLARE tot_repe_v double;
-   DECLARE materias_especial_v double;
-   DECLARE tot_espe_v double;
-   DECLARE gen_espe_v double;
-   DECLARE total  double;
-   DECLARE compara int;
-   
-   SET id_carrera_v=3.5;
-   IF sexo="Masculino" THEN
-      SET sexo_v=3.5;
-    ELSEIF sexo="Femenino" THEN
-      SET sexo_v=3.5;
-    END IF;
-
-    IF id_estado_civil=1 THEN
-      SET id_estado_civil_v=0.8;
-    ELSEIF id_estado_civil=2 THEN
-      SET id_estado_civil_v=3.5;
-    ELSEIF id_estado_civil=3 THEN
-      SET id_estado_civil_v= 2.0;
-    ELSEIF id_estado_civil=4 THEN
-      SET id_estado_civil_v= 2.5;
-     ELSEIF id_estado_civil=5 THEN
-      SET id_estado_civil_v=2.0;
-    END IF;
-    
-    IF no_hijos=0 THEN
-      SET no_hijos_v=0.8;
-    ELSEIF no_hijos=1 THEN
-      SET no_hijos_v=1.5;
-    ELSEIF no_hijos=2 THEN
-      SET no_hijos_v=2.5;
-    ELSEIF no_hijos=3 THEN
-      SET no_hijos_v=2.8;
-    ELSEIF no_hijos=4 THEN
-      SET no_hijos_v=3.5;
-    ELSEIF no_hijos=5 THEN
-      SET no_hijos_v=3.5;
-    END IF;
-    
-    IF no_hermanos=0 THEN
-      SET no_hermanos_v=0.8;
-    ELSEIF no_hermanos=1 THEN
-      SET no_hermanos_v=1.5;
-    ELSEIF no_hermanos=2 THEN
-      SET no_hermanos_v=2.0;
-    ELSEIF no_hermanos=3 THEN
-      SET no_hermanos_v=2.8;
-    ELSEIF no_hermanos=4 THEN
-      SET no_hermanos_v=3.5;
-    ELSEIF no_hermanos=5 THEN
-      SET no_hermanos_v=3.5;
-    END IF;
-    
-    IF enfermedad_cronica=1 THEN
-      SET enfermedad_cronica_v=3.5;
-    ELSEIF enfermedad_cronica=2 THEN
-      SET enfermedad_cronica_v=1.5;
-    END IF;
-
-    IF trabaja=1 THEN
-      SET trabaja_v=3.5;
-    ELSEIF trabaja=2 THEN
-      SET trabaja_v=1.5;
-    END IF;
-    
-    IF practica_deporte=1 THEN
-      SET practica_deporte_v=1.5;
-    ELSEIF practica_deporte=2 THEN
-      SET practica_deporte_v=3.5;
-    END IF;
-    
-    IF actividades_culturales=1 THEN
-      SET actividades_culturales_v=1.5;
-    ELSEIF actividades_culturales=2 THEN
-      SET actividades_culturales_v=3.5;
-    END IF;
-    
-    IF etnia_indigena=1 THEN
-      SET etnia_indigena_v=3.5;
-    ELSEIF etnia_indigena=2 THEN
-      SET etnia_indigena_v=1.5;
-    END IF;
-    
-    SET lugar_nacimientos_v=3.5;
-    
-    IF id_nivel_economico="A/B" THEN
-      SET id_nivel_economico_v=1.5;
-    ELSEIF id_nivel_economico="C+" THEN
-      SET id_nivel_economico_v=2.5;
-    ELSEIF id_nivel_economico="C" THEN
-      SET id_nivel_economico_v=2.5;
-    ELSEIF id_nivel_economico="C-" THEN
-      SET id_nivel_economico_v=2.5;
-    ELSEIF id_nivel_economico="D+" THEN
-      SET id_nivel_economico_v=3.0;
-    ELSEIF id_nivel_economico="D" THEN
-      SET id_nivel_economico_v=3.0;
-    ELSEIF id_nivel_economico="E" THEN
-      SET id_nivel_economico_v=3.5;
-    END IF;
-    
-    SET sostiene_economia_hogar_v=3.5;
-    SET id_carrera_v=3.5;
-    
-    IF tegusta_carrera_elegida=1 THEN
-      SET tegusta_carrera_elegida_v=1.5;
-    ELSEIF tegusta_carrera_elegida=2 THEN
-      SET tegusta_carrera_elegida_v=3.5;
-    END IF;
-    
-    IF beca=1 THEN
-      SET beca_v=1.5;
-    ELSEIF beca=2 THEN
-      SET beca_v=3.5;
-    END IF;
-    
-    IF estado=1 THEN
-      SET estado_v=1.5;
-    ELSEIF estado=2 THEN
-      SET estado_v=3.5;
-    ELSEIF estado=3 THEN
-      SET estado_v=0;
-    ELSEIF estado=4 THEN
-      SET estado_v=0;
-    ELSEIF estado=5 THEN
-      SET estado_v=0;
-    END IF;
-    
-    IF id_escala=1 THEN
-      SET id_escala_v=0.8;
-    ELSEIF id_escala=2 THEN
-      SET id_escala_v=1.5;
-    ELSEIF id_escala=3 THEN
-      SET id_escala_v=2.5;
-    ELSEIF id_escala=4 THEN
-      SET id_escala_v=3.5;
-    END IF;
-    
-    IF poblacion=1 THEN
-      SET poblacion_v=3.5;
-    ELSEIF poblacion=2 THEN
-      SET poblacion_v=2.0;
-    END IF;
-    
-    IF ant_inst="Continuación de estudios" THEN
-      SET ant_inst_v=1.5;
-    ELSEIF ant_inst="Cambio de carrera/institución" THEN
-      SET ant_inst_v=2.0;
-    END IF;
-    
-    IF satisfaccion_c="Muy satisfecho" THEN
-      SET satisfaccion_c_v=0.8;
-    ELSEIF satisfaccion_c="Satisfecho" THEN
-      SET satisfaccion_c_v=1.5;
-    ELSEIF satisfaccion_c="Regular" THEN
-      SET satisfaccion_c_v=2.5;
-    ELSEIF satisfaccion_c="Inconforme" THEN
-      SET satisfaccion_c_v=3.5;
-    END IF;
-    
-    IF materias_repeticion=1 THEN
-      SET materias_repeticion_v=3.5;
-    ELSEIF materias_repeticion=2 THEN
-      SET materias_repeticion_v=0.5;
-    END IF;
-    
-    IF tot_repe=0 THEN
-      SET tot_repe_v=0.1;
-    ELSEIF tot_repe=1 THEN
-      SET tot_repe_v=1.5;
-    ELSEIF tot_repe=2 THEN
-      SET tot_repe_v=2.5;
-    ELSEIF tot_repe=3 THEN
-      SET tot_repe_v=3.5;
-    ELSEIF tot_repe=4 THEN
-      SET tot_repe_v=3.5;
-    END IF;
-    
-    IF materias_especial=1 THEN
-      SET materias_especial_v=3.5;
-    ELSEIF materias_especial=2 THEN
-      SET materias_especial_v=0.5;
-    END IF;
-    
-    IF tot_espe=0 THEN
-      SET tot_espe_v=0.1;
-    ELSEIF tot_espe=1 THEN
-      SET tot_espe_v=1.5;
-    ELSEIF tot_espe=2 THEN
-      SET tot_espe_v=2.5;
-    ELSEIF tot_espe=3 THEN
-      SET tot_espe_v=3.5;
-    ELSEIF tot_espe=4 THEN
-      SET tot_espe_v=3.5;
-    END IF;
-    
-    IF gen_espe=0 THEN
-      SET gen_espe_v=0.1;
-    ELSEIF gen_espe=1 THEN
-      SET gen_espe_v=1.5;
-    ELSEIF gen_espe=2 THEN
-      SET gen_espe_v=2.5;
-    ELSEIF gen_espe=3 THEN
-      SET gen_espe_v=3.5;
-    ELSEIF gen_espe=4 THEN
-      SET gen_espe_v=3.5;
-    END IF; 
-   SET total=sexo_v+id_estado_civil_v+no_hijos_v+no_hermanos_v+enfermedad_cronica_v+trabaja_v+practica_deporte_v+
-               actividades_culturales_v+etnia_indigena_v+lugar_nacimientos_v+id_nivel_economico_v+sostiene_economia_hogar_v
-               +id_carrera_v+tegusta_carrera_elegida_v+beca_v+estado_v+id_escala_v+poblacion_v+ant_inst_v+satisfaccion_c_v
-               +materias_repeticion_v+tot_repe_v+materias_especial_v+tot_espe_v+gen_espe_v;
-                  
-
-   SET compara=(SELECT COUNT(no_cuenta)FROM prediccion where no_cuenta=n_cuenta);     
-   IF id_carrera=2 THEN
-     IF compara=0 THEN
-       INSERT INTO prediccion(id_prediccion,nombre,no_cuenta,id_carrera,id_carrera_v,sexo,sexo_v,id_estado_civil,id_estado_civil_v,
-               no_hijos,no_hijos_v,no_hermanos,no_hermanos_v,enfermedad_cronica,enfermedad_cronica_v,trabaja,
-               trabaja_v,practica_deporte,practica_deporte_v,actividades_culturales,actividades_culturales_v,etnia_indigena,
-               etnia_indigena_v,lugar_nacimientos,lugar_nacimientos_v,id_nivel_economico,id_nivel_economico_v,
-               sostiene_economia_hogar,sostiene_economia_hogar_v,tegusta_carrera_elegida,tegusta_carrera_elegida_v,beca,beca_v,
-               estado,estado_v,id_escala,id_escala_v,poblacion,poblacion_v,ant_inst,ant_inst_v,satisfaccion_c,satisfaccion_c_v,
-               materias_repeticion,materias_repeticion_v,tot_repe,tot_repe_v,materias_especial,materias_especial_v,
-               tot_espe,tot_espe_v,gen_espe,gen_espe_v,total)               
-        VALUES ('',nombre,n_cuenta,id_carrera,id_carrera_v,sexo,sexo_v,id_estado_civil,id_estado_civil_v,no_hijos,no_hijos_v,
-               no_hermanos,no_hermanos_v,enfermedad_cronica,enfermedad_cronica_v,trabaja,trabaja_v,practica_deporte,practica_deporte_v,
-               actividades_culturales,actividades_culturales_v,etnia_indigena,etnia_indigena_v,lugar_nacimientos,lugar_nacimientos_v,
-               id_nivel_economico,id_nivel_economico_v,sostiene_economia_hogar,sostiene_economia_hogar_v,tegusta_carrera_elegida,
-               tegusta_carrera_elegida_v,beca,beca_v,estado,estado_v,id_escala,id_escala_v,poblacion,poblacion_v,ant_inst,ant_inst_v,
-               satisfaccion_c,satisfaccion_c_v,materias_repeticion,materias_repeticion_v,tot_repe,tot_repe_v,materias_especial,
-               materias_especial_v,tot_espe,tot_espe_v,gen_espe,gen_espe_v,total);             
-     END IF;
-    END IF; 
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `algoritmo_update` (IN `nombre` VARCHAR(80), IN `n_cuenta` INT, IN `id_carrera` INT, IN `sexo` VARCHAR(30), IN `id_estado_civil` INT, IN `no_hijos` INT, IN `no_hermanos` INT, IN `enfermedad_cronica` INT, IN `trabaja` INT, IN `practica_deporte` INT, IN `actividades_culturales` INT, IN `etnia_indigena` INT, IN `lugar_nacimientos` VARCHAR(30), IN `id_nivel_economico` VARCHAR(5), IN `sostiene_economia_hogar` INT, IN `tegusta_carrera_elegida` INT, IN `beca` INT, IN `estado` INT, IN `id_escala` INT, IN `poblacion` INT, IN `ant_inst` VARCHAR(50), IN `satisfaccion_c` VARCHAR(50), IN `materias_repeticion` INT, IN `tot_repe` INT, IN `materias_especial` INT, IN `tot_espe` INT, IN `gen_espe` INT)  BEGIN
-   DECLARE id_carrera_v double;
-   DECLARE sexo_v double ;
-   DECLARE id_estado_civil_v double;
-   DECLARE no_hijos_v double;
-   DECLARE no_hermanos_v double;
-   DECLARE enfermedad_cronica_v double;
-   DECLARE trabaja_v double;
-   DECLARE practica_deporte_v double;
-   DECLARE actividades_culturales_v double;
-   DECLARE etnia_indigena_v double;
-   DECLARE lugar_nacimientos_v double;
-   DECLARE id_nivel_economico_v double;
-   DECLARE sostiene_economia_hogar_v double;
-   DECLARE tegusta_carrera_elegida_v double;
-   DECLARE beca_v double;
-   DECLARE estado_v double;
-   DECLARE id_escala_v double;
-   DECLARE poblacion_v double;
-   DECLARE ant_inst_v double;
-   DECLARE satisfaccion_c_v double;
-   DECLARE materias_repeticion_v double;
-   DECLARE tot_repe_v double;
-   DECLARE materias_especial_v double;
-   DECLARE tot_espe_v double;
-   DECLARE gen_espe_v double;
-   DECLARE total  double;
-   DECLARE compara int;
-   
-   SET id_carrera_v=3.5;
-   IF sexo="Masculino" THEN
-      SET sexo_v=3.5;
-    ELSEIF sexo="Femenino" THEN
-      SET sexo_v=3.5;
-    END IF;
-
-    IF id_estado_civil=1 THEN
-      SET id_estado_civil_v=0.8;
-    ELSEIF id_estado_civil=2 THEN
-      SET id_estado_civil_v=3.5;
-    ELSEIF id_estado_civil=3 THEN
-      SET id_estado_civil_v= 2.0;
-    ELSEIF id_estado_civil=4 THEN
-      SET id_estado_civil_v= 2.5;
-     ELSEIF id_estado_civil=5 THEN
-      SET id_estado_civil_v=2.0;
-    END IF;
-    
-    IF no_hijos=0 THEN
-      SET no_hijos_v=0.8;
-    ELSEIF no_hijos=1 THEN
-      SET no_hijos_v=1.5;
-    ELSEIF no_hijos=2 THEN
-      SET no_hijos_v=2.5;
-    ELSEIF no_hijos=3 THEN
-      SET no_hijos_v=2.8;
-    ELSEIF no_hijos=4 THEN
-      SET no_hijos_v=3.5;
-    ELSEIF no_hijos=5 THEN
-      SET no_hijos_v=3.5;
-    END IF;
-    
-    IF no_hermanos=0 THEN
-      SET no_hermanos_v=0.8;
-    ELSEIF no_hermanos=1 THEN
-      SET no_hermanos_v=1.5;
-    ELSEIF no_hermanos=2 THEN
-      SET no_hermanos_v=2.0;
-    ELSEIF no_hermanos=3 THEN
-      SET no_hermanos_v=2.8;
-    ELSEIF no_hermanos=4 THEN
-      SET no_hermanos_v=3.5;
-    ELSEIF no_hermanos=5 THEN
-      SET no_hermanos_v=3.5;
-    END IF;
-    
-    IF enfermedad_cronica=1 THEN
-      SET enfermedad_cronica_v=3.5;
-    ELSEIF enfermedad_cronica=2 THEN
-      SET enfermedad_cronica_v=1.5;
-    END IF;
-
-    IF trabaja=1 THEN
-      SET trabaja_v=3.5;
-    ELSEIF trabaja=2 THEN
-      SET trabaja_v=1.5;
-    END IF;
-    
-    IF practica_deporte=1 THEN
-      SET practica_deporte_v=1.5;
-    ELSEIF practica_deporte=2 THEN
-      SET practica_deporte_v=3.5;
-    END IF;
-    
-    IF actividades_culturales=1 THEN
-      SET actividades_culturales_v=1.5;
-    ELSEIF actividades_culturales=2 THEN
-      SET actividades_culturales_v=3.5;
-    END IF;
-    
-    IF etnia_indigena=1 THEN
-      SET etnia_indigena_v=3.5;
-    ELSEIF etnia_indigena=2 THEN
-      SET etnia_indigena_v=1.5;
-    END IF;
-    
-    SET lugar_nacimientos_v=3.5;
-    
-     IF id_nivel_economico="A/B" THEN
-      SET id_nivel_economico_v=1.5;
-    ELSEIF id_nivel_economico="C+" THEN
-      SET id_nivel_economico_v=2.5;
-    ELSEIF id_nivel_economico="C" THEN
-      SET id_nivel_economico_v=2.5;
-    ELSEIF id_nivel_economico="C-" THEN
-      SET id_nivel_economico_v=2.5;
-    ELSEIF id_nivel_economico="D+" THEN
-      SET id_nivel_economico_v=3.0;
-    ELSEIF id_nivel_economico="D" THEN
-      SET id_nivel_economico_v=3.0;
-    ELSEIF id_nivel_economico="E" THEN
-      SET id_nivel_economico_v=3.5;
-    END IF;
-    
-    SET sostiene_economia_hogar_v=3.5;
-    SET id_carrera_v=3.5;
-    
-    IF tegusta_carrera_elegida=1 THEN
-      SET tegusta_carrera_elegida_v=1.5;
-    ELSEIF tegusta_carrera_elegida=2 THEN
-      SET tegusta_carrera_elegida_v=3.5;
-    END IF;
-    
-    IF beca=1 THEN
-      SET beca_v=1.5;
-    ELSEIF beca=2 THEN
-      SET beca_v=3.5;
-    END IF;
-    
-    IF estado=1 THEN
-      SET estado_v=1.5;
-    ELSEIF estado=2 THEN
-      SET estado_v=3.5;
-    ELSEIF estado=3 THEN
-      SET estado_v=0;
-    ELSEIF estado=4 THEN
-      SET estado_v=0;
-    ELSEIF estado=5 THEN
-      SET estado_v=0;
-    END IF;
-    
-    IF id_escala=1 THEN
-      SET id_escala_v=0.8;
-    ELSEIF id_escala=2 THEN
-      SET id_escala_v=1.5;
-    ELSEIF id_escala=3 THEN
-      SET id_escala_v=2.5;
-    ELSEIF id_escala=4 THEN
-      SET id_escala_v=3.5;
-    END IF;
-    
-    IF poblacion=1 THEN
-      SET poblacion_v=3.5;
-    ELSEIF poblacion=2 THEN
-      SET poblacion_v=2.0;
-    END IF;
-    
-    IF ant_inst="Continuación de estudios" THEN
-      SET ant_inst_v=1.5;
-    ELSEIF ant_inst="Cambio de carrera/institución" THEN
-      SET ant_inst_v=2.0;
-    END IF;
-    
-    IF satisfaccion_c="Muy satisfecho" THEN
-      SET satisfaccion_c_v=0.8;
-    ELSEIF satisfaccion_c="Satisfecho" THEN
-      SET satisfaccion_c_v=1.5;
-    ELSEIF satisfaccion_c="Regular" THEN
-      SET satisfaccion_c_v=2.5;
-    ELSEIF satisfaccion_c="Inconforme" THEN
-      SET satisfaccion_c_v=3.5;
-    END IF;
-    
-    IF materias_repeticion=1 THEN
-      SET materias_repeticion_v=3.5;
-    ELSEIF materias_repeticion=2 THEN
-      SET materias_repeticion_v=0.5;
-    END IF;
-    
-    IF tot_repe=1 THEN
-      SET tot_repe_v=0.1;
-    ELSEIF tot_repe=2 THEN
-      SET tot_repe_v=1.5;
-    ELSEIF tot_repe=3 THEN
-      SET tot_repe_v=2.5;
-    ELSEIF tot_repe=4 THEN
-      SET tot_repe_v=3.5;
-    END IF;
-    
-    IF materias_especial=1 THEN
-      SET materias_especial_v=3.5;
-    ELSEIF materias_especial=2 THEN
-      SET materias_especial_v=0.5;
-    END IF;
-    
-    IF tot_espe=1 THEN
-      SET tot_espe_v=0.1;
-    ELSEIF tot_espe=2 THEN
-      SET tot_espe_v=1.5;
-    ELSEIF tot_espe=3 THEN
-      SET tot_espe_v=2.5;
-    ELSEIF tot_espe=4 THEN
-      SET tot_espe_v=3.5;
-    END IF;
-    
-    IF gen_espe=1 THEN
-      SET gen_espe_v=0.1;
-    ELSEIF gen_espe=2 THEN
-      SET gen_espe_v=1.5;
-    ELSEIF gen_espe=3 THEN
-      SET gen_espe_v=2.5;
-    ELSEIF gen_espe=4 THEN
-      SET gen_espe_v=3.5;
-    END IF; 
-   SET total=sexo_v+id_estado_civil_v+no_hijos_v+no_hermanos_v+enfermedad_cronica_v+trabaja_v+practica_deporte_v+
-               actividades_culturales_v+etnia_indigena_v+lugar_nacimientos_v+id_nivel_economico_v+sostiene_economia_hogar_v
-               +id_carrera_v+tegusta_carrera_elegida_v+beca_v+estado_v+id_escala_v+poblacion_v+ant_inst_v+satisfaccion_c_v
-               +materias_repeticion_v+tot_repe_v+materias_especial_v+tot_espe_v+gen_espe_v;
-                  
-
-   SET compara=(SELECT COUNT(no_cuenta)FROM prediccion where no_cuenta=n_cuenta);     
-   IF id_carrera=2 THEN
-      IF compara=1 THEN
-       UPDATE prediccion SET nombre=nombre,id_estado_civil=id_estado_civil,id_estado_civil_v=id_estado_civil_v,no_hijos=no_hijos,
-              no_hijos_v=no_hijos_v,no_hermanos=no_hermanos,no_hermanos_v=no_hermanos_v,enfermedad_cronica=enfermedad_cronica,
-              enfermedad_cronica_v=enfermedad_cronica_v,trabaja=trabaja,trabaja_v=trabaja_v,practica_deporte=practica_deporte,
-              practica_deporte_v=practica_deporte_v,actividades_culturales=actividades_culturales,
-              actividades_culturales_v=actividades_culturales_v,etnia_indigena=etnia_indigena,etnia_indigena_v=etnia_indigena_v,
-	      id_nivel_economico=id_nivel_economico,id_nivel_economico_v=id_nivel_economico_v,
-	      sostiene_economia_hogar=sostiene_economia_hogar,sostiene_economia_hogar_v=sostiene_economia_hogar_v,
-	      tegusta_carrera_elegida=tegusta_carrera_elegida,tegusta_carrera_elegida_v=tegusta_carrera_elegida_v,
-	      beca=beca,beca_v=beca_v,estado=estado,estado_v=estado_v,id_escala=id_escala,id_escala_v=id_escala_v,
-  	      poblacion=poblacion,poblacion_v=poblacion_v,ant_inst=ant_inst,ant_inst_v=ant_inst_v,satisfaccion_c=satisfaccion_c,
-	      satisfaccion_c_v=satisfaccion_c_v,materias_repeticion=materias_repeticion,materias_repeticion_v=materias_repeticion_v,
-	      tot_repe=tot_repe,tot_repe_v=tot_repe_v,materias_especial=materias_especial,materias_especial_v=materias_especial_v,
-	      tot_espe=tot_espe,tot_espe_v=tot_espe_v,gen_espe=gen_espe,gen_espe_v=gen_espe_v,total=total
-              where no_cuenta=n_cuenta;
-     END IF;
-    END IF; 
-END$$
-
 CREATE DEFINER=`root`@`localhost` PROCEDURE `reportes` (IN `activador` VARCHAR(20), IN `id_p` VARCHAR(40))  BEGIN
    DECLARE primer_f varchar(10);
    DECLARE segundo_f int;
+   DECLARE c int;
    
    SET primer_f=(SELECT SUBSTR(id_p,17,3));
    SET segundo_f=(SELECT CONVERT(primer_f, SIGNED));
    
-   INSERT into reporte_tutor(id_reporte_tutor,id_asigna_tutor,alumno,appaterno,apmaterno,n_cuenta) 
-                            SELECT(''),(exp_asigna_tutor.id_asigna_tutor),(gnral_alumnos.nombre),(gnral_alumnos.apaterno)
-                            ,(gnral_alumnos.amaterno),(gnral_alumnos.cuenta) 
-                            from gnral_personales,exp_asigna_tutor,exp_asigna_generacion,exp_asigna_alumnos,gnral_alumnos 
-                            where gnral_personales.id_perfil=7 
-                            and gnral_personales.id_personal=exp_asigna_tutor.id_personal 
-                            and exp_asigna_tutor.id_asigna_generacion=exp_asigna_generacion.id_asigna_generacion 
-                            and exp_asigna_alumnos.id_asigna_generacion=exp_asigna_generacion.id_asigna_generacion 
-                            and exp_asigna_alumnos.id_alumno=gnral_alumnos.id_alumno 
-                            and exp_asigna_tutor.id_personal=segundo_f;
+   SET c=(SELECT count(reporte_tutor.generacion) from reporte_tutor,exp_asigna_tutor,gnral_personales WHERE reporte_tutor.id_asigna_tutor=exp_asigna_tutor.id_asigna_tutor
+         and gnral_personales.id_personal=exp_asigna_tutor.id_personal
+         and gnral_personales.id_personal=segundo_f); 
+   
+   IF c=0 THEN
+   	    INSERT into reporte_tutor(id_reporte_tutor,id_asigna_tutor,alumno,appaterno,apmaterno,n_cuenta,generacion) 
+            SELECT(''),(exp_asigna_tutor.id_asigna_tutor),(gnral_alumnos.nombre),(gnral_alumnos.apaterno)
+            ,(gnral_alumnos.amaterno),(gnral_alumnos.cuenta),(exp_generacion.generacion) 
+            from gnral_personales,exp_asigna_tutor,exp_asigna_generacion,exp_asigna_alumnos,gnral_alumnos,exp_generacion 
+            where gnral_personales.id_perfil=7 
+            and gnral_personales.id_personal=exp_asigna_tutor.id_personal 
+            and exp_asigna_tutor.id_asigna_generacion=exp_asigna_generacion.id_asigna_generacion 
+            and exp_asigna_alumnos.id_asigna_generacion=exp_asigna_generacion.id_asigna_generacion 
+            and exp_asigna_alumnos.id_alumno=gnral_alumnos.id_alumno
+            and exp_asigna_generacion.id_generacion=exp_generacion.id_generacion
+            and exp_asigna_tutor.id_personal=segundo_f;
+    END IF;
 END$$
 
 DELIMITER ;
@@ -608,6 +107,30 @@ CREATE TABLE `canalizacion` (
 
 INSERT INTO `canalizacion` (`id_canalizacion`, `id_alumno`, `id_personal`, `fecha_canalizacion`, `fecha_canalizacion_anterior`, `fecha_canalizacion_siguiente`, `hora`, `aspectos_sociologicos1`, `aspectos_sociologicos2`, `aspectos_sociologicos3`, `aspectos_academicos1`, `aspectos_academicos2`, `aspectos_academicos3`, `observaciones`, `otros`, `id_area`, `status`) VALUES
 (11, 10, 3, NULL, NULL, '0000-00-00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `desarrollo_asigna_coordinador_general`
+--
+
+CREATE TABLE `desarrollo_asigna_coordinador_general` (
+  `id_asigna_coordinador_general` int(10) NOT NULL,
+  `id_personal_asigna` int(10) DEFAULT NULL,
+  `id_personal` int(10) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `desarrollo_asigna_coordinador_general`
+--
+
+INSERT INTO `desarrollo_asigna_coordinador_general` (`id_asigna_coordinador_general`, `id_personal_asigna`, `id_personal`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(6, 128, 7, '2020-02-05 05:08:36', '2020-02-05 11:08:36', '2020-02-05 11:08:36'),
+(7, 128, 7, '2020-02-05 19:29:32', '2020-02-06 01:29:32', '2020-02-06 01:29:32'),
+(8, 128, 7, '2020-02-06 01:29:46', '2020-02-06 01:29:46', NULL);
 
 -- --------------------------------------------------------
 
@@ -670,7 +193,16 @@ CREATE TABLE `exp_antecedentes_academicos` (
 
 INSERT INTO `exp_antecedentes_academicos` (`id_exp_antecedentes_academicos`, `id_bachillerato`, `otros_estudios`, `anos_curso_bachillerato`, `ano_terminacion`, `escuela_procedente`, `promedio`, `materias_reprobadas`, `otra_carrera_ini`, `institucion`, `semestres_cursados`, `interrupciones_estudios`, `razones_interrupcion`, `razon_descide_estudiar_tesvb`, `sabedel_perfil_profesional`, `otras_opciones_vocales`, `cuales_otras_opciones_vocales`, `tegusta_carrera_elegida`, `porque_carrera_elegida`, `suspension_estudios_bachillerato`, `razones_suspension_estudios`, `teestimula_familia`, `id_alumno`, `created_at`, `updated_at`) VALUES
 (1, 1, 'No', 3, '2016', 'CECYTEM', 90, 'NINGUNA', '2', NULL, NULL, 2, NULL, 'ME GUSTO LA INSTITUCION', 'SI', 2, NULL, 1, 'ME GUSTA PROGRAMAR', 2, NULL, '1', 10, '2020-01-31 05:38:06', '2020-01-31 05:38:06'),
-(2, 1, 'No', 3, '2016', 'CECYETM', 90, 'Ninguna', '2', NULL, NULL, 2, NULL, 'Me gusto', 'Si', 2, NULL, 1, 'Me gusta', 2, NULL, '1', 9, '2020-01-31 06:21:33', '2020-01-31 06:21:33');
+(2, 1, 'No', 3, '2016', 'CECYETM', 90, 'Ninguna', '2', NULL, NULL, 2, NULL, 'Me gusto', 'Si', 2, NULL, 1, 'Me gusta', 2, NULL, '1', 9, '2020-01-31 06:21:33', '2020-01-31 06:21:33'),
+(3, 1, 'no', 2, '2013', 'Amanalco', 90, '0', '2', NULL, NULL, 1, 'ai', 'si', 'ai', 2, NULL, 1, 'si', 2, NULL, '2', 57, '2020-02-08 11:14:40', '2020-02-08 11:14:40'),
+(4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 'si', NULL, NULL, '1', 1, '2020-02-08 11:34:53', '2020-02-08 11:34:53'),
+(5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 's', NULL, NULL, '2', 2, '2020-02-08 11:49:53', '2020-02-08 11:49:53'),
+(6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 's', NULL, NULL, '1', 3, '2020-02-09 01:53:36', '2020-02-09 01:53:36'),
+(7, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 'd', NULL, NULL, '1', 16, '2020-02-09 01:58:36', '2020-02-09 01:58:36'),
+(8, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 'h', NULL, NULL, '1', 4, '2020-02-09 02:30:54', '2020-02-09 02:30:54'),
+(9, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, NULL, NULL, '2', 5, '2020-02-09 05:28:34', '2020-02-09 05:28:34'),
+(10, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, NULL, NULL, '2', 6, '2020-02-09 06:17:49', '2020-02-09 06:17:49'),
+(17, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, NULL, NULL, NULL, '1', 15, '2020-02-09 06:35:30', '2020-02-09 06:35:30');
 
 -- --------------------------------------------------------
 
@@ -705,7 +237,16 @@ CREATE TABLE `exp_area_psicopedagogica` (
 
 INSERT INTO `exp_area_psicopedagogica` (`id_exp_area_psicopedagogica`, `rendimiento_escolar`, `dominio_idioma`, `otro_idioma`, `conocimiento_compu`, `aptitud_especial`, `comprension`, `preparacion`, `estrategias_aprendizaje`, `organizacion_actividades`, `concentracion`, `solucion_problemas`, `condiciones_ambientales`, `busqueda_bibliografica`, `trabajo_equipo`, `id_alumno`, `created_at`, `updated_at`) VALUES
 (1, 1, 1, 1, 1, 1, 3, 1, 2, 1, 3, 2, 2, 2, 2, 10, '2020-01-31 05:38:06', '2020-01-31 05:38:06'),
-(2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 9, '2020-01-31 06:21:34', '2020-01-31 06:21:34');
+(2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 9, '2020-01-31 06:21:34', '2020-01-31 06:21:34'),
+(3, 3, 2, 3, 3, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 57, '2020-02-08 11:14:40', '2020-02-08 11:14:40'),
+(4, 3, NULL, 1, 2, NULL, 2, 3, NULL, NULL, 2, 2, NULL, 1, 1, 1, '2020-02-08 11:34:53', '2020-02-08 11:34:53'),
+(5, 2, NULL, 2, 1, NULL, 2, 2, NULL, NULL, 2, 3, NULL, 2, 2, 2, '2020-02-08 11:49:53', '2020-02-08 11:49:53'),
+(6, 3, NULL, 1, 2, NULL, 3, 2, NULL, NULL, 2, 2, NULL, 2, 2, 3, '2020-02-09 01:53:36', '2020-02-09 01:53:36'),
+(7, 1, NULL, 2, 1, NULL, 3, 2, NULL, NULL, 1, 3, NULL, 1, 2, 16, '2020-02-09 01:58:36', '2020-02-09 01:58:36'),
+(8, 1, NULL, 3, 2, NULL, 3, 3, NULL, NULL, 3, 3, NULL, 1, 2, 4, '2020-02-09 02:30:55', '2020-02-09 02:30:55'),
+(9, 2, NULL, 2, 1, NULL, 2, 2, NULL, NULL, 1, 3, NULL, 2, 2, 5, '2020-02-09 05:28:34', '2020-02-09 05:28:34'),
+(10, 2, NULL, 1, 3, NULL, 2, 3, NULL, NULL, 2, 2, NULL, 2, 2, 6, '2020-02-09 06:17:49', '2020-02-09 06:17:49'),
+(11, 2, NULL, 3, 4, NULL, 4, 3, NULL, NULL, 3, 2, NULL, 4, 3, 15, '2020-02-09 06:35:31', '2020-02-09 06:35:31');
 
 -- --------------------------------------------------------
 
@@ -783,7 +324,19 @@ INSERT INTO `exp_asigna_alumnos` (`id_asigna_alumno`, `id_alumno`, `id_asigna_ge
 (56, 305, 15, 1, '2020-01-30 11:27:16', '2020-01-30 11:27:16', NULL),
 (57, 568, 15, 1, '2020-01-30 11:27:16', '2020-01-30 11:27:16', NULL),
 (58, 338, 15, 1, '2020-01-30 11:27:16', '2020-01-30 11:27:16', NULL),
-(59, 306, 15, 1, '2020-01-30 11:27:16', '2020-01-30 11:27:16', NULL);
+(59, 306, 15, 1, '2020-01-30 11:27:16', '2020-01-30 11:27:16', NULL),
+(60, 2261, 7, 1, '2020-02-07 22:56:45', '2020-02-07 22:56:58', '2020-02-07 22:56:58'),
+(61, 2257, 7, 1, '2020-02-07 22:56:45', '2020-02-07 22:56:45', NULL),
+(62, 2285, 7, 1, '2020-02-07 22:56:45', '2020-02-07 22:56:45', NULL),
+(63, 2624, 7, 1, '2020-02-07 22:56:45', '2020-02-07 22:56:45', NULL),
+(64, 2279, 7, 1, '2020-02-07 22:56:45', '2020-02-07 22:56:45', NULL),
+(65, 2269, 7, 1, '2020-02-07 22:56:45', '2020-02-07 22:56:45', NULL),
+(66, 2277, 7, 1, '2020-02-07 22:56:45', '2020-02-07 22:56:45', NULL),
+(67, 2262, 7, 1, '2020-02-07 22:56:45', '2020-02-07 22:56:45', NULL),
+(68, 2275, 7, 1, '2020-02-07 22:56:45', '2020-02-07 22:56:45', NULL),
+(69, 2620, 7, 1, '2020-02-07 22:56:45', '2020-02-07 22:56:45', NULL),
+(70, 2261, 6, 1, '2020-02-07 22:57:26', '2020-02-07 22:57:26', NULL),
+(71, 2284, 6, 1, '2020-02-07 22:57:26', '2020-02-07 22:57:26', NULL);
 
 -- --------------------------------------------------------
 
@@ -808,8 +361,13 @@ INSERT INTO `exp_asigna_coordinador` (`id_asigna_coordinador`, `id_jefe_periodo`
 (6, 91, 108, '2020-01-29 03:24:23', '2020-01-29 09:24:23', '2020-01-29 09:24:23'),
 (7, 91, 22, '2020-01-29 09:04:25', '2020-01-29 15:04:25', '2020-01-29 15:04:25'),
 (8, 91, 104, '2020-01-30 04:58:35', '2020-01-30 10:58:35', '2020-01-30 10:58:35'),
-(9, 91, 104, '2020-01-30 10:59:10', '2020-01-30 10:59:10', NULL),
-(10, 94, 104, '2020-01-30 11:26:09', '2020-01-30 11:26:09', NULL);
+(9, 91, 104, '2020-02-04 17:33:57', '2020-02-04 23:33:57', '2020-02-04 23:33:57'),
+(10, 94, 104, '2020-01-30 11:26:09', '2020-01-30 11:26:09', NULL),
+(11, 91, 104, '2020-02-05 00:34:49', '2020-02-05 06:34:49', '2020-02-05 06:34:49'),
+(12, 91, 104, '2020-02-05 00:34:58', '2020-02-05 06:34:58', '2020-02-05 06:34:58'),
+(13, 91, 22, '2020-02-05 00:41:07', '2020-02-05 06:41:07', '2020-02-05 06:41:07'),
+(14, 91, 104, '2020-02-05 05:02:08', '2020-02-05 11:02:08', '2020-02-05 11:02:08'),
+(15, 91, 104, '2020-02-05 11:09:28', '2020-02-05 11:09:28', NULL);
 
 -- --------------------------------------------------------
 
@@ -876,7 +434,9 @@ INSERT INTO `exp_asigna_tutor` (`id_asigna_tutor`, `id_jefe_periodo`, `id_person
 (5, 91, 7, 5, '2020-01-29 03:55:34', '2020-01-29 09:20:31', NULL),
 (6, 91, 5, 6, '2020-01-29 09:20:36', '2020-01-29 09:20:36', NULL),
 (7, 91, 9, 7, '2020-01-29 03:25:17', '2020-01-29 09:25:17', '2020-01-29 09:25:17'),
-(8, 91, 7, 12, '2020-01-29 14:30:01', '2020-01-29 14:30:01', NULL);
+(8, 91, 7, 12, '2020-01-29 14:30:01', '2020-01-29 14:30:01', NULL),
+(9, 91, 7, 4, '2020-02-06 11:03:15', '2020-02-06 17:03:15', '2020-02-06 17:03:15'),
+(10, 91, 7, 7, '2020-02-07 22:51:54', '2020-02-07 22:51:54', NULL);
 
 -- --------------------------------------------------------
 
@@ -999,7 +559,16 @@ CREATE TABLE `exp_datos_familiares` (
 
 INSERT INTO `exp_datos_familiares` (`id_exp_datos_familiares`, `nombre_padre`, `edad_padre`, `ocupacion_padre`, `lugar_residencia_padre`, `nombre_madre`, `edad_madre`, `ocupacion_madre`, `lugar_residencia_madre`, `no_hermanos`, `lugar_ocupas`, `id_opc_vives`, `no_personas`, `etnia_indigena`, `cual_etnia`, `hablas_lengua_indigena`, `sostiene_economia_hogar`, `id_familia_union`, `nombre_tutor`, `id_parentesco`, `id_alumno`, `created_at`, `updated_at`) VALUES
 (1, 'Juan Carlos Vilchis Vilchis', 45, 'Mecanico', 'San Martn Obispo', 'Angelina Martinez Ventura', 47, 'Ama de casa', 'San Martin Obispo', 2, '1', 1, 4, 2, NULL, 2, 'Padre', 1, 'Angelina Martinez Ventura', '1', 10, '2020-01-31 05:38:06', '2020-01-31 05:38:06'),
-(2, 'Martin Lopez', 48, 'Mecanico', 'San jeornimo', 'Guadalupe Sotero', 45, 'Ama de casa', 'San jeronimo', 4, '3', 2, 2, 2, NULL, 2, 'MADRE', 1, 'Guadalupe Sotero', '1', 9, '2020-01-31 06:21:34', '2020-01-31 06:21:34');
+(2, 'Martin Lopez', 48, 'Mecanico', 'San jeornimo', 'Guadalupe Sotero', 45, 'Ama de casa', 'San jeronimo', 4, '3', 2, 2, 2, NULL, 2, 'MADRE', 1, 'Guadalupe Sotero', '1', 9, '2020-01-31 06:21:34', '2020-01-31 06:21:34'),
+(3, 'padre', 50, 'padre', 'Amanalco', 'madre', 50, 'madre', 'Amanalco', 4, '3', 1, 3, 2, NULL, 2, 'padre', 1, 'padre', '1', 57, '2020-02-08 11:14:40', '2020-02-08 11:14:40'),
+(4, 'padre', NULL, NULL, 'villa', 'madre', NULL, NULL, 'villa', NULL, NULL, 1, NULL, 2, NULL, 2, NULL, 2, 'padre', '3', 1, '2020-02-08 11:34:53', '2020-02-08 11:34:53'),
+(5, 's', NULL, NULL, 's', 's', NULL, NULL, 's', NULL, NULL, 2, NULL, 2, NULL, 1, NULL, 2, 's', '2', 2, '2020-02-08 11:49:53', '2020-02-08 11:49:53'),
+(6, 's', NULL, NULL, 's', 's', NULL, NULL, 's', NULL, NULL, 2, NULL, 2, NULL, 2, NULL, 2, 's', '1', 3, '2020-02-09 01:53:36', '2020-02-09 01:53:36'),
+(7, 'f', NULL, NULL, 'f', 'f', NULL, NULL, 'f', NULL, NULL, 3, NULL, 2, NULL, 2, NULL, 2, 'f', '1', 16, '2020-02-09 01:58:36', '2020-02-09 01:58:36'),
+(8, 'h', NULL, NULL, 'h', 'h', NULL, NULL, 'h', NULL, NULL, 2, NULL, 2, NULL, 2, NULL, 2, 'h', '2', 4, '2020-02-09 02:30:55', '2020-02-09 02:30:55'),
+(9, 'd', NULL, NULL, 'd', 'f', NULL, NULL, 'g', 3, NULL, 2, NULL, 2, NULL, 2, NULL, 2, 'd', '2', 5, '2020-02-09 05:28:34', '2020-02-09 05:28:34'),
+(10, 'j', NULL, NULL, 'j', 'j', NULL, NULL, 'j', NULL, NULL, 2, NULL, 2, NULL, 2, NULL, 2, 'f', '2', 6, '2020-02-09 06:17:49', '2020-02-09 06:17:49'),
+(11, 'f', NULL, NULL, 'f', 'f', NULL, NULL, 'f', NULL, NULL, 2, NULL, 2, NULL, 2, NULL, 1, 'f', '1', 15, '2020-02-09 06:35:30', '2020-02-09 06:35:30');
 
 -- --------------------------------------------------------
 
@@ -1086,7 +655,16 @@ CREATE TABLE `exp_formacion_integral` (
 
 INSERT INTO `exp_formacion_integral` (`id_exp_formacion_integral`, `practica_deporte`, `especifica_deporte`, `practica_artistica`, `especifica_artistica`, `pasatiempo`, `actividades_culturales`, `cuales_act`, `estado_salud`, `enfermedad_cronica`, `especifica_enf_cron`, `enf_cron_padre`, `especifica_enf_cron_padres`, `operacion`, `deque_operacion`, `enfer_visual`, `especifica_enf`, `usas_lentes`, `medicamento_controlado`, `especifica_medicamento`, `estatura`, `peso`, `accidente_grave`, `relata_breve`, `id_expbebidas`, `id_alumno`, `created_at`, `updated_at`) VALUES
 (1, 2, NULL, 2, NULL, 'Ver videos en internet', 2, NULL, 2, 2, NULL, 2, NULL, 2, NULL, 2, NULL, 1, 2, NULL, '158', '55', 2, NULL, 2, 10, '2020-01-31 05:38:06', '2020-01-31 05:38:06'),
-(2, 1, 'Futbol', 2, NULL, 'Ver videos', 2, NULL, 1, 2, NULL, 2, NULL, 2, NULL, 2, NULL, 2, 2, NULL, '158', '55', 2, NULL, 1, 9, '2020-01-31 06:21:34', '2020-01-31 06:21:34');
+(2, 1, 'Futbol', 2, NULL, 'Ver videos', 2, NULL, 1, 2, NULL, 2, NULL, 2, NULL, 2, NULL, 2, 2, NULL, '158', '55', 2, NULL, 1, 9, '2020-01-31 06:21:34', '2020-01-31 06:21:34'),
+(3, 2, NULL, 1, 'baile', 'leet', 2, NULL, 1, 2, NULL, 2, NULL, 2, NULL, 2, NULL, 1, 2, NULL, '170', '56', 2, NULL, 1, 57, '2020-02-08 11:14:40', '2020-02-08 11:14:40'),
+(4, 2, NULL, 2, NULL, NULL, 2, NULL, NULL, 2, NULL, 2, NULL, 2, NULL, 2, NULL, 2, 2, NULL, NULL, NULL, NULL, NULL, NULL, 1, '2020-02-08 11:34:53', '2020-02-08 11:34:53'),
+(5, 2, NULL, 2, NULL, NULL, 2, NULL, NULL, 2, NULL, 2, NULL, 2, NULL, 2, NULL, 2, 2, NULL, NULL, NULL, NULL, NULL, NULL, 2, '2020-02-08 11:49:53', '2020-02-08 11:49:53'),
+(6, 2, NULL, 2, NULL, NULL, 1, 's', NULL, 2, NULL, 2, NULL, 2, NULL, 2, NULL, 2, 2, NULL, NULL, NULL, 2, NULL, NULL, 3, '2020-02-09 01:53:36', '2020-02-09 01:53:36'),
+(7, 2, NULL, 2, NULL, NULL, 2, NULL, NULL, 2, NULL, 2, NULL, 2, NULL, 2, NULL, 2, 2, NULL, NULL, NULL, NULL, NULL, NULL, 16, '2020-02-09 01:58:36', '2020-02-09 01:58:36'),
+(8, 2, NULL, 2, NULL, NULL, 2, NULL, NULL, 2, NULL, 2, NULL, 2, NULL, 2, NULL, 2, 2, NULL, NULL, NULL, NULL, NULL, NULL, 4, '2020-02-09 02:30:55', '2020-02-09 02:30:55'),
+(9, 2, NULL, 2, NULL, NULL, 2, NULL, NULL, 2, NULL, 2, NULL, 2, NULL, 2, NULL, 2, 2, NULL, NULL, NULL, NULL, NULL, NULL, 5, '2020-02-09 05:28:34', '2020-02-09 05:28:34'),
+(10, 2, NULL, 2, NULL, 'd', 2, NULL, NULL, 2, NULL, 2, NULL, 2, NULL, 2, NULL, 2, 2, NULL, NULL, NULL, NULL, NULL, 3, 6, '2020-02-09 06:17:49', '2020-02-09 06:17:49'),
+(11, 2, NULL, 2, NULL, NULL, 2, NULL, NULL, 2, NULL, 1, NULL, 2, NULL, 2, NULL, 2, 1, NULL, NULL, NULL, NULL, NULL, NULL, 15, '2020-02-09 06:35:30', '2020-02-09 06:35:30');
 
 -- --------------------------------------------------------
 
@@ -1152,6 +730,7 @@ CREATE TABLE `exp_generales` (
   `materias_especial` int(11) DEFAULT NULL,
   `tot_espe` int(11) DEFAULT NULL,
   `gen_espe` int(11) DEFAULT NULL,
+  `foto` varchar(10) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -1160,9 +739,213 @@ CREATE TABLE `exp_generales` (
 -- Volcado de datos para la tabla `exp_generales`
 --
 
-INSERT INTO `exp_generales` (`id_exp_general`, `id_periodo`, `nombre`, `edad`, `sexo`, `fecha_nacimientos`, `lugar_nacimientos`, `id_semestre`, `id_estado_civil`, `no_hijos`, `direccion`, `correo`, `tel_casa`, `cel`, `nivel_economico`, `trabaja`, `ocupacion`, `horario`, `no_cuenta`, `beca`, `id_expbeca`, `estado`, `turno`, `id_alumno`, `id_grupo`, `id_carrera`, `poblacion`, `ant_inst`, `satisfaccion_c`, `materias_repeticion`, `tot_repe`, `materias_especial`, `tot_espe`, `gen_espe`, `created_at`, `updated_at`) VALUES
-(32, 20, 'DANIELA MICHELLE VILCHIS MARTINEZ', 21, 'F', '1998-10-14', NULL, 7, 1, 0, 'San Martin Obispo', 'danysmichi@gmail.com', '7228832212', '7228832212', 'D', 2, NULL, NULL, '201607043', 2, NULL, 1, 1, 10, 1, 2, 'Rural', 'Continuación de estudios', 'Muy satisfecho', 2, NULL, 2, NULL, 1, '2020-01-31 05:38:06', '2020-01-31 05:38:06'),
-(33, 20, 'YOSELIN VERA SOTERO', 21, 'F', '1998-01-28', 'Valle', 7, 1, 0, 'San jeronimo', 'yosesotero@gmail.com', NULL, '7228759593', 'D', 2, NULL, NULL, '201607042', 2, NULL, 1, 1, 9, 13, 2, 'Rural', 'Continuación de estudios', 'Muy satisfecho', 2, NULL, 2, NULL, 1, '2020-01-31 06:21:33', '2020-01-31 06:21:33');
+INSERT INTO `exp_generales` (`id_exp_general`, `id_periodo`, `nombre`, `edad`, `sexo`, `fecha_nacimientos`, `lugar_nacimientos`, `id_semestre`, `id_estado_civil`, `no_hijos`, `direccion`, `correo`, `tel_casa`, `cel`, `nivel_economico`, `trabaja`, `ocupacion`, `horario`, `no_cuenta`, `beca`, `id_expbeca`, `estado`, `turno`, `id_alumno`, `id_grupo`, `id_carrera`, `poblacion`, `ant_inst`, `satisfaccion_c`, `materias_repeticion`, `tot_repe`, `materias_especial`, `tot_espe`, `gen_espe`, `foto`, `created_at`, `updated_at`) VALUES
+(32, 20, 'DANIELA MICHELLE VILCHIS MARTINEZ', 21, 'F', '1998-10-14', NULL, 7, 1, 0, 'San Martin Obispo', 'danysmichi@gmail.com', '7228832212', '7228832212', 'D', 2, NULL, NULL, '201607043', 2, NULL, 1, 1, 10, 1, 2, 'Rural', 'Continuación de estudios', 'Muy satisfecho', 2, NULL, 2, NULL, 1, NULL, '2020-01-31 05:38:06', '2020-01-31 05:38:06'),
+(33, 20, 'YOSELIN VERA SOTERO', 21, 'F', '1998-01-28', 'Valle', 7, 1, 1, 'San jeronimo', 'yosesotero@gmail.com', NULL, '7228759593', 'D', 2, NULL, NULL, '201607042', 2, NULL, 1, 1, 9, 13, 2, 'Rural', 'Continuación de estudios', 'Muy satisfecho', 2, NULL, 2, NULL, 1, NULL, '2020-01-31 06:21:33', '2020-02-04 23:20:35'),
+(34, 20, 'JESUS EMERITH RAMIREZ OCAMPO', 23, 'M', '1996-04-11', 'Amanalco', 9, 1, 1, 'Amanalco', 'mutsotool@gmail.com', '722510033', '7227817114', 'E', 2, NULL, NULL, '201507030', 2, NULL, 1, 1, 57, 18, 2, 'Rural', 'Continuación de estudios', 'Satisfecho', 1, 2, 1, 2, 3, 'image/png', '2020-02-08 11:14:40', '2020-02-08 11:14:40'),
+(35, 20, 'ALEJANDRA MONDRAGON GONZALEZ', 22, 'F', '1994-09-25', NULL, 9, 1, 1, 's', 'ale_250918994@hotmail.com', '0', '7225196719', 'D', 2, NULL, NULL, '201207039', 2, NULL, 1, 1, 1, 1, 2, NULL, NULL, NULL, 2, NULL, 2, NULL, NULL, 'image/jpeg', '2020-02-08 11:34:53', '2020-02-08 11:34:53'),
+(36, 20, 'JUAN CARLOS ESQUIVEL MERCADO', 23, 'M', '1994-03-08', NULL, 9, 2, 1, 's', 'charly626.a@gmail.com', '0', '7223008397', 'D', 2, NULL, NULL, '201207017', 2, NULL, 1, 2, 2, 1, 2, NULL, NULL, NULL, 2, NULL, 2, NULL, NULL, 'image/jpeg', '2020-02-08 11:49:52', '2020-02-08 11:49:52'),
+(37, 20, 'JABNEEL FRANCISCO HERNANDEZ', 22, 'F', '1997-04-09', NULL, 9, 1, 1, 'd', 'jabnny@gmail.com', NULL, '7223713000', 'E', 2, NULL, NULL, '201507009', 2, NULL, 2, 1, 3, 1, 2, NULL, NULL, NULL, 2, NULL, 2, NULL, 1, 'image/jpeg', '2020-02-09 01:53:36', '2020-02-09 01:53:36'),
+(38, 20, 'JOSE MIGUEL MIRALRIO OROZCO', 22, 'M', '1998-01-06', NULL, 3, 2, 1, 'f', 'miguelito151998@gmail.com', '7226118399', '7226118399', 'D', 2, NULL, NULL, '201801072', 2, NULL, 3, 1, 16, 1, 1, NULL, NULL, NULL, 2, NULL, 2, NULL, NULL, 'image/jpeg', '2020-02-09 01:58:36', '2020-02-09 01:58:36'),
+(39, 20, 'DANIEL MARTIN GONZALEZ', 20, 'M', '1996-05-29', NULL, 6, 2, 3, 'g', 'dm057723@gmail.com', NULL, '7228033761', 'D', 2, NULL, NULL, '201407032', 2, NULL, 3, 3, 4, 2, 2, NULL, NULL, NULL, 2, NULL, 2, NULL, 1, 'image/png', '2020-02-09 02:30:54', '2020-02-09 02:30:54'),
+(40, 20, 'AURELIO  VAZQUEZ FELIPE', 20, 'M', '1997-03-22', 'Amanalco', 6, 1, 1, 'Amanalco', 'vazquezarcangel@gmail.com', '5562054134', '5562054134', 'C-', 2, NULL, NULL, '201507038', 2, NULL, 1, 2, 5, 1, 2, 'Rural', 'Continuación de estudios', 'Satisfecho', 2, NULL, 2, NULL, 1, 'image/png', '2020-02-09 05:28:34', '2020-02-09 05:28:34'),
+(41, 20, 'VALERIA SANCHEZ RODRIGUEZ', 21, 'F', '1997-05-20', 'Colorines', 9, 2, 2, 'Colorines', 'val.dearest20@gmail.com', NULL, '7226179965', 'C-', 2, NULL, NULL, '201507033', 2, NULL, 1, 2, 6, 1, 2, 'Rural', 'Continuación de estudios', 'Satisfecho', 1, 2, 2, NULL, 1, 'image/jpeg', '2020-02-09 06:17:49', '2020-02-09 06:17:49'),
+(42, 20, 'ABNER EMIGDIO PALMA CARBAJAL', 21, 'M', '1998-09-24', 'Amanalco', 7, 2, 2, 'Amanalco', 'loquenderosonyvegas@gmail.com', '7224593729', '7224593729', 'D+', 2, NULL, NULL, '201607032', 2, NULL, 2, 2, 15, 2, 2, NULL, 'Cambio de carrera/institución', 'Regular', 2, NULL, 2, NULL, 1, 'image/jpeg', '2020-02-09 06:30:33', '2020-02-09 06:30:33'),
+(43, 20, 'ABNER EMIGDIO PALMA CARBAJAL', 21, 'M', '1998-09-24', 'Amanalco', 7, 2, 2, 'Amanalco', 'loquenderosonyvegas@gmail.com', '7224593729', '7224593729', 'D+', 2, NULL, NULL, '201607032', 2, NULL, 2, 2, 15, 2, 2, NULL, 'Cambio de carrera/institución', 'Regular', 2, NULL, 2, NULL, 1, 'image/jpeg', '2020-02-09 06:30:41', '2020-02-09 06:30:41'),
+(44, 20, 'ABNER EMIGDIO PALMA CARBAJAL', 21, 'M', '1998-09-24', 'Amanalco', 7, 2, 2, 'Amanalco', 'loquenderosonyvegas@gmail.com', '7224593729', '7224593729', 'D+', 2, NULL, NULL, '201607032', 2, NULL, 2, 2, 15, 2, 2, NULL, 'Cambio de carrera/institución', 'Regular', 2, NULL, 2, NULL, 1, 'image/jpeg', '2020-02-09 06:30:43', '2020-02-09 06:30:43'),
+(45, 20, 'ABNER EMIGDIO PALMA CARBAJAL', 21, 'M', '1998-09-24', 'Amanalco', 7, 2, 2, 'Amanalco', 'loquenderosonyvegas@gmail.com', '7224593729', '7224593729', 'D+', 2, NULL, NULL, '201607032', 2, NULL, 2, 2, 15, 2, 2, NULL, 'Cambio de carrera/institución', 'Regular', 2, NULL, 2, NULL, 1, 'image/jpeg', '2020-02-09 06:31:28', '2020-02-09 06:31:28'),
+(46, 20, 'ABNER EMIGDIO PALMA CARBAJAL', 21, 'M', '1998-09-24', 'Amanalco', 7, 2, 2, 'Amanalco', 'loquenderosonyvegas@gmail.com', '7224593729', '7224593729', 'D+', 2, NULL, NULL, '201607032', 2, NULL, 2, 2, 15, 2, 2, NULL, 'Cambio de carrera/institución', 'Regular', 2, NULL, 2, NULL, 1, 'image/jpeg', '2020-02-09 06:31:29', '2020-02-09 06:31:29'),
+(47, 20, 'ABNER EMIGDIO PALMA CARBAJAL', 21, 'M', '1998-09-24', 'Amanalco', 7, 2, 2, 'Amanalco', 'loquenderosonyvegas@gmail.com', '7224593729', '7224593729', 'D+', 2, NULL, NULL, '201607032', 2, NULL, 2, 2, 15, 2, 2, NULL, 'Cambio de carrera/institución', 'Regular', 2, NULL, 2, NULL, 1, 'image/jpeg', '2020-02-09 06:31:41', '2020-02-09 06:31:41'),
+(48, 20, 'ABNER EMIGDIO PALMA CARBAJAL', 21, 'M', '1998-09-24', 'Amanalco', 7, 2, 2, 'Amanalco', 'loquenderosonyvegas@gmail.com', '7224593729', '7224593729', 'D+', 2, NULL, NULL, '201607032', 2, NULL, 2, 2, 15, 2, 2, NULL, 'Cambio de carrera/institución', 'Regular', 2, NULL, 2, NULL, 1, 'image/jpeg', '2020-02-09 06:35:30', '2020-02-09 06:35:30');
+
+--
+-- Disparadores `exp_generales`
+--
+DELIMITER $$
+CREATE TRIGGER `algoritmo_insert` AFTER INSERT ON `exp_generales` FOR EACH ROW BEGIN
+   DECLARE id_carrera_v double;
+   DECLARE sexo_v double ;
+   DECLARE id_estado_civil_v double;
+   DECLARE no_hijos_v double;
+   DECLARE trabaja_v double;
+   DECLARE lugar_nacimientos_v double;
+   DECLARE nivel_economico_v double;
+   DECLARE beca_v double;
+   DECLARE estado_v double;
+   DECLARE poblacion_v double;
+   DECLARE ant_inst_v double;
+   DECLARE satisfaccion_c_v double;
+   DECLARE materias_repeticion_v double;
+   DECLARE tot_repe_v double;
+   DECLARE materias_especial_v double;
+   DECLARE tot_espe_v double;
+   DECLARE gen_espe_v double;
+   
+   IF NEW.id_carrera=2 THEN
+       SET @id_carrera_v:=3.5;
+    END IF;    
+    
+    IF NEW.sexo='F' THEN
+       SET @sexo_v:=3.0;
+    ELSEIF NEW.sexo='M' THEN
+       SET @sexo_v:=3.5;
+    END IF;   
+   
+     IF NEW.id_estado_civil=1 THEN
+      SET @id_estado_civil_v:=0.8;
+    ELSEIF NEW.id_estado_civil=2 THEN
+      SET @id_estado_civil_v:=3.5;
+    ELSEIF NEW.id_estado_civil=3 THEN
+      SET @id_estado_civil_v:= 2.0;
+    ELSEIF NEW.id_estado_civil=4 THEN
+      SET @id_estado_civil_v:= 2.5;
+     ELSEIF NEW.id_estado_civil=5 THEN
+      SET @id_estado_civil_v:=2.0;
+    END IF;
+    
+    IF NEW.no_hijos=0 THEN
+      SET @no_hijos_v:=0.8;
+    ELSEIF NEW.no_hijos=1 THEN
+      SET @no_hijos_v:=1.5;
+    ELSEIF NEW.no_hijos=2 THEN
+      SET @no_hijos_v:=2.5;
+    ELSEIF NEW.no_hijos=3 THEN
+      SET @no_hijos_v:=2.8;
+    ELSEIF NEW.no_hijos=4 THEN
+      SET @no_hijos_v:=3.5;
+    ELSEIF NEW.no_hijos=5 THEN
+      SET @no_hijos_v:=3.5;
+    END IF;
+    
+    IF NEW.trabaja=1 THEN
+      SET @trabaja_v:=3.5;
+    ELSEIF NEW.trabaja=2 THEN
+      SET @trabaja_v:=1.5;
+    END IF;
+    
+    SET @lugar_nacimientos_v=3.5;
+    
+    IF NEW.nivel_economico="A/B" THEN
+      SET @nivel_economico_v:=1.5;
+    ELSEIF NEW.nivel_economico="C+" THEN
+      SET @nivel_economico_v:=2.5;
+    ELSEIF NEW.nivel_economico="C" THEN
+      SET @nivel_economico_v:=2.5;
+    ELSEIF NEW.nivel_economico="C-" THEN
+      SET @nivel_economico_v:=2.5;
+    ELSEIF NEW.nivel_economico="D+" THEN
+      SET @nivel_economico_v:=3.0;
+    ELSEIF NEW.nivel_economico="D" THEN
+      SET @nivel_economico_v:=3.0;
+    ELSEIF NEW.nivel_economico="E" THEN
+      SET @nivel_economico_v:=3.5;
+    END IF;
+    
+     IF NEW.beca=1 THEN
+      SET @beca_v:=1.5;
+    ELSEIF NEW.beca=2 THEN
+      SET @beca_v:=3.5;
+    END IF;
+   
+    IF NEW.estado=1 THEN
+      SET @estado_v:=1.5;
+    ELSEIF NEW.estado=2 THEN
+      SET @estado_v:=3.5;
+    ELSEIF NEW.estado=3 THEN
+      SET @estado_v:=0;
+    ELSEIF NEW.estado=4 THEN
+      SET @estado_v:=0;
+    ELSEIF NEW.estado=5 THEN
+      SET @estado_v:=0;
+    END IF;
+    
+    IF NEW.poblacion="Rural" THEN
+      SET @poblacion_v:=3.5;
+    ELSEIF NEW.poblacion="Urbana" THEN
+      SET @poblacion_v:=2.0;
+    END IF;
+    
+    IF NEW.ant_inst="Continuación de estudios" THEN
+      SET @ant_inst_v:=1.5;
+    ELSEIF NEW.ant_inst="Cambio de carrera/institución" THEN
+      SET @ant_inst_v:=2.0;
+    END IF;
+    
+    IF NEW.satisfaccion_c="Muy satisfecho" THEN
+      SET @satisfaccion_c_v:=0.8;
+    ELSEIF NEW.satisfaccion_c="Satisfecho" THEN
+      SET @satisfaccion_c_v:=1.5;
+    ELSEIF NEW.satisfaccion_c="Regular" THEN
+      SET @satisfaccion_c_v:=2.5;
+    ELSEIF NEW.satisfaccion_c="Inconforme" THEN
+      SET @satisfaccion_c_v:=3.5;
+    END IF;
+    
+    IF NEW.materias_repeticion=1 THEN
+      SET @materias_repeticion_v:=3.5;
+    ELSEIF NEW.materias_repeticion=2 THEN
+      SET @materias_repeticion_v:=0.5;
+    END IF;
+    
+    IF NEW.tot_repe is NULL THEN
+      SET @tot_repe_v:=0.1;
+    ELSEIF NEW.tot_repe=1 THEN
+      SET @tot_repe_v:=0.1;
+    ELSEIF NEW.tot_repe=2 THEN
+      SET @tot_repe_v:=1.5;
+    ELSEIF NEW.tot_repe=3 THEN
+      SET @tot_repe_v:=2.5;
+    ELSEIF NEW.tot_repe=4 THEN
+      SET @tot_repe_v:=3.5;
+    END IF;
+    
+    IF NEW.materias_especial=1 THEN
+      SET @materias_especial_v:=3.5;
+    ELSEIF NEW.materias_especial=2 THEN
+      SET @materias_especial_v:=0.5;
+    END IF;
+    
+    IF NEW.tot_espe is NULL THEN
+      SET @tot_espe_v:=0.1;
+    ELSEIF NEW.tot_espe=1 THEN
+      SET @tot_espe_v:=0.1;
+    ELSEIF NEW.tot_espe=2 THEN
+      SET @tot_espe_v:=1.5;
+    ELSEIF NEW.tot_espe=3 THEN
+      SET @tot_espe_v:=2.5;
+    ELSEIF NEW.tot_espe=4 THEN
+      SET @tot_espe_v:=3.5;
+    END IF;
+    
+    IF NEW.gen_espe is NULL THEN
+      SET @tot_espe_v:=0.1;
+    ELSEIF NEW.gen_espe=1 THEN
+      SET @gen_espe_v:=0.1;
+    ELSEIF NEW.gen_espe=2 THEN
+      SET @gen_espe_v:=1.5;
+    ELSEIF NEW.gen_espe=3 THEN
+      SET @gen_espe_v:=2.5;
+    ELSEIF NEW.gen_espe=4 THEN
+      SET @gen_espe_v:=3.5;
+    END IF; 
+    
+     IF NEW.id_carrera = 2 THEN
+        INSERT INTO prediccion (id_prediccion,nombre,no_cuenta,id_carrera,id_carrera_v,sexo,sexo_v,id_estado_civil,id_estado_civil_v,
+                                no_hijos,no_hijos_v,trabaja,trabaja_v,lugar_nacimientos,lugar_nacimientos_v,nivel_economico,nivel_economico_v
+                               ,beca,beca_v,estado,estado_v,poblacion,poblacion_v,ant_inst,ant_inst_v,satisfaccion_c,satisfaccion_c_v,
+                               materias_repeticion,materias_repeticion_v,tot_repe,tot_repe_v,materias_especial,materias_especial_v,
+                               tot_espe,tot_espe_v,gen_espe,gen_espe_v) 
+        VALUES('',NEW.nombre,NEW.no_cuenta,NEW.id_carrera,@id_carrera_v,NEW.sexo,@sexo_v,NEW.id_estado_civil,@id_estado_civil_v,
+                                NEW.no_hijos,@no_hijos_v,NEW.trabaja,@trabaja_v,NEW.lugar_nacimientos,@lugar_nacimientos_v,
+               					NEW.nivel_economico,@nivel_economico_v,NEW.beca,@beca_v,NEW.estado,@estado_v,NEW.poblacion,@poblacion_v,
+               					NEW.ant_inst,@ant_inst_v,NEW.satisfaccion_c,@satisfaccion_c_v,
+                               NEW.materias_repeticion,@materias_repeticion_v,NEW.tot_repe,@tot_repe_v,NEW.materias_especial,@materias_especial_v,
+                               NEW.tot_espe,@tot_espe_v,NEW.gen_espe,@gen_espe_v);
+    END IF;
+    
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -1192,7 +975,16 @@ CREATE TABLE `exp_habitos_estudio` (
 
 INSERT INTO `exp_habitos_estudio` (`id_exp_habitos_estudio`, `tiempo_empleado_estudiar`, `id_opc_intelectual`, `forma_estudio`, `tiempo_libre`, `asignatura_preferida`, `porque_asignatura`, `asignatura_dificil`, `porque_asignatura_dificil`, `opinion_tu_mismo_estudiante`, `id_alumno`, `created_at`, `updated_at`) VALUES
 (1, '2', 2, 'Visual', 'Tomar cursos', 'Programación', 'Me gusta programar', 'Civica y etica', 'Es solo teoria', 'Buena estudiante', 10, '2020-01-31 05:38:06', '2020-01-31 05:38:06'),
-(2, '2', 1, 'Visual', 'Trabajar', 'Programacion', 'me gusta', 'Español', 'es teorica', 'Buen estudiante', 9, '2020-01-31 06:21:34', '2020-01-31 06:21:34');
+(2, '2', 1, 'Visual', 'Trabajar', 'Programacion', 'me gusta', 'Español', 'es teorica', 'Buen estudiante', 9, '2020-01-31 06:21:34', '2020-01-31 06:21:34'),
+(3, '2', 2, 'leer', 'ler', 'reds', 'si', 'bd', 'no', 'si', 57, '2020-02-08 11:14:40', '2020-02-08 11:14:40'),
+(4, '3', 3, 'leer', NULL, NULL, NULL, NULL, NULL, NULL, 1, '2020-02-08 11:34:53', '2020-02-08 11:34:53'),
+(5, '2', 2, 's', NULL, NULL, NULL, NULL, NULL, NULL, 2, '2020-02-08 11:49:53', '2020-02-08 11:49:53'),
+(6, '1', 1, 's', NULL, NULL, NULL, NULL, NULL, NULL, 3, '2020-02-09 01:53:36', '2020-02-09 01:53:36'),
+(7, '3', 1, 'f', NULL, NULL, NULL, NULL, NULL, NULL, 16, '2020-02-09 01:58:36', '2020-02-09 01:58:36'),
+(8, '2', 3, 'd', NULL, NULL, NULL, NULL, NULL, NULL, 4, '2020-02-09 02:30:55', '2020-02-09 02:30:55'),
+(9, '2', 1, 'd', NULL, NULL, NULL, NULL, NULL, NULL, 5, '2020-02-09 05:28:34', '2020-02-09 05:28:34'),
+(10, '4', 1, 'g', 'g', 'g', NULL, NULL, NULL, NULL, 6, '2020-02-09 06:17:49', '2020-02-09 06:17:49'),
+(11, '1', 1, 'k', NULL, NULL, NULL, NULL, NULL, NULL, 15, '2020-02-09 06:35:30', '2020-02-09 06:35:30');
 
 -- --------------------------------------------------------
 
@@ -5851,23 +5643,26 @@ CREATE TABLE `plan_actividades` (
   `desc_actividad` text NOT NULL,
   `objetivo_actividad` text NOT NULL,
   `fi_actividad` date NOT NULL,
-  `ff_actividad` date NOT NULL
+  `ff_actividad` date NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `plan_actividades`
 --
 
-INSERT INTO `plan_actividades` (`id_plan_actividad`, `desc_actividad`, `objetivo_actividad`, `fi_actividad`, `ff_actividad`) VALUES
-(1, 'Proyecto de vida', 'Conocer  los elementos, características y componentes necesarios para la elaboración de un proyecto de vida.', '2020-03-03', '2020-03-10'),
-(2, 'Hábitos de Estudio', 'Adquirir herramientas que faciliten la creación de hábitos de estudio saludables.', '2020-02-04', '2020-02-06'),
-(3, 'Encuestas de actitudes y valores.', 'Identificar rasgos personales del estudiante para su atención tutorial.', '2020-02-11', '2020-02-13'),
-(4, 'Test de inteligencia', 'Medir la inteligencia de un individua a través de la medición estimativa del coeficiente intelectual que muestra.', '2020-02-18', '2020-02-20'),
-(5, 'Servicio Social', 'Conocer el proceso de servicio social, obteniendo habilidades relacionadas a la carrera por medio de actividades propuestas en la empresa o institución.', '2020-02-24', '2020-02-27'),
-(6, 'Campo laboral', 'Conocer las diferentes opciones que tiene el egresado para incorporarse al campo laboral, con el fin de integrarse de forma eficaz al mundo profesional.', '2020-03-10', '2020-03-12'),
-(7, 'Investigación', 'Analizar un objeto de estudio, con el fin de alcanzar una  meta, estableciendo un objetivo relacionado a un tema específico.', '2020-03-16', '2020-03-18'),
-(8, 'Seguimiento académico', 'Revisar las calificaciones e identificar a los alumnos con problemas académicos, para la posible asesoría.', '2020-03-23', '2020-03-26'),
-(9, 'Abstracción reflexiva e inferencias lógicas', 'Desarrollar la capacidad del individuo de abstraer por medio de la lógica la asociación de características de un objeto, un concepto o el entorno que lo rodea.', '2020-03-30', '2020-04-01');
+INSERT INTO `plan_actividades` (`id_plan_actividad`, `desc_actividad`, `objetivo_actividad`, `fi_actividad`, `ff_actividad`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(80, 'Proyecto de vida', 'Conocer  los elementos, características y componentes necesarios para la elaboración de un proyecto de vida.', '2020-03-09', '2020-03-13', '2020-02-07 21:11:15', '2020-02-07 21:16:45', NULL),
+(81, 'de2', '2ed', '2020-02-18', '2020-02-17', '2020-02-07 21:11:32', '2020-02-07 21:11:40', '2020-02-07 21:11:40'),
+(82, 'Elaboración de examen Diagnóstico', 'Identificar y determinar las necesidades académicas, personales e institucionales de los estudiantes para la planeación de la atención tutorial.', '2020-02-10', '2020-02-14', '2020-02-07 22:21:16', '2020-02-07 22:33:32', NULL),
+(83, 'Encuesta socioeconómica', 'Comprender la forma de vida y escolaridad del estudiante, para conocer el ambiente que lo rodea.', '2020-02-24', '2020-02-21', '2020-02-07 22:22:17', '2020-02-08 02:50:14', NULL),
+(84, 'Hábitos de Estudio', 'Adquirir herramientas que faciliten la creación de hábitos de estudio saludables.', '2020-03-30', '2020-04-03', '2020-02-07 22:23:15', '2020-02-07 22:23:15', NULL),
+(85, 'Encuestas de actitudes y valores.', 'Identificar rasgos personales del estudiante para su atención tutorial.', '2020-04-06', '2020-04-10', '2020-02-07 22:23:44', '2020-02-07 22:23:44', NULL),
+(86, 'Hábitos de Estudio', 'Adquirir herramientas que faciliten la creación de hábitos de estudio saludables.', '2020-03-23', '2020-03-27', '2020-02-07 22:37:48', '2020-02-07 22:37:48', NULL),
+(87, 'Conócete a ti mismo', 'Comprender y analizar la personalidad, fortaleza, debilidades, gustos y todo lo que es agradable como personas individuales.', '2020-04-20', '2020-04-24', '2020-02-07 23:18:23', '2020-02-07 23:18:23', NULL),
+(88, 'EC', 'wcw', '2020-02-24', '2020-02-28', '2020-02-08 01:33:07', '2020-02-08 01:33:07', NULL);
 
 -- --------------------------------------------------------
 
@@ -5877,18 +5672,13 @@ INSERT INTO `plan_actividades` (`id_plan_actividad`, `desc_actividad`, `objetivo
 
 CREATE TABLE `plan_asigna_evidencias` (
   `id_evidencia` int(11) NOT NULL,
-  `evidencia` text NOT NULL,
+  `evidencia` varchar(80) DEFAULT NULL,
   `id_alumno` int(11) NOT NULL,
   `id_asigna_planeacion_tutor` int(11) NOT NULL,
-  `fecha_subio` date NOT NULL
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `plan_asigna_evidencias`
---
-
-INSERT INTO `plan_asigna_evidencias` (`id_evidencia`, `evidencia`, `id_alumno`, `id_asigna_planeacion_tutor`, `fecha_subio`) VALUES
-(1, '1580932234.pdf', 10, 1, '2020-02-05');
 
 -- --------------------------------------------------------
 
@@ -5900,24 +5690,27 @@ CREATE TABLE `plan_asigna_planeacion_actividad` (
   `id_asigna_planeacion_actividad` int(11) NOT NULL,
   `id_planeacion` int(11) NOT NULL,
   `id_plan_actividad` int(11) NOT NULL,
-  `comentario` text NOT NULL,
-  `id_estado` int(11) NOT NULL
+  `comentario` text,
+  `id_estado` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `plan_asigna_planeacion_actividad`
 --
 
-INSERT INTO `plan_asigna_planeacion_actividad` (`id_asigna_planeacion_actividad`, `id_planeacion`, `id_plan_actividad`, `comentario`, `id_estado`) VALUES
-(1, 1, 1, '', 1),
-(2, 1, 2, '', 1),
-(3, 1, 3, '', 1),
-(4, 2, 4, '', 0),
-(5, 2, 5, '', 0),
-(6, 2, 6, '', 0),
-(7, 3, 7, '', 0),
-(8, 3, 8, '', 0),
-(9, 3, 9, '', 0);
+INSERT INTO `plan_asigna_planeacion_actividad` (`id_asigna_planeacion_actividad`, `id_planeacion`, `id_plan_actividad`, `comentario`, `id_estado`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(53, 43, 80, NULL, 1, '2020-02-07 21:11:15', '2020-02-07 21:15:49', NULL),
+(54, 43, 81, NULL, 2, '2020-02-07 21:11:32', '2020-02-07 21:11:32', NULL),
+(55, 44, 82, 'Falta de ortografia', 3, '2020-02-07 22:21:16', '2020-02-07 22:26:20', NULL),
+(56, 44, 83, NULL, 1, '2020-02-07 22:22:18', '2020-02-07 22:26:29', NULL),
+(57, 44, 84, 'hola', 3, '2020-02-07 22:23:15', '2020-02-07 22:32:39', NULL),
+(58, 44, 85, NULL, 1, '2020-02-07 22:23:44', '2020-02-07 22:36:25', NULL),
+(59, 44, 86, 'iudhnin', 3, '2020-02-07 22:37:48', '2020-02-07 22:39:00', NULL),
+(60, 43, 87, NULL, 1, '2020-02-07 23:18:23', '2020-02-07 23:19:29', NULL),
+(61, 43, 88, NULL, 2, '2020-02-08 01:33:07', '2020-02-08 01:33:07', NULL);
 
 -- --------------------------------------------------------
 
@@ -5927,23 +5720,32 @@ INSERT INTO `plan_asigna_planeacion_actividad` (`id_asigna_planeacion_actividad`
 
 CREATE TABLE `plan_asigna_planeacion_tutor` (
   `id_asigna_planeacion_tutor` int(11) NOT NULL,
-  `id_asigna_planaeacion_actividad` int(11) NOT NULL,
+  `id_asigna_planeacion_actividad` int(11) NOT NULL,
   `id_asigna_tutor` int(11) NOT NULL,
-  `id_estrategia` int(11) NOT NULL,
-  `estrategia` text NOT NULL,
-  `id_sugerencia` int(11) NOT NULL,
-  `sugerencia` text NOT NULL,
-  `requiere_evidencia` int(11) NOT NULL
+  `id_estrategia` int(11) DEFAULT NULL,
+  `estrategia` text,
+  `id_sugerencia` int(11) DEFAULT NULL,
+  `sugerencia` text,
+  `requiere_evidencia` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `plan_asigna_planeacion_tutor`
 --
 
-INSERT INTO `plan_asigna_planeacion_tutor` (`id_asigna_planeacion_tutor`, `id_asigna_planaeacion_actividad`, `id_asigna_tutor`, `id_estrategia`, `estrategia`, `id_sugerencia`, `sugerencia`, `requiere_evidencia`) VALUES
-(1, 1, 8, 0, '', 0, '', 1),
-(2, 2, 8, 0, '', 0, '', 1),
-(3, 3, 8, 0, '', 0, '', 1);
+INSERT INTO `plan_asigna_planeacion_tutor` (`id_asigna_planeacion_tutor`, `id_asigna_planeacion_actividad`, `id_asigna_tutor`, `id_estrategia`, `estrategia`, `id_sugerencia`, `sugerencia`, `requiere_evidencia`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(16, 53, 8, 2, 'rdcc', NULL, NULL, 1, '2020-02-07 21:11:15', '2020-02-07 21:23:55', NULL),
+(17, 54, 8, NULL, NULL, NULL, NULL, NULL, '2020-02-07 21:11:32', '2020-02-07 21:11:32', NULL),
+(18, 55, 6, NULL, NULL, NULL, NULL, NULL, '2020-02-07 22:21:17', '2020-02-07 22:21:17', NULL),
+(19, 56, 6, 2, 'Online', 2, 'no me gusta', 1, '2020-02-07 22:22:18', '2020-02-07 22:43:17', NULL),
+(20, 57, 6, NULL, NULL, NULL, NULL, NULL, '2020-02-07 22:23:16', '2020-02-07 22:23:16', NULL),
+(21, 58, 6, 2, 'Contestar Encuesta', NULL, NULL, NULL, '2020-02-07 22:23:44', '2020-02-07 22:44:23', NULL),
+(22, 59, 6, NULL, NULL, NULL, NULL, NULL, '2020-02-07 22:37:48', '2020-02-07 22:37:48', NULL),
+(23, 60, 8, 2, 'hola', NULL, NULL, 1, '2020-02-07 23:18:23', '2020-02-07 23:20:10', NULL),
+(24, 61, 8, NULL, NULL, NULL, NULL, NULL, '2020-02-08 01:33:07', '2020-02-08 01:33:07', NULL);
 
 -- --------------------------------------------------------
 
@@ -5953,19 +5755,20 @@ INSERT INTO `plan_asigna_planeacion_tutor` (`id_asigna_planeacion_tutor`, `id_as
 
 CREATE TABLE `plan_planeacion` (
   `id_planeacion` int(11) NOT NULL,
-  `id_generacion` int(11) NOT NULL,
-  `id_periodo` int(11) NOT NULL,
-  `fecha_creacion` date NOT NULL
+  `id_generacion` int(11) DEFAULT NULL,
+  `id_periodo` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `plan_planeacion`
 --
 
-INSERT INTO `plan_planeacion` (`id_planeacion`, `id_generacion`, `id_periodo`, `fecha_creacion`) VALUES
-(1, 1, 20, '2020-02-03'),
-(2, 2, 20, '2020-02-03'),
-(3, 3, 20, '2020-02-03');
+INSERT INTO `plan_planeacion` (`id_planeacion`, `id_generacion`, `id_periodo`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(43, 1, NULL, '2020-02-07 15:11:15', NULL, NULL),
+(44, 4, NULL, '2020-02-07 16:21:16', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -5999,8 +5802,8 @@ CREATE TABLE `prediccion` (
   `etnia_indigena_v` double DEFAULT NULL,
   `lugar_nacimientos` varchar(50) DEFAULT NULL,
   `lugar_nacimientos_v` double DEFAULT NULL,
-  `id_nivel_economico` varchar(11) DEFAULT NULL,
-  `id_nivel_economico_v` double DEFAULT NULL,
+  `nivel_economico` varchar(11) DEFAULT NULL,
+  `nivel_economico_v` double DEFAULT NULL,
   `sostiene_economia_hogar` varchar(30) DEFAULT NULL,
   `sostiene_economia_hogar_v` double DEFAULT NULL,
   `tegusta_carrera_elegida` int(11) DEFAULT NULL,
@@ -6011,7 +5814,7 @@ CREATE TABLE `prediccion` (
   `estado_v` double DEFAULT NULL,
   `id_escala` int(11) DEFAULT NULL,
   `id_escala_v` double DEFAULT NULL,
-  `poblacion` int(11) DEFAULT NULL,
+  `poblacion` varchar(11) DEFAULT NULL,
   `poblacion_v` double DEFAULT NULL,
   `ant_inst` varchar(50) DEFAULT NULL,
   `ant_inst_v` double DEFAULT NULL,
@@ -6029,17 +5832,6 @@ CREATE TABLE `prediccion` (
   `gen_espe_v` double DEFAULT NULL,
   `total` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Volcado de datos para la tabla `prediccion`
---
-
-INSERT INTO `prediccion` (`id_prediccion`, `nombre`, `no_cuenta`, `id_carrera`, `id_carrera_v`, `sexo`, `sexo_v`, `id_estado_civil`, `id_estado_civil_v`, `no_hijos`, `no_hijos_v`, `no_hermanos`, `no_hermanos_v`, `enfermedad_cronica`, `enfermedad_cronica_v`, `trabaja`, `trabaja_v`, `practica_deporte`, `practica_deporte_v`, `actividades_culturales`, `actividades_culturales_v`, `etnia_indigena`, `etnia_indigena_v`, `lugar_nacimientos`, `lugar_nacimientos_v`, `id_nivel_economico`, `id_nivel_economico_v`, `sostiene_economia_hogar`, `sostiene_economia_hogar_v`, `tegusta_carrera_elegida`, `tegusta_carrera_elegida_v`, `beca`, `beca_v`, `estado`, `estado_v`, `id_escala`, `id_escala_v`, `poblacion`, `poblacion_v`, `ant_inst`, `ant_inst_v`, `satisfaccion_c`, `satisfaccion_c_v`, `materias_repeticion`, `materias_repeticion_v`, `tot_repe`, `tot_repe_v`, `materias_especial`, `materias_especial_v`, `tot_espe`, `tot_espe_v`, `gen_espe`, `gen_espe_v`, `total`) VALUES
-(2, 'JOSE ALBERTO', 201607002, 2, 3.5, 'Masculino', 3.5, 1, 0.8, 0, 0.8, 3, 2.8, 1, 3.5, 1, 3.5, 2, 3.5, 2, 3.5, 1, 3.5, 'Amanalco', 3.5, 'C', 2.5, 'Padre', 3.5, 1, 1.5, 1, 1.5, 2, 3.5, 1, 0.8, 2, 2, 'Continuación de estudios', 1.5, 'Regular', 2.5, 2, 0.5, 0, 0.1, 2, 0.5, 0, 0.1, 0, 0.1, 53),
-(3, 'GLORIA MARIA', 201607003, 2, 3.5, 'Femenino', 3.5, 1, 0.8, 0, 0.8, 3, 2.8, 1, 3.5, 1, 3.5, 2, 3.5, 2, 3.5, 1, 3.5, 'Villa Victoria', 3.5, 'C+', 2.5, 'madre', 3.5, 2, 3.5, 2, 3.5, 1, 1.5, 2, 1.5, 2, 2, 'Continuación de estudios', 1.5, 'Regular', 2.5, 1, 3.5, 1, 1.5, 1, 3.5, 2, 2.5, 3, 3.5, 68.9),
-(4, 'JOSE URIEL', 201607005, 2, 3.5, 'Masculino', 3.5, 2, 3.5, 3, 2.8, 1, 1.5, 2, 1.5, 2, 1.5, 1, 1.5, 1, 1.5, 2, 1.5, 'Donato Guerra', 3.5, 'D', 3, 'Padre', 3.5, 1, 1.5, 2, 3.5, 1, 1.5, 1, 0.8, 2, 2, 'Continuación de estudios', 1.5, 'Regular', 2.5, 2, 0.5, 0, 0.1, 1, 3.5, 1, 1.5, 2, 2.5, 53.699999999999996),
-(5, 'ARMANDO', 201607004, 2, 3.5, 'Masculino', 3.5, 2, 3.5, 3, 2.8, 1, 1.5, 2, 1.5, 2, 1.5, 1, 1.5, 1, 1.5, 2, 1.5, 'Donato Guerra', 3.5, 'D', 3, 'Padre', 3.5, 1, 1.5, 2, 3.5, 1, 1.5, 1, 0.8, 2, 2, 'Continuación de estudios', 1.5, 'Regular', 2.5, 2, 0.5, 0, 0.1, 1, 3.5, 1, 1.5, 2, 2.5, 53.699999999999996),
-(6, 'EMMANUEL', 201607007, 2, 3.5, 'Masculino', 3.5, 3, 2, 1, 1.5, 3, 2.8, 1, 3.5, 2, 1.5, 2, 3.5, 2, 3.5, 1, 3.5, 'San Bartolo', 3.5, 'E', 3.5, 'Padre', 3.5, 2, 3.5, 2, 3.5, 2, 3.5, 3, 2.5, 2, 2, 'Continuación de estudios', 1.5, 'Regular', 2.5, 1, 3.5, 2, 2.5, 1, 3.5, 1, 1.5, 1, 1.5, 58);
 
 -- --------------------------------------------------------
 
@@ -6063,58 +5855,68 @@ CREATE TABLE `reporte_tutor` (
   `medico` varchar(5) DEFAULT NULL,
   `psicologico` varchar(5) DEFAULT NULL,
   `baja` varchar(5) DEFAULT NULL,
-  `ingles` int(11) DEFAULT NULL,
-  `complementarias` int(11) DEFAULT NULL,
-  `s_social` int(11) DEFAULT NULL,
-  `observaciones` text
+  `observaciones` text,
+  `generacion` varchar(30) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `reporte_tutor`
 --
 
-INSERT INTO `reporte_tutor` (`id_reporte_tutor`, `id_asigna_tutor`, `alumno`, `appaterno`, `apmaterno`, `n_cuenta`, `tutoria_grupal`, `tutoria_individual`, `beca`, `repeticion`, `especial`, `academico`, `medico`, `psicologico`, `baja`, `ingles`, `complementarias`, `s_social`, `observaciones`) VALUES
-(1, 8, 'JOSE ALBERTO', 'ARIAS', 'ROBLES', 201607002, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(2, 8, 'GLORIA MARIA', 'ARIAS', 'TELLEZ', 201607003, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(3, 8, 'ARMANDO', 'AVILA', 'CRUZ', 201607004, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(4, 8, 'JOSE URIEL', 'AYBAR', 'HERNANDEZ', 201607005, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(5, 8, 'EMMANUEL', 'CARRANZA', 'BENITEZ', 201607007, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(6, 8, 'LIZBET', 'CATARINO', 'GALICA', 201607008, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(7, 8, 'ELIZABETH', 'CRUZ', 'ROJAS', 201607009, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(8, 8, 'CARLOS EMMANUEL', 'DOMINGUEZ', 'REYES', 201607010, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(9, 8, 'ISAIAS', 'ESPAÑA', 'FUENTES', 201607011, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(10, 8, 'LUIS ANGEL', 'ESQUIVEL', 'BENITO', 201607012, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(11, 8, 'SERGIO ERNESTO', 'ESQUIVEL', 'DE LA CRUZ', 201607013, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(12, 8, 'ARAEL', 'ESTRADA', 'CARDOSO', 201607014, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(13, 8, 'VICTOR MANUEL ', 'GARCIA ', 'ENRIQUEZ', 201607015, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(14, 8, 'ARTURO', 'GARCIA', 'GONZALEZ', 201607016, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(15, 8, 'JUAN PABLO', 'GARDUÑO', 'MARTINEZ', 201607018, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(16, 8, 'JOSE JONATHAN ', 'GARDUÑO', 'DE LA CRUZ', 201607017, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(17, 8, 'EDUARDO', 'GUADARRAMA', 'CARRANZA', 201607020, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(18, 8, 'ERIK ADONIS', 'HERNANDEZ ', 'SOLIS', 201607021, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(19, 8, 'ANA LUISA', 'JAIMES', 'BELTRÁN', 201607022, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(20, 8, 'LUIS ENRIQUE ', 'LONGINO', 'NICOLAS', 201607023, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(21, 8, 'JULIET', 'LOPEZ', 'RODRIGUEZ', 201607024, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(22, 8, 'ISRAEL', 'LOZA ', 'ALVARADO', 201607025, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(23, 8, 'DANIELA GUADALUPE', 'MARCOS', 'PIZAR', 201607026, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(24, 8, 'MIRIAM', 'MARTINEZ', 'SOLIS', 201607027, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(25, 8, 'MARIA DE LOS ANGELES', 'MAURO', 'ESPARZA', 201607028, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(26, 8, 'CESAR', 'MENDIETA', 'GONZALEZ', 201607029, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(27, 8, 'BRYANT', 'ORTEGA', 'RAMIREZ', 201607031, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(28, 8, 'ABNER EMIGDIO', 'PALMA', 'CARBAJAL', 201607032, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(29, 8, 'JONATHAN', 'PLATA', 'BLANCO', 201607033, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(30, 8, 'AGUSTIN', 'RAMIREZ', 'GARCIA', 201607034, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(31, 8, 'MITZI MAGDALENA', 'SALGADO', 'GOMEZ', 201607046, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(32, 8, 'LUIS DANIEL', 'SOLORZANO', 'MARTINEZ', 201607035, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(33, 8, 'JAVIER', 'TENORIO', 'LOPEZ', 201607036, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(34, 8, 'KAERY ISMAEL', 'TERAN', 'CASTILLO', 201607037, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(35, 8, 'NESTOR', 'TRINIDAD', 'AYBAR', 201607038, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(36, 8, 'MIRIAM', 'VARGAS', 'REYES', 201607039, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(37, 8, 'OMAR', 'VENTURA', 'SANTIAGO', 201607041, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(38, 8, 'YOSELIN', 'VERA', 'SOTERO', 201607042, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(39, 8, 'DANIELA MICHELLE', 'VILCHIS', 'MARTINEZ', 201607043, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(40, 8, 'ALEXIS', 'VILLALPANDO', 'HINOJOSA', 201607044, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(41, 8, 'DULCE MARIA', 'YAÑEZ', 'VILCHIS', 201607045, 'Si', 'Si', 'No', 'No', 'Si', 'No', 'No', 'No', 'No', 2, 2, 2, 'no');
+INSERT INTO `reporte_tutor` (`id_reporte_tutor`, `id_asigna_tutor`, `alumno`, `appaterno`, `apmaterno`, `n_cuenta`, `tutoria_grupal`, `tutoria_individual`, `beca`, `repeticion`, `especial`, `academico`, `medico`, `psicologico`, `baja`, `observaciones`, `generacion`) VALUES
+(1, 8, 'JOSE ALBERTO', 'ARIAS', 'ROBLES', 201607002, 'Si', 'No', 'Si', 'No', 'No', 'Si', 'Si', 'Si', NULL, NULL, '2016'),
+(2, 8, 'GLORIA MARIA', 'ARIAS', 'TELLEZ', 201607003, 'Si', 'Si', 'Si', 'Si', 'Si', 'No', 'No', 'No', 'No', NULL, '2016'),
+(3, 8, 'ARMANDO', 'AVILA', 'CRUZ', 201607004, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(4, 8, 'JOSE URIEL', 'AYBAR', 'HERNANDEZ', 201607005, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(5, 8, 'EMMANUEL', 'CARRANZA', 'BENITEZ', 201607007, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(6, 8, 'LIZBET', 'CATARINO', 'GALICA', 201607008, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(7, 8, 'ELIZABETH', 'CRUZ', 'ROJAS', 201607009, 'No', 'No', 'No', 'No', 'No', 'No', 'No', 'No', 'No', NULL, '2016'),
+(8, 8, 'CARLOS EMMANUEL', 'DOMINGUEZ', 'REYES', 201607010, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(9, 8, 'ISAIAS', 'ESPAÑA', 'FUENTES', 201607011, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(10, 8, 'LUIS ANGEL', 'ESQUIVEL', 'BENITO', 201607012, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(11, 8, 'SERGIO ERNESTO', 'ESQUIVEL', 'DE LA CRUZ', 201607013, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(12, 8, 'ARAEL', 'ESTRADA', 'CARDOSO', 201607014, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(13, 8, 'VICTOR MANUEL ', 'GARCIA ', 'ENRIQUEZ', 201607015, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(14, 8, 'ARTURO', 'GARCIA', 'GONZALEZ', 201607016, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(15, 8, 'JUAN PABLO', 'GARDUÑO', 'MARTINEZ', 201607018, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(16, 8, 'JOSE JONATHAN ', 'GARDUÑO', 'DE LA CRUZ', 201607017, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(17, 8, 'EDUARDO', 'GUADARRAMA', 'CARRANZA', 201607020, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(18, 8, 'ERIK ADONIS', 'HERNANDEZ ', 'SOLIS', 201607021, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(19, 8, 'ANA LUISA', 'JAIMES', 'BELTRÁN', 201607022, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(20, 8, 'LUIS ENRIQUE ', 'LONGINO', 'NICOLAS', 201607023, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(21, 8, 'JULIET', 'LOPEZ', 'RODRIGUEZ', 201607024, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(22, 8, 'ISRAEL', 'LOZA ', 'ALVARADO', 201607025, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(23, 8, 'DANIELA GUADALUPE', 'MARCOS', 'PIZAR', 201607026, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(24, 8, 'MIRIAM', 'MARTINEZ', 'SOLIS', 201607027, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(25, 8, 'MARIA DE LOS ANGELES', 'MAURO', 'ESPARZA', 201607028, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(26, 8, 'CESAR', 'MENDIETA', 'GONZALEZ', 201607029, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(27, 8, 'BRYANT', 'ORTEGA', 'RAMIREZ', 201607031, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(28, 8, 'ABNER EMIGDIO', 'PALMA', 'CARBAJAL', 201607032, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(29, 8, 'JONATHAN', 'PLATA', 'BLANCO', 201607033, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(30, 8, 'AGUSTIN', 'RAMIREZ', 'GARCIA', 201607034, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(31, 8, 'MITZI MAGDALENA', 'SALGADO', 'GOMEZ', 201607046, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(32, 8, 'LUIS DANIEL', 'SOLORZANO', 'MARTINEZ', 201607035, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(33, 8, 'JAVIER', 'TENORIO', 'LOPEZ', 201607036, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(34, 8, 'KAERY ISMAEL', 'TERAN', 'CASTILLO', 201607037, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(35, 8, 'NESTOR', 'TRINIDAD', 'AYBAR', 201607038, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(36, 8, 'MIRIAM', 'VARGAS', 'REYES', 201607039, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(37, 8, 'OMAR', 'VENTURA', 'SANTIAGO', 201607041, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(38, 8, 'YOSELIN', 'VERA', 'SOTERO', 201607042, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(39, 8, 'DANIELA MICHELLE', 'VILCHIS', 'MARTINEZ', 201607043, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(40, 8, 'ALEXIS', 'VILLALPANDO', 'HINOJOSA', 201607044, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(41, 8, 'DULCE MARIA', 'YAÑEZ', 'VILCHIS', 201607045, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2016'),
+(42, 10, 'Fernando José', 'Acevedo', 'Maldonado', 201907051, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019'),
+(43, 10, 'MARCO  ANTONIO', 'ALBARRÀN', 'PEÑALOZA', 201907013, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019'),
+(44, 10, 'Hortencia Alejandra', 'Bastida', 'Gonzalez', 201907047, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019'),
+(45, 10, 'emiliano', 'caballero', 'garduño', 201907021, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019'),
+(46, 10, 'Jesús Evodio', 'Campos ', 'Silva', 201907003, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019'),
+(47, 10, 'Adrian', 'Castillo', 'Valencia', 201907016, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019'),
+(48, 10, 'Miguel Axel', 'Cejudo', 'Hernandez', 201907007, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019'),
+(49, 10, 'Francisco Javier', 'Chávez ', 'Martínez', 201907050, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019'),
+(50, 10, 'Viviana', 'Cisneros', 'Avilez', 201907001, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019'),
+(51, 10, 'esaud antonio ', 'coranguez', 'osorio', 201907040, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2019'),
+(64, 2, 'EDUARDO', 'AGAPITO', 'BOBADILLA', 201707001, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2017'),
+(65, 2, 'OSVALDO', 'ARRIAGA', 'GARDUÑO', 201707002, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2017');
 
 -- --------------------------------------------------------
 
@@ -6141,10 +5943,10 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `email`, `password`, `activated`, `tipo_usuario`, `info_ok`, `remember_token`, `updated_at`, `created_at`) VALUES
 (3, 'subestproftevb@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'ImUkEhuWoutSYKxKZJ9uD9SXTA1aHA11z6HvCeENIMqeBMkiRBIHjt3lCDs3', '2019-05-09', '2017-03-04'),
 (4, 'teresa_monroy33@yahoo.com.mx', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'F9vypcAVtw1A0xVuYozuu5ma6Cy9XDN6UfZz8SBreyeh4N2g3gxqWzCLcuZq', '2019-09-12', '2017-03-07'),
-(6, 'iscprimerocesar@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'uAfi4Z61phfFsmmKPG3WeVmdmHsxMgetQ8LIStGhZC9hqRsPhlSOEH1C0QCa', '2018-05-23', '2017-03-07'),
-(7, 'ambar744@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'AE5LrRtvQqrCNvsPqh4dRmRkpvRPfDKUJZuunHT4A6n69oAOlr6JEysZCEEF', '2019-09-04', '2017-03-07'),
+(6, 'iscprimerocesar@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, '8rWYoCbm38eClgVTnOWlxjACW9w2BTDUqWq8252HopjY64qynbmo32PwqnFi', '2018-05-23', '2017-03-07'),
+(7, 'ambar744@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, '2yrw5xzH3N3dYd9WRINsqfTTXl2z3Mls7PRvHpEO5VadcOWtjltR1iXZkyKr', '2019-09-04', '2017-03-07'),
 (8, 'jarebollar_bermeo@hotmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'RGBC9QlxLgZAnPK1SWrTwsZvcfZDrZPPq9XAJ7AJzXDLvCNSBNFIige2djzG', '2018-08-08', '2017-03-07'),
-(9, 'AGUERRERO_AL@HOTMAIL.COM', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, '4KKrjdNEaxrQ3KXtNQUTfWRu2UELMeDhhfkLQ0qK1YXjwAf10FGKM0TPbHfM', '2019-10-08', '2017-03-07'),
+(9, 'AGUERRERO_AL@HOTMAIL.COM', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, '3L11AIsuK9hnOTXEbNmVaFl2xSPZ3n0pMNJ0h0LX8A3u57kJ4T3URjQFLaSM', '2019-10-08', '2017-03-07'),
 (10, 'omasant02@hotmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'G40uIVN6bDmIzh7cuQ5fyp5ibzKBeBhmQvkPm48WtdkJtfQB96d0JgcYNFnE', '2018-10-20', '2017-03-07'),
 (11, 'alejandra.leon@hotmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'hXefwos1Btd2auUddxm037c12HPn8onNpZbDM0f31hvxPJdIusfmIDZ8RErX', '2017-06-27', '2017-03-07'),
 (12, 'monroy.c@tesvb.edu.mx', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, '4Wo0x28g8uZ9XlQmH3Bok1D0IxiNfiEP4MAAhRSvAfUJSThygPpOi1mYN1xW', '2019-09-10', '2017-03-07'),
@@ -6181,15 +5983,15 @@ INSERT INTO `users` (`id`, `email`, `password`, `activated`, `tipo_usuario`, `in
 (46, 'favyselias4@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, '8LWwloSMRjykTNpHRgw98hf4HmOptvuzlE5yUrErzkMMOgPPBM3GvEwsVZKi', '2018-08-17', '2017-03-17'),
 (48, 'velazcocarran@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, '8Ax5ypyWZ57D5J0snNAoD5vaEVPv3ykGWJXrzvTTb8bWCNPtqKWggdnf9Md6', '2019-09-12', '2017-03-17'),
 (49, 'div.arquitectura@tesvb.edu.mx', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, '6bpUsACIyPKYyB41C5sdaom9rvbBVaXt6cmx7CkIgoeDEP9M3HX41uYmZ2yz', '2018-12-06', '2017-03-22'),
-(55, 'ale_250918994@hotmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'YFsWAgs0q9ksBBbaaU2K5yrEeWPTjXzwcckOuCEIe1Vhc1WfPmj3dVzgz1qI', '2017-07-03', '2017-03-30'),
-(56, 'charly626.a@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'ymJPOKs0TNbtbfJz75uQ7L7rdm4a7qs8yPw43Gl6wkbHWtKRixg5Yy9pkiD2', '2017-06-14', '2017-03-30'),
-(58, 'vazquezarcangel@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, '11crkku3hnE8BSbaaIL2h4zZREOzNx596abcZjZar3iZCHVdXnOEqhEyg2Xb', '2018-05-16', '2017-03-30'),
-(59, 'jabnny@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'dWt5LCXsTfNAwqtpBrPYQqdaait7FmNi2IVSxlG8lvv1pQJeQQIv19x6TpK9', '2019-08-21', '2017-04-06'),
-(60, 'dm057723@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'E9s3MVOxMPaTrWa73ypyQakpcSQ00TuMXjTro8aeX5ehOPLb9grY84oiIG4Y', '2017-03-30', '2017-03-30'),
-(61, 'val.dearest20@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'Q1Vmvqv8gShDY3gfpWAtg3Vx9eUSEJBANDJCZoi8E4hY8Om1UOqOYeg4lKEy', '2020-01-21', '2017-03-30'),
+(55, 'ale_250918994@hotmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'Z5jeVVF6LodkuttoSTnkx5BnrADzJsicXndvgw94TEajVAVj46bAYA7IZPzT', '2017-07-03', '2017-03-30'),
+(56, 'charly626.a@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'BXGoSxg3Gmei3LW9H6oP19IraGbl3vekTClOVl2xoRzs3b3kNsHCU21KubWi', '2017-06-14', '2017-03-30'),
+(58, 'vazquezarcangel@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'WH4xXeEKbcL3Gx5KT2aUoBMW38PKbdycN3tTTlVx5OTcBnBLe5PAzJXuTtAD', '2018-05-16', '2017-03-30'),
+(59, 'jabnny@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'u4L8kjGvHyl4eGoRWutqvgzUbJ9WDXyiTHY7EhYSGkDrkD0IG13c7xxMNB4j', '2019-08-21', '2017-04-06'),
+(60, 'dm057723@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'IhLy9if5UqURuc5X3ASdo4tY8fGfphbLG4DqqFR5LeI4buaQgFHTQdbKlW9a', '2017-03-30', '2017-03-30'),
+(61, 'val.dearest20@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'bIfIaBl2RyVSF2oscxC2YJgrVnXIlFoYQ0pLKyuKkmVHakq7X1kalNz3UtGz', '2020-01-21', '2017-03-30'),
 (62, 'chuy123rock@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'F33MFenQrZLeBW12GkldkCxsGlB4ph3ZUPftP9zXuVmkY8VG18aBggWDPGNJ', '2018-11-22', '2017-03-30'),
 (64, 'yosesotero@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'PLXyyqAKi6anRzjeBhEXdNUBbjWjxtwQ94Hw20yevPKq5q3RiyMyBE5CXO5g', '2018-11-14', '2017-03-31'),
-(65, 'danysmichi@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'PKb5ULBGZyhptgV5WABeF8BicWOwF0f6vbVzgnXK8tYNMvZh6tKyfP6cdlb5', '2018-11-14', '2017-03-31'),
+(65, 'danysmichi@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'Fme7jInsFyG6UlA5aOusj5U9HBDoREFbw8nihMUzNdpjaqCcJGTryTx2hk54', '2018-11-14', '2017-03-31'),
 (66, 'israel_0_1@hotmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'h5kVyQqcXzDFtweaU98UroLd2jluqBjldj3DJ3Ilag4F09mNPKwBpG6Nywml', '2018-11-14', '2017-03-31'),
 (67, 'alevhbjte@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'RFCydyuZADcfSsJBaM1oyKv6Q5bJuo7NdU1C67yYUseCeQ1F6mrTATgq2LEE', '2018-05-17', '2017-03-31'),
 (68, 'kaeryisma@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 0, 1, 0, NULL, '2017-03-31', '2017-03-31'),
@@ -6197,7 +5999,7 @@ INSERT INTO `users` (`id`, `email`, `password`, `activated`, `tipo_usuario`, `in
 (70, 'jonathanplata987@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'L3t4CcerkZJIDXJQXpbH4N1tfGTaBhBg9FNILODRb5aTZNzUOM1gVWlVg8BQ', '2018-11-14', '2017-03-31'),
 (71, 'loquenderosonyvegas@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'N2tu54pXssqEQeDX7LdqosR1Z252HNdYT1oicvRezFoExWnuA5RRvi9OPFa0', '2018-11-14', '2017-03-31'),
 (72, 'miguelito1998@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 0, 1, 0, NULL, '2017-03-31', '2017-03-31'),
-(73, 'miguelito151998@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'NSLu2e9nExvg2Kabyuu8XhzJZFAuiLBcbXjbrjDWdb4AXOqqwzJQRHvfJvHW', '2019-06-17', '2017-03-31'),
+(73, 'miguelito151998@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'XiKB9GnuO1px8vVZFzvcmuRpJcnCvZZzrsODFEAcc5ijHNueWrHYijOKO1D6', '2019-06-17', '2017-03-31'),
 (74, 'mmsf1998@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'G0P7eGEJhiNo90df3AWXygbZ5vvT3qj1QWN0cseAYnGAoiBPlJzhR8S93bda', '2018-11-14', '2017-04-01'),
 (75, 'www.isaias12@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'xXKd9iFvXONIYyffp27PBynOuJF5ug2nbxngdSAh6Cq8B2DjYGAlBanNfhgT', '2018-11-14', '2017-04-01'),
 (76, 'ana33luisa@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, '7dAzl1BeoxwqUYmeDbdMwyvrfkIxp4gc0WIchUip4yQxVLmtUqAJUezH46DQ', '2019-11-14', '2017-04-01'),
@@ -6242,7 +6044,7 @@ INSERT INTO `users` (`id`, `email`, `password`, `activated`, `tipo_usuario`, `in
 (115, 'oscarinbau@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'hRuYXMUkUuml3geIkOdlOU0NyhTfnqyRAxsvtN3coYWNIPcomhObR3SxlaKc', '2018-11-26', '2017-04-06'),
 (116, 'navorangelesulises@gmai.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 0, 1, 0, 'oZ2XZYVOT3KZkB7bPfCMxOZQdcwDIaVp5vbH4gzpqwYkrevIwBHbID96llQo', '2017-04-06', '2017-04-06'),
 (117, 'navorulises@gmai.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 0, 1, 0, NULL, '2017-04-06', '2017-04-06'),
-(118, 'mutsotool@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, '4BArlpCR4mBrkMZDFfltAjH2R1ZYNDp34FNcUkp37ovC6XSdYZ6pl8bk04oY', '2018-11-15', '2017-04-06'),
+(118, 'mutsotool@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'ikEPP1ilVaCFwCrdPv9uspI4gEDy1kbrHQDVa32HHJAnIbTNhvjqumFh8oUy', '2018-11-15', '2017-04-06'),
 (120, 'chris.vicrey15@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 0, 1, 0, NULL, '2017-04-06', '2017-04-06'),
 (121, 'briant.vicrey15@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, '5HPaAc25iOOpfCYPt64u1Ak1DpE7gxFZb5YGZdiFzGqo8lMshXJtvU6LY9jq', '2018-12-04', '2017-04-06'),
 (122, 'josiisss83@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, '5skA2oBl9TYeTLqE4ac9kC1PlqSD5RyILT9jCY0TJTwUVOkpwyyfRLviq1GC', '2018-12-07', '2017-04-06'),
@@ -6873,7 +6675,7 @@ INSERT INTO `users` (`id`, `email`, `password`, `activated`, `tipo_usuario`, `in
 (763, 'jsvg01@hotmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'xamUmKVLrhu3EQiNZIYjcXE0zEVk72BdYxz4I5LJIEY0Y5N0kCiBcJTcp2J0', '2019-09-12', '2017-06-15'),
 (764, 'gis_sv00@hotmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'xfpMIfz5XrLXM22f4olPN0LLsfJECbMZbmXRvvAMq7NQcbh27TDkoWITJeSX', '2019-09-12', '2017-06-15'),
 (765, 'jesroblesm@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, '5wWn1wqAKwGOXWq5KvYC4nDcH9rpUbrmKWKSx2UJJvGY112Jp4XVPNDkK0yJ', '2017-07-11', '2017-06-15'),
-(766, 'juankrlos1231@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'hbifxafsAcbDRLRY77FIuqEBBDpBwbxwVDkxHG7Kxaey86fUOBbVKXVuN4kG', '2018-07-24', '2017-06-15'),
+(766, 'juankrlos1231@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'vS3KrASG30AlJVhxQTYm17tgLugyirSi5GIw9LFbAokkUXOE7e7xatf1F2uh', '2018-07-24', '2017-06-15'),
 (767, 'gabodifpsicologia@hotmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'MT2kqPbn9C2M8zC5v5tXBeT0dj1esafOlhMH3NbfbKpVMg6QRr50fdXe4ZRj', '2017-06-16', '2017-06-16'),
 (768, 'echavarria.h@tesvb.edu.mx', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, '06aXeIQcALVOT3EEB0vIeIVkwpsGh7xkLYBW3i32hibZ2aSeDbQvPIajISA4', '2019-09-09', '2017-06-16'),
 (769, 'oxedgarxo@hotmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'SqQ04kTMtIFWrxL6dOxvc7xaFkSXEfeNmEPVL5Z8EXnEAgkPcX5RxhRQ0Stx', '2017-06-16', '2017-06-16'),
@@ -6903,7 +6705,7 @@ INSERT INTO `users` (`id`, `email`, `password`, `activated`, `tipo_usuario`, `in
 (793, 'danielamenchaca@outlook.com.ar', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 0, 1, 0, 'lCNi9kB5L3TiZTUHd7dkxpb2lMm2iMuSuq4hwks2dAyoQdiZxAWTmv3ZJRFs', '2017-06-28', '2017-06-28'),
 (794, 'brayansayd98@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, '9O9vYhAPut79wzYckMfAWvfBOJfFUCKaIuXARX2Zl1RUt3mWaxbpOEXG8Zbr', '2017-07-11', '2017-06-28'),
 (795, 'gonzav12@hotmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'xMUfcE1LA8bOZp1PKxfbsjF2K1T9LJVy4N3zs9MzfVfhfilmpd8mRR3ydbFA', '2017-07-06', '2017-06-29'),
-(796, 'des08academico@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'Tsc2R7FydHQ1x7AyqZHVzdGRaIDviICy2n9nQeLNYRtyjeleN60uO1iWX8Ei', '2019-05-09', '2017-07-05'),
+(796, 'des08academico@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'OkxmahQC4X9JieDNl7Q1T2NmOHhmsjLj07UCBSueVKec9NYH4OBEfyvnVeHJ', '2019-05-09', '2017-07-05'),
 (797, 'victor290398@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 0, 'wYFitvM2mIIC6SD1kWnfPkyjzgnCA3ifQSFRSz33Hcz8zzF63F1jD2vHwE5J', '2017-07-06', '2017-07-06'),
 (798, 'salva_181@outlook.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 0, 'elM7nuhrWqYGh6hx36jW75CTYD3B7DReKnb3WyIhusxo1b7QTzCHbnl4E58a', '2017-07-06', '2017-07-06'),
 (799, 'uziel_clevic@outlook.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'jJPjvlsfNDfCHfB9fgrvk6PNWDOmftToYDfYjJCUyg8rTeDR9xwphNnQbN3f', '2018-11-28', '2017-07-06'),
@@ -8602,7 +8404,7 @@ INSERT INTO `users` (`id`, `email`, `password`, `activated`, `tipo_usuario`, `in
 (2528, 'ismael_ronaldo07@hotmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'TXMcfCTvUXjkGzccsaVy3qoVMtmrIvFpbXl7iED4IFne9OBgjHVguik0EwSC', '2019-01-15', '2019-01-15'),
 (2529, 'ctassarma@yahoo.com.mx', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'cWP0ms79SVHpNcBFfopO3eto6vjWlvTLOzKamZH614hx7uNCCrRkJPN5dy1n', '2019-05-08', '2019-05-08'),
 (2530, 'ricardo.vm@outlook.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'ISZdtgqVvEyM46G4KecRJRcP9ZfhGLA6fGHmixaXprORKPkIcEGn3aDKjwQE', '2019-05-08', '2019-05-08'),
-(2531, 'div.sistemas@tesvb.edu.mx', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'jSF5ZqXNmDea1yIfQSs4d4bwI3UXHiRrmqCtOVwKQd2lHIkNbOMuMmkDxfcw', '2019-05-09', '2019-05-03'),
+(2531, 'div.sistemas@tesvb.edu.mx', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, '12TfvILNkuVM139RFrmlfWXLU8hVZrsu9N0zkkho6Tbupx1aJwk3sDcu8UDt', '2019-05-09', '2019-05-03'),
 (2532, 'flores.r.s@tesvb.edu.mx', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, '1H3jJ4X243kKulnpCjutdkyBNPldU9uC8j0pMITOK9Fvbn8fVokIHymDTAuN', '2019-09-12', '2019-05-04'),
 (2533, 'rebollar.a@tesvb.edu.mx', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, 'VdMIhAp99hl8EIOykb8i65q8sVZwxZJyaqbHWGymdIebnfQ8CdhT1ZlQvO9d', '2019-05-04', '2019-05-04'),
 (2534, 'garcia.jc@tesvb.edu.mx', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 2, 2, '7DDiys1QZ5v4CjMg0ZvdWAgek5XJrbE6NYmuKKCJqn89HAnh8hYFR3C9md7x', '2019-05-04', '2019-05-04'),
@@ -9023,7 +8825,7 @@ INSERT INTO `users` (`id`, `email`, `password`, `activated`, `tipo_usuario`, `in
 (2962, 'lercado9@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, '2Ciu8Y54HfLeomU09DHD3nYW63XR6OiExBivGho6SIrnd5MDoMmx3z2lCzWm', '2019-12-03', '2019-08-21'),
 (2963, 'victor_robles1997@hotmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 0, 1, 2, 'PchJOoXMILic3kw110GIznXc6IzekpfGf11yR9vBl7XDr8V9rFQa1F4lrkKX', '2019-08-21', '2019-08-21'),
 (2964, 'townsolis0@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'qLPc76uKkgQZPXRdGhS5Q2VtVVSV56ugU4FgNeYXWgNTWzdCdRNgkaf6DjcQ', '2019-08-21', '2019-08-21'),
-(2965, 'marcoalbapen13@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'jH9IlBhpzDh8dPAQV8VAqxPOuyvOjZnlsFrQ1JqCNsHQp30L7N6hnKbFY3R6', '2019-08-21', '2019-08-21'),
+(2965, 'marcoalbapen13@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'AIl4myfc6iFQUFoXeHEK5nNIY8z8ad2eI5m6xJaD1lQwAS4BNE1gzEdNOWAN', '2019-08-21', '2019-08-21'),
 (2966, 'mendezarzateguadalupeabigail@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 0, 1, 2, 'x7FE8RTtfrLzwQKpF7CO9MC6L63TZtuq0Wd0z6jNLNv5OKbBl9O4MMvkEzn7', '2019-11-06', '2019-08-21'),
 (2967, 'fernandoace340@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, '4RtoTED0mZQwHmu5zVohfPRPbJGFbjMhE6lGQqcLGr58lrHIafqRCmiAPU23', '2019-08-21', '2019-08-21'),
 (2968, 'jegh.2000@gmail.com', '$2y$10$exVBLc5Ic/VlfdcWd3F7peBS5gA7ysMoiQDD94XoyL5ZsLtanVzjG', 1, 1, 2, 'RLMJpSvX63msgIaIqPd7jW2DhMrE0A9mnJnrV3THQjpmSFSS9mRqS7yL6926', '2019-08-21', '2019-08-21'),
@@ -9469,6 +9271,12 @@ ALTER TABLE `canalizacion`
   ADD PRIMARY KEY (`id_canalizacion`);
 
 --
+-- Indices de la tabla `desarrollo_asigna_coordinador_general`
+--
+ALTER TABLE `desarrollo_asigna_coordinador_general`
+  ADD PRIMARY KEY (`id_asigna_coordinador_general`);
+
+--
 -- Indices de la tabla `eventos`
 --
 ALTER TABLE `eventos`
@@ -9766,34 +9574,40 @@ ALTER TABLE `canalizacion`
   MODIFY `id_canalizacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
+-- AUTO_INCREMENT de la tabla `desarrollo_asigna_coordinador_general`
+--
+ALTER TABLE `desarrollo_asigna_coordinador_general`
+  MODIFY `id_asigna_coordinador_general` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
 -- AUTO_INCREMENT de la tabla `eventos`
 --
 ALTER TABLE `eventos`
-  MODIFY `id_evento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_evento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `exp_antecedentes_academicos`
 --
 ALTER TABLE `exp_antecedentes_academicos`
-  MODIFY `id_exp_antecedentes_academicos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_exp_antecedentes_academicos` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `exp_area_psicopedagogica`
 --
 ALTER TABLE `exp_area_psicopedagogica`
-  MODIFY `id_exp_area_psicopedagogica` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_exp_area_psicopedagogica` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `exp_asigna_alumnos`
 --
 ALTER TABLE `exp_asigna_alumnos`
-  MODIFY `id_asigna_alumno` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id_asigna_alumno` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 
 --
 -- AUTO_INCREMENT de la tabla `exp_asigna_coordinador`
 --
 ALTER TABLE `exp_asigna_coordinador`
-  MODIFY `id_asigna_coordinador` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_asigna_coordinador` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `exp_asigna_generacion`
@@ -9805,7 +9619,7 @@ ALTER TABLE `exp_asigna_generacion`
 -- AUTO_INCREMENT de la tabla `exp_asigna_tutor`
 --
 ALTER TABLE `exp_asigna_tutor`
-  MODIFY `id_asigna_tutor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_asigna_tutor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `exp_bebidas`
@@ -9829,7 +9643,7 @@ ALTER TABLE `exp_civil_estados`
 -- AUTO_INCREMENT de la tabla `exp_datos_familiares`
 --
 ALTER TABLE `exp_datos_familiares`
-  MODIFY `id_exp_datos_familiares` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_exp_datos_familiares` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `exp_escalas`
@@ -9841,19 +9655,19 @@ ALTER TABLE `exp_escalas`
 -- AUTO_INCREMENT de la tabla `exp_formacion_integral`
 --
 ALTER TABLE `exp_formacion_integral`
-  MODIFY `id_exp_formacion_integral` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_exp_formacion_integral` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `exp_generales`
 --
 ALTER TABLE `exp_generales`
-  MODIFY `id_exp_general` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id_exp_general` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT de la tabla `exp_habitos_estudio`
 --
 ALTER TABLE `exp_habitos_estudio`
-  MODIFY `id_exp_habitos_estudio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_exp_habitos_estudio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `exp_opc_intelectual`
@@ -9943,43 +9757,43 @@ ALTER TABLE `gnral_tipos_usuario`
 -- AUTO_INCREMENT de la tabla `plan_actividades`
 --
 ALTER TABLE `plan_actividades`
-  MODIFY `id_plan_actividad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_plan_actividad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
 -- AUTO_INCREMENT de la tabla `plan_asigna_evidencias`
 --
 ALTER TABLE `plan_asigna_evidencias`
-  MODIFY `id_evidencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_evidencia` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `plan_asigna_planeacion_actividad`
 --
 ALTER TABLE `plan_asigna_planeacion_actividad`
-  MODIFY `id_asigna_planeacion_actividad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_asigna_planeacion_actividad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT de la tabla `plan_asigna_planeacion_tutor`
 --
 ALTER TABLE `plan_asigna_planeacion_tutor`
-  MODIFY `id_asigna_planeacion_tutor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_asigna_planeacion_tutor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de la tabla `plan_planeacion`
 --
 ALTER TABLE `plan_planeacion`
-  MODIFY `id_planeacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_planeacion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT de la tabla `prediccion`
 --
 ALTER TABLE `prediccion`
-  MODIFY `id_prediccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_prediccion` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `reporte_tutor`
 --
 ALTER TABLE `reporte_tutor`
-  MODIFY `id_reporte_tutor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `id_reporte_tutor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
