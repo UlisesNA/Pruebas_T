@@ -272,7 +272,7 @@ class PdfController extends Controller
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(22,4,"Otros estudios: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        $pdf->Cell(25,4,"". utf8_decode($datosAntecedentes[0]->otros_estudios),1,0,"C");
+        $pdf->Cell(25,4,"". utf8_decode($datosAntecedentes[0]->otros_estudios==1?'Si':'No'),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(35,4,utf8_decode("Años en que curso el bachillerato: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
@@ -727,7 +727,6 @@ class PdfController extends Controller
             ->where('gnral_personales.tipo_usuario', '=', Auth::user()->id)
             ->get();
 
-
         //$pdf= new \Codedge\Fpdf\Fpdf\Fpdf();
         // $pdf->AddPage();
         $pdf=new PDF($orientation='P',$unit='mm',$format='Letter');
@@ -1076,7 +1075,7 @@ class PdfController extends Controller
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(22,4,"Otros estudios: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        $pdf->Cell(25,4,"". utf8_decode($datosAntecedentes[0]->otros_estudios),1,0,"C");
+        $pdf->Cell(25,4,"". utf8_decode($datosAntecedentes[0]->otros_estudios==1?'Si':'No'),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(35,4,utf8_decode("Años en que curso el bachillerato: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
