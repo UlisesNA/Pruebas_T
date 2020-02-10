@@ -99,7 +99,6 @@
                         @else
                             <h5 class="modal-title">Estrategia</h5>
                         @endif
-
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
