@@ -70,7 +70,7 @@ class actividades_alumnoController extends Controller
 
         //dd($request->id_asigna_planeacion_tutor);
         $name=time().".".$file->getClientOriginalExtension();
-        $file->move(public_path().'/img/',$name);
+        $file->move(public_path().'/pdf/',$name);
 
         if($request->id_evidencia==null){
         Plan_asigna_evidencias::create([
@@ -115,12 +115,12 @@ class actividades_alumnoController extends Controller
             $file=$request->file('evidencia');
             $name=time().".".$file->getClientOriginalExtension();
             $plan->evidencia = $name;
-            $file->move(public_path().'/img/',$name);
+            $file->move(public_path().'/pdf/',$name);
         }else {
                 $file=$request->file('evidencia');
           //  dd($file);
                 $name=time()."daat";
-                $file->move(public_path().'/img/',$name);
+                $file->move(public_path().'/pdf/',$name);
         }
         //$plan->evidencia = $request->evidencia;;
         $plan->save();
