@@ -10,7 +10,7 @@
                                 <div class="col-md-12" id="coordinador">
                                     <div class="card" v-if="datos.coordinador!=null">
                                         <div class="card-header">
-                                            <h5 class="card-title">Coordinador General Asignado</h5>
+                                            <h5 class="card-title">Coordinador Institucional Asignado</h5>
                                         </div>
                                         <div class="card-body">
                                             <table class="text-center table">

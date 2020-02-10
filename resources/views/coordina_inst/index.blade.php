@@ -9,7 +9,7 @@
                 <nav>
                     <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
                         @foreach($tabla as $dato)
-                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#target_{{$dato->id_asigna_generacion}}" role="tab" aria-controls="target_{{$dato->id_asigna_generacion}}" aria-selected="false">Generacion {{$dato->generacion}}</a>
+                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#target_{{$dato->id_asigna_generacion}}" role="tab" aria-controls="target_{{$dato->id_asigna_generacion}}" aria-selected="false">Generación {{$dato->generacion}}</a>
                         @endforeach
                     </div>
                 </nav>
@@ -24,7 +24,7 @@
                                             <div class="tab-pane fade show active" id="primero" role="tabpanel" aria-labelledby="primero-tab">
                                                 <br>
                                                 <div class="form-group row">
-                                                    <div class="col-sm-11" align="center"><h5>Planeación Generacion {{$dato->generacion}}</h5></div>
+                                                    <div class="col-sm-11" align="center"><h5>Planeación Generación {{$dato->generacion}}</h5></div>
                                                     <a class="btn btn-primary" data-toggle="modal" data-target="#myModal_{{$dato->id_generacion}}" style="background: #067a39;color: white">+</a>
                                                 </div>
                                                 <table class="table table-hover table-sm">
@@ -117,7 +117,7 @@
                                         <input type="date" class="form-control" id="fi_actividad" name="fi_actividad" min="">
                                     </div>
                                     <div class="col">
-                                        <label >Fecha Limite</label>
+                                        <label >Fecha Límite</label>
                                         <input type="date" class="form-control"  id="ff_actividad" name="ff_actividad" min="" max="">
                                     </div>
 
@@ -172,7 +172,7 @@
                                             <input type="date" class="form-control" id="fi_actividad" name="fi_actividad" value={{$dato->fi_actividad}}>
                                         </div>
                                         <div class="col">
-                                            <label >Fecha Limite</label>
+                                            <label >Fecha Límite</label>
                                             <input type="date" class="form-control"  id="ff_actividad" name="ff_actividad" value="{{$dato->ff_actividad}}">
                                         </div>
 
