@@ -27,7 +27,7 @@ class ProfesorController extends Controller
 
         $datos=DB::table('gnral_alumnos')
             ->join('exp_asigna_alumnos','exp_asigna_alumnos.id_alumno','=','gnral_alumnos.id_alumno')
-            ->select('gnral_alumnos.*','exp_asigna_alumnos.estado','exp_asigna_alumnos.id_asigna_alumno')
+            ->select(DB::raw('UPPER(gnral_alumnos.nombre) as nombre, UPPER(gnral_alumnos.apaterno) as apaterno, UPPER(gnral_alumnos.amaterno) as amaterno, gnral_alumnos.id_alumno, gnral_alumnos.cuenta, exp_asigna_alumnos.estado, exp_asigna_alumnos.id_asigna_alumno'))
             ->where('exp_asigna_alumnos.id_asigna_generacion', '=', $request->id_asigna_generacion)
             ->where('gnral_alumnos.id_carrera','=',$request->id_carrera)
             ->whereNull('exp_asigna_alumnos.deleted_at')

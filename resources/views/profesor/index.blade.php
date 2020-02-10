@@ -63,7 +63,6 @@
                                            <!-- <i class="fas h2 text-success fa-check-circle pt-2"></i>-->
                                         </td>
                                         <td class="text-center" v-if="alumno.expediente">
-                                            @{{ alumno.expediente}}
                                             <button class="btn btn-outline-primary m-1" @click="ver(alumno)" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="far fa-edit"></i></button>
                                             <button class="btn btn-outline-danger" @click="pdfAlumno(alumno)" data-toggle="tooltip" data-placement="bottom" title="Expediente"><i class="far fa-file-pdf"></i></button>
                                         </td>
@@ -82,8 +81,6 @@
                             </div>
                         </div>
                     </div>
-
-
 
                         <div class="row" v-if="graficas==true">
                         <div class="col-12">

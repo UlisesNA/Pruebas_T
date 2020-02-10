@@ -74,7 +74,7 @@
                     <!-- Authentication Links -->
                     @if (Session::has('cuenta'))
                         <li class="nav-item">
-                            <a class="nav-link" href="/inicioalu">Inicio</a>
+                            <a class="nav-link" href="/inicioalu">Expediente</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" href=actividad>Actividades</a>
@@ -171,9 +171,6 @@
                                             </div>
                                         </div>
                                     @endif
-
-
-
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle text-dark" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->email }} <span class="caret"></span>
