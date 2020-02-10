@@ -43,7 +43,19 @@
                                                                 <td>{{$dat->ff_acti}}</td>
                                                                 <td>{{$dat->desc_actividad}}</td>
                                                                 <td>{{$dat->objetivo_actividad}}</td>
-                                                                @if($dat->id_estado == 2)
+                                                                @if($dat->id_estado == 2 && $dat->comentario != null)
+                                                                    <td>
+                                                                        <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_plan_actividad}}_tar" style="background: #f0f0f0;">
+                                                                            <i class="fas fa-pen" style="color: black"></i>
+                                                                        </a>
+                                                                    </td>
+                                                                    <td>
+                                                                        <a>
+                                                                            Actividad Corregida
+                                                                        </a>
+                                                                    </td>
+                                                                @else
+                                                                    @if($dat->id_estado == 2 && $dat->comentario == null)
                                                                     <td>
                                                                         <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_plan_actividad}}_tar" style="background: #f0f0f0;">
                                                                             <i class="fas fa-pen" style="color: black"></i>
@@ -57,30 +69,31 @@
 
                                                                         </form>
                                                                     </td>
-                                                                @else
-                                                                    @if($dat->id_estado == 1)
-                                                                    <td>
-                                                                    <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_plan_actividad}}_ver" style="background: #f0f0f0;">
-                                                                        <i class="fas fa-eye" style="color: black"></i>
-                                                                    </a>
-                                                                    </td>
-                                                                    <td>
-                                                                        <a>
-                                                                            Actividad Aprobada
-                                                                        </a>
-                                                                    </td>
                                                                     @else
-                                                                        @if($dat->id_estado == 3)
+                                                                        @if($dat->id_estado == 1)
                                                                             <td>
-                                                                                <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_plan_actividad}}_tar" style="background: #f0f0f0;">
-                                                                                    <i class="fas fa-edit" style="color: black"></i>
+                                                                                <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_plan_actividad}}_ver" style="background: #f0f0f0;">
+                                                                                    <i class="fas fa-eye" style="color: black"></i>
                                                                                 </a>
                                                                             </td>
                                                                             <td>
                                                                                 <a>
-                                                                                    Actividad con Cambios
+                                                                                    Actividad Aprobada
                                                                                 </a>
                                                                             </td>
+                                                                        @else
+                                                                            @if($dat->id_estado == 3)
+                                                                                <td>
+                                                                                    <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_plan_actividad}}_tar" style="background: #f0f0f0;">
+                                                                                        <i class="fas fa-edit" style="color: black"></i>
+                                                                                    </a>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <a>
+                                                                                        Actividad con Cambios
+                                                                                    </a>
+                                                                                </td>
+                                                                            @endif
                                                                         @endif
                                                                     @endif
                                                                 @endif
@@ -186,6 +199,15 @@
                                     <label>Objetivo</label>
                                     <textarea required class="form-control" rows="3" id="objetivo_actividad" name="objetivo_actividad">{{$dato->objetivo_actividad}}</textarea>
                                 </div>
+                                @if($dato->comentario!=null)
+                                    <div class="form-group">
+                                        <label>Comentario</label>
+                                        <textarea class="form-control" rows="3" id="comentario"disabled name="comentario">{{$dato->comentario}}</textarea>
+                                    </div>
+                                @endif
+                            </div>
+                            <div style="display: none">
+                                <input type="number" class="form-control"  id="id_estado" name="id_estado" value="2">
                             </div>
                             <div class="modal-footer">
                                 <div align="center"><button type="submit" class="btn" style="background: #e0e0e0">Enviar</button></div>
@@ -197,6 +219,7 @@
         </div>
     @endforeach
 
+    <!-- ver actividad-->
     @foreach($tabla1 as $dato)
         <div class="modal fade" id="myModal_{{$dato->id_plan_actividad}}_ver" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
             <div class="modal-dialog" role="document">

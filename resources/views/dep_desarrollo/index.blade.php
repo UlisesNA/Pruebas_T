@@ -173,6 +173,7 @@
                                     <label>Objetivo</label>
                                     <textarea class="form-control" rows="3" id="objetivo_actividad" name="objetivo_actividad" disabled>{{$dato->objetivo_actividad}}</textarea>
                                 </div>
+
                                     <input type="number" class="form-control" name="id_estado" value="1" hidden>
                             </div>
                             <div class="modal-footer">
