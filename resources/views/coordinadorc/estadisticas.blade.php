@@ -141,7 +141,7 @@
                                             <div class="row pt-3">
                                                 <div class="col-12">
                                                     <div class="row">
-                                                        <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">¿Te gusta estimula tu familia?</h5></div>
+                                                        <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">¿Te motiva tu familia en tus estudios?</h5></div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-4 graf" id="esg"></div>

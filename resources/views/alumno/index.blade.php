@@ -8,16 +8,10 @@
                         <div class="card-body">
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item">
-                                  <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true">General</a>
-                                </li>
-                                <li class="nav-item">
                                   <a class="nav-link" id="generacion-tab" data-toggle="tab" href="#generacion" role="tab"  aria-controls="generacion" aria-selected="false">Generacion</a>
                                 </li>
                             </ul>
                             <div class="tab-content" id="myTabContent">
-                                <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
-
-                                </div>
                                 <div class="tab-pane fade pt-4" id="generacion" role="tabpanel" aria-labelledby="generacion-tab">
                                     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                         <li class="nav-item" v-for="gen in generacion">
@@ -206,8 +200,9 @@
 
                     axios.post(this.eliminar,{id_asigna_alumno:this.idalumno,id_asigna_generacion:this.idasignageneracion}).then(response=>{
                         $('#EliminarAlumno').modal('hide');
+                        this.getAlumnosGrupo(response.data);
                         this.popToast('Eliminado correctamente');
-                        this.getAlumnos(response.data);
+
                     }).catch(error=>{ });
                 },
                 BorrarSeleccionados:function () {

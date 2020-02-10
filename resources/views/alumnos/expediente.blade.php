@@ -65,7 +65,7 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label for="edad">Edad</label>
-                                            <input type="text" class="form-control" v-model="alu.generales.edad" id="edad" name="edad" placeholder="Edad">
+                                            <input type="number" class="form-control" v-model="alu.generales.edad" id="edad" name="edad" placeholder="Edad">
                                         </div>
                                         <div class="col-md-4">
                                             <label for="ln">Lugar de nacimiento</label>
@@ -106,11 +106,11 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label for="tel-casa">Tel. Casa</label>
-                                            <input type="text" v-model="alu.generales.tel_casa" id="tel-casa" name="tel_casa" class="form-control" placeholder="Tel. Casa">
+                                            <input type="tel" title="Sólo números, máximo 10 dígitos." pattern="[0-9]{10}"  v-model="alu.generales.tel_casa" id="tel-casa" name="tel_casa" class="form-control" placeholder="Tel. Casa">
                                         </div>
                                         <div class="col-md-3">
                                             <label for="cel">Celular *</label>
-                                            <input type="text" v-model="alu.generales.cel"  id="cel" name="cel" class="form-control" placeholder="Cel" required>
+                                            <input type="tel" title="Sólo números, máximo 10 dígitos." pattern="[0-9]{10}" v-model="alu.generales.cel"  id="cel" name="cel" class="form-control" placeholder="Cel" required>
                                             <small class="form-text text-danger" v-if='alu.generales.cel==null || alu.generales.cel==""'>Colocar un número celular</small>
                                         </div>
                                         <div class="col-md-5">
@@ -346,7 +346,7 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label for="at">Año de terminación</label>
-                                            <input type="text" v-model="alu.academicos.ano_terminacion" name="ano_terminacion" id="at" class="form-control" placeholder="Año Terminación">
+                                            <input type="number" v-model="alu.academicos.ano_terminacion" name="ano_terminacion" id="at" class="form-control" placeholder="Año de terminación">
                                         </div>
                                     </div>
                                     <div class="row">
@@ -356,7 +356,7 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label for="promedio">Promedio</label>
-                                            <input name="promedio" v-model="alu.academicos.promedio" id="promedio" class="form-control" placeholder="Promedio">
+                                            <input type="number" name="promedio" v-model="alu.academicos.promedio" id="promedio" class="form-control" placeholder="Promedio">
                                         </div>
                                         <div class="col-md-4">
                                             <label for="mrb">Materias reprobadas en bachillerato</label>
@@ -520,7 +520,7 @@
                                         </div>
                                         <div class="col-md-1">
                                             <label for="edadP">Edad</label>
-                                            <input type="text" v-model="alu.familiares.edad_padre" name="edad_padre" id="edadP" class="form-control" placeholder="Edad">
+                                            <input type="number" v-model="alu.familiares.edad_padre" name="edad_padre" id="edadP" class="form-control" placeholder="Edad">
                                         </div>
                                         <div class="col-md-3">
                                             <label for="ocupacionP">Ocupación</label>
@@ -540,7 +540,7 @@
                                         </div>
                                         <div class="col-md-1">
                                             <label for="edadM">Edad</label>
-                                            <input type="text" v-model="alu.familiares.edad_madre" name="edad_madre" id="edadM" class="form-control" placeholder="Edad">
+                                            <input type="number" v-model="alu.familiares.edad_madre" name="edad_madre" id="edadM" class="form-control" placeholder="Edad">
                                         </div>
                                         <div class="col-md-3">
                                             <label for="ocupacionM">Ocupación</label>
@@ -555,11 +555,11 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label for="nh">Número de hermanos, incluyéndote:</label>
-                                            <input type="text" v-model="alu.familiares.no_hermanos" id="nh" name="no_hermanos" class="form-control" placeholder="No. de Hermanos">
+                                            <input type="number" v-model="alu.familiares.no_hermanos" id="nh" name="no_hermanos" class="form-control" placeholder="No. de Hermanos">
                                         </div>
                                         <div class="col-md-4">
                                             <label for="loe">¿Qué lugar que ocupas entre ellos?</label>
-                                            <input type="text" v-model="alu.familiares.lugar_ocupas" id="loe" name="lugar_que_ocupas" class="form-control" placeholder="Lugar que ocupas entre ellos">
+                                            <input type="number" v-model="alu.familiares.lugar_ocupas" id="loe" name="lugar_que_ocupas" class="form-control" placeholder="Lugar que ocupas entre ellos">
                                         </div>
                                         <div class="col-md-4">
                                             <label for="av">Actualmente vives con: *</label>
@@ -573,7 +573,7 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <label for="nop">Número total de personas con las que vives</label>
-                                            <input type="text" v-model="alu.familiares.no_personas" name="no_persona" id="nop" class="form-control" placeholder="No. de personas">
+                                            <input type="number" v-model="alu.familiares.no_personas" name="no_persona" id="nop" class="form-control" placeholder="No. de personas">
                                         </div>
                                         <div class="col-md-6">
                                             <label for="etnia">Perteneces a una etnia indígena *</label>
@@ -1066,7 +1066,6 @@
                 </div>
             </div>
         </div>
-        <pre>@{{ alu.generales }}</pre>
         @include("alumnos.partial.modalNSE")
     </div>
     <script type="application/javascript">
