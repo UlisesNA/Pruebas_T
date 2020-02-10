@@ -27,11 +27,6 @@
                                         <h4 class="text-center alert alert-primary pt-4"><b>Datos Generales</b></h4>
                                     </div>
                                 </div>
-                                <div class="col-12 pt-4" v-if="llenogen==false">
-                                    <div class="alert alert-danger text-center">
-                                        Por favor, llena todos los campos requeridos para poder pasar al llenado de la siguiente área del expediente. Gracias.
-                                    </div>
-                                </div>
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-5">
@@ -79,7 +74,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label for="EC">Estado Civil *</label>
+                                            <label for="EC">Estado civil *</label>
                                             <select name="estado_civil" id="EC" class="custom-select custom-select-md" v-model="alu.generales.id_estado_civil" required>
                                                 <option value="null" selected >Elija el estado civil</option>
                                                 <option v-bind:value="es.id_estado_civil" v-for="es in estadociv">@{{es.desc_ec}}</option>
@@ -106,11 +101,11 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label for="tel-casa">Tel. Casa</label>
-                                            <input type="text" v-model="alu.generales.tel_casa" id="tel-casa" name="tel_casa" class="form-control" placeholder="Tel. Casa">
+                                            <input type="tel" title="Sólo números, máximo 10 dígitos." pattern="[0-9]{10}"  v-model="alu.generales.tel_casa" id="tel-casa" name="tel_casa" class="form-control" placeholder="Tel. Casa">
                                         </div>
                                         <div class="col-md-3">
                                             <label for="cel">Celular *</label>
-                                            <input type="text" v-model="alu.generales.cel"  id="cel" name="cel" class="form-control" placeholder="Cel" required>
+                                            <input type="tel" title="Sólo números, máximo 10 dígitos." pattern="[0-9]{10}" v-model="alu.generales.cel"  id="cel" name="cel" class="form-control" placeholder="Cel" required>
                                             <small class="form-text text-danger" v-if='alu.generales.cel==null || alu.generales.cel==""'>Colocar un número celular</small>
                                         </div>
                                         <div class="col-md-5">
@@ -299,9 +294,14 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-12 pt-4">
-                                        <button class="btn btn-outline-primary col-12" @click="siguiente('academico')">Siguiente</button>
+                                </div>
+                                <div class="col-12 pt-4" v-if="llenogen==false">
+                                    <div class="alert alert-danger text-center">
+                                        Por favor, llena todos los campos requeridos para poder pasar al llenado de la siguiente área del expediente. Gracias.
                                     </div>
+                                </div>
+                                <div class="col-12 pt-4">
+                                    <button class="btn btn-outline-primary col-12" @click="siguiente('academico')">Siguiente</button>
                                 </div>
                             </div>
                         </div>
@@ -310,11 +310,6 @@
                                 <div class="row pt-3 pr-3 pl-3">
                                     <div class=" col-12 align-content-center">
                                         <h4 class="text-center alert alert-primary pt-4"><b>Antecedentes Académicos</b></h4>
-                                    </div>
-                                </div>
-                                <div class="col-12 pt-4" v-if="llenoant==false">
-                                    <div class="alert alert-danger text-center">
-                                        Por favor, llena todos los campos requeridos para poder pasar al llenado de la siguiente área del expediente. Gracias.
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -328,7 +323,7 @@
                                         <div class="col-md-4">
                                             <label for="bachillerato">Tipo de bachillerato</label>
                                             <select name="bachillerato" v-model="alu.academicos.id_bachillerato" id="bachillerato" class="custom-select custom-select-md">
-                                                <option value="null" selected>Elija una opcoón</option>
+                                                <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="bach.id_bachillerato" v-for="bach in bachiller">@{{bach.desc_bachillerato}}</option>
                                             </select>
                                         </div>
@@ -346,7 +341,7 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label for="at">Año de terminación</label>
-                                            <input type="text" v-model="alu.academicos.ano_terminacion" name="ano_terminacion" id="at" class="form-control" placeholder="Año Terminación">
+                                            <input type="number" v-model="alu.academicos.ano_terminacion" name="ano_terminacion" id="at" class="form-control" placeholder="Año de terminación">
                                         </div>
                                     </div>
                                     <div class="row">
@@ -356,7 +351,7 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label for="promedio">Promedio</label>
-                                            <input name="promedio" v-model="alu.academicos.promedio" id="promedio" class="form-control" placeholder="Promedio">
+                                            <input type="number" name="promedio" v-model="alu.academicos.promedio" id="promedio" class="form-control" placeholder="Promedio">
                                         </div>
                                         <div class="col-md-4">
                                             <label for="mrb">Materias reprobadas en bachillerato</label>
@@ -430,7 +425,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label for="tefe">¿Te estimula tu familia en tus estudios? *</label>
+                                            <label for="tefe">¿Te motiva tu familia en tus estudios? *</label>
                                             <select v-model="alu.academicos.teestimula_familia" id="tefe" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option value="1">Si</option>
@@ -455,7 +450,7 @@
                                     </div>
                                     <div class="row pt-3 pr-3 pl-3">
                                         <div class=" col-12 align-content-center">
-                                            <h5 class="text-center alert alert-secondary pt-2"><b>Otros Estudios</b></h5>
+                                            <h5 class="text-center alert alert-secondary pt-2"><b>Otros estudios</b></h5>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -490,8 +485,17 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <label for="oe">Otros Estudios</label>
-                                            <input name="otro_estudio" v-model="alu.academicos.otros_estudios" id="oe" class="form-control" placeholder="Otros Estudios">
+                                            <select v-model="alu.academicos.otros_estudios" id="oe" class="custom-select custom-select-md" required>
+                                                <option value="null" selected>Elija una opción</option>
+                                                <option value="1">Si</option>
+                                                <option value="2">No</option>
+                                            </select>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 pt-4" v-if="llenoant==false">
+                                    <div class="alert alert-danger text-center">
+                                        Por favor, llena todos los campos requeridos para poder pasar al llenado de la siguiente área del expediente. Gracias.
                                     </div>
                                 </div>
                                 <div class="col-12 pt-4">
@@ -506,11 +510,6 @@
                                         <h4 class="text-center alert alert-primary pt-4"><b>Datos Familiares</b></h4>
                                     </div>
                                 </div>
-                                <div class="col-12 pt-4" v-if="llenofam==false">
-                                    <div class="alert alert-danger text-center">
-                                        Por favor, llena todos los campos requeridos para poder pasar al llenado de la siguiente área del expediente. Gracias.
-                                    </div>
-                                </div>
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-4">
@@ -518,11 +517,11 @@
                                             <input name="nombre_padre" v-model="alu.familiares.nombre_padre" id="np" type="text" class="form-control" placeholder="Nombre del padre" required>
                                             <small class="form-text text-danger" v-if='alu.familiares.nombre_padre==null || alu.familiares.nombre_padre=="" '>Colocar nombre del padre</small>
                                         </div>
-                                        <div class="col-md-1">
+                                        <div class="col-md-2">
                                             <label for="edadP">Edad</label>
-                                            <input type="text" v-model="alu.familiares.edad_padre" name="edad_padre" id="edadP" class="form-control" placeholder="Edad">
+                                            <input type="number" v-model="alu.familiares.edad_padre" name="edad_padre" id="edadP" class="form-control" placeholder="Edad">
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-2">
                                             <label for="ocupacionP">Ocupación</label>
                                             <input name="ocupacion_padre" v-model="alu.familiares.ocupacion_padre" id="ocupacionP" type="text" placeholder="Ocupación" class="form-control">
                                         </div>
@@ -538,11 +537,11 @@
                                             <input type="text" v-model="alu.familiares.nombre_madre" name="nombre_madre" id="nm" class="form-control" placeholder="Nombre de la madre" required>
                                             <small class="form-text text-danger" v-if='alu.familiares.nombre_madre==null || alu.familiares.nombre_madre=="" '>Colocar nombre de la madre</small>
                                         </div>
-                                        <div class="col-md-1">
+                                        <div class="col-md-2">
                                             <label for="edadM">Edad</label>
-                                            <input type="text" v-model="alu.familiares.edad_madre" name="edad_madre" id="edadM" class="form-control" placeholder="Edad">
+                                            <input type="number" v-model="alu.familiares.edad_madre" name="edad_madre" id="edadM" class="form-control" placeholder="Edad">
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-2">
                                             <label for="ocupacionM">Ocupación</label>
                                             <input id="ocupacionM" v-model="alu.familiares.ocupacion_madre" name="ocupacion_madre" type="text" placeholder="Ocupación" class="form-control">
                                         </div>
@@ -555,11 +554,11 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label for="nh">Número de hermanos, incluyéndote:</label>
-                                            <input type="text" v-model="alu.familiares.no_hermanos" id="nh" name="no_hermanos" class="form-control" placeholder="No. de Hermanos">
+                                            <input type="number" v-model="alu.familiares.no_hermanos" id="nh" name="no_hermanos" class="form-control" placeholder="No. de Hermanos">
                                         </div>
                                         <div class="col-md-4">
                                             <label for="loe">¿Qué lugar que ocupas entre ellos?</label>
-                                            <input type="text" v-model="alu.familiares.lugar_ocupas" id="loe" name="lugar_que_ocupas" class="form-control" placeholder="Lugar que ocupas entre ellos">
+                                            <input type="number" v-model="alu.familiares.lugar_ocupas" id="loe" name="lugar_que_ocupas" class="form-control" placeholder="Lugar que ocupas entre ellos">
                                         </div>
                                         <div class="col-md-4">
                                             <label for="av">Actualmente vives con: *</label>
@@ -573,7 +572,7 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <label for="nop">Número total de personas con las que vives</label>
-                                            <input type="text" v-model="alu.familiares.no_personas" name="no_persona" id="nop" class="form-control" placeholder="No. de personas">
+                                            <input type="number"  v-model="alu.familiares.no_personas" name="no_persona" id="nop" class="form-control" placeholder="No. de personas">
                                         </div>
                                         <div class="col-md-6">
                                             <label for="etnia">Perteneces a una etnia indígena *</label>
@@ -617,12 +616,12 @@
                                             <small class="form-text text-danger" v-if='alu.familiares.id_familia_union==null || alu.familiares.id_familia_union=="null"'>Elija una opción</small>
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="nt">Nombre del Tutor</label>
-                                            <input type="text" v-model="alu.familiares.nombre_tutor" name="nombre_tutor" id="nt" class="form-control" placeholder="Nombre del Tutor" required>
+                                            <label for="nt">Nombre del tutor *</label>
+                                            <input type="text" v-model="alu.familiares.nombre_tutor" name="nombre_tutor" id="nt" class="form-control" placeholder="Nombre del tutor" required>
                                             <small class="form-text text-danger" v-if='alu.familiares.nombre_tutor==null || alu.familiares.nombre_tutor=="null"'>Nombre del tutor</small>
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="parentesco">Parentesco</label>
+                                            <label for="parentesco">Parentesco *</label>
                                             <select name="parentesco" id="" class="custom-select custom-select-md"  v-model="alu.familiares.id_parentesco" required>
                                                 <option value="null">Elija un parentesco</option>
                                                 <option v-bind:value="par.id_parentesco" v-for="par in parentesco">@{{par.desc_parentesco}}</option>
@@ -631,10 +630,14 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-12 pt-4" v-if="llenofam==false">
+                                    <div class="alert alert-danger text-center">
+                                        Por favor, llena todos los campos requeridos para poder pasar al llenado de la siguiente área del expediente. Gracias.
+                                    </div>
+                                </div>
                                 <div class="col-12 pt-4">
                                     <button class="btn btn-outline-primary col-12" @click="siguiente('estudio')">Siguiente</button>
                                 </div>
-
                             </div>
                         </div>
                         <div class="tab-pane fade" v-bind:class="{show:actestudio,active:actestudio}" id="exp-habitos" role="tabpanel" aria-labelledby="exp-habitos-tab">
@@ -642,11 +645,6 @@
                                 <div class="row pt-3 pr-3 pl-3">
                                     <div class=" col-12 align-content-center">
                                         <h4 class="text-center alert alert-primary pt-4"><b>Hábitos de Estudio</b></h4>
-                                    </div>
-                                </div>
-                                <div class="col-12 pt-4" v-if="llenohab==false">
-                                    <div class="alert alert-danger text-center">
-                                        Por favor, llena todos los campos requeridos para poder pasar al llenado de la siguiente área del expediente. Gracias.
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -702,10 +700,14 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-12 pt-4" v-if="llenohab==false">
+                                    <div class="alert alert-danger text-center">
+                                        Por favor, llena todos los campos requeridos para poder pasar al llenado de la siguiente área del expediente. Gracias.
+                                    </div>
+                                </div>
                                 <div class="col-12 pt-4">
                                     <button class="btn btn-outline-primary col-12" @click="siguiente('integral')">Siguiente</button>
                                 </div>
-
                             </div>
                         </div>
                         <div class="tab-pane fade" v-bind:class="{show:actintegral,active:actintegral}" id="exp-formacion" role="tabpanel" aria-labelledby="formacion-tab">
@@ -713,11 +715,6 @@
                                 <div class="row pt-3 pr-3 pl-3">
                                     <div class=" col-12 align-content-center">
                                         <h4 class="text-center alert alert-primary pt-4"><b>Formación Integral/Salud</b></h4>
-                                    </div>
-                                </div>
-                                <div class="col-12 pt-4" v-if="llenofor==false">
-                                    <div class="alert alert-danger text-center">
-                                        Por favor, llena todos los campos requeridos para poder pasar al llenado de la siguiente área del expediente. Gracias.
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -875,11 +872,11 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label for="estatura">Estatura</label>
-                                            <input name="estatura" v-model="alu.integral.estatura"  id="estatura" type="text" placeholder="Estatura" class="form-control">
+                                            <input type="number" step="0.001" name="estatura" v-model="alu.integral.estatura"  id="estatura" placeholder="Estatura" class="form-control">
                                         </div>
                                         <div class="col-md-4">
                                             <label for="peso">Peso</label>
-                                            <input type="text" v-model="alu.integral.peso" id="peso" name="peso" class="form-control" placeholder="Peso">
+                                            <input type="number" v-model="alu.integral.peso" id="peso" name="peso" class="form-control" placeholder="Peso">
                                         </div>
                                     </div>
                                     <div class="row">
@@ -916,9 +913,15 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-12 pt-4" v-if="llenofor==false">
+                                    <div class="alert alert-danger text-center">
+                                        Por favor, llena todos los campos requeridos para poder pasar al llenado de la siguiente área del expediente. Gracias.
+                                    </div>
+                                </div>
                                 <div class="col-12 pt-4">
                                     <button class="btn btn-outline-primary col-12" @click="siguiente('area')">Siguiente</button>
                                 </div>
+
                             </div>
                         </div>
                         <div class="tab-pane fade" v-bind:class="{show:actarea,active:actarea}" id="exp-area" role="tabpanel" aria-labelledby="exp-area-tab">
@@ -926,16 +929,6 @@
                                 <div class="row pt-3 pr-3 pl-3">
                                     <div class=" col-12 align-content-center">
                                         <h4 class="text-center alert alert-primary pt-4"><b>Área Psicopedagógica</b></h4>
-                                    </div>
-                                </div>
-                                <div class="col-12 pt-4" v-if="llenoare==false">
-                                    <div class="alert alert-danger text-center">
-                                        Por favor, llena todos los campos requeridos para poder finalizar el llenado del expediente. Gracias.
-                                    </div>
-                                </div>
-                                <div class="col-12 pt-4" v-if="lleno==false">
-                                    <div class="alert alert-success text-center">
-                                        Tus cambios se han guardado correctamente. Gracias.
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -973,14 +966,14 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                             <label for="aptitudes">Aptitudes especiales</label>
                                             <select name="aptitudes" id="aptitudes" v-model="alu.area.aptitud_especial" class="custom-select custom-select-md">
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="esc.id_escala" v-for="esc in escala">@{{esc.desc_escala}}</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
                                             <label for="comprension">Comprensión y retención en clase *</label>
                                             <select name="comprension" id="comprension" v-model="alu.area.comprension" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
@@ -1023,7 +1016,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-5">
-                                            <label for="solucion">Solución de problemas y aprendizaje de las matemáticas *</label>
+                                            <label for="solucion">Solución de problemas y aprendizaje de las matemáticas*</label>
                                             <select name="solucion" id="solucion" v-model="alu.area.solucion_problemas" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option v-bind:value="esc.id_escala" v-for="esc in escala">@{{esc.desc_escala}}</option>
@@ -1055,6 +1048,16 @@
                                             </select>
                                             <small class="form-text text-danger" v-if='alu.area.busqueda_bibliografica==null || alu.area.busqueda_bibliografica=="null"'>Elija una opción</small>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 pt-4" v-if="llenoare==false">
+                                    <div class="alert alert-danger text-center">
+                                        Por favor, llena todos los campos requeridos para poder finalizar el llenado del expediente. Gracias.
+                                    </div>
+                                </div>
+                                <div class="col-12 pt-4" v-if="lleno==false">
+                                    <div class="alert alert-success text-center">
+                                        Tus cambios se han guardado correctamente. Gracias.
                                     </div>
                                 </div>
                                 <div class="col-12 pt-4">

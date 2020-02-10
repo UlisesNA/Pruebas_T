@@ -89,7 +89,8 @@
                         <div class="col-12">
                             <div class="row pt-3">
                                 <div class="col-11"></div>
-                                <div class="col-1"><a href="#!"  class="btn text-white btn-danger" ><i class="fas fa-file-pdf"></i></a></div>
+                                <!--REPORTE PDF GRAFICAS-->
+                                <div class="col-1"><button @click="reporte()" target="_blank" class="btn text-white btn-danger" ><i class="fas fa-file-pdf"></i></button></div>
                             </div>
                             <div class="row m-2"><div class="col-12 "><h5 class="alert alert-primary text-center font-weight-bold">Estadísticas</h5></div></div>
                             <div class="row text-center"><div class="col-4"></div><div class="col-4 graf" id="genero"></div></div>
@@ -222,7 +223,7 @@
                                                     <div class="row pt-3">
                                                         <div class="col-12">
                                                             <div class="row">
-                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">¿Te gusta estimula tu familia?</h5></div>
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">¿Te motiva tu familia en tus estudios?</h5></div>
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-4 graf" id="esg"></div>
@@ -593,6 +594,7 @@
                 salud:"/graphics/salud",
                 area:"/graphics/area",
                 pd:"pdf/lista",
+                rep:"pdf/reporte",
                 palu:'pdf/alumno',
                 veralu:'/ver',
                 datos:[],
@@ -1394,6 +1396,7 @@
                         this.parentesco=response.data.parentesco;
                         this.escala=response.data.escala;
                         this.bebidas=response.data.bebidas;
+                        this.becas=response.data.becas;
 
                     });
                 },
@@ -1410,6 +1413,20 @@
                 },
                 pdf:function () {
                     axios.post(this.pd,{id_asigna_generacion:this.idasigna,id_carrera:this.idca,generacion:this.gen},{
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/pdf'
+                        },
+                        responseType: "blob"
+                    }).then(response=>{
+                        console.log(response.data);
+                        const blob = new Blob([response.data], { type: 'application/pdf' });
+                        const objectUrl = URL.createObjectURL(blob);
+                        window.open(objectUrl)
+                    });
+                },
+                reporte:function () {
+                    axios.post(this.rep,{id_asigna_generacion:this.idasigna,id_carrera:this.idca,generacion:this.gen},{
                         headers: {
                             'Content-Type': 'application/json',
                             'Accept': 'application/pdf'
