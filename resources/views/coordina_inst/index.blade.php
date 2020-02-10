@@ -114,22 +114,22 @@
 
                                     <div class="col">
                                         <label >Fecha Inicio</label>
-                                        <input type="date" class="form-control" id="fi_actividad" name="fi_actividad" min="">
+                                        <input required type="date" class="form-control" id="fi_actividad" name="fi_actividad" min="">
                                     </div>
                                     <div class="col">
                                         <label >Fecha Límite</label>
-                                        <input type="date" class="form-control"  id="ff_actividad" name="ff_actividad" min="" max="">
+                                        <input required type="date" class="form-control"  id="ff_actividad" name="ff_actividad" min="" max="">
                                     </div>
 
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>Nombre de Actividad</label>
-                                <textarea class="form-control" rows="3" id="desc_actividad" name="desc_actividad"></textarea>
+                                <textarea required class="form-control" rows="3" id="desc_actividad" name="desc_actividad"></textarea>
                             </div>
                             <div class="form-group">
                                 <label>Objetivo</label>
-                                <textarea class="form-control" rows="3" id="objetivo_actividad" name="objetivo_actividad"></textarea>
+                                <textarea required class="form-control" rows="3" id="objetivo_actividad" name="objetivo_actividad"></textarea>
                             </div>
                             <div style="display: none">
                                 <input type="number" class="form-control"  id="id_generacion" name="id_generacion" value="{{$dato->id_generacion}}">
@@ -169,22 +169,22 @@
 
                                         <div class="col">
                                             <label >Fecha Inicio</label>
-                                            <input type="date" class="form-control" id="fi_actividad" name="fi_actividad" value={{$dato->fi_actividad}}>
+                                            <input required type="date" class="form-control" id="fi_actividad" name="fi_actividad" value={{$dato->fi_actividad}}>
                                         </div>
                                         <div class="col">
                                             <label >Fecha Límite</label>
-                                            <input type="date" class="form-control"  id="ff_actividad" name="ff_actividad" value="{{$dato->ff_actividad}}">
+                                            <input required type="date" class="form-control"  id="ff_actividad" name="ff_actividad" value="{{$dato->ff_actividad}}">
                                         </div>
 
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label>Nombre de Actividad</label>
-                                    <textarea class="form-control" rows="3" id="desc_actividad" name="desc_actividad">{{$dato->desc_actividad }}</textarea>
+                                    <textarea required class="form-control" rows="3" id="desc_actividad" name="desc_actividad">{{$dato->desc_actividad }}</textarea>
                                 </div>
                                 <div class="form-group">
                                     <label>Objetivo</label>
-                                    <textarea class="form-control" rows="3" id="objetivo_actividad" name="objetivo_actividad">{{$dato->objetivo_actividad}}</textarea>
+                                    <textarea required class="form-control" rows="3" id="objetivo_actividad" name="objetivo_actividad">{{$dato->objetivo_actividad}}</textarea>
                                 </div>
                             </div>
                             <div class="modal-footer">

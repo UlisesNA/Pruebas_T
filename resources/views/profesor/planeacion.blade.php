@@ -108,7 +108,7 @@
                         @method('PUT')
                         <div class="modal-body">
                             <div class="form-group col-md-12">
-                                <textarea class="form-control" rows="8" id="estrategia" name="estrategia">{{$dato->estrategia}}</textarea>
+                                <textarea required class="form-control" rows="8" id="estrategia" name="estrategia">{{$dato->estrategia}}</textarea>
                                 <label>Requiere subir evidencia</label>
                                 @if($dato->requiere_evidencia==1)
                                     <input type="checkbox" class="" id="requiere_evidencia" name="requiere_evidencia" value="1" checked>

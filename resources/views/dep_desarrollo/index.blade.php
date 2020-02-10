@@ -206,7 +206,7 @@
                     @method('PUT')
                     <div class="modal-body">
                         <div class="form-group col-md-12">
-                            <textarea class="form-control" rows="8" name="comentario"></textarea>
+                            <textarea required class="form-control" rows="8" name="comentario"></textarea>
                             <input type="number" class="form-control" name="id_estado" value="3" hidden>
                         </div>
                     </div>
