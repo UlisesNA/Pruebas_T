@@ -58,7 +58,7 @@
                     {{ csrf_field() }}
                     <div class="container-fluid">
                         <div class="form-group col-md-12">
-                            <input type="file" class="form-control" name="evidencia" id="evidencia" accept=".pdf">
+                            <input required type="file" class="form-control" name="evidencia" id="evidencia" accept=".pdf">
                             <input type="number" id="id_asigna_planeacion_tutor" name="id_asigna_planeacion_tutor" hidden>
                             <input type="number" id="id_evidencia" name="id_evidencia" hidden>
 

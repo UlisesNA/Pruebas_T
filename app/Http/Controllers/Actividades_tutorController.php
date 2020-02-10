@@ -148,6 +148,13 @@ class Actividades_tutorController extends Controller
         $plan->desc_actividad = $request->desc_actividad;
         $plan->objetivo_actividad = $request->objetivo_actividad;
         $plan->save();
+        $id_plan_asigna_planeacion_actividad=DB::select('SELECT id_asigna_planeacion_actividad 
+                                                                    from plan_asigna_planeacion_actividad 
+                                                                    where id_plan_actividad ='.$id);
+        //dd($id_plan_asigna_planeacion_actividad[0]->id_asigna_planeacion_actividad);
+        $plan1 = Plan_asigna_planeacion_actividad::find($id_plan_asigna_planeacion_actividad[0]->id_asigna_planeacion_actividad);
+        $plan1->id_estado = $request->id_estado;
+        $plan1->save();
         return redirect()->back();
     }
     public function update1(Request $request, $id)

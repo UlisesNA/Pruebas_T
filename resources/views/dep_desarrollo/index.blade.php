@@ -173,6 +173,7 @@
                                     <label>Objetivo</label>
                                     <textarea class="form-control" rows="3" id="objetivo_actividad" name="objetivo_actividad" disabled>{{$dato->objetivo_actividad}}</textarea>
                                 </div>
+
                                     <input type="number" class="form-control" name="id_estado" value="1" hidden>
                             </div>
                             <div class="modal-footer">
@@ -206,7 +207,7 @@
                     @method('PUT')
                     <div class="modal-body">
                         <div class="form-group col-md-12">
-                            <textarea class="form-control" rows="8" name="comentario"></textarea>
+                            <textarea required class="form-control" rows="8" name="comentario"></textarea>
                             <input type="number" class="form-control" name="id_estado" value="3" hidden>
                         </div>
                     </div>
