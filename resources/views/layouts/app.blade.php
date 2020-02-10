@@ -103,11 +103,11 @@
                         @if (Session::get('desarrollo'))
                             <div class="dropdown">
                                 <a class="dropdown-toggle btn border-0" type="button" id="MenuCoordinador" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Desarrollo Academico
+                                    Desarrollo Académico
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="MenuDesarrollo">
-                                    <a class="dropdown-item" href="desarrollovista">Coordinador General</a>
-                                    <a class="dropdown-item" href="asignacorgenvista">Asigna Coordinador General</a>
+                                    <a class="dropdown-item" href="desarrollovista">Coordinador Institucional</a>
+                                    <a class="dropdown-item" href="asignacorgenvista">Asigna Coordinador Institucional</a>
                                     <a class="dropdown-item" href="planeaciondesarrollo">Planeación</a>
                                 </div>
                             </div>
@@ -125,7 +125,7 @@
                                 @if (Session::get('jefe'))
                                     <div class="dropdown">
                                         <a class="dropdown-toggle btn border-0" type="button" id="MenuJefe" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Tutorias
+                                            Tutorías
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="MenuJefe">
                                             <a class="dropdown-item" href="jefevista">Tutores y Coordinador</a>
@@ -138,15 +138,14 @@
                                 @if (Session::get('tutor'))
                                     <div class="dropdown">
                                         <a class="dropdown-toggle btn border-0" type="button" id="MenuTutor" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Tutorias
+                                            Tutorías
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="MenuTutor">
-                                            <a class="dropdown-item" href="tutorvista">Grupos Tutorias</a>
+                                            <a class="dropdown-item" href="tutorvista">Grupos Tutorías</a>
                                             <a class="dropdown-item" href="eventos">Eventos</a>
                                             <a class="dropdown-item" href="desercion">Deserción</a>
-                                            <a class="dropdown-item" href="listado_alumnos">Listado</a>
                                             <a class="dropdown-item" href="reporte">Reporte</a>
-                                            <a class="dropdown-item" href="planeaciontutor">Planeacion</a>
+                                            <a class="dropdown-item" href="planeaciontutor">Planeación</a>
                                         </div>
                                     </div>
                                 @endif
@@ -163,7 +162,7 @@
                                     @if (Session::get('coordinadorgeneral'))
                                         <div class="dropdown">
                                             <a class="dropdown-toggle btn border-0" type="button" id="MenuCoordinador" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                Coordinador General
+                                                Coordinador Institucional
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="MenuCoordinadorGeneral">
                                                 <a class="dropdown-item" href="planeacioncoorgen">Planeación</a>

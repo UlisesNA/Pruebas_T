@@ -23,7 +23,7 @@
                                 <input type="date" class="form-control" name="fecha_inicio" value="{{$plan->fecha_inicio}}">
                             </div>
                             <div class="form-group col-md-6">
-                                <label>Fecha Limite</label>
+                                <label>Fecha Límite</label>
                                 <input type="date" class="form-control" name="fecha_fin" value="{{$plan->fecha_fin}}">
                             </div>
                             <div class="form-group col-md-12">
