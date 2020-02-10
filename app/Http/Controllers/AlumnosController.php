@@ -64,6 +64,8 @@ class AlumnosController extends Controller
                         from gnral_alumnos join exp_asigna_alumnos on exp_asigna_alumnos.id_alumno=gnral_alumnos.id_alumno 
                          where gnral_alumnos.id_carrera='.$carrera[0]->id_carrera.' and exp_asigna_alumnos.id_asigna_generacion='.$request->generacion.' 
                           and exp_asigna_alumnos.deleted_at is null  order by gnral_alumnos.apaterno');
+        //return array_map('mb_strtoupper',[$alumnos[0],'UTF8']);
+
         return $alumnos;
 
     }

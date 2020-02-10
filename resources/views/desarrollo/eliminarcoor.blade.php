@@ -6,7 +6,7 @@
                     <h5 class="modal-title">Eliminar</h5>
                 </div>
                 <div class="modal-body">
-                    ¿Seguro que desea eliminar el coordinador general?
+                    ¿Seguro que desea eliminar el coordinador institucional?
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-primary" v-on:click.prevent="deleteC()" data-dismiss="modal">Confirmar</button>
