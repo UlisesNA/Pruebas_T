@@ -49,7 +49,7 @@
                                                                     @if($dat->id_estado == 3)
                                                                     <td>
                                                                         <a>
-                                                                           Actividad Revisada
+                                                                           Actividad Con Observaciones
                                                                         </a>
                                                                     </td>
                                                                     @else
@@ -179,7 +179,7 @@
                                     <div align="center"><button type="submit" class="btn" style="background: #e0e0e0">Aprobar</button></div>
                                 <div class="form-group col-md-6">
                                     <div align="center">
-                                        <a data-toggle="modal" data-target="#coment_{{$dato->id_asigna_planeacion_actividad}}" class="btn" style="background: #e0e0e0;color: black">Reenviar</a>
+                                        <a data-toggle="modal" data-target="#coment_{{$dato->id_asigna_planeacion_actividad}}" class="btn" style="background: #e0e0e0;color: black">Sugerencia</a>
                                     </div>
                                 </div>
                             </div>
