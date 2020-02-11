@@ -56,33 +56,31 @@ class Exp_asigna_generacion extends Model
     public static function getDatosTut(){
 
         $datos=DB::select('SELECT exp_generacion.generacion,exp_generacion.id_generacion
-                                FROM exp_generacion,exp_asigna_generacion,plan_planeacion,plan_actividades,plan_asigna_planeacion_actividad,plan_asigna_planeacion_tutor,exp_asigna_tutor,gnral_personales
-                                WHERE exp_generacion.id_generacion=exp_asigna_generacion.id_generacion
-                                AND plan_actividades.id_plan_actividad=plan_asigna_planeacion_actividad.id_plan_actividad
-                                AND plan_planeacion.id_planeacion=plan_asigna_planeacion_actividad.id_planeacion
-                                AND plan_asigna_planeacion_actividad.id_asigna_planeacion_actividad=plan_asigna_planeacion_tutor.id_asigna_planeacion_actividad
-                                AND plan_asigna_planeacion_tutor.id_asigna_tutor=exp_asigna_tutor.id_asigna_tutor
-                                AND exp_asigna_tutor.id_asigna_generacion=exp_asigna_generacion.id_asigna_generacion
-                                and gnral_personales.tipo_usuario='.Auth::user()->id.'
-                                GROUP BY exp_generacion.generacion');
+                                    FROM exp_generacion, exp_asigna_generacion,exp_asigna_tutor,plan_asigna_planeacion_tutor
+                                    ,gnral_personales
+                                    WHERE exp_generacion.id_generacion=exp_asigna_generacion.id_generacion
+                                    AND exp_asigna_tutor.id_asigna_generacion=exp_asigna_generacion.id_asigna_generacion
+                                    AND exp_asigna_tutor.id_asigna_tutor=plan_asigna_planeacion_tutor.id_asigna_tutor
+                                    AND exp_asigna_tutor.id_personal=gnral_personales.id_personal
+                                    AND gnral_personales.tipo_usuario='.Auth::user()->id.'
+                                    GROUP BY exp_generacion.id_generacion');
         return $datos;
     }
 
     public static function getDatosAct(){
 
-        $datos=DB::select('SELECT plan_actividades.id_plan_actividad,plan_actividades.desc_actividad,plan_actividades.objetivo_actividad,DATE_FORMAT(plan_actividades.fi_actividad,\'%d/%m/%Y\') as fi_actividad,
-                                  DATE_FORMAT(plan_actividades.ff_actividad, \'%d/%m/%Y\') as ff_actividad,plan_planeacion.id_generacion,exp_generacion.generacion,plan_asigna_planeacion_actividad.comentario,plan_asigna_planeacion_actividad.id_estado,plan_asigna_planeacion_actividad.id_asigna_planeacion_actividad,plan_asigna_planeacion_tutor.*
-                                    FROM plan_actividades,plan_planeacion,plan_asigna_planeacion_actividad,plan_asigna_planeacion_tutor,gnral_personales,users,exp_generacion
-                                    WHERE plan_asigna_planeacion_actividad.id_planeacion=plan_planeacion.id_planeacion
-                                    AND plan_asigna_planeacion_actividad.id_plan_actividad=plan_actividades.id_plan_actividad
-                                    AND plan_actividades.deleted_at is null
-                                    AND plan_asigna_planeacion_actividad.deleted_at is null
-                                    AND plan_asigna_planeacion_actividad.id_estado=1
-                                    AND plan_asigna_planeacion_tutor.id_asigna_planeacion_actividad=plan_asigna_planeacion_actividad.id_asigna_planeacion_actividad
-                                    and exp_generacion.id_generacion=plan_planeacion.id_generacion
-                                    and plan_asigna_planeacion_tutor.id_asigna_planeacion_actividad=plan_asigna_planeacion_actividad.id_asigna_planeacion_actividad
-                                    and gnral_personales.tipo_usuario=users.id
-                                    and users.id='.Auth::user()->id);
+        $datos=DB::select('SELECT exp_generacion.generacion,exp_generacion.id_generacion,plan_actividades.*,plan_asigna_planeacion_actividad.*,DATE_FORMAT(plan_actividades.ff_actividad, \'%d/%m/%Y\') as ff_act,DATE_FORMAT(plan_actividades.fi_actividad,\'%d/%m/%Y\') as fi_act,plan_asigna_planeacion_tutor.*
+FROM exp_generacion, exp_asigna_generacion,exp_asigna_tutor,plan_asigna_planeacion_tutor
+,gnral_personales,plan_actividades,plan_asigna_planeacion_actividad
+WHERE exp_generacion.id_generacion=exp_asigna_generacion.id_generacion
+AND exp_asigna_tutor.id_asigna_generacion=exp_asigna_generacion.id_asigna_generacion
+AND exp_asigna_tutor.id_asigna_tutor=plan_asigna_planeacion_tutor.id_asigna_tutor
+AND exp_asigna_tutor.id_personal=gnral_personales.id_personal
+AND plan_actividades.id_plan_actividad=plan_asigna_planeacion_actividad.id_plan_actividad
+AND plan_asigna_planeacion_actividad.id_asigna_planeacion_actividad=plan_asigna_planeacion_tutor.id_asigna_planeacion_actividad
+and plan_asigna_planeacion_actividad.id_estado=1
+AND plan_actividades.deleted_at is null
+AND gnral_personales.tipo_usuario='.Auth::user()->id);
         return $datos;
     }
 }

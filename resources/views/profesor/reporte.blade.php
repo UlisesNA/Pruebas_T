@@ -9,36 +9,86 @@
                 <a class="btn btn-primary" data-toggle="modal" data-target="#info1" style="background: #067a39;color: white" id="insert">+</a>
             </div>
             <div class="col-sm-1" align="left">
-                <a class="btn btn-primary" data-toggle="modal" data-target="#info" style="background:#4a9aca;color: white">?</a>
+                <div class="dropdown">
+                    <a class="btn btn-lg dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown"  style="background:#bc0a44"><i class="far fa-file-pdf" style="color:#ffffcc;"></i></a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        @foreach($tabla as $x)
+                            @if($x->generacion==2016)
+                                <a class="dropdown-item" href="{{route('reporte_pdf')}}" target="_blank">Generación: 2016</a>
+                            @elseif($x->generacion==2017)
+                                <a class="dropdown-item" href="{{route('reporte_pdf2')}}" target="_blank">Generación: 2017</a>
+                            @elseif($x->generacion==2018)
+                                <a class="dropdown-item" href="{{route('reporte_pdf3')}}" target="_blank">Generación: 2018</a>
+                            @elseif($x->generacion==2019)
+                                <a class="dropdown-item" href="{{route('reporte_pdf4')}}" target="_blank">Generación: 2019</a>
+                            @elseif($x->generacion==2020)
+                                <a class="dropdown-item" href="{{route('reporte_pdf5')}}" target="_blank">Generación: 2020</a>
+                            @elseif($x->generacion==2021)
+                                <a class="dropdown-item" href="{{route('reporte_pdf6')}}" target="_blank">Generación: 2021</a>
+                            @elseif($x->generacion==2022)
+                                <a class="dropdown-item" href="{{route('reporte_pdf7')}}" target="_blank">Generación: 2022</a>
+                            @elseif($x->generacion==2023)
+                                <a class="dropdown-item" href="{{route('reporte_pdf8')}}" target="_blank">Generación: 2023</a>
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </div>
-        <table class="table">
-            <thead class="thead-dark">
-            <tr>
-                <th scope="col">No.Cuenta</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">
-                    <i class="fas fa-search" aria-hidden="true"></i>
-                    <input type="text" placeholder="Buscar Alumno" id="reporte" onkeyup="buscar()" style="border: hidden">
-                </th>
-                <th> <a class="btn btn-lg"  style="background:#bc0a44" href="{{route('reporte_pdf')}}" target="_blank"><i class="far fa-file-pdf" style="color:#ffffcc ;"></i></a></th>
-            </tr>
-            </thead>
-            <tbody id="alums">
-            @foreach($consulta as $c)
-                <tr onmouseover="this.style.backgroundColor='#DBE7F3'" onmouseout="this.style.backgroundColor='white'">
-                    <td>{{$c->cuenta}}</td>
-                    <td>{{$c->alum}} {{$c->ap}} {{$c->am}}</td>
-                    <td align="center">
-                        <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$c->id}}_tar" style="background: #f0f0f0;">
-                            <i class="far fa-address-card" style="color: black"></i>
-                        </a>
-                    </td>
-                    <td></td>
-                </tr>
+        <nav>
+            <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                @foreach($tabla as $dato)
+                    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#target_{{$dato->id_generacion}}"
+                       role="tab" aria-controls="target_{{$dato->id_generacion}}" aria-selected="false">
+                        Generación {{$dato->generacion}}
+                    </a>
+                @endforeach
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            @foreach($tabla as $dato)
+                <div class="tab-pane fade" id="target_{{$dato->id_generacion}}" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    <div class="container card">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <br>
+                                <div class="tab-content" id="nav-tabContent">
+                                    <div class="tab-pane fade show active" id="primero" role="tabpanel" aria-labelledby="primero-tab">
+                                        <div class="form-group row">
+                                            <div class="col-sm-11" align="center"><h5>Alumnos de la Generación {{$dato->generacion}}</h5></div>
+                                        </div>
+                                    </div>
+                                    <table class="table">
+                                        <thead class="thead-dark">
+                                        <tr>
+                                            <th scope="col">No.Cuenta</th>
+                                            <th scope="col">Nombre</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="alums">
+                                        @foreach($consulta as $c)
+                                            @if($dato->generacion==$c->generacion)
+                                            <tr onmouseover="this.style.backgroundColor='#DBE7F3'" onmouseout="this.style.backgroundColor='white'">
+                                                <td>{{$c->cuenta}}</td>
+                                                <td>{{$c->alum}} {{$c->ap}} {{$c->am}}</td>
+                                                <td align="center">
+                                                    <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$c->id}}_tar" style="background: #f0f0f0;">
+                                                        <i class="far fa-address-card" style="color: black"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            @endif
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             @endforeach
-            </tbody>
-        </table>
+        </div>
     </div>
     @foreach($consulta as $c)
         <div class="modal fade" id="myModal_{{$c->id}}_tar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
@@ -287,37 +337,6 @@
             </div>
         </div>
     </div>
-    <div class="modal fade bd-example-modal-lg" id="info" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <table class="table">
-                        <thead class="thead-light">
-                        <tr>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Estado</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($consulta as $d)
-                            <tr>
-                                <td>{{$d->alum}} {{$d->ap}} {{$d->am}}</td>
-                                @if($d->ti!=NULL && $d->tg!=NULL && $d->beca!=NULL && $d->repe!=NULL && $d->espe!=NULL && $d->aca!=NULL && $d->med!=NULL && $d->ps!=NULL && $d->baja!=NULL)
-                                    <td style="background:#5bc013">Datos completos</td>
-                                @else
-                                    <td>Datos incompletos</td>
-                                @endif
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection
 <script src="{{asset('js/jquery.js')}}"></script>
 <script>
@@ -340,25 +359,6 @@
         setTimeout(function() {
             location.reload();
         }, parseInt(segs) * 1000);
-    }
-    function buscar() {
-        var input, filter, table, tr, td, i, txtValue;
-        input = document.getElementById("reporte");
-        filter = input.value.toUpperCase();
-        table = document.getElementById("alums");
-        tr = table.getElementsByTagName("tr");
-
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("td")[1];
-            if (td) {
-                txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
-            }
-        }
     }
 </script>
 

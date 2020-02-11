@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 use App\Exp_asigna_generacion;
 use App\Exp_asigna_tutor;
+use App\Gnral_carreras;
 use App\Plan_Planeacion;
 use App\Planeacion;
 use Illuminate\Http\Request;
@@ -23,6 +24,16 @@ class Coordina_instController extends Controller
         $tabla=Exp_asigna_generacion::getGeneraciont();
         $tabla1=Exp_asigna_generacion::getDatos();
         return view('coordina_inst.index',compact('tabla','tabla1'));
+    }
+    public function carreras()
+    {
+        $carreras=DB::table('gnral_carreras')
+            ->where('nombre','!=','INGLES')
+            ->where('nombre','!=','EDUCACIÓN CONTINUA')
+            ->where('nombre','!=','ACTIVIDADES CULTURALES Y DEPORTIVAS')
+            ->orderBy('nombre')
+            ->get();
+        return $carreras;
     }
     /*public function store(Request $request)
     {

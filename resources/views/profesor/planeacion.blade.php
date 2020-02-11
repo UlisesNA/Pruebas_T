@@ -9,7 +9,7 @@
                 <nav>
                     <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
                         @foreach($tabla as $dato)
-                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#target_{{$dato->id_generacion}}" role="tab" aria-controls="target_{{$dato->id_generacion}}" aria-selected="false">Generacion {{$dato->generacion}}</a>
+                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#target_{{$dato->id_generacion}}" role="tab" aria-controls="target_{{$dato->id_generacion}}" aria-selected="false">Generación {{$dato->generacion}}</a>
                         @endforeach
                     </div>
                 </nav>
@@ -24,7 +24,7 @@
                                             <div class="tab-pane fade show active" id="primero" role="tabpanel" aria-labelledby="primero-tab">
                                                 <br>
                                                 <div class="form-group row">
-                                                    <div class="col-sm-11" align="center"><h5>Planeación Generacion {{$dato->generacion}}</h5></div>
+                                                    <div class="col-sm-11" align="center"><h5>Planeación Generación {{$dato->generacion}}</h5></div>
                                                 </div>
                                                 <table class="table table-hover table-sm">
                                                     <tr>
@@ -108,7 +108,7 @@
                         @method('PUT')
                         <div class="modal-body">
                             <div class="form-group col-md-12">
-                                <textarea class="form-control" rows="8" id="estrategia" name="estrategia">{{$dato->estrategia}}</textarea>
+                                <textarea required class="form-control" rows="8" id="estrategia" name="estrategia">{{$dato->estrategia}}</textarea>
                                 <label>Requiere subir evidencia</label>
                                 @if($dato->requiere_evidencia==1)
                                     <input type="checkbox" class="" id="requiere_evidencia" name="requiere_evidencia" value="1" checked>

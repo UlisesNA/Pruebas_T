@@ -9,7 +9,7 @@
                 <nav>
                     <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
                         @foreach($tabla as $dato)
-                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#target_{{$dato->id_asigna_generacion}}" role="tab" aria-controls="target_{{$dato->id_asigna_generacion}}" aria-selected="false">Generacion {{$dato->generacion}}</a>
+                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#target_{{$dato->id_asigna_generacion}}" role="tab" aria-controls="target_{{$dato->id_asigna_generacion}}" aria-selected="false">Generación {{$dato->generacion}}</a>
                         @endforeach
                     </div>
                 </nav>
@@ -24,7 +24,7 @@
                                             <div class="tab-pane fade show active" id="primero" role="tabpanel" aria-labelledby="primero-tab">
                                                 <br>
                                                 <div class="form-group row">
-                                                    <div class="col-sm-11" align="center"><h5>Planeación Generacion {{$dato->generacion}}</h5></div>
+                                                    <div class="col-sm-11" align="center"><h5>Planeación Generación {{$dato->generacion}}</h5></div>
                                                 </div>
                                                 <table class="table table-hover table-sm">
                                                     <tr>
@@ -159,7 +159,7 @@
                                             <input type="text" class="form-control" id="fi_actividad" name="fi_actividad" min="" value="{{$dato->fi_actividad}}" disabled>
                                         </div>
                                         <div class="col">
-                                            <label >Fecha Limite</label>
+                                            <label >Fecha Límite</label>
                                             <input type="text" class="form-control"  id="ff_actividad" name="ff_actividad" min="" max="" value="{{$dato->ff_actividad}}" disabled>
                                         </div>
 
@@ -173,6 +173,7 @@
                                     <label>Objetivo</label>
                                     <textarea class="form-control" rows="3" id="objetivo_actividad" name="objetivo_actividad" disabled>{{$dato->objetivo_actividad}}</textarea>
                                 </div>
+
                                     <input type="number" class="form-control" name="id_estado" value="1" hidden>
                             </div>
                             <div class="modal-footer">
@@ -206,7 +207,7 @@
                     @method('PUT')
                     <div class="modal-body">
                         <div class="form-group col-md-12">
-                            <textarea class="form-control" rows="8" name="comentario"></textarea>
+                            <textarea required class="form-control" rows="8" name="comentario"></textarea>
                             <input type="number" class="form-control" name="id_estado" value="3" hidden>
                         </div>
                     </div>

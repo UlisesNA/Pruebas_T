@@ -9,7 +9,7 @@
                 <nav>
                     <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
                         @foreach($tabla as $dato)
-                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#target_{{$dato->id_asigna_generacion}}" role="tab" aria-controls="target_{{$dato->id_asigna_generacion}}" aria-selected="false">Generacion {{$dato->generacion}}</a>
+                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#target_{{$dato->id_asigna_generacion}}" role="tab" aria-controls="target_{{$dato->id_asigna_generacion}}" aria-selected="false">Generación {{$dato->generacion}}</a>
                         @endforeach
                     </div>
                 </nav>
@@ -24,7 +24,7 @@
                                             <div class="tab-pane fade show active" id="primero" role="tabpanel" aria-labelledby="primero-tab">
                                                 <br>
                                                 <div class="form-group row">
-                                                    <div class="col-sm-11" align="center"><h5>Planeación Generacion {{$dato->generacion}}</h5></div>
+                                                    <div class="col-sm-11" align="center"><h5>Planeación Generación {{$dato->generacion}}</h5></div>
                                                     <a class="btn btn-primary" data-toggle="modal" data-target="#myModal_{{$dato->id_generacion}}" style="background: #067a39;color: white">+</a>
                                                 </div>
                                                 <table class="table table-hover table-sm">
@@ -43,7 +43,19 @@
                                                                 <td>{{$dat->ff_acti}}</td>
                                                                 <td>{{$dat->desc_actividad}}</td>
                                                                 <td>{{$dat->objetivo_actividad}}</td>
-                                                                @if($dat->id_estado == 2)
+                                                                @if($dat->id_estado == 2 && $dat->comentario != null)
+                                                                    <td>
+                                                                        <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_plan_actividad}}_tar" style="background: #f0f0f0;">
+                                                                            <i class="fas fa-pen" style="color: black"></i>
+                                                                        </a>
+                                                                    </td>
+                                                                    <td>
+                                                                        <a>
+                                                                            Actividad Corregida
+                                                                        </a>
+                                                                    </td>
+                                                                @else
+                                                                    @if($dat->id_estado == 2 && $dat->comentario == null)
                                                                     <td>
                                                                         <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_plan_actividad}}_tar" style="background: #f0f0f0;">
                                                                             <i class="fas fa-pen" style="color: black"></i>
@@ -57,30 +69,31 @@
 
                                                                         </form>
                                                                     </td>
-                                                                @else
-                                                                    @if($dat->id_estado == 1)
-                                                                    <td>
-                                                                    <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_plan_actividad}}_ver" style="background: #f0f0f0;">
-                                                                        <i class="fas fa-eye" style="color: black"></i>
-                                                                    </a>
-                                                                    </td>
-                                                                    <td>
-                                                                        <a>
-                                                                            Actividad Aprobada
-                                                                        </a>
-                                                                    </td>
                                                                     @else
-                                                                        @if($dat->id_estado == 3)
+                                                                        @if($dat->id_estado == 1)
                                                                             <td>
-                                                                                <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_plan_actividad}}_tar" style="background: #f0f0f0;">
-                                                                                    <i class="fas fa-edit" style="color: black"></i>
+                                                                                <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_plan_actividad}}_ver" style="background: #f0f0f0;">
+                                                                                    <i class="fas fa-eye" style="color: black"></i>
                                                                                 </a>
                                                                             </td>
                                                                             <td>
                                                                                 <a>
-                                                                                    Actividad con Cambios
+                                                                                    Actividad Aprobada
                                                                                 </a>
                                                                             </td>
+                                                                        @else
+                                                                            @if($dat->id_estado == 3)
+                                                                                <td>
+                                                                                    <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_plan_actividad}}_tar" style="background: #f0f0f0;">
+                                                                                        <i class="fas fa-edit" style="color: black"></i>
+                                                                                    </a>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <a>
+                                                                                        Actividad con Cambios
+                                                                                    </a>
+                                                                                </td>
+                                                                            @endif
                                                                         @endif
                                                                     @endif
                                                                 @endif
@@ -114,22 +127,22 @@
 
                                     <div class="col">
                                         <label >Fecha Inicio</label>
-                                        <input type="date" class="form-control" id="fi_actividad" name="fi_actividad" min="">
+                                        <input required type="date" class="form-control" id="fi_actividad" name="fi_actividad" min="">
                                     </div>
                                     <div class="col">
-                                        <label >Fecha Limite</label>
-                                        <input type="date" class="form-control"  id="ff_actividad" name="ff_actividad" min="" max="">
+                                        <label >Fecha Límite</label>
+                                        <input required type="date" class="form-control"  id="ff_actividad" name="ff_actividad" min="" max="">
                                     </div>
 
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>Nombre de Actividad</label>
-                                <textarea class="form-control" rows="3" id="desc_actividad" name="desc_actividad"></textarea>
+                                <textarea required class="form-control" rows="3" id="desc_actividad" name="desc_actividad"></textarea>
                             </div>
                             <div class="form-group">
                                 <label>Objetivo</label>
-                                <textarea class="form-control" rows="3" id="objetivo_actividad" name="objetivo_actividad"></textarea>
+                                <textarea required class="form-control" rows="3" id="objetivo_actividad" name="objetivo_actividad"></textarea>
                             </div>
                             <div style="display: none">
                                 <input type="number" class="form-control"  id="id_generacion" name="id_generacion" value="{{$dato->id_generacion}}">
@@ -169,23 +182,32 @@
 
                                         <div class="col">
                                             <label >Fecha Inicio</label>
-                                            <input type="date" class="form-control" id="fi_actividad" name="fi_actividad" value={{$dato->fi_actividad}}>
+                                            <input required type="date" class="form-control" id="fi_actividad" name="fi_actividad" value={{$dato->fi_actividad}}>
                                         </div>
                                         <div class="col">
-                                            <label >Fecha Limite</label>
-                                            <input type="date" class="form-control"  id="ff_actividad" name="ff_actividad" value="{{$dato->ff_actividad}}">
+                                            <label >Fecha Límite</label>
+                                            <input required type="date" class="form-control"  id="ff_actividad" name="ff_actividad" value="{{$dato->ff_actividad}}">
                                         </div>
 
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label>Nombre de Actividad</label>
-                                    <textarea class="form-control" rows="3" id="desc_actividad" name="desc_actividad">{{$dato->desc_actividad }}</textarea>
+                                    <textarea required class="form-control" rows="3" id="desc_actividad" name="desc_actividad">{{$dato->desc_actividad }}</textarea>
                                 </div>
                                 <div class="form-group">
                                     <label>Objetivo</label>
-                                    <textarea class="form-control" rows="3" id="objetivo_actividad" name="objetivo_actividad">{{$dato->objetivo_actividad}}</textarea>
+                                    <textarea required class="form-control" rows="3" id="objetivo_actividad" name="objetivo_actividad">{{$dato->objetivo_actividad}}</textarea>
                                 </div>
+                                @if($dato->comentario!=null)
+                                    <div class="form-group">
+                                        <label>Comentario</label>
+                                        <textarea class="form-control" rows="3" id="comentario"disabled name="comentario">{{$dato->comentario}}</textarea>
+                                    </div>
+                                @endif
+                            </div>
+                            <div style="display: none">
+                                <input type="number" class="form-control"  id="id_estado" name="id_estado" value="2">
                             </div>
                             <div class="modal-footer">
                                 <div align="center"><button type="submit" class="btn" style="background: #e0e0e0">Enviar</button></div>
@@ -197,6 +219,7 @@
         </div>
     @endforeach
 
+    <!-- ver actividad-->
     @foreach($tabla1 as $dato)
         <div class="modal fade" id="myModal_{{$dato->id_plan_actividad}}_ver" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
             <div class="modal-dialog" role="document">

@@ -1,10 +1,17 @@
+/*Gráfica Vista*/
 .graf{
     height: 250px;
     width: 329px;
 }
+/*Gráfica modal*/
 .grafmd{
     height: 300px;
     width: 329px;
+}
+/*Gráfica Genero coordinador C*/
+.grafgen{
+    height: 380px;
+    width: 650px;
 }
 /*TABLA SCROLL*/
 .header_fijo {

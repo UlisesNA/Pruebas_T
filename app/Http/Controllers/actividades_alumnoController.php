@@ -35,6 +35,7 @@ class actividades_alumnoController extends Controller
             ->join('gnral_alumnos','exp_asigna_alumnos.id_alumno' , '=',  'gnral_alumnos.id_alumno')
             ->join('users','gnral_alumnos.id_usuario', '=', 'users.id')
             ->where('users.email','=',$id)
+            ->where('plan_asigna_planeacion_actividad.id_estado','=', 1)
             -> select('plan_actividades.desc_actividad', 'plan_actividades.objetivo_actividad',
                 'plan_actividades.fi_actividad', 'plan_actividades.ff_actividad','plan_asigna_planeacion_tutor.estrategia',
                 'plan_asigna_planeacion_tutor.requiere_evidencia','plan_asigna_planeacion_tutor.id_asigna_planeacion_tutor')
@@ -70,7 +71,7 @@ class actividades_alumnoController extends Controller
 
         //dd($request->id_asigna_planeacion_tutor);
         $name=time().".".$file->getClientOriginalExtension();
-        $file->move(public_path().'/img/',$name);
+        $file->move(public_path().'/pdf/',$name);
 
         if($request->id_evidencia==null){
         Plan_asigna_evidencias::create([
@@ -115,12 +116,12 @@ class actividades_alumnoController extends Controller
             $file=$request->file('evidencia');
             $name=time().".".$file->getClientOriginalExtension();
             $plan->evidencia = $name;
-            $file->move(public_path().'/img/',$name);
+            $file->move(public_path().'/pdf/',$name);
         }else {
                 $file=$request->file('evidencia');
           //  dd($file);
                 $name=time()."daat";
-                $file->move(public_path().'/img/',$name);
+                $file->move(public_path().'/pdf/',$name);
         }
         //$plan->evidencia = $request->evidencia;;
         $plan->save();

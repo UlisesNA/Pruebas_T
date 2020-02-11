@@ -11,9 +11,8 @@
             </div>
             <div class="modal-body" id="">
                 <div class="col-12">
-                    <div class="row text-center"><div class="col-4"></div><div class="col-4 graf" id="genero"></div></div>
                     <div class="row pl-4">
-                        <div class="col-12 pt-4">
+                        <div class="col-12">
                             <div class="nav  nav-tabs" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                                 <a class="nav-link active" id="v-pills-general-tab" data-toggle="pill"
                                    href="#v-pills-general" role="tab" aria-controls="v-pills-general" aria-selected="true">Datos Generales</a>

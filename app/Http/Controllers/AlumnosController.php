@@ -52,18 +52,23 @@ class AlumnosController extends Controller
         $alumnos=DB::table('gnral_alumnos')
             ->where('gnral_alumnos.id_carrera',$carrera[0]->id_carrera)
             ->where(DB::raw('substr(gnral_alumnos.cuenta, 1, 4)'), '=' , $request->generacion)
-            ->select('gnral_alumnos.nombre', 'gnral_alumnos.apaterno', 'gnral_alumnos.amaterno', 'gnral_alumnos.cuenta')
+            ->select(DB::raw('UPPER(gnral_alumnos.nombre) as nombre, UPPER(gnral_alumnos.apaterno) as apaterno, UPPER(gnral_alumnos.amaterno) as amaterno, gnral_alumnos.cuenta'))
             ->orderBy('gnral_alumnos.apaterno','asc')
             ->get();
+
+        //dd($alumnos);
+
         return $alumnos;
     }
     public function alumnosgrupo(Request $request)
     {
         $carrera=DB::select('SELECT id_carrera from gnral_jefes_periodos where id_jefe_periodo='.Session::get('id_jefe_periodo'));
-        $alumnos=DB::select('SELECT gnral_alumnos.nombre,gnral_alumnos.apaterno,gnral_alumnos.amaterno,gnral_alumnos.cuenta,gnral_alumnos.id_alumno,exp_asigna_alumnos.id_asigna_alumno  
+        $alumnos=DB::select('SELECT UPPER(gnral_alumnos.nombre) as nombre,UPPER(gnral_alumnos.apaterno) as apaterno, UPPER(gnral_alumnos.amaterno) as amaterno,gnral_alumnos.cuenta,gnral_alumnos.id_alumno,exp_asigna_alumnos.id_asigna_alumno  
                         from gnral_alumnos join exp_asigna_alumnos on exp_asigna_alumnos.id_alumno=gnral_alumnos.id_alumno 
                          where gnral_alumnos.id_carrera='.$carrera[0]->id_carrera.' and exp_asigna_alumnos.id_asigna_generacion='.$request->generacion.' 
                           and exp_asigna_alumnos.deleted_at is null  order by gnral_alumnos.apaterno');
+        //return array_map('mb_strtoupper',[$alumnos[0],'UTF8']);
+
         return $alumnos;
 
     }
@@ -89,7 +94,7 @@ class AlumnosController extends Controller
     {
         $carrera=DB::select('SELECT id_carrera from gnral_jefes_periodos where id_jefe_periodo='.Session::get('id_jefe_periodo'));
 
-        $alumnos=DB::select('select gnral_alumnos.nombre, gnral_alumnos.apaterno, gnral_alumnos.amaterno, 
+        $alumnos=DB::select('select UPPER(gnral_alumnos.nombre) as nombre, UPPER(gnral_alumnos.apaterno)as amaterno, UPPER(gnral_alumnos.amaterno) as amaterno, 
                 gnral_alumnos.cuenta,gnral_alumnos.id_alumno FROM gnral_alumnos WHERE gnral_alumnos.id_carrera='.$carrera[0]->id_carrera.' and 
                 substr(gnral_alumnos.cuenta, 1, 4)='.$request->generacion.' and gnral_alumnos.id_alumno NOT IN (SELECT exp_asigna_alumnos.id_alumno 
                 from exp_asigna_alumnos WHERE exp_asigna_alumnos.deleted_at is null and exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.') 
