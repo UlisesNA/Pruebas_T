@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Codedge\Fpdf\Fpdf\Fpdf as FPDF;
 use Illuminate\Support\Facades\DB;
@@ -66,6 +67,21 @@ class ReporteGController extends Controller
             ->where('gnral_personales.tipo_usuario', '=', Auth::user()->id)
             ->get();
        //dd($carrera);
+
+        /*FECHA
+        $date= Carbon::now();
+        $date = $date->format('d-m-Y');*/
+
+        /*AÑO*/
+        $aa= Carbon::now();
+        $aa = $aa->format('Y');
+        /*MES*/
+        $mm= Carbon::now();
+        $mm = $mm->format('m');
+        /*DIA*/
+        $dd= Carbon::now();
+        $dd = $dd->format('d');
+
         $pdf=new PDF($orientation='P',$unit='mm',$format='Letter');
         #Establecemos los márgenes izquierda, arriba y derecha:
         $pdf->SetMargins(10, 19 , 1);
@@ -73,7 +89,7 @@ class ReporteGController extends Controller
         $pdf->AddPage();
         $pdf->SetFont('Times', '', 9);
         $pdf->Ln(4);
-        $pdf->MultiCell(180,6,utf8_decode("Valle de Bravo, México; a __ de __ de ____."),0,"R","","");
+        $pdf->MultiCell(180,6,utf8_decode("Valle de Bravo, México; a " .$dd." de ".$mm. " de ".$aa."."),0,"R","","");
         $pdf->Ln(1);
         //$pdf->MultiCell(167,6,utf8_decode(""),0,"R","","");
         $pdf->Ln(4);
@@ -105,9 +121,10 @@ class ReporteGController extends Controller
         $pdf->Ln(3);
         $pdf->Cell(($pdf->GetPageWidth()),3,"". utf8_decode(mb_strtoupper($profesor[0]->nombre)),0,1,"C");
         $pdf->Ln(3);
-        $pdf->Cell(($pdf->GetPageWidth()),3,"TUTOR DE LA". utf8_decode(mb_strtoupper($request->generacion)),0,1,"C");
+        $pdf->Cell(($pdf->GetPageWidth()),3,"TUTOR DE LA ". utf8_decode(mb_strtoupper($request->generacion)),0,1,"C");
 
         $pdf->Output();
         exit();
     }
+
 }

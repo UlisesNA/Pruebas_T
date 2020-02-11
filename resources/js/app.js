@@ -26,7 +26,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 /**import VueBootstrapToasts from "vue-bootstrap-toasts";
 Vue.use(VueBootstrapToasts);
 
-Vue.component('toasts', { /* ... */ 
+Vue.component('toasts', { /* ... */
 
 /**
  * The following block of code may be used to automatically register your
