@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 use Codedge\Fpdf\Fpdf\Fpdf as FPDF;
 use App\Reporte_tutor;
 use DB;
-class PDF extends FPDF
+/*class PDF extends FPDF
 {
     function Header()
     {
@@ -18,24 +18,37 @@ class PDF extends FPDF
     {
         $this->Image('img/pie.png', 0, $this->GetY(), 210,30);
     }
-}
+}*/
 class ReporteController extends Controller
 {
     public function index()
     {
         $pr=Auth::user()->email;
+        $tabla=DB::table('exp_generacion')
+            ->join('exp_asigna_generacion','exp_asigna_generacion.id_generacion','=','exp_generacion.id_generacion')
+            ->join('exp_asigna_alumnos','exp_asigna_alumnos.id_asigna_generacion','=','exp_asigna_generacion.id_asigna_generacion')
+            ->join('gnral_alumnos','gnral_alumnos.id_alumno','=','exp_asigna_alumnos.id_alumno')
+            ->join('exp_asigna_tutor','exp_asigna_tutor.id_asigna_generacion','=','exp_asigna_generacion.id_asigna_generacion')
+            ->join('gnral_personales','gnral_personales.id_personal','=','exp_asigna_tutor.id_personal')
+            ->join('users','users.email','=','gnral_personales.correo')
+            ->where('users.email','=',$pr)
+            ->where('gnral_personales.id_perfil','=',7)
+            ->groupBy('exp_generacion.generacion')
+            ->select('exp_generacion.id_generacion','exp_generacion.generacion')
+            ->get();
+        //////////////////////
         $consulta=DB::table('reporte_tutor')
             ->join('exp_asigna_tutor', 'exp_asigna_tutor.id_asigna_tutor', '=', 'reporte_tutor.id_asigna_tutor')
             ->join('gnral_personales','gnral_personales.id_personal', '=', 'exp_asigna_tutor.id_personal')
             ->join('users','users.email','=','gnral_personales.correo')
             ->where('users.email','=',$pr)
-            ->select('reporte_tutor.id_reporte_tutor as id','reporte_tutor.n_cuenta as cuenta','reporte_tutor.alumno as alum','reporte_tutor.appaterno as ap',
+            ->select('reporte_tutor.generacion','reporte_tutor.id_reporte_tutor as id','reporte_tutor.n_cuenta as cuenta','reporte_tutor.alumno as alum','reporte_tutor.appaterno as ap',
                 'reporte_tutor.apmaterno as am','reporte_tutor.tutoria_grupal as tg',
                 'reporte_tutor.tutoria_individual as ti','reporte_tutor.beca  as beca','reporte_tutor.repeticion as repe',
                 'reporte_tutor.especial as espe','reporte_tutor.academico as aca','reporte_tutor.medico  as med',
                 'reporte_tutor.psicologico as ps','reporte_tutor.baja as baja')
             ->get();
-        return view('profesor.reporte',compact("consulta"));
+        return view('profesor.reporte',compact("consulta","tabla"));
     }
     public function store(Request $request)
     {
@@ -70,7 +83,7 @@ class ReporteController extends Controller
         $c->save();
         return redirect()->to('reporte');
     }
-    public function destroy($id)
+   /*public function destroy($id)
     {
     }
     public function reporte_pdf()
@@ -260,5 +273,5 @@ class ReporteController extends Controller
         $pdf->ln(19);
         $pdf->Output();
         exit();
-    }
+    }*/
 }

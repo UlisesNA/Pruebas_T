@@ -12,33 +12,65 @@
                 <a class="btn btn-primary" data-toggle="modal" data-target="#info" style="background:#4a9aca;color: white">?</a>
             </div>
         </div>
-        <table class="table">
-            <thead class="thead-dark">
-            <tr>
-                <th scope="col">No.Cuenta</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">
-                    <i class="fas fa-search" aria-hidden="true"></i>
-                    <input type="text" placeholder="Buscar Alumno" id="reporte" onkeyup="buscar()" style="border: hidden">
-                </th>
-                <th> <a class="btn btn-lg"  style="background:#bc0a44" href="{{route('reporte_pdf')}}" target="_blank"><i class="far fa-file-pdf" style="color:#ffffcc ;"></i></a></th>
-            </tr>
-            </thead>
-            <tbody id="alums">
-            @foreach($consulta as $c)
-                <tr onmouseover="this.style.backgroundColor='#DBE7F3'" onmouseout="this.style.backgroundColor='white'">
-                    <td>{{$c->cuenta}}</td>
-                    <td>{{$c->alum}} {{$c->ap}} {{$c->am}}</td>
-                    <td align="center">
-                        <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$c->id}}_tar" style="background: #f0f0f0;">
-                            <i class="far fa-address-card" style="color: black"></i>
-                        </a>
-                    </td>
-                    <td></td>
-                </tr>
+        <nav>
+            <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                @foreach($tabla as $dato)
+                    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#target_{{$dato->id_generacion}}"
+                       role="tab" aria-controls="target_{{$dato->id_generacion}}" aria-selected="false">
+                        Generación {{$dato->generacion}}
+                    </a>
+                @endforeach
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            @foreach($tabla as $dato)
+                <div class="tab-pane fade" id="target_{{$dato->id_generacion}}" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    <div class="container card">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <br>
+                                <div class="tab-content" id="nav-tabContent">
+                                    <div class="tab-pane fade show active" id="primero" role="tabpanel" aria-labelledby="primero-tab">
+                                        <div class="form-group row">
+                                            <div class="col-sm-11" align="center"><h5>Alumnos de la Generación {{$dato->generacion}}</h5></div>
+                                        </div>
+                                    </div>
+                                    <table class="table">
+                                        <thead class="thead-dark">
+                                        <tr>
+                                            <th scope="col">No.Cuenta</th>
+                                            <th scope="col">Nombre</th>
+                                            <th scope="col">
+                                                <i class="fas fa-search" aria-hidden="true"></i>
+                                                <input type="text" placeholder="Buscar Alumno" id="reporte" onkeyup="buscar()" style="border: hidden">
+                                            </th>
+                                            <th> <a class="btn btn-lg"  style="background:#bc0a44" href="{{route('reporte_pdf')}}" target="_blank"><i class="far fa-file-pdf" style="color:#ffffcc ;"></i></a></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="alums">
+                                        @foreach($consulta as $c)
+                                            @if($dato->generacion==$c->generacion)
+                                            <tr onmouseover="this.style.backgroundColor='#DBE7F3'" onmouseout="this.style.backgroundColor='white'">
+                                                <td>{{$c->cuenta}}</td>
+                                                <td>{{$c->alum}} {{$c->ap}} {{$c->am}}</td>
+                                                <td align="center">
+                                                    <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$c->id}}_tar" style="background: #f0f0f0;">
+                                                        <i class="far fa-address-card" style="color: black"></i>
+                                                    </a>
+                                                </td>
+                                                <td></td>
+                                            </tr>
+                                            @endif
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             @endforeach
-            </tbody>
-        </table>
+        </div>
     </div>
     @foreach($consulta as $c)
         <div class="modal fade" id="myModal_{{$c->id}}_tar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
