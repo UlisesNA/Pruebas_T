@@ -5,6 +5,7 @@
  */
 
 require('./bootstrap');
+require('highcharts-exporting');
 
 window.Vue = require('vue');
 import Vue from 'vue';

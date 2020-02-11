@@ -65,7 +65,17 @@ class ReporteGController extends Controller
             ->select('gnral_personales.*')
             ->where('gnral_personales.tipo_usuario', '=', Auth::user()->id)
             ->get();
-       //dd($carrera);
+
+        /*$temp = 'tempimg.png';
+
+        $dataURI    = $request->img;
+        $dataPieces = explode(',',$dataURI);
+        $encodedImg = $dataPieces[1];
+        $decodedImg = base64_decode($encodedImg);*/
+
+
+//  Check if image was properly decoded
+
         $pdf=new PDF($orientation='P',$unit='mm',$format='Letter');
         #Establecemos los márgenes izquierda, arriba y derecha:
         $pdf->SetMargins(10, 19 , 1);
@@ -92,9 +102,23 @@ class ReporteGController extends Controller
 
         /*GRAFICAS*/
 
+       /* if( $decodedImg!==false )
+        {
+            //  Save image to a temporary location
+            //dd(file_put_contents($temp,$decodedImg)!==false);
+            if( file_put_contents($temp,$decodedImg)!==false)
+            {
+                //  Open new PDF document and print image
+
+                $pdf->ImageSVG($temp,0,400,217,34);
 
 
+                //  Delete image from server
+                //unlink($temp);
+            }
+        }
 
+*/
 
 
 
