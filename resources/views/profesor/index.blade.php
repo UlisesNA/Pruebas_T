@@ -85,7 +85,9 @@
                         <div class="row" v-if="graficas==true">
                         <div class="col-12">
                             <div class="row pt-3">
-                                <div class="col-11"></div>
+                                <div class="col-11">
+                                    <!--<button @click="prueba()">PDF</button>-->
+                                </div>
                                 <!--REPORTE PDF GRAFICAS-->
                                 <div class="col-1"><button @click="reporte()" target="_blank" class="btn text-white btn-danger" ><i class="fas fa-file-pdf"></i></button></div>
                             </div>
@@ -791,7 +793,8 @@
                 integra:[['pdg','pdf','pdm'],['ag','af','am'],['csg','csf','csm'],['enfcg','enfcf','enfcm'],['penfcg','penfcf','penfcm'],
                     ['opeg','opef','opem'],['visg','visf','vism'],['lg','lf','lm'],['meg','mef','mem']],
                 areap:[['trg','trf','trm'],['reng','renf','renm'],['comg','comf','comm'],['retg','retf','retm'],['exag','exaf','exam'],
-                ['cong','conf','conm'],['bbg','bbf','bbm'],['oig','oif','oim'],['matg','matf','matm']]
+                ['cong','conf','conm'],['bbg','bbf','bbm'],['oig','oif','oim'],['matg','matf','matm']],
+                a:null
 
             },
             methods:{
@@ -1449,6 +1452,41 @@
                         const objectUrl = URL.createObjectURL(blob);
                         window.open(objectUrl)
                     });
+                },
+                prueba:function () {
+                    var chart = $('#ecg').highcharts();
+                    /*svg = chart.getSVG();
+                    var img = svg.toDataURL("image/png"); //img is data:image/png;base64
+                    img = img.replace('data:image/png;base64,', '');
+
+                    console.log(svg);*/
+                    // Get Actual SVG of a chart
+                   /* let svgString = chart.contentType();
+                    console.log(svgString);
+                    // Use DOMParser to parse new svg element from svgString
+                    let parser = new DOMParser();
+                    let svgElem = parser.parseFromString(svgString, "image/png").documentElement;
+                    console.log(svgElem);
+                    // Use toDataURL extension to generate Base64 string
+                    let b64 = svgElem.toDataURL();
+
+                    // Log string in console
+
+
+
+                   /* axios.post(this.rep,{id_asigna_generacion:this.idasigna,id_carrera:this.idca,generacion:this.gen,img:b64},{
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/pdf'
+                        },
+                        responseType: "blob"
+                    }).then(response=>{
+                        console.log(response.data);
+                        const blob = new Blob([response.data], { type: 'application/pdf' });
+                        const objectUrl = URL.createObjectURL(blob);
+                        window.open(objectUrl)
+                    });*/
+
                 }
             },
 

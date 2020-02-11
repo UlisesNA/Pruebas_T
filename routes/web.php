@@ -177,7 +177,14 @@ Route::get("pdf/all","PdfController@pdf_all")->name("pdf_all");
 Route::post("pdf/lista","PdfController@pdf_lista")->name("pdf_lista");
 Route::post("pdf/alumno","PdfController@pdf_alumno")->name("pdf_alumno");
 Route::post("pdf/reporte","ReporteGController@pdf_reporte")->name("pdf_reporte");
-Route::get("reporte_pdf","ReporteController@reporte_pdf")->name("reporte_pdf");
+Route::get("reporte_pdf","ReportePDFController@reporte_pdf")->name("reporte_pdf");
+Route::get("reporte_pdf2","ReportePDFController@reporte_pdf2")->name("reporte_pdf2");
+Route::get("reporte_pdf3","ReportePDFController@reporte_pdf3")->name("reporte_pdf3");
+Route::get("reporte_pdf4","ReportePDFController@reporte_pdf4")->name("reporte_pdf4");
+Route::get("reporte_pdf5","ReportePDFController@reporte_pdf5")->name("reporte_pdf5");
+Route::get("reporte_pdf6","ReportePDFController@reporte_pdf6")->name("reporte_pdf6");
+Route::get("reporte_pdf7","ReportePDFController@reporte_pdf7")->name("reporte_pdf7");
+Route::get("reporte_pdf8","ReportePDFController@reporte_pdf8")->name("reporte_pdf8");
 //Route::get("reporte_grafica","ReporteGController@reporte_grafica")->name("reporte_grafica");
 ?>
 
