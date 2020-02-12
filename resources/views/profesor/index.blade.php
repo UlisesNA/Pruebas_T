@@ -86,7 +86,7 @@
                         <div class="col-12">
                             <div class="row pt-3">
                                 <div class="col-11">
-                                    <!--<button @click="prueba()">PDF</button>-->
+                                    <button>PDF</button>
                                 </div>
                                 <!--REPORTE PDF GRAFICAS-->
                                 <div class="col-1"><button @click="reporte()" target="_blank" class="btn text-white btn-danger" ><i class="fas fa-file-pdf"></i></button></div>
@@ -901,6 +901,7 @@
                                     data: this.alumnog
                                 }
                             ],
+
                         });
                     }).catch(error=>{ });
 
@@ -913,6 +914,10 @@
                                 Highcharts.chart(this.general[i][z], {
                                     chart: {
                                         type: 'column'
+                                    },
+                                    exporting: {
+                                        url:'/img'
+
                                     },
                                     title: {
                                         text: this.titulosGrafica[z]
@@ -1228,8 +1233,8 @@
                         }
                     }).catch(error=>{ });
 
-
                 },
+
                 grafacademico:function()
                 {
                     alert('académico');
