@@ -20,8 +20,15 @@
                     </tr>
                     @foreach ($datos as $plan)
                         <tr onmouseover="this.style.backgroundColor='#DBE7F3'" onmouseout="this.style.backgroundColor='white'">
-                            <td>{{$plan->desc_actividad}}</td>
-                            <td>{{$plan->objetivo_actividad}}</td>
+                            @if($plan->id_sugerencia==null)
+                                <td>{{$plan->desc_actividad}}</td>
+                                <td>{{$plan->objetivo_actividad}}</td>
+                            @else
+                                @if($plan->id_sugerencia==1)
+                                    <td>{{$plan->desc_actividad_cambio}}</td>
+                                    <td>{{$plan->objetivo_actividad_cambio}}</td>
+                                @endif
+                            @endif
                             <td>{{$plan->fi_actividad}}</td>
                             <td>{{$plan->ff_actividad}}</td>
                             <td>{{$plan->estrategia}}</td>
