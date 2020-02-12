@@ -153,6 +153,7 @@ Route::get('/estadisticas/carreras', function () {
     return view('coordina_inst.carreras');
 });
 Route::post('/generacionca','CoordinadorCarreraController@generaciones');
+Route::post('/generacion','CoordinadorCarrController@generaciones');
 
 
 Route::Resource('/graficasCoordinador','GraficasCoordinadorController');

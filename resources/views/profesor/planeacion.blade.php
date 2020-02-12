@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!--<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel='stylesheet' href='{{ asset('css/sweetalert2.min.css') }}' />
     <script src="{{asset('js/sweetalert2.min.js')}}"></script>
     <div class="container card">
@@ -64,6 +64,17 @@
                                                                             <td>
                                                                                 <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_asigna_planeacion_tutor}}_es" style="background: #f0f0f0;">
                                                                                     <i class="fas fa-eye" style="color: black">ver/editar estrategia</i>
+                                                                                </a>
+                                                                            </td>
+                                                                        @else
+                                                                            <td>
+                                                                                <a>
+                                                                                    Sugerencia Aceptada
+                                                                                </a>
+                                                                            </td>
+                                                                            <td>
+                                                                                <a>
+                                                                                    Estrategia Aceptada
                                                                                 </a>
                                                                             </td>
                                                                         @endif
@@ -150,9 +161,10 @@
                 </div>
             </div>
         </div>
+
     @endforeach
 
-    <!-- crear sugerencia-->
+    <!-- crear sugerencia
     @foreach($tabla1 as $dato)
         <div id="myModal_{{$dato->id_asigna_planeacion_tutor}}_su" class="modal fade" role="dialog">
             <div class="modal-dialog">
@@ -171,22 +183,41 @@
                         @csrf
                         @method('PUT')
                         <div class="modal-body">
-                            <div class="form-group col-md-12">
-                                <label>Decripción Actividad</label>
-                                <textarea class="form-control" rows="4" disabled>{{$dato->desc_actividad}}</textarea>
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label>Sugerencia de Cambio de Decripción Actividad</label>
-                                <textarea class="form-control" rows="4" name="desc_actividad">{{$dato->desc_actividad}}</textarea>
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label>Objetivo</label>
-                                <textarea class="form-control" rows="4" disabled>{{$dato->objetivo_actividad}}</textarea>
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label>Sugerencia de Cambio de Objetivo</label>
-                                <textarea class="form-control" rows="4" name="objetivo">{{$dato->objetivo_actividad}}</textarea>
-                            </div>
+                            @if($dato->id_sugerencia!=null)
+                                <div class="form-group col-md-12">
+                                    <label>Decripción Actividad</label>
+                                    <textarea class="form-control" rows="4" disabled>{{$dato->desc_actividad}}</textarea>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label>Sugerencia de Cambio de Decripción Actividad</label>
+                                    <textarea class="form-control" rows="4" name="desc_actividad_cambio">{{$dato->desc_actividad_cambio}}</textarea>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label>Objetivo</label>
+                                    <textarea class="form-control" rows="4" disabled>{{$dato->objetivo_actividad}}</textarea>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label>Sugerencia de Cambio de Objetivo</label>
+                                    <textarea class="form-control" rows="4" name="objetivo_actividad_cambio">{{$dato->objetivo_actividad_cambio}}</textarea>
+                                </div>
+                            @else
+                                <div class="form-group col-md-12">
+                                    <label>Decripción Actividad</label>
+                                    <textarea class="form-control" rows="4" disabled>{{$dato->desc_actividad}}</textarea>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label>Sugerencia de Cambio de Decripción Actividad</label>
+                                    <textarea class="form-control" rows="4" name="desc_actividad_cambio">{{$dato->desc_actividad}}</textarea>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label>Objetivo</label>
+                                    <textarea class="form-control" rows="4" disabled>{{$dato->objetivo_actividad}}</textarea>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label>Sugerencia de Cambio de Objetivo</label>
+                                    <textarea class="form-control" rows="4" name="objetivo_actividad_cambio">{{$dato->objetivo_actividad}}</textarea>
+                                </div>
+                            @endif
                         </div>
                         <input type="number" class="form-control" name="id_sugerencia" value="2" hidden>
                         <div class="modal-footer">
@@ -196,6 +227,7 @@
                 </div>
             </div>
         </div>
+        -->
     @endforeach
 
 

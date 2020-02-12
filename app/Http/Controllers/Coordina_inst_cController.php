@@ -34,7 +34,8 @@ class Coordina_inst_cController extends Controller
     {
         $plan = Plan_asigna_planeacion_tutor::find($id);
         //dd($plan);
-        $plan->sugerencia = $request->sugerencia;
+        $plan->desc_actividad_cambio = $request->desc_actividad_cambio;
+        $plan->objetivo_actividad_cambio = $request->objetivo_actividad_cambio;
         $plan->id_sugerencia = $request->id_sugerencia;
         $plan->save();
         return redirect()->back();
