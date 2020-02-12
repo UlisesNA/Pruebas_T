@@ -1,150 +1,85 @@
 @extends('layouts.app')
 @section('content')
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <div class="container card">
-        <div class="row">
-            <div class="col-md-12">
-                <nav>
-                    <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-                        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Asignar Planeación</a>
-                        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Ver Asignaciones</a>
-                    </div>
-                </nav>
-                <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                        <div class="row">
-                            <div class="col-sm-5">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <form id="form-expe">
-                                            {{ csrf_field() }}
-                                            <div class="form-row">
-                                                <div class="form-group col-md-8">
-                                                    <select id="id_asigna_tutor" name="id_asigna_tutor" class="form-control">
-                                                        <option selected disabled>Tutor</option>
-                                                        @foreach($condicion as $con)
-                                                            <option value="{{$con->id_asigna_tutor}}">{{$con->doc}}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <select id="id_planeacion" name="id_planeacion" class="form-control">
-                                                        <option selected disabled>Planeación</option>
-                                                        <option value="1">Primero</option>
-                                                        <option value="2">Segundo</option>
-                                                        <option value="3">Tercero</option>
-                                                        <option value="4">Cuarto</option>
-                                                        <option value="5">Quinto</option>
-                                                        <option value="6">Sexto</option>
-                                                        <option value="7">Septimo</option>
-                                                        <option value="8">Octavo</option>
-                                                    </select>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card">
+                    <div class="card-header">Alumnos</div>
+                    <div class="card-body">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link" id="generacion-tab" data-toggle="tab" href="#generacion" role="tab"  aria-controls="generacion" aria-selected="false">Profesores</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade pt-4" id="generacion" role="tabpanel" aria-labelledby="generacion-tab">
+                                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                    <li class="nav-item" v-for="gen in generacion">
+                                        <a class="nav-link border m-1" @click="borrarAlumno(gen.generacion)" :id="'pills-'+gen.generacion+'-tab'" data-toggle="pill" :href="'#pills-'+gen.generacion" role="tab" :aria-controls="'pills-'+gen.generacion" aria-selected="true">@{{ gen.generacion }}</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="pills-tabContent">
+                                    <div class="tab-pane fade " v-for="gen in generacion" :id="'pills-'+gen.generacion" role="tabpanel" :aria-labelledby="'pills-'+gen.generacion+'-tab'">
+                                        <div class="row border-bottom">
+                                            <div class="col-12">
+                                                <div class="row pb-3 pl-3">
+                                                    <button type="button" class="btn btn-outline-success" @click="confirma(gen)"> <i class="fas fa-plus"></i> Crear grupo</button>
                                                 </div>
                                             </div>
-                                            <div align="center"><a class="btn btn-primary" id="planea" style="color: white">Asignar</a></div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-7">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <form>
-                                            <div class="row">
-                                                <div class="col">
-                                                    <h5 class="card-title" align="right">Tutores</h5>
-                                                </div>
-                                                <div class="col">
-                                                    <div align="right">
-                                                        <i class="fas fa-search" aria-hidden="true"></i>
-                                                        <input type="text" placeholder="Buscar Tutor" id="docente" onkeyup="myFunction()" style="border: hidden">
-                                                    </div>
+                                        </div>
+                                        <ul class="nav nav-pills mb-3" id="grupo-tab" role="tablist">
+                                            <li class="nav-item">
+                                                <a class="nav-link border m-1" @click="getAlumnosGeneracion(gen.generacion)" id="pills-generalgen-tab" data-toggle="pill" href="#generalgen" role="tab" aria-controls="'pills-generalgen" >General</a>
+                                            </li>
+                                            <li class="nav-item btn-group" v-for="grupo in gen.grupos">
+                                                <a class="nav-link border m-1 "  @click="getAlumnosGrupo(grupo.id_asigna_generacion)" :id="'pills-'+grupo.id_asigna_generacion+'-tab'" data-toggle="pill" :href="'#pills-'+grupo.id_asigna_generacion" role="tab" :aria-controls="'pills-'+grupo.id_asigna_generacion">Grupo @{{ grupo.grupo }}</a>
+                                                <a href="#"><i class="fas text-danger fa-times h4 pt-3" data-toggle="tooltip" data-placement="bottom" title="Eliminar Grupo" @click="ConfirmaBorrar(grupo)"></i></a></td>
+                                            </li>
+                                        </ul>
+                                        <div class="row border-bottom-1" v-if="clicgrupo">
+                                            <div class="col-12">
+                                                <div class="row pb-3 pl-3">
+                                                    <button type="button" class="btn btn-outline-success" @click="Agregar()"> <i class="fas fa-plus"></i>Asignar alumnos</button>
                                                 </div>
                                             </div>
-                                        </form>
-                                        <table class="table" id="Table">
-                                            <thead>
-                                            <tr>
-                                                <th scope="col">Tutor</th>
-                                                <th scope="col">Carrera</th>
-                                                <th scope="col">Semestre</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            @foreach($condicion as $c)
-                                                    <tr>
-                                                        <td>{{$c->doc}}</td>
-                                                        <td>{{$c->carr}}</td>
-                                                        <td>{{$c->sem}}</td>
+                                        </div>
+                                        <div class="tab-content" id="grupo-tabContent" v-if="(alumno.length>0)">
+                                            <div class="tableFixHead">
+                                                <table class="table">
+                                                    <thead>
+                                                    <th>Cuenta</th>
+                                                    <th>Nombre</th>
+                                                    <th></th>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr v-for="alu in alumno">
+                                                        <td>@{{alu.cuenta}}</td>
+                                                        <td>@{{alu.apaterno}} @{{alu.amaterno}} @{{alu.nombre}}</td>
+                                                        <td v-if="clicgrupo"><button class="btn btn-outline-danger" @click="ConfirmaAlumno(alu)"><i class="fas fa-times" data-toggle="tooltip" data-placement="bottom" title="Eliminar"></i></button></td>
                                                     </tr>
-                                            @endforeach
-                                            </tbody>
-                                        </table>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="row" v-if="alumno.length==0 && clicgrupo==true">
+                                            <div class="col-12 border-danger">
+                                                <h5 class="font-weight-bold text-center alert alert-danger">No existen alumnos asignados al grupo</h5>
+                                            </div>
+                                        </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                        <br>
-                        <form>
-                            <div class="row">
-                                <div class="col">
-                                    <div align="right">
-                                        <i class="fas fa-search" aria-hidden="true"></i>
-                                        <input type="text" placeholder="Buscar Tutor" id="verifica" onkeyup="verificar()" style="border: hidden">
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                        <table class="table" id="tabla_v">
-                            <thead>
-                            <tr>
-                                <th scope="col">Nombre</th>
-                                <th scope="col">Carrera</th>
-                                <th scope="col">Semestre</th>
-                                <th scope="col">Planeación</th>
-                                <th scope="col"></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($tabla as $t)
-                                    <tr onmouseover="this.style.backgroundColor='#DBE7F3'" onmouseout="this.style.backgroundColor='white'">
-                                        <td>{{$t->doc}}</td>
-                                        <td>{{$t->carr}}</td>
-                                        <td>{{$t->sem}}</td>
-                                        @if($t->plan == 1)
-                                            <td>Primero</td>
-                                            @elseif($t->plan == 2)
-                                            <td>Segundo</td>
-                                            @elseif($t->plan == 3)
-                                                <td>Tercero</td>
-                                            @elseif($t->plan == 4)
-                                                <td>Cuarto</td>
-                                            @elseif($t->plan == 5)
-                                                <td>Quinto</td>
-                                            @elseif($t->plan == 6)
-                                                <td>Sexto</td>
-                                            @elseif($t->plan == 7)
-                                                <td>Septimo</td>
-                                            @elseif($t->plan == 8)
-                                                <td>Octavo</td>
-                                        @endif
-                                        <td>
-                                            <form action="{{ route('coordina_carrera.destroy', $t->id_asigna_planeacion_actividad) }}" method="post">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-lg"><i class="fas fa-times-circle"></i></button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
                 </div>
             </div>
         </div>
+        @include('alumno.modalCrearGrupo')
+        @include('alumno.EliminarGrupo')
+        @include('alumno.AgregarAlumnos')
+        @include('alumno.EliminarAlumno')
+    </div>
     </div>
 @endsection
 <script src="{{asset('js/jquery.js')}}"></script>

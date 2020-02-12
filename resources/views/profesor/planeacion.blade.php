@@ -43,33 +43,58 @@
                                                                 <td>{{$dat->desc_actividad}}</td>
                                                                 <td>{{$dat->objetivo_actividad}}</td>
                                                                 @if($dat->id_sugerencia==null)
-                                                                    <td>
-                                                                        <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_asigna_planeacion_tutor}}_su" style="background: #f0f0f0;">
-                                                                            <i class="fas fa-pen" style="color: black"></i>
-                                                                        </a>
-                                                                    </td>
-                                                                @else
-                                                                    @if($dat->id_sugerencia==2)
+                                                                    @if($dat->id_estrategia==null)
                                                                         <td>
                                                                             <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_asigna_planeacion_tutor}}_su" style="background: #f0f0f0;">
-                                                                                <i class="fas fa-eye" style="color: black"></i>
+                                                                                <i class="fas fa-pen" style="color: black">agregar sugerenca</i>
                                                                             </a>
                                                                         </td>
-                                                                    @endif
-                                                                @endif
-                                                                @if($dat->id_estrategia==null)
-                                                                    <td>
-                                                                        <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_asigna_planeacion_tutor}}_es" style="background: #f0f0f0;">
-                                                                            <i class="fas fa-pen" style="color: black"></i>
-                                                                        </a>
-                                                                    </td>
-                                                                @else
-                                                                    @if($dat->id_estrategia==2)
                                                                         <td>
                                                                             <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_asigna_planeacion_tutor}}_es" style="background: #f0f0f0;">
-                                                                                <i class="fas fa-eye" style="color: black"></i>
+                                                                                <i class="fas fa-pen" style="color: black">agregar estrategia</i>
                                                                             </a>
                                                                         </td>
+                                                                    @else
+                                                                        @if($dat->id_estrategia==2)
+                                                                            <td>
+                                                                                <a>
+                                                                                    Estrategia Asignada
+                                                                                </a>
+                                                                            </td>
+                                                                            <td>
+                                                                                <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_asigna_planeacion_tutor}}_es" style="background: #f0f0f0;">
+                                                                                    <i class="fas fa-eye" style="color: black">ver/editar estrategia</i>
+                                                                                </a>
+                                                                            </td>
+                                                                        @endif
+                                                                    @endif
+                                                                @else
+                                                                    @if($dat->id_sugerencia==2)
+                                                                        @if($dat->id_estrategia==null)
+                                                                            <td>
+                                                                                <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_asigna_planeacion_tutor}}_su" style="background: #f0f0f0;">
+                                                                                    <i class="fas fa-pen" style="color: black">ver/editar sugerencia</i>
+                                                                                </a>
+                                                                            </td>
+                                                                            <td>
+                                                                                <a>
+                                                                                    Sugerencia Asignada
+                                                                                </a>
+                                                                            </td>
+                                                                        @else
+                                                                            @if($dat->id_estrategia==2)
+                                                                                <td>
+                                                                                    <a>
+                                                                                        Estrategia Asignada
+                                                                                    </a>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_asigna_planeacion_tutor}}_es" style="background: #f0f0f0;">
+                                                                                        <i class="fas fa-eye" style="color: black"></i>
+                                                                                    </a>
+                                                                                </td>
+                                                                            @endif
+                                                                        @endif
                                                                     @endif
                                                                 @endif
                                                             </tr>
@@ -147,10 +172,23 @@
                         @method('PUT')
                         <div class="modal-body">
                             <div class="form-group col-md-12">
-                                <textarea class="form-control" rows="8" name="sugerencia">{{$dato->sugerencia}}</textarea>
-                                <input type="number" class="form-control" name="id_sugerencia" value="2" hidden>
+                                <label>Decripción Actividad</label>
+                                <textarea class="form-control" rows="4" disabled>{{$dato->desc_actividad}}</textarea>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label>Sugerencia de Cambio de Decripción Actividad</label>
+                                <textarea class="form-control" rows="4" name="desc_actividad">{{$dato->desc_actividad}}</textarea>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label>Objetivo</label>
+                                <textarea class="form-control" rows="4" disabled>{{$dato->objetivo_actividad}}</textarea>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label>Sugerencia de Cambio de Objetivo</label>
+                                <textarea class="form-control" rows="4" name="objetivo">{{$dato->objetivo_actividad}}</textarea>
                             </div>
                         </div>
+                        <input type="number" class="form-control" name="id_sugerencia" value="2" hidden>
                         <div class="modal-footer">
                             <div align="center"><button type="submit" class="btn" style="background: #e0e0e0">Enviar</button></div>
                         </div>
