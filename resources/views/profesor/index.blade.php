@@ -85,11 +85,8 @@
                         <div class="row" v-if="graficas==true">
                         <div class="col-12">
                             <div class="row pt-3">
-                                <div class="col-11">
-                                  <!--  <button>PDF</button>-->
-                                </div>
                                 <!--REPORTE PDF GRAFICAS-->
-                                <div class="col-1"><button @click="reporte()" target="_blank" class="btn text-white btn-danger" ><i class="fas fa-file-pdf"></i></button></div>
+                                <div class="col-1 offset-11"><button @click="reporte()" target="_blank" class="btn text-white btn-danger" ><i class="fas fa-file-pdf"></i></button></div>
                             </div>
                             <div class="row m-2"><div class="col-12 "><h5 class="alert alert-primary text-center font-weight-bold">Estadísticas</h5></div></div>
                             <div class="row text-center"><div class="col-4"></div><div class="col-4 graf" id="genero"></div></div>
@@ -534,7 +531,7 @@
                                                     <div class="row pt-3">
                                                         <div class="col-12">
                                                             <div class="row">
-                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Otro idioma</h5></div>
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Dominio del idioma inglés</h5></div>
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-4 graf" id="oig"></div>
@@ -794,7 +791,8 @@
                     ['opeg','opef','opem'],['visg','visf','vism'],['lg','lf','lm'],['meg','mef','mem']],
                 areap:[['trg','trf','trm'],['reng','renf','renm'],['comg','comf','comm'],['retg','retf','retm'],['exag','exaf','exam'],
                 ['cong','conf','conm'],['bbg','bbf','bbm'],['oig','oif','oim'],['matg','matf','matm']],
-                a:null
+                direcciones_img:[],
+                arreglo_graficas:['genero','hf','hm','etg','etf','etm','enfcg','enfcf','enfcm','eag','eaf','eam','bf','bm'],
 
             },
             methods:{
@@ -862,6 +860,17 @@
                             chart: {
                                 type: 'column'
                             },
+                            exporting: {
+                                url: 'http://localhost',
+                            },
+                            navigation: {
+                                buttonOptions: {
+                                    enabled: false
+                                }
+                            },
+                            credits: {
+                                enabled: false
+                            },
                             title: {
                                 text: 'Alumnos por sexo'
                             },
@@ -904,7 +913,6 @@
 
                         });
                     }).catch(error=>{ });
-
                     axios.post(this.generales,{id_carrera:this.idca,id_asigna_generacion:this.idasigna}).then(response=>{
                         this.eg=response.data;
                         for (let i in  this.eg)
@@ -916,8 +924,15 @@
                                         type: 'column'
                                     },
                                     exporting: {
-                                        url:'/img'
-
+                                        url: 'http://localhost',
+                                    },
+                                    navigation: {
+                                        buttonOptions: {
+                                            enabled: false
+                                        }
+                                    },
+                                    credits: {
+                                        enabled: false
                                     },
                                     title: {
                                         text: this.titulosGrafica[z]
@@ -971,6 +986,17 @@
                                 Highcharts.chart(this.academic[i][z], {
                                     chart: {
                                         type: 'column'
+                                    },
+                                    exporting: {
+                                        url: 'http://localhost',
+                                    },
+                                    navigation: {
+                                        buttonOptions: {
+                                            enabled: false
+                                        }
+                                    },
+                                    credits: {
+                                        enabled: false
                                     },
                                     title: {
                                         text: this.titulosGrafica[z]
@@ -1026,6 +1052,17 @@
                                     chart: {
                                         type: 'column'
                                     },
+                                    exporting: {
+                                        url: 'http://localhost',
+                                    },
+                                    navigation: {
+                                        buttonOptions: {
+                                            enabled: false
+                                        }
+                                    },
+                                    credits: {
+                                        enabled: false
+                                    },
                                     title: {
                                         text: this.titulosGrafica[z]
                                     },
@@ -1070,7 +1107,6 @@
                         }
 
                     }).catch(error=>{ });
-
                     axios.post(this.habitos,{id_carrera:this.idca,id_asigna_generacion:this.idasigna}).then(response=>{
                         this.eh=response.data;
                         for (let i in  this.eh)
@@ -1080,6 +1116,17 @@
                                 Highcharts.chart(this.habito[i][z], {
                                     chart: {
                                         type: 'column'
+                                    },
+                                    exporting: {
+                                        url: 'http://localhost',
+                                    },
+                                    navigation: {
+                                        buttonOptions: {
+                                            enabled: false
+                                        }
+                                    },
+                                    credits: {
+                                        enabled: false
                                     },
                                     title: {
                                         text: this.titulosGrafica[z]
@@ -1135,6 +1182,17 @@
                                     chart: {
                                         type: 'column'
                                     },
+                                    exporting: {
+                                        url: 'http://localhost',
+                                    },
+                                    navigation: {
+                                        buttonOptions: {
+                                            enabled: false
+                                        }
+                                    },
+                                    credits: {
+                                        enabled: false
+                                    },
                                     title: {
                                         text: this.titulosGrafica[z]
                                     },
@@ -1189,6 +1247,17 @@
                                     chart: {
                                         type: 'column'
                                     },
+                                    exporting: {
+                                        url: 'http://localhost',
+                                    },
+                                    navigation: {
+                                        buttonOptions: {
+                                            enabled: false
+                                        }
+                                    },
+                                    credits: {
+                                        enabled: false
+                                    },
                                     title: {
                                         text: this.titulosGrafica[z]
                                     },
@@ -1233,11 +1302,6 @@
                         }
                     }).catch(error=>{ });
 
-                },
-
-                grafacademico:function()
-                {
-                    alert('académico');
                 },
                 cambio:function (alumno,num) {
                     axios.post(this.cambios,{id_asigna_alumno:alumno.id_asigna_alumno,estado:num}).then(response=>{
@@ -1431,18 +1495,39 @@
                     });
                 },
                 reporte:function () {
-                    axios.post(this.rep,{id_asigna_generacion:this.idasigna,id_carrera:this.idca,generacion:this.gen},{
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/pdf'
-                        },
-                        responseType: "blob"
-                    }).then(response=>{
-                        console.log(response.data);
-                        const blob = new Blob([response.data], { type: 'application/pdf' });
-                        const objectUrl = URL.createObjectURL(blob);
-                        window.open(objectUrl)
-                    });
+
+                    this.direcciones_img=[];
+
+                    for(let p in this.arreglo_graficas)
+                    {
+                        var chart = $('#'+this.arreglo_graficas[p]).highcharts();
+                        var obj = {}, exportUrl = 'http://localhost:8004/';
+                        obj.type = 'image/png';
+                        obj.async = true;
+                        obj.svg=chart.getSVG();
+
+                        axios.post(exportUrl,obj).then(response=> {
+                            this.direcciones_img.push(exportUrl+response.data);
+                           // console.log(this.direcciones_img.length);
+                            if((this.direcciones_img.length-1)=='13') {
+
+                                axios.post(this.rep,{id_asigna_generacion:this.idasigna,id_carrera:this.idca,generacion:this.gen,imagen:this.direcciones_img},{
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'Accept': 'application/pdf'
+                                    },
+                                    responseType: "blob"
+                                }).then(response=>{
+                                    // console.log(response.data);
+                                    const blob = new Blob([response.data], { type: 'application/pdf' });
+                                    const objectUrl = URL.createObjectURL(blob);
+                                    window.open(objectUrl)
+                                });
+
+                            }
+                        });
+
+                    }
                 },
                 pdfAlumno:function (alumno) {
                     axios.post(this.palu,{id_alumno:alumno.id_alumno},{
@@ -1458,41 +1543,7 @@
                         window.open(objectUrl)
                     });
                 },
-                prueba:function () {
-                    var chart = $('#ecg').highcharts();
-                    /*svg = chart.getSVG();
-                    var img = svg.toDataURL("image/png"); //img is data:image/png;base64
-                    img = img.replace('data:image/png;base64,', '');
 
-                    console.log(svg);*/
-                    // Get Actual SVG of a chart
-                   /* let svgString = chart.contentType();
-                    console.log(svgString);
-                    // Use DOMParser to parse new svg element from svgString
-                    let parser = new DOMParser();
-                    let svgElem = parser.parseFromString(svgString, "image/png").documentElement;
-                    console.log(svgElem);
-                    // Use toDataURL extension to generate Base64 string
-                    let b64 = svgElem.toDataURL();
-
-                    // Log string in console
-
-
-
-                   /* axios.post(this.rep,{id_asigna_generacion:this.idasigna,id_carrera:this.idca,generacion:this.gen,img:b64},{
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/pdf'
-                        },
-                        responseType: "blob"
-                    }).then(response=>{
-                        console.log(response.data);
-                        const blob = new Blob([response.data], { type: 'application/pdf' });
-                        const objectUrl = URL.createObjectURL(blob);
-                        window.open(objectUrl)
-                    });*/
-
-                }
             },
 
         });
