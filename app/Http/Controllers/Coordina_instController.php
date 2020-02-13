@@ -31,7 +31,7 @@ class Coordina_instController extends Controller
             ->where('nombre','!=','INGLES')
             ->where('nombre','!=','EDUCACIÓN CONTINUA')
             ->where('nombre','!=','ACTIVIDADES CULTURALES Y DEPORTIVAS')
-            ->orderBy('nombre')
+            ->orderBy('id_carrera')
             ->get();
         return $carreras;
     }

@@ -441,7 +441,7 @@
                                                     <div class="row pt-3">
                                                         <div class="col-12">
                                                             <div class="row">
-                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Han tenido una operación médico-quirúrgica</h5></div>
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Han tenido una cirugía</h5></div>
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-4 graf" id="opeg"></div>
@@ -567,7 +567,7 @@
                                                     <div class="row pt-3">
                                                         <div class="col-12">
                                                             <div class="row">
-                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Búsqueda biliográfica</h5></div>
+                                                                <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Búsqueda bibliográfica</h5></div>
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-4 graf" id="bbg"></div>
@@ -830,7 +830,8 @@
                     cadena:null
 
                 },
-                titulosGrafica:['General','Femenino','Masculino'],
+                fin:true,
+                titulosGrafica:['General','Mujeres','Hombres'],
                 general:[
                             ['ecg','ecf','ecm'],['neg','nef','nem'],['trag','traf','tram'],
                             ['eag','eaf','eam'],['bg','bf','bm'],['tbg','tbf','tbm'],['hg','hf','hm']
@@ -977,6 +978,7 @@
                                     chart: {
                                         type: 'column'
                                     },
+
                                     exporting: {
                                         url: 'http://localhost',
                                     },
@@ -988,6 +990,7 @@
                                     credits: {
                                         enabled: false
                                     },
+
                                     title: {
                                         text: this.titulosGrafica[z]
                                     },
@@ -1364,9 +1367,80 @@
                 },
                 actualiza:function()
                 {
-                    axios.post(this.act,{alu:this.alu}).then(response=> {
-                        $("#modaleditar").modal("hide");
-                    });
+                    /*AQUI*/
+                    if(this.alu.generales.estado!="null"
+                        && this.alu.generales.nivel_economico!="null"
+                        && this.alu.generales.materias_especial!="null"
+                        && this.alu.generales.materias_repeticion!="null"
+                        && this.alu.generales.direccion!="null"
+                        && this.alu.generales.id_periodo!="null"
+                        && this.alu.generales.no_hijos!="null"
+                        && this.alu.generales.id_grupo!="null"
+                        && this.alu.generales.sexo!="null"
+                        && this.alu.generales.id_estado_civil!="null"
+                        && this.alu.generales.trabaja!="null"
+                        && this.alu.academicos.teestimula_familia!="null"
+                        && this.alu.academicos.tegusta_carrera_elegida!="null"
+                        && this.alu.academicos.otra_carrera_ini!="null"
+                        && this.alu.familiares.nombre_padre!="null"
+                        && this.alu.familiares.nombre_madre!="null"
+                        && this.alu.familiares.lugar_residencia_madre!="null"
+                        && this.alu.familiares.lugar_residencia_padre!="null"
+                        && this.alu.familiares.etnia_indigena!="null"
+                        && this.alu.familiares.hablas_lengua_indigena!="null"
+                        && this.alu.familiares.id_opc_vives!="null"
+                        && this.alu.familiares.id_familia_union!="null"
+                        && this.alu.familiares.nombre_tutor!="null"
+                        && this.alu.familiares.id_parentesco!="null"
+                        && this.alu.estudio.forma_estudio!="null"
+                        && this.alu.estudio.tiempo_empleado_estudiar!="null"
+                        && this.alu.estudio.id_opc_intelectual!="null"
+                        && this.alu.integral.enfermedad_cronica!="null"
+                        && this.alu.integral.enf_cron_padre!="null"
+                        && this.alu.integral.operacion!="null"
+                        && this.alu.integral.enfer_visual!="null"
+                        && this.alu.integral.medicamento_controlado!="null"
+                        && this.alu.integral.practica_deporte!="null"
+                        && this.alu.integral.practica_artistica!="null"
+                        && this.alu.integral.actividades_culturales!="null"
+                        && this.alu.integral.usas_lentes!="null"
+                        && this.alu.area.trabajo_equipo!="null"
+                        && this.alu.area.rendimiento_escolar!="null"
+                        && this.alu.area.conocimiento_compu!="null"
+                        && this.alu.area.comprension!="null"
+                        && this.alu.area.concentracion!="null"
+                        && this.alu.area.otro_idioma!="null"
+                        && this.alu.area.solucion_problemas!="null"
+                        && this.alu.area.preparacion!="null"
+                        && this.alu.area.busqueda_bibliografica!="null")
+                    {
+                        if(this.alu.generales.turno=="null")
+                        {
+                            this.fin=false;
+                        }
+                        else if (this.alu.generales.beca==1 && this.alu.generales.id_expbeca!="null" && this.alu.generales.id_expbeca!=null && this.alu.generales.id_expbeca!=0){
+                            this.fin=true;
+                            axios.post(this.act,{alu:this.alu}).then(response=> {
+                                $("#modaleditar").modal("hide");
+                            });
+                        }
+                        else if (this.alu.generales.beca==1 && this.alu.generales.id_expbeca=="null"){
+                            this.fin=false;
+                        }
+                        else  if(this.alu.generales.beca==2)
+                        {
+                            this.fin=true;
+                            axios.post(this.act,{alu:this.alu}).then(response=> {
+                                $("#modaleditar").modal("hide");
+                            });
+                        }
+                    }
+                    else
+                    {
+                        this.fin=false;
+                    }
+
+
                 },
                 ver:function (alumno) {
                     console.log(alumno);
@@ -1533,7 +1607,7 @@
                     this.alu.generales.horario=null;
                 },
                 borra_beca:function(){
-                    this.alu.generales.id_expbeca=null
+                    this.alu.generales.id_expbeca=null;
                 },
                 pdf:function () {
                     axios.post(this.pd,{id_asigna_generacion:this.idasigna,id_carrera:this.idca,generacion:this.gen},{

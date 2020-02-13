@@ -588,11 +588,11 @@ class PdfController extends Controller
         $pdf->Cell(90,4,"". utf8_decode($datosFormacion[0]->especifica_enf_cron_padres),1,0,"C");
         $pdf->Ln(4);
         $pdf->SetFont('Arial', 'B', 4.8);
-        $pdf->Cell(50,4,utf8_decode("¿Te han realizado alguna operación médico-quirúrgica: "). utf8_decode(""),1,0,"L","true");
+        $pdf->Cell(50,4,utf8_decode("¿Te han realizado alguna cirugia: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
         $pdf->Cell(10,4,"". utf8_decode($datosFormacion[0]->operacion==1?'Si':'No'),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
-        $pdf->Cell(45,4,utf8_decode("Especificar la operación médico-quirúrgica: "). utf8_decode(""),1,0,"L","true");
+        $pdf->Cell(45,4,utf8_decode("Especificar la cirugía: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
         $pdf->Cell(85,4,"". utf8_decode($datosFormacion[0]->deque_operacion),1,0,"C");
         $pdf->Ln(4);
@@ -1391,11 +1391,11 @@ class PdfController extends Controller
         $pdf->Cell(90,4,"". utf8_decode($datosFormacion[0]->especifica_enf_cron_padres),1,0,"C");
         $pdf->Ln(4);
         $pdf->SetFont('Arial', 'B', 4.8);
-        $pdf->Cell(50,4,utf8_decode("¿Te han realizado alguna operación médico-quirúrgica: "). utf8_decode(""),1,0,"L","true");
+        $pdf->Cell(50,4,utf8_decode("¿Te han realizado alguna cirugía: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
         $pdf->Cell(10,4,"". utf8_decode($datosFormacion[0]->operacion==1?'Si':'No'),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
-        $pdf->Cell(45,4,utf8_decode("Especificar la operación médico-quirúrgica: "). utf8_decode(""),1,0,"L","true");
+        $pdf->Cell(45,4,utf8_decode("Especificar la cirugía: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
         $pdf->Cell(85,4,"". utf8_decode($datosFormacion[0]->deque_operacion),1,0,"C");
         $pdf->Ln(4);

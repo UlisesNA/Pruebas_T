@@ -26,27 +26,36 @@ class actividades_alumnoController extends Controller
     and plan_asigna_planeacion_tutor.id_asigna_tutor=exp_asigna_tutor.id_asigna_tutor
 
 */
-        /*$datos=Plan_actividades::join('plan_asigna_planeacion_actividad','plan_asigna_planeacion_actividad.id_plan_actividad','=','plan_actividades.id_plan_actividad')
+        $datos=Plan_actividades::join('plan_asigna_planeacion_actividad','plan_asigna_planeacion_actividad.id_plan_actividad','=','plan_actividades.id_plan_actividad')
             ->join('plan_planeacion','plan_planeacion.id_planeacion','=','plan_asigna_planeacion_actividad.id_planeacion')
             ->join('plan_asigna_planeacion_tutor','plan_asigna_planeacion_tutor.id_asigna_planeacion_actividad','=',
                 'plan_asigna_planeacion_actividad.id_asigna_planeacion_actividad')
             ->join('exp_asigna_generacion','exp_asigna_generacion.id_generacion','=','plan_planeacion.id_generacion')
             ->join('exp_asigna_alumnos','exp_asigna_alumnos.id_asigna_generacion','=','exp_asigna_generacion.id_asigna_generacion')
+            ->join('exp_asigna_tutor','exp_asigna_tutor.id_asigna_tutor','=','plan_asigna_planeacion_tutor.id_asigna_tutor')
+
             ->join('gnral_alumnos','exp_asigna_alumnos.id_alumno' , '=',  'gnral_alumnos.id_alumno')
             ->join('users','gnral_alumnos.id_usuario', '=', 'users.id')
-            ->where('users.id','=',$id)
+            ->where('users.email','=',$id)
+            //->where('gnral_alumnos.grupo','=','exp_asigna_generacion.grupo')
+            //  ->where('exp_asigna_tutor.id_asigna_generacion','exp_asigna_generacion.id_asigna_generacion')
             ->where('plan_asigna_planeacion_actividad.id_estado','=', 1)
+            ->where('plan_asigna_planeacion_tutor.id_estrategia','=', 2)
             -> select('plan_actividades.desc_actividad', 'plan_actividades.objetivo_actividad',
                 'plan_actividades.fi_actividad', 'plan_actividades.ff_actividad','plan_asigna_planeacion_tutor.estrategia',
-                'plan_asigna_planeacion_tutor.requiere_evidencia','plan_asigna_planeacion_tutor.id_asigna_planeacion_tutor')
-            ->get();*/
+                'plan_asigna_planeacion_tutor.requiere_evidencia','plan_asigna_planeacion_tutor.id_asigna_planeacion_tutor',
 
-$datos=Plan_asigna_planeacion_tutor::getDatosAct();
-        //dd();
+                'exp_asigna_generacion.grupo','gnral_alumnos.grupo as grupo2','exp_asigna_alumnos.id_asigna_alumno',
+                'exp_asigna_tutor.id_asigna_generacion','exp_asigna_generacion.id_asigna_generacion as asigna_generacion2'
+            // 'exp_asigna_tutor.id_asigna_tutor'
+            )
+            ->get();
+
+        //dd($datos);
 
 
 
-        /*$datos->map(function($value)use ($id){
+        $datos->map(function($value)use ($id){
             //dd($value);
             return $value["evidencia"]=Plan_asigna_evidencias::join('gnral_alumnos','plan_asigna_evidencias.id_alumno' , '=',  'gnral_alumnos.id_alumno')
                 ->join('users','gnral_alumnos.id_usuario', '=', 'users.id')
@@ -54,9 +63,9 @@ $datos=Plan_asigna_planeacion_tutor::getDatosAct();
                 ->where('plan_asigna_evidencias.id_asigna_planeacion_tutor',$value->id_asigna_planeacion_tutor)
                 ->select('plan_asigna_evidencias.id_evidencia', 'plan_asigna_evidencias.evidencia')
                 ->get();
-        });*/
+        });
 
-        //$actividades=Plan_asigna_planeacion_tutor::getDatosAct();
+
 
         return view('actividades_alumno.actividades_alumno',compact("datos"));
     }

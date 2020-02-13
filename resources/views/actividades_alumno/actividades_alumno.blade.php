@@ -20,15 +20,8 @@
                     </tr>
                     @foreach ($datos as $plan)
                         <tr onmouseover="this.style.backgroundColor='#DBE7F3'" onmouseout="this.style.backgroundColor='white'">
-                            @if($plan->id_sugerencia==null)
-                                <td>{{$plan->desc_actividad}}</td>
-                                <td>{{$plan->objetivo_actividad}}</td>
-                            @else
-                                @if($plan->id_sugerencia==1)
-                                    <td>{{$plan->desc_actividad_cambio}}</td>
-                                    <td>{{$plan->objetivo_actividad_cambio}}</td>
-                                @endif
-                            @endif
+                            <td>{{$plan->desc_actividad}}</td>
+                            <td>{{$plan->objetivo_actividad}}</td>
                             <td>{{$plan->fi_actividad}}</td>
                             <td>{{$plan->ff_actividad}}</td>
                             <td>{{$plan->estrategia}}</td>
@@ -65,7 +58,7 @@
                     {{ csrf_field() }}
                     <div class="container-fluid">
                         <div class="form-group col-md-12">
-                            <input required type="file" class="form-control" name="evidencia" id="evidencia" accept=".pdf">
+                            <input type="file" class="form-control" name="evidencia" id="evidencia" accept=".pdf">
                             <input type="number" id="id_asigna_planeacion_tutor" name="id_asigna_planeacion_tutor" hidden>
                             <input type="number" id="id_evidencia" name="id_evidencia" hidden>
 

@@ -82,7 +82,7 @@
                                                 <option value="4">3</option>
                                                 <option value="5">4 o más</option>
                                             </select>
-                                            <small class="form-text text-danger" v-if='alu.generales.no_hijos=="" || alu.generales.no_hijos==null '>Colocar un número de hijos</small>
+                                            <small class="form-text text-danger" v-if='alu.generales.no_hijos=="null" || alu.generales.no_hijos==null '>Colocar un número de hijos</small>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="correo">e-mail </label>
@@ -133,11 +133,12 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label for="turno">Turno</label>
+                                            <label for="turno">Turno *</label>
                                             <select name="turno" id="turno" v-model="alu.generales.turno" class="custom-select custom-select-md">
                                                 <option value="null" selected>Elija turno</option>
                                                 <option v-bind:value="turn.id_turno" v-for="turn in turno">@{{turn.descripcion_turno}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.generales.turno==null || alu.generales.turno=="null"'>Elija una opción</small>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="estado">Estado académico *</label>
@@ -437,7 +438,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <label for="oti">Otra carrera iniciada</label>
+                                            <label for="oti">Otra carrera iniciada *</label>
                                             <select v-model="alu.academicos.otra_carrera_ini" id="oti" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option value="1">Si</option>
@@ -592,6 +593,7 @@
                                         <div class="col-md-4">
                                             <label for="nt">Nombre del tutor *</label>
                                             <input type="text" v-model="alu.familiares.nombre_tutor" name="nombre_tutor" id="nt" class="form-control" placeholder="Nombre del tutor">
+                                            <small class="form-text text-danger" v-if='alu.familiares.nombre_tutor==null || alu.familiares.nombre_tutor==""'>Nombre del tutor</small>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="parentesco">Parentesco *</label>
@@ -599,6 +601,7 @@
                                                 <option value="null">Elija un parentesco</option>
                                                 <option v-bind:value="par.id_parentesco" v-for="par in parentesco">@{{par.desc_parentesco}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.familiares.id_parentesco==null || alu.familiares.id_parentesco=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                 </div>
@@ -622,11 +625,12 @@
                                             <small class="form-text text-danger" v-if='alu.estudio.tiempo_empleado_estudiar==null || alu.estudio.tiempo_empleado_estudiar=="null"'>Elija una opción</small>
                                         </div>
                                         <div class="col-md-6">
-                                            <label for="fti">¿Cómo es tú forma de trabajo intelectual?</label>
+                                            <label for="fti">¿Cómo es tú forma de trabajo intelectual? *</label>
                                             <select  id="fti" v-model="alu.estudio.id_opc_intelectual" type="text" class="custom-select custom-select-md">
                                                 <option value="null" selected>Elija una Opción</option>
                                                 <option v-bind:value="int.id_opc_intelectual" v-for="int in intelectual">@{{int.desc_opc}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.estudio.id_opc_intelectual==null || alu.estudio.id_opc_intelectual=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -783,7 +787,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <label for="operacion">¿Te han realizado alguna operación médico-quirúrgica? *</label>
+                                            <label for="operacion">¿Te han realizado alguna cirugía? *</label>
                                             <select id="operacion" name="operacion" v-model="alu.integral.operacion" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option value="1">Si</option>
@@ -794,7 +798,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12"id="especificarOpe" v-if="alu.integral.operacion==1">
-                                            <label for="especificarOpe">Especificar la operación médico-quirúrgica</label>
+                                            <label for="especificarOpe">Especificar la cirugía</label>
                                             <input type="text" v-model="alu.integral.deque_operacion" id="especificarOpe" name="especificarOpe" class="form-control" placeholder="Especificar la operación médico-quirúrgica">
                                         </div>
                                     </div>
@@ -996,6 +1000,11 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-12 pt-4" v-if="finaliza==false">
+                                    <div class="alert alert-danger text-center">
+                                        Por favor, llena todos los campos requeridos de cada área del expediente. Gracias.
+                                    </div>
+                                </div>
                                 <div class="row pt-5">
                                     <button class="btn col-12 btn-outline-primary" @click="updateDatos()">Actualizar datos</button>
                                 </div>
@@ -1190,6 +1199,7 @@
                         id_alumno:null,
                     }
                 },
+                finaliza:true,
                 toastCount:0,
                 mensaje:false,
             },
@@ -1349,21 +1359,95 @@
                     });
                 },
                 updateDatos:function () {
-                    //this.$bvToast.show('mensaje');
-                    //this.makeToast();
-                    axios.post(this.act,{alu:this.alu},{
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'text'
-                        }}).then(response=> {
-                        // $('#mensaje').toast('show');
-                        //this.$toast.success('Actualizado correctamente');
-                        this.popToast();
-                        if(this.mensaje==true)
+                    if(this.alu.generales.estado!="null"
+                        && this.alu.generales.nivel_economico!="null"
+                        && this.alu.generales.materias_especial!="null"
+                        && this.alu.generales.materias_repeticion!="null"
+                        && this.alu.generales.direccion!="null"
+                        && this.alu.generales.id_periodo!="null"
+                        && this.alu.generales.no_hijos!="null"
+                        && this.alu.generales.id_grupo!="null"
+                        && this.alu.generales.sexo!="null"
+                        && this.alu.generales.id_estado_civil!="null"
+                        && this.alu.generales.trabaja!="null"
+                        && this.alu.academicos.teestimula_familia!="null"
+                        && this.alu.academicos.tegusta_carrera_elegida!="null"
+                        && this.alu.academicos.otra_carrera_ini!="null"
+                        && this.alu.familiares.nombre_padre!="null"
+                        && this.alu.familiares.nombre_madre!="null"
+                        && this.alu.familiares.lugar_residencia_madre!="null"
+                        && this.alu.familiares.lugar_residencia_padre!="null"
+                        && this.alu.familiares.etnia_indigena!="null"
+                        && this.alu.familiares.hablas_lengua_indigena!="null"
+                        && this.alu.familiares.id_opc_vives!="null"
+                        && this.alu.familiares.id_familia_union!="null"
+                        && this.alu.familiares.nombre_tutor!="null"
+                        && this.alu.familiares.id_parentesco!="null"
+                        && this.alu.estudio.forma_estudio!="null"
+                        && this.alu.estudio.tiempo_empleado_estudiar!="null"
+                        && this.alu.estudio.id_opc_intelectual!="null"
+                        && this.alu.integral.enfermedad_cronica!="null"
+                        && this.alu.integral.enf_cron_padre!="null"
+                        && this.alu.integral.operacion!="null"
+                        && this.alu.integral.enfer_visual!="null"
+                        && this.alu.integral.medicamento_controlado!="null"
+                        && this.alu.integral.practica_deporte!="null"
+                        && this.alu.integral.practica_artistica!="null"
+                        && this.alu.integral.actividades_culturales!="null"
+                        && this.alu.integral.usas_lentes!="null"
+                        && this.alu.area.trabajo_equipo!="null"
+                        && this.alu.area.rendimiento_escolar!="null"
+                        && this.alu.area.conocimiento_compu!="null"
+                        && this.alu.area.comprension!="null"
+                        && this.alu.area.concentracion!="null"
+                        && this.alu.area.otro_idioma!="null"
+                        && this.alu.area.solucion_problemas!="null"
+                        && this.alu.area.preparacion!="null"
+                        && this.alu.area.busqueda_bibliografica!="null")
+                    {
+                        if(this.alu.generales.turno=="null")
                         {
-                            window.location='inicioalu';
+                            this.finaliza=false;
                         }
-                    });
+                        else if (this.alu.generales.beca==1 && this.alu.generales.id_expbeca!="null"){
+                            this.finaliza=true;
+                            axios.post(this.act,{alu:this.alu},{
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'text'
+                                }}).then(response=> {
+                                this.popToast();
+                                if(this.mensaje==true)
+                                {
+                                    window.location='inicioalu';
+                                }
+                            });
+                        }
+                        else if (this.alu.generales.beca==1 && this.alu.generales.id_expbeca=="null"){
+                            this.finaliza=false;
+                        }
+                        else  if(this.alu.generales.beca==2)
+                        {
+                            this.finaliza=true;
+                            axios.post(this.act,{alu:this.alu},{
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'text'
+                                }}).then(response=> {
+                                this.popToast();
+                                if(this.mensaje==true)
+                                {
+                                    window.location='inicioalu';
+                                }
+                            });
+                        }
+                    }
+                    else
+                    {
+                        this.finaliza=false;
+                    }
+
+
                 },
                 borra_institucion:function(){
                     this.alu.academicos.institucion=null;
