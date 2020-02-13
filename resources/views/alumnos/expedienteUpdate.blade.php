@@ -1369,7 +1369,7 @@
                         && this.alu.generales.id_grupo!="null"
                         && this.alu.generales.sexo!="null"
                         && this.alu.generales.id_estado_civil!="null"
-                        && this.alu.generales.trabaja!="null"/*
+                        && this.alu.generales.trabaja!="null"
                         && this.alu.academicos.teestimula_familia!="null"
                         && this.alu.academicos.tegusta_carrera_elegida!="null"
                         && this.alu.academicos.otra_carrera_ini!="null"
@@ -1403,7 +1403,7 @@
                         && this.alu.area.otro_idioma!="null"
                         && this.alu.area.solucion_problemas!="null"
                         && this.alu.area.preparacion!="null"
-                        && this.alu.area.busqueda_bibliografica!="null"*/)
+                        && this.alu.area.busqueda_bibliografica!="null")
                     {
                         if(this.alu.generales.turno=="null")
                         {
