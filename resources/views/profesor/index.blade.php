@@ -1313,6 +1313,7 @@
                 },
                 actualiza:function()
                 {
+                    /*AQUI*/
                     if(this.alu.generales.estado!="null"
                         && this.alu.generales.nivel_economico!="null"
                         && this.alu.generales.materias_especial!="null"
@@ -1363,7 +1364,7 @@
                         {
                             this.fin=false;
                         }
-                        else if (this.alu.generales.beca==1 && this.alu.generales.id_expbeca!="null"){
+                        else if (this.alu.generales.beca==1 && this.alu.generales.id_expbeca!="null" && this.alu.generales.id_expbeca!=null && this.alu.generales.id_expbeca!=0){
                             this.fin=true;
                             axios.post(this.act,{alu:this.alu}).then(response=> {
                                 $("#modaleditar").modal("hide");
@@ -1372,7 +1373,7 @@
                         else if (this.alu.generales.beca==1 && this.alu.generales.id_expbeca=="null"){
                             this.fin=false;
                         }
-                        else  if(this.alu.generales.beca==2 && this.alu.generales.id_expbeca=="null")
+                        else  if(this.alu.generales.beca==2)
                         {
                             this.fin=true;
                             axios.post(this.act,{alu:this.alu}).then(response=> {
@@ -1551,7 +1552,7 @@
                     this.alu.generales.horario=null;
                 },
                 borra_beca:function(){
-                    this.alu.generales.id_expbeca=null
+                    this.alu.generales.id_expbeca=null;
                 },
                 pdf:function () {
                     axios.post(this.pd,{id_asigna_generacion:this.idasigna,id_carrera:this.idca,generacion:this.gen},{
