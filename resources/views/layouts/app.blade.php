@@ -11,12 +11,14 @@
     <script src="{{asset('js/highcharts.js')}}"></script>
     <script src="{{asset('js/highcharts-export.js')}}"></script>
 
+
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/estilo.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap-DataTable.css') }}" rel="stylesheet">
 
 
     <link type="text/css" rel="stylesheet" href="{{asset('css/all.css')}}">

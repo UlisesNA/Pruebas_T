@@ -22,7 +22,8 @@ Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 
-
+import DataTable from 'v-data-table'
+Vue.use(DataTable);
 
 /**import VueBootstrapToasts from "vue-bootstrap-toasts";
 Vue.use(VueBootstrapToasts);
