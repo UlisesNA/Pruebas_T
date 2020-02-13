@@ -140,6 +140,7 @@
                                                                 <option value="null" selected>Elija turno</option>
                                                                 <option v-bind:value="turn.id_turno" v-for="turn in turno">@{{turn.descripcion_turno}}</option>
                                                             </select>
+                                                            <small class="form-text text-danger" v-if='alu.generales.turno==null || alu.generales.turno=="null"'>Elija una opción</small>
                                                         </div>
                                                         <div class="col-md-4">
                                                             <label for="estado">Estado académico *</label>
