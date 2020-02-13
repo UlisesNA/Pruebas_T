@@ -86,7 +86,7 @@
                         <div class="col-12">
                             <div class="row pt-3">
                                 <div class="col-11">
-                                    <button>PDF</button>
+                                  <!--  <button>PDF</button>-->
                                 </div>
                                 <!--REPORTE PDF GRAFICAS-->
                                 <div class="col-1"><button @click="reporte()" target="_blank" class="btn text-white btn-danger" ><i class="fas fa-file-pdf"></i></button></div>

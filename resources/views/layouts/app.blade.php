@@ -10,7 +10,7 @@
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{asset('js/highcharts.js')}}"></script>
 
-    <script src="{{asset('js/highcharts-export.js')}}"></script>
+   <!-- <script src="{{asset('js/highcharts-export.js')}}"></script>-->
 
 
     <!-- Fonts -->
