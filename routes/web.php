@@ -152,6 +152,9 @@ Route::get('/carreras', function () {
 Route::get('/estadisticas/carreras', function () {
     return view('coordina_inst.carreras');
 });
+Route::get('/e', function () {
+    return view('profesor.p');
+});
 Route::post('/generacionca','CoordinadorCarreraController@generaciones');
 Route::post('/generacion','CoordinadorCarrController@generaciones');
 

@@ -44,7 +44,7 @@
                                                 </div>
                                             </div>
                                             <div class="tab-content" id="grupo-tabContent" v-if="(alumno.length>0)">
-                                                <div class="tableFixHead">
+                                                <div class="tableFixHead" id="LISTA">
                                                     <table class="table">
                                                         <thead>
                                                             <th>Cuenta</th>
@@ -82,6 +82,9 @@
         </div>
     </div>
     <script>
+        $(document).ready(function() {
+            $('#LISTA').DataTable();
+        } );
         new Vue({
             el:"#alumnoP",
             created:function(){

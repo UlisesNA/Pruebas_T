@@ -16,9 +16,11 @@
                     </div>
                 </div>
             </div>
+
         </div>
         <div class="row" v-show="menu==true">
             <div class="col-12">
+                <div class="card">
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
@@ -34,15 +36,61 @@
                     <div class="card-body" v-if="(lista==true && datos.length>0)">
                         <div class="row">
                             <div class="col-12">
-                                <div class="row pb-2">
-                                    <div class="col-11"></div>
-                                    <button @click="pdf()" target="_blank" class="btn btn-danger text-white float-right" data-toggle="tooltip" data-placement="bottom" title="Generar lista"> <i class="fas fa-file-pdf"></i></button>
+                                <div class="row pb-3">
+                                    <div class="col-5">
+                                        <form id="search">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="inputGroupPrepend3"><i class="fas fa-search"></i></span>
+                                                </div>
+                                                <input class="form-control" name="query" v-model="searchQuery" placeholder="Buscar">
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col-1 offset-6">
+                                        <button @click="pdf()" target="_blank" class="btn btn-danger text-white float-right" data-toggle="tooltip" data-placement="bottom" title="Generar lista"> <i class="fas fa-file-pdf"></i></button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-12 tableFixHeadLista">
-                                <table class="table table-sm">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-12 tableFixHeadLista">
+                                        <data-table class=" col-12 table table-sm" :data="datos" :columns-to-display="gridColumns" :filter-key="searchQuery">
+                                            <template slot="Cuenta" scope="alumno">
+                                                <div class="text-center font-weight-bold pt-2" style="height: 45px" v-bind:class="[alumno.entry.estado==2 ? 'bg-warning' : alumno.entry.estado==3 ? 'bg-danger':'']">@{{ alumno.entry.cuenta }}</div>
+                                            </template>
+                                            <template slot="Nombre" scope="alumno">
+                                                <div class="pt-2">@{{ alumno.entry.apaterno }} @{{ alumno.entry.amaterno}} @{{ alumno.entry.nombre }}</div>
+                                            </template>
+                                            <template slot="Acciones" scope="alumno">
+                                                <div class="text-center">
+                                                    <button class="btn btn-outline-success" @click="cambio(alumno.entry,1)" data-toggle="tooltip" data-placement="bottom" title="Normal"><i class="fas fa-check-circle"></i></button>
+                                                    <button class="btn btn-outline-warning m-1" @click="cambio(alumno.entry,2)" data-toggle="tooltip" data-placement="bottom" title="Baja temporal"><i class="fas fa-minus-circle"></i></button>
+                                                    <button class="btn btn-outline-danger m-1" @click="cambio(alumno.entry,3)" data-toggle="tooltip" data-placement="bottom" title="Baja definitiva"><i class="fas fa-times-circle"></i></button>
+                                                </div>
+                                            </template>
+                                            <template  slot="Expediente" scope="alumno">
+                                                <div class="text-center" v-if="alumno.entry.expediente">
+                                                    <button class="btn btn-outline-primary m-1" @click="ver(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="far fa-edit"></i></button>
+                                                    <button class="btn btn-outline-danger" @click="pdfAlumno(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Expediente"><i class="far fa-file-pdf"></i></button>
+                                                </div>
+                                                <div v-else class="text-center" ><i class="fas h4 fa-times text-danger pt-2 " data-toggle="tooltip" data-placement="bottom" title="Expediente sin llenar"></i></div>
+                                            </template>
+                                            <template slot="Canalizacion" scope="alumno">
+                                                <div class="text-center offset-1"><button class="btn btn-outline-secondary"  @click="getAlumnos2(alumno.entry)"><i class="fas fa-check-square"></i></button></div>
+                                            </template>
+                                            <template slot="nodata">
+                                                <div class=" alert font-weight-bold alert-danger text-center">Ningún dato encontrado</div>
+                                            </template>
+                                        </data-table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                           <!-- <div class="col-12 tableFixHeadLista">
+                                <table class="table table-sm " id="alumnosLISTA">
                                     <thead class=" text-center" >
                                     <tr class="">
                                         <th>Cuenta</th>
@@ -60,7 +108,7 @@
                                             <button class="btn btn-outline-success" @click="cambio(alumno,1)" data-toggle="tooltip" data-placement="bottom" title="Normal"><i class="fas fa-check-circle"></i></button>
                                             <button class="btn btn-outline-warning m-1" @click="cambio(alumno,2)" data-toggle="tooltip" data-placement="bottom" title="Baja temporal"><i class="fas fa-minus-circle"></i></button>
                                             <button class="btn btn-outline-danger m-1" @click="cambio(alumno,3)" data-toggle="tooltip" data-placement="bottom" title="Baja definitiva"><i class="fas fa-times-circle"></i></button>
-                                           <!-- <i class="fas h2 text-success fa-check-circle pt-2"></i>-->
+                                           <i class="fas h2 text-success fa-check-circle pt-2"></i>
                                         </td>
                                         <td class="text-center" v-if="alumno.expediente">
                                             <button class="btn btn-outline-primary m-1" @click="ver(alumno)" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="far fa-edit"></i></button>
@@ -71,11 +119,11 @@
                                     </tr>
                                     </tbody>
                                 </table>
-                            </div>
+                            </div>-->
                         </div>
                     </div>
                     <div class="card-body" v-if="datos.length==0">
-                        <div class="row">
+                        <div class="row ">
                             <div class="col-12 alert-info alert text-center">
                                 <h5 class="font-weight-bold">No se han asignado alumnos al grupo</h5>
                             </div>
@@ -566,7 +614,8 @@
         @include('profesor.modaleditar')
 
     </div>
-    <script>
+    <script type="text/javascript">
+        Vue.use(DataTable);
         new Vue({
             el:"#ind",
             created:function(){
@@ -577,6 +626,8 @@
                 this.getTut();
             },
             data:{
+                searchQuery: '',
+                gridColumns: ['Cuenta','Nombre','Acciones','Expediente','Canalizacion'],
                 rut:"/profesor",
                 rutaa:"/semestre",
                 grup:"/grupos",
@@ -794,6 +845,7 @@
                 ['cong','conf','conm'],['bbg','bbf','bbm'],['oig','oif','oim'],['matg','matf','matm']],
                 direcciones_img:[],
                 arreglo_graficas:['genero','hf','hm','etg','etf','etm','enfcg','enfcf','enfcm','eag','eaf','eam','bf','bm'],
+                nuevos:[],
 
             },
             methods:{
@@ -821,6 +873,8 @@
                         this.listacanaliza=false;
                         this.graficas=false;
                         this.datos=response.data;
+                        this.nuevos=response.data;
+
 
                     }).catch(error=>{ });
                 },
@@ -1389,6 +1443,7 @@
 
                 },
                 ver:function (alumno) {
+                    console.log(alumno);
                     $("#modaleditar").modal("show");
                     axios.post(this.veralu,{id:alumno.id_alumno}).then(response=>{
                         this.alu.generales.id_exp_general=response.data.generales[0].id_exp_general;
@@ -1621,7 +1676,6 @@
             },
 
         });
+
     </script>
-
-
 @endsection
