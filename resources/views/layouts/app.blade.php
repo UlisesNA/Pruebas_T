@@ -9,9 +9,7 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{asset('js/highcharts.js')}}"></script>
-
-   <!-- <script src="{{asset('js/highcharts-export.js')}}"></script>-->
-
+    <script src="{{asset('js/highcharts-export.js')}}"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -80,10 +78,10 @@
                             <a class="nav-link" href="/inicioalu">Expediente</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href=actividad>Actividades</a>
+                            <a class="nav-link text-dark" href=/actividad>Actividades</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href=calendario>Calendario de Eventos</a>
+                            <a class="nav-link text-dark" href=/calendario>Calendario de Eventos</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle text-capitalize" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -109,9 +107,9 @@
                                     Desarrollo Académico
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="MenuDesarrollo">
-                                    <a class="dropdown-item" href="desarrollovista">Coordinador Institucional</a>
-                                    <a class="dropdown-item" href="asignacorgenvista">Asigna Coordinador Institucional</a>
-                                    <a class="dropdown-item" href="planeaciondesarrollo">Planeación</a>
+                                    <a class="dropdown-item" href="/desarrollovista">Coordinador Institucional</a>
+                                    <a class="dropdown-item" href="/asignacorgenvista">Asigna Coordinador Institucional</a>
+                                    <a class="dropdown-item" href="/planeaciondesarrollo">Planeación</a>
                                     <a class="dropdown-item" href="/estadisticas/carreras">Carreras</a>
                                 </div>
                             </div>
@@ -132,10 +130,10 @@
                                             Tutorías
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="MenuJefe">
-                                            <a class="dropdown-item" href="jefevista">Tutores y Coordinador</a>
-                                            <a class="dropdown-item" href="asignacovista">Asigna Coordinador</a>
-                                            <a class="dropdown-item" href="asignatuvista">Asigna Tutor</a>
-                                            <a class="dropdown-item" href="alumnos">Alumnos</a>
+                                            <a class="dropdown-item" href="/jefevista">Tutores y Coordinador</a>
+                                            <a class="dropdown-item" href="/asignacovista">Asigna Coordinador</a>
+                                            <a class="dropdown-item" href="/asignatuvista">Asigna Tutor</a>
+                                            <a class="dropdown-item" href="/alumnos">Alumnos</a>
                                         </div>
                                     </div>
                                 @endif
@@ -145,11 +143,11 @@
                                             Tutorías
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="MenuTutor">
-                                            <a class="dropdown-item" href="tutorvista">Grupos Tutorías</a>
-                                            <a class="dropdown-item" href="eventos">Eventos</a>
-                                            <a class="dropdown-item" href="desercion">Deserción</a>
-                                            <a class="dropdown-item" href="reporte">Reporte</a>
-                                            <a class="dropdown-item" href="planeaciontutor">Planeación</a>
+                                            <a class="dropdown-item" href="/tutorvista">Grupos Tutorías</a>
+                                            <a class="dropdown-item" href="/eventos">Eventos</a>
+                                            <a class="dropdown-item" href="/desercion">Deserción</a>
+                                            <a class="dropdown-item" href="/reporte">Reporte</a>
+                                            <a class="dropdown-item" href="/planeaciontutor">Planeación</a>
                                         </div>
                                     </div>
                                 @endif
@@ -159,8 +157,8 @@
                                                 Coordinador
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="MenuCoordinador">
-                                                <a class="dropdown-item" href="carreras">{{ \Illuminate\Support\Facades\Session::get('coordinador')>1 ? 'Carreras':'Carrera' }}</a>
-                                                <a class="dropdown-item" href="coordina_carrera">Planeación</a>
+                                                <a class="dropdown-item" href="/carreras">{{ \Illuminate\Support\Facades\Session::get('coordinador')>1 ? 'Carreras':'Carrera' }}</a>
+                                                <a class="dropdown-item" href="/coordina_carrera">Planeación</a>
                                             </div>
                                         </div>
                                     @endif
@@ -170,7 +168,7 @@
                                                 Coordinador Institucional
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="MenuCoordinadorGeneral">
-                                                <a class="dropdown-item" href="planeacioncoorgen">Planeación</a>
+                                                <a class="dropdown-item" href="/planeacioncoorgen">Planeación</a>
                                                 <a class="dropdown-item" href="/estadisticas/carreras">Carreras</a>
                                             </div>
                                         </div>

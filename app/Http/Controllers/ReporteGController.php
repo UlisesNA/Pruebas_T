@@ -66,8 +66,8 @@ class ReporteGController extends Controller
             ->select('gnral_personales.*')
             ->where('gnral_personales.tipo_usuario', '=', Auth::user()->id)
             ->get();
-       //dd($carrera);
 
+        //dd($request->imagen[0]);
         /*FECHA
         $date= Carbon::now();
         $date = $date->format('d-m-Y');*/
@@ -81,15 +81,6 @@ class ReporteGController extends Controller
         /*DIA*/
         $dd= Carbon::now();
         $dd = $dd->format('d');
-
-
-        /*$temp = 'tempimg.png';
-
-        $dataURI    = $request->img;
-        $dataPieces = explode(',',$dataURI);
-        $encodedImg = $dataPieces[1];
-        $decodedImg = base64_decode($encodedImg);*/
-
 
 
         $pdf=new PDF($orientation='P',$unit='mm',$format='Letter');
@@ -118,23 +109,8 @@ class ReporteGController extends Controller
 
         /*GRAFICAS*/
 
-       /* if( $decodedImg!==false )
-        {
-            //  Save image to a temporary location
-            //dd(file_put_contents($temp,$decodedImg)!==false);
-            if( file_put_contents($temp,$decodedImg)!==false)
-            {
-                //  Open new PDF document and print image
-
-                $pdf->ImageSVG($temp,0,400,217,34);
-
-
-                //  Delete image from server
-                //unlink($temp);
-            }
-        }
-
-*/
+        $pdf->Image($request->imagen[0],20,100,80,55,'PNG');
+        $pdf->Image($request->imagen[1],20,190,80,55,'PNG');
 
 
 

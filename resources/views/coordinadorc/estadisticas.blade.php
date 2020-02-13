@@ -4,7 +4,7 @@
         <div class="modal-content">
             <div class="modal-header alert alert-primary">
                 <h4 class=" font-weight-bold modal-title col-10">Estadísticas</h4>
-                <a href="#!"  class="btn text-white btn-danger ml-5 col-1"><i class="fas fa-file-pdf"></i></a>
+                <button @click="reporte()" target="_blank" class="btn text-white btn-danger m-1" ><i class="fas fa-file-pdf"></i></button>
                 <button type="button col-1" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -315,7 +315,7 @@
                                             <div class="row pt-3">
                                                 <div class="col-12">
                                                     <div class="row">
-                                                        <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Han tenido una operación médico-quirúrgica</h5></div>
+                                                        <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Han tenido una cirugía</h5></div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-4 graf" id="opeg"></div>
@@ -441,7 +441,7 @@
                                             <div class="row pt-3">
                                                 <div class="col-12">
                                                     <div class="row">
-                                                        <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Búsqueda biliográfica</h5></div>
+                                                        <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Búsqueda bibliográfica</h5></div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-4 graf" id="bbg"></div>
@@ -453,7 +453,7 @@
                                             <div class="row pt-3">
                                                 <div class="col-12">
                                                     <div class="row">
-                                                        <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Otro idioma</h5></div>
+                                                        <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Dominio del idioma inglés</h5></div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-4 graf" id="oig"></div>

@@ -20,7 +20,7 @@
                                 <div class="tab-pane fade show active" id="primero" role="tabpanel" aria-labelledby="primero-tab">
                                     <br>
                                     <div class="form-group row">
-                                        <div class="col-sm-11" align="center"><h5>Probabilidad de deserción de los tutorados: Generación {{$dato->generacion}}</h5></div>
+                                        <div class="col-sm-11" align="center"><h5>Probabilidad de deserción de los tutorados: Generación {{$dato->generacion}}  Grupo: {{$dato->grupo}}</h5></div>
                                     </div>
                                     <table class="table">
                                         <thead class="thead-dark">
