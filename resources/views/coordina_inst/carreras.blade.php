@@ -75,7 +75,11 @@
                 grafinsare:'/grafinstitut/area',
                 alumnog:[],
                 generocarrera:[],
-                inst:false
+                inst:false,
+                rep:"pdf/reporte",
+                direcciones_img:[],
+                arreglo_graficas:['genero','hf','hm','etg','etf','etm','enfcg','enfcf','enfcm','eag','eaf','eam','bf','bm'],
+
 
             },
             methods:{
@@ -93,6 +97,17 @@
                             chart: {
                                 type: 'column'
                             },
+                            exporting: {
+                                url: 'http://localhost',
+                            },
+                            navigation: {
+                                buttonOptions: {
+                                    enabled: false
+                                }
+                            },
+                            credits: {
+                                enabled: false
+                            },
                             title: {
                                 text: 'Alumnos por sexo'
                             },
@@ -133,6 +148,61 @@
                                 }
                             ],
                         });
+                        Highcharts.chart('genero1', {
+                            chart: {
+                                type: 'column'
+                            },
+                            exporting: {
+                                url: 'http://localhost',
+                            },
+                            navigation: {
+                                buttonOptions: {
+                                    enabled: false
+                                }
+                            },
+                            credits: {
+                                enabled: false
+                            },
+                            title: {
+                                text: 'Alumnos por sexo'
+                            },
+                            accessibility: {
+                                announceNewData: {
+                                    enabled: true
+                                }
+                            },
+                            xAxis: {
+                                type: 'category'
+                            },
+                            yAxis: {
+                                title: {
+                                    text: 'Total'
+                                }
+                            },
+                            legend: {
+                                enabled: false
+                            },
+                            plotOptions: {
+                                series: {
+                                    borderWidth: 0,
+                                    dataLabels: {
+                                        enabled: true,
+                                        format: '{point.y:.1f}%'
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+                            },
+                            series: [
+                                {
+                                    name: "Sexo",
+                                    colorByPoint: true,
+                                    data: this.generocarrera
+                                }
+                            ],
+                        })
                     }).catch(error=>{ });
                 },
                 GeneroInstitucion:function(){
@@ -143,6 +213,17 @@
                             chart: {
                                 type: 'column'
                             },
+                            exporting: {
+                                url: 'http://localhost',
+                            },
+                            navigation: {
+                                buttonOptions: {
+                                    enabled: false
+                                }
+                            },
+                            credits: {
+                                enabled: false
+                            },
                             title: {
                                 text: 'Alumnos por sexo'
                             },
@@ -183,6 +264,61 @@
                                 }
                             ],
                         });
+                        Highcharts.chart('genero1', {
+                            chart: {
+                                type: 'column'
+                            },
+                            exporting: {
+                                url: 'http://localhost',
+                            },
+                            navigation: {
+                                buttonOptions: {
+                                    enabled: false
+                                }
+                            },
+                            credits: {
+                                enabled: false
+                            },
+                            title: {
+                                text: 'Alumnos por sexo'
+                            },
+                            accessibility: {
+                                announceNewData: {
+                                    enabled: true
+                                }
+                            },
+                            xAxis: {
+                                type: 'category'
+                            },
+                            yAxis: {
+                                title: {
+                                    text: 'Total'
+                                }
+                            },
+                            legend: {
+                                enabled: false
+                            },
+                            plotOptions: {
+                                series: {
+                                    borderWidth: 0,
+                                    dataLabels: {
+                                        enabled: true,
+                                        format: '{point.y:.1f}%'
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> del total<br/>'
+                            },
+                            series: [
+                                {
+                                    name: "Sexo",
+                                    colorByPoint: true,
+                                    data: this.generocarrera
+                                }
+                            ],
+                        })
                     }).catch(error=>{ });
                 },
                 getGraficasCarrera:function ()
@@ -196,6 +332,17 @@
                                 Highcharts.chart(this.general[i][z], {
                                     chart: {
                                         type: 'column'
+                                    },
+                                    exporting: {
+                                        url: 'http://localhost',
+                                    },
+                                    navigation: {
+                                        buttonOptions: {
+                                            enabled: false
+                                        }
+                                    },
+                                    credits: {
+                                        enabled: false
                                     },
                                     title: {
                                         text: this.titulosGrafica[z]
@@ -249,6 +396,17 @@
                                 Highcharts.chart(this.academic[i][z], {
                                     chart: {
                                         type: 'column'
+                                    },
+                                    exporting: {
+                                        url: 'http://localhost',
+                                    },
+                                    navigation: {
+                                        buttonOptions: {
+                                            enabled: false
+                                        }
+                                    },
+                                    credits: {
+                                        enabled: false
                                     },
                                     title: {
                                         text: this.titulosGrafica[z]
@@ -304,6 +462,17 @@
                                     chart: {
                                         type: 'column'
                                     },
+                                    exporting: {
+                                        url: 'http://localhost',
+                                    },
+                                    navigation: {
+                                        buttonOptions: {
+                                            enabled: false
+                                        }
+                                    },
+                                    credits: {
+                                        enabled: false
+                                    },
                                     title: {
                                         text: this.titulosGrafica[z]
                                     },
@@ -357,6 +526,17 @@
                                 Highcharts.chart(this.habito[i][z], {
                                     chart: {
                                         type: 'column'
+                                    },
+                                    exporting: {
+                                        url: 'http://localhost',
+                                    },
+                                    navigation: {
+                                        buttonOptions: {
+                                            enabled: false
+                                        }
+                                    },
+                                    credits: {
+                                        enabled: false
                                     },
                                     title: {
                                         text: this.titulosGrafica[z]
@@ -412,6 +592,17 @@
                                     chart: {
                                         type: 'column'
                                     },
+                                    exporting: {
+                                        url: 'http://localhost',
+                                    },
+                                    navigation: {
+                                        buttonOptions: {
+                                            enabled: false
+                                        }
+                                    },
+                                    credits: {
+                                        enabled: false
+                                    },
                                     title: {
                                         text: this.titulosGrafica[z]
                                     },
@@ -465,6 +656,17 @@
                                 Highcharts.chart(this.areap[i][z], {
                                     chart: {
                                         type: 'column'
+                                    },
+                                    exporting: {
+                                        url: 'http://localhost',
+                                    },
+                                    navigation: {
+                                        buttonOptions: {
+                                            enabled: false
+                                        }
+                                    },
+                                    credits: {
+                                        enabled: false
                                     },
                                     title: {
                                         text: this.titulosGrafica[z]
@@ -524,6 +726,17 @@
                                     chart: {
                                         type: 'column'
                                     },
+                                    exporting: {
+                                        url: 'http://localhost',
+                                    },
+                                    navigation: {
+                                        buttonOptions: {
+                                            enabled: false
+                                        }
+                                    },
+                                    credits: {
+                                        enabled: false
+                                    },
                                     title: {
                                         text: this.titulosGrafica[z]
                                     },
@@ -576,6 +789,17 @@
                                 Highcharts.chart(this.academic[i][z], {
                                     chart: {
                                         type: 'column'
+                                    },
+                                    exporting: {
+                                        url: 'http://localhost',
+                                    },
+                                    navigation: {
+                                        buttonOptions: {
+                                            enabled: false
+                                        }
+                                    },
+                                    credits: {
+                                        enabled: false
                                     },
                                     title: {
                                         text: this.titulosGrafica[z]
@@ -631,6 +855,17 @@
                                     chart: {
                                         type: 'column'
                                     },
+                                    exporting: {
+                                        url: 'http://localhost',
+                                    },
+                                    navigation: {
+                                        buttonOptions: {
+                                            enabled: false
+                                        }
+                                    },
+                                    credits: {
+                                        enabled: false
+                                    },
                                     title: {
                                         text: this.titulosGrafica[z]
                                     },
@@ -684,6 +919,17 @@
                                 Highcharts.chart(this.habito[i][z], {
                                     chart: {
                                         type: 'column'
+                                    },
+                                    exporting: {
+                                        url: 'http://localhost',
+                                    },
+                                    navigation: {
+                                        buttonOptions: {
+                                            enabled: false
+                                        }
+                                    },
+                                    credits: {
+                                        enabled: false
                                     },
                                     title: {
                                         text: this.titulosGrafica[z]
@@ -739,6 +985,17 @@
                                     chart: {
                                         type: 'column'
                                     },
+                                    exporting: {
+                                        url: 'http://localhost',
+                                    },
+                                    navigation: {
+                                        buttonOptions: {
+                                            enabled: false
+                                        }
+                                    },
+                                    credits: {
+                                        enabled: false
+                                    },
                                     title: {
                                         text: this.titulosGrafica[z]
                                     },
@@ -793,6 +1050,17 @@
                                     chart: {
                                         type: 'column'
                                     },
+                                    exporting: {
+                                        url: 'http://localhost',
+                                    },
+                                    navigation: {
+                                        buttonOptions: {
+                                            enabled: false
+                                        }
+                                    },
+                                    credits: {
+                                        enabled: false
+                                    },
                                     title: {
                                         text: this.titulosGrafica[z]
                                     },
@@ -841,6 +1109,41 @@
                 },
 
 
+            },
+            reporte:function () {
+
+                this.direcciones_img=[];
+
+                for(let p in this.arreglo_graficas)
+                {
+                    var chart = $('#'+this.arreglo_graficas[p]).highcharts();
+                    var obj = {}, exportUrl = 'http://localhost:8004/';
+                    obj.type = 'image/png';
+                    obj.async = true;
+                    obj.svg=chart.getSVG();
+
+                    axios.post(exportUrl,obj).then(response=> {
+                        this.direcciones_img.push(exportUrl+response.data);
+                        // console.log(this.direcciones_img.length);
+                        if((this.direcciones_img.length-1)=='13') {
+
+                            axios.post(this.rep,{id_asigna_generacion:this.idasigna,id_carrera:this.idca,generacion:this.gen,imagen:this.direcciones_img},{
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/pdf'
+                                },
+                                responseType: "blob"
+                            }).then(response=>{
+                                // console.log(response.data);
+                                const blob = new Blob([response.data], { type: 'application/pdf' });
+                                const objectUrl = URL.createObjectURL(blob);
+                                window.open(objectUrl)
+                            });
+
+                        }
+                    });
+
+                }
             },
 
         });
