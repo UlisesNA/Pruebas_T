@@ -314,7 +314,7 @@
                                             <div class="row pt-3">
                                                 <div class="col-12">
                                                     <div class="row">
-                                                        <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Han tenido una operación médico-quirúrgica</h5></div>
+                                                        <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Han tenido una cirugía</h5></div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-4 graf" id="opeg"></div>
@@ -440,7 +440,7 @@
                                             <div class="row pt-3">
                                                 <div class="col-12">
                                                     <div class="row">
-                                                        <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Búsqueda biliográfica</h5></div>
+                                                        <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Búsqueda bibliográfica</h5></div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-4 graf" id="bbg"></div>

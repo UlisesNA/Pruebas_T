@@ -41,7 +41,7 @@
                 rut:"/tes/carreras",
                 carreras:[],
                 id_carrera: null,
-                titulosGrafica:['General','Femenino','Masculino'],
+                titulosGrafica:['General','Mujeres','Hombres'],
                 general:[
                     ['ecg','ecf','ecm'],['neg','nef','nem'],['trag','traf','tram'],
                     ['eag','eaf','eam'],['bg','bf','bm'],['tbg','tbf','tbm'],['hg','hf','hm']

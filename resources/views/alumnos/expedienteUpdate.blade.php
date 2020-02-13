@@ -82,7 +82,7 @@
                                                 <option value="4">3</option>
                                                 <option value="5">4 o más</option>
                                             </select>
-                                            <small class="form-text text-danger" v-if='alu.generales.no_hijos=="" || alu.generales.no_hijos==null '>Colocar un número de hijos</small>
+                                            <small class="form-text text-danger" v-if='alu.generales.no_hijos=="null" || alu.generales.no_hijos==null '>Colocar un número de hijos</small>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="correo">e-mail </label>
@@ -133,7 +133,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label for="turno">Turno</label>
+                                            <label for="turno">Turno *</label>
                                             <select name="turno" id="turno" v-model="alu.generales.turno" class="custom-select custom-select-md">
                                                 <option value="null" selected>Elija turno</option>
                                                 <option v-bind:value="turn.id_turno" v-for="turn in turno">@{{turn.descripcion_turno}}</option>
@@ -437,7 +437,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <label for="oti">Otra carrera iniciada</label>
+                                            <label for="oti">Otra carrera iniciada *</label>
                                             <select v-model="alu.academicos.otra_carrera_ini" id="oti" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option value="1">Si</option>
@@ -592,6 +592,7 @@
                                         <div class="col-md-4">
                                             <label for="nt">Nombre del tutor *</label>
                                             <input type="text" v-model="alu.familiares.nombre_tutor" name="nombre_tutor" id="nt" class="form-control" placeholder="Nombre del tutor">
+                                            <small class="form-text text-danger" v-if='alu.familiares.nombre_tutor==null || alu.familiares.nombre_tutor==""'>Nombre del tutor</small>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="parentesco">Parentesco *</label>
@@ -599,6 +600,7 @@
                                                 <option value="null">Elija un parentesco</option>
                                                 <option v-bind:value="par.id_parentesco" v-for="par in parentesco">@{{par.desc_parentesco}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.familiares.id_parentesco==null || alu.familiares.id_parentesco=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                 </div>
@@ -622,11 +624,12 @@
                                             <small class="form-text text-danger" v-if='alu.estudio.tiempo_empleado_estudiar==null || alu.estudio.tiempo_empleado_estudiar=="null"'>Elija una opción</small>
                                         </div>
                                         <div class="col-md-6">
-                                            <label for="fti">¿Cómo es tú forma de trabajo intelectual?</label>
+                                            <label for="fti">¿Cómo es tú forma de trabajo intelectual? *</label>
                                             <select  id="fti" v-model="alu.estudio.id_opc_intelectual" type="text" class="custom-select custom-select-md">
                                                 <option value="null" selected>Elija una Opción</option>
                                                 <option v-bind:value="int.id_opc_intelectual" v-for="int in intelectual">@{{int.desc_opc}}</option>
                                             </select>
+                                            <small class="form-text text-danger" v-if='alu.estudio.id_opc_intelectual==null || alu.estudio.id_opc_intelectual=="null"'>Elija una opción</small>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -783,7 +786,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <label for="operacion">¿Te han realizado alguna operación médico-quirúrgica? *</label>
+                                            <label for="operacion">¿Te han realizado alguna cirugía? *</label>
                                             <select id="operacion" name="operacion" v-model="alu.integral.operacion" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option value="1">Si</option>
@@ -794,7 +797,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12"id="especificarOpe" v-if="alu.integral.operacion==1">
-                                            <label for="especificarOpe">Especificar la operación médico-quirúrgica</label>
+                                            <label for="especificarOpe">Especificar la cirugía</label>
                                             <input type="text" v-model="alu.integral.deque_operacion" id="especificarOpe" name="especificarOpe" class="form-control" placeholder="Especificar la operación médico-quirúrgica">
                                         </div>
                                     </div>
