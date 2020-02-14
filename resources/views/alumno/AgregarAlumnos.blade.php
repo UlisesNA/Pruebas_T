@@ -5,7 +5,7 @@
                 <h5 class="modal-title" id="exampleModalScrollableTitle">Asignar Alumnos</h5>
             </div>
             <div class="modal-body">
-                <form id="search1" class="pb-2" v-if="alumnosgeneracion.length>0">
+                <form id="search1" class="pb-3" v-if="alumnosgeneracion.length>0">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="i"><i class="fas fa-search"></i></span>
@@ -13,18 +13,15 @@
                         <input class="form-control" name="query" v-model="searchQuery1" placeholder="Buscar">
                     </div>
                 </form>
+                <label class="form-checkbox" v-if="alumnosgeneracion.length>0">
+                    <input type="checkbox" v-model="selectAll" @click="seleccionar_todos">
+                    <i class="form-icon text-primary"> Seleccionar todo</i>
+                </label>
                 <div class="tableFixHeadModal" v-if="alumnosgeneracion.length>0">
                     <data-table class=" col-12 table table-sm" :data="alumnosgeneracion" :columns-to-display="columnasM" :filter-key="searchQuery1">
-                        <template slot="columns-to-display" scope="alu">
-                            <label class="form-checkbox">
-                                <input type="checkbox" v-model="selectAll" @click="seleccionar_todos">
-                                <i class="form-icon"></i>
-                            </label>
-                        </template>
                         <template slot=" " scope="alu">
                             <input type="checkbox" :value="alu.entry.id_alumno" v-model="seleccionados">
                             <i class="form-icon"></i>
-
                         </template>
                         <template slot="Cuenta" scope="alu">
                             <div class="font-weight-bold pt-2">
@@ -46,7 +43,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-primary" v-if="alumnosgeneracion.length>0" @click="Guardar()">Asignar</button>
+                <button type="button" class="btn btn-outline-primary" v-if="alumnosgeneracion.length>0 && seleccionados.length>0" @click="Guardar()">Asignar</button>
                 <button type="button" class="btn btn-outline-danger" @click="BorrarSeleccionados()" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
