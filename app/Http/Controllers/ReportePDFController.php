@@ -37,7 +37,10 @@ class ReportePDFController extends Controller
              ->join('gnral_periodos', 'gnral_periodos.id_periodo', '=', 'gnral_jefes_periodos.id_periodo')
              ->join('users', 'users.email', '=', 'gnral_personales.correo')
              ->where('users.email', '=', $pr)
-             ->where('gnral_personales.id_perfil', '=', 7)
+             ->whereNull('exp_asigna_generacion.deleted_at')
+             ->whereNull('exp_asigna_tutor.deleted_at')
+             ->whereNull('exp_asigna_alumnos.deleted_at')
+             ->where('exp_asigna_alumnos.estado','=',1)
              ->groupBy('exp_generacion.generacion')
              ->select('exp_generacion.generacion', 'gnral_personales.nombre', 'gnral_periodos.periodo', 'gnral_carreras.nombre as carr')
              ->get();
@@ -48,6 +51,7 @@ class ReportePDFController extends Controller
              ->join('users', 'users.email', '=', 'gnral_personales.correo')
              ->where('users.email', '=', $pr)
              ->where('reporte_tutor.generacion', '=', 2016)
+             ->whereNull('exp_asigna_tutor.deleted_at')
              ->select('gnral_personales.nombre', 'reporte_tutor.n_cuenta', 'reporte_tutor.alumno', 'reporte_tutor.appaterno',
                  'reporte_tutor.apmaterno', 'reporte_tutor.tutoria_grupal',
                  'reporte_tutor.tutoria_individual', 'reporte_tutor.beca', 'reporte_tutor.repeticion',
@@ -61,6 +65,7 @@ class ReportePDFController extends Controller
              ->join('users', 'users.email', '=', 'gnral_personales.correo')
              ->where('users.email', '=', $pr)
              ->where('reporte_tutor.generacion', '=', 2016)
+             ->whereNull('exp_asigna_tutor.deleted_at')
              ->select(DB::raw("count(reporte_tutor.tutoria_grupal) AS grupal"))
              ->get();
          $totales2 = DB::table('reporte_tutor')
@@ -69,6 +74,7 @@ class ReportePDFController extends Controller
              ->join('users', 'users.email', '=', 'gnral_personales.correo')
              ->where('users.email', '=', $pr)
              ->where('reporte_tutor.generacion', '=', 2016)
+             ->whereNull('exp_asigna_tutor.deleted_at')
              ->select(DB::raw("count(reporte_tutor.tutoria_individual) AS individual"))
              ->get();
          $totales3 = DB::table('reporte_tutor')
@@ -77,6 +83,7 @@ class ReportePDFController extends Controller
              ->join('users', 'users.email', '=', 'gnral_personales.correo')
              ->where('users.email', '=', $pr)
              ->where('reporte_tutor.generacion', '=', 2016)
+             ->whereNull('exp_asigna_tutor.deleted_at')
              ->select(DB::raw("count(reporte_tutor.beca) AS beca"))
              ->get();
          $totales4 = DB::table('reporte_tutor')
@@ -85,6 +92,7 @@ class ReportePDFController extends Controller
              ->join('users', 'users.email', '=', 'gnral_personales.correo')
              ->where('users.email', '=', $pr)
              ->where('reporte_tutor.generacion', '=', 2016)
+             ->whereNull('exp_asigna_tutor.deleted_at')
              ->select(DB::raw("count(reporte_tutor.repeticion) AS repe"))
              ->get();
          $totales5 = DB::table('reporte_tutor')
@@ -93,6 +101,7 @@ class ReportePDFController extends Controller
              ->join('users', 'users.email', '=', 'gnral_personales.correo')
              ->where('users.email', '=', $pr)
              ->where('reporte_tutor.generacion', '=', 2016)
+             ->whereNull('exp_asigna_tutor.deleted_at')
              ->select(DB::raw("count(reporte_tutor.especial) AS espe"))
              ->get();
          $totales6 = DB::table('reporte_tutor')
@@ -101,6 +110,7 @@ class ReportePDFController extends Controller
              ->join('users', 'users.email', '=', 'gnral_personales.correo')
              ->where('users.email', '=', $pr)
              ->where('reporte_tutor.generacion', '=', 2016)
+             ->whereNull('exp_asigna_tutor.deleted_at')
              ->select(DB::raw("count(reporte_tutor.academico) AS aca"))
              ->get();
          $totales7 = DB::table('reporte_tutor')
@@ -109,6 +119,7 @@ class ReportePDFController extends Controller
              ->join('users', 'users.email', '=', 'gnral_personales.correo')
              ->where('users.email', '=', $pr)
              ->where('reporte_tutor.generacion', '=', 2016)
+             ->whereNull('exp_asigna_tutor.deleted_at')
              ->select(DB::raw("count(reporte_tutor.medico) AS med"))
              ->get();
          $totales8 = DB::table('reporte_tutor')
@@ -117,6 +128,7 @@ class ReportePDFController extends Controller
              ->join('users', 'users.email', '=', 'gnral_personales.correo')
              ->where('users.email', '=', $pr)
              ->where('reporte_tutor.generacion', '=', 2016)
+             ->whereNull('exp_asigna_tutor.deleted_at')
              ->select(DB::raw("count(reporte_tutor.psicologico) AS ps"))
              ->get();
          $totales9 = DB::table('reporte_tutor')
@@ -125,6 +137,7 @@ class ReportePDFController extends Controller
              ->join('users', 'users.email', '=', 'gnral_personales.correo')
              ->where('users.email', '=', $pr)
              ->where('reporte_tutor.generacion', '=', 2016)
+             ->whereNull('exp_asigna_tutor.deleted_at')
              ->select(DB::raw("count(reporte_tutor.baja) AS baja"))
              ->get();
          $pdf = new PDF();
@@ -235,7 +248,10 @@ class ReportePDFController extends Controller
             ->join('gnral_periodos', 'gnral_periodos.id_periodo', '=', 'gnral_jefes_periodos.id_periodo')
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
-            ->where('gnral_personales.id_perfil', '=', 7)
+            ->whereNull('exp_asigna_generacion.deleted_at')
+            ->whereNull('exp_asigna_tutor.deleted_at')
+            ->whereNull('exp_asigna_alumnos.deleted_at')
+            ->where('exp_asigna_alumnos.estado','=',1)
             ->groupBy('exp_generacion.generacion')
             ->select('exp_generacion.generacion', 'gnral_personales.nombre', 'gnral_periodos.periodo', 'gnral_carreras.nombre as carr')
             ->get();
@@ -246,6 +262,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2017)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select('gnral_personales.nombre', 'reporte_tutor.n_cuenta', 'reporte_tutor.alumno', 'reporte_tutor.appaterno',
                 'reporte_tutor.apmaterno', 'reporte_tutor.tutoria_grupal',
                 'reporte_tutor.tutoria_individual', 'reporte_tutor.beca', 'reporte_tutor.repeticion',
@@ -259,6 +276,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2017)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.tutoria_grupal) AS grupal"))
             ->get();
         $totales2 = DB::table('reporte_tutor')
@@ -267,6 +285,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2017)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.tutoria_individual) AS individual"))
             ->get();
         $totales3 = DB::table('reporte_tutor')
@@ -275,6 +294,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2017)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.beca) AS beca"))
             ->get();
         $totales4 = DB::table('reporte_tutor')
@@ -283,6 +303,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2017)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.repeticion) AS repe"))
             ->get();
         $totales5 = DB::table('reporte_tutor')
@@ -291,6 +312,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2017)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.especial) AS espe"))
             ->get();
         $totales6 = DB::table('reporte_tutor')
@@ -299,6 +321,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2017)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.academico) AS aca"))
             ->get();
         $totales7 = DB::table('reporte_tutor')
@@ -307,6 +330,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2017)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.medico) AS med"))
             ->get();
         $totales8 = DB::table('reporte_tutor')
@@ -315,6 +339,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2017)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.psicologico) AS ps"))
             ->get();
         $totales9 = DB::table('reporte_tutor')
@@ -323,6 +348,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2017)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.baja) AS baja"))
             ->get();
         $pdf = new PDF();
@@ -433,7 +459,10 @@ class ReportePDFController extends Controller
             ->join('gnral_periodos', 'gnral_periodos.id_periodo', '=', 'gnral_jefes_periodos.id_periodo')
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
-            ->where('gnral_personales.id_perfil', '=', 7)
+            ->whereNull('exp_asigna_generacion.deleted_at')
+            ->whereNull('exp_asigna_tutor.deleted_at')
+            ->whereNull('exp_asigna_alumnos.deleted_at')
+            ->where('exp_asigna_alumnos.estado','=',1)
             ->groupBy('exp_generacion.generacion')
             ->select('exp_generacion.generacion', 'gnral_personales.nombre', 'gnral_periodos.periodo', 'gnral_carreras.nombre as carr')
             ->get();
@@ -444,6 +473,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2018)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select('gnral_personales.nombre', 'reporte_tutor.n_cuenta', 'reporte_tutor.alumno', 'reporte_tutor.appaterno',
                 'reporte_tutor.apmaterno', 'reporte_tutor.tutoria_grupal',
                 'reporte_tutor.tutoria_individual', 'reporte_tutor.beca', 'reporte_tutor.repeticion',
@@ -457,6 +487,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2018)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.tutoria_grupal) AS grupal"))
             ->get();
         $totales2 = DB::table('reporte_tutor')
@@ -465,6 +496,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2018)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.tutoria_individual) AS individual"))
             ->get();
         $totales3 = DB::table('reporte_tutor')
@@ -473,6 +505,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2018)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.beca) AS beca"))
             ->get();
         $totales4 = DB::table('reporte_tutor')
@@ -481,6 +514,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2018)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.repeticion) AS repe"))
             ->get();
         $totales5 = DB::table('reporte_tutor')
@@ -489,6 +523,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2018)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.especial) AS espe"))
             ->get();
         $totales6 = DB::table('reporte_tutor')
@@ -497,6 +532,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2018)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.academico) AS aca"))
             ->get();
         $totales7 = DB::table('reporte_tutor')
@@ -505,6 +541,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2018)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.medico) AS med"))
             ->get();
         $totales8 = DB::table('reporte_tutor')
@@ -513,6 +550,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2018)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.psicologico) AS ps"))
             ->get();
         $totales9 = DB::table('reporte_tutor')
@@ -521,6 +559,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2018)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.baja) AS baja"))
             ->get();
         $pdf = new PDF();
@@ -631,7 +670,10 @@ class ReportePDFController extends Controller
             ->join('gnral_periodos', 'gnral_periodos.id_periodo', '=', 'gnral_jefes_periodos.id_periodo')
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
-            ->where('gnral_personales.id_perfil', '=', 7)
+            ->whereNull('exp_asigna_generacion.deleted_at')
+            ->whereNull('exp_asigna_tutor.deleted_at')
+            ->whereNull('exp_asigna_alumnos.deleted_at')
+            ->where('exp_asigna_alumnos.estado','=',1)
             ->groupBy('exp_generacion.generacion')
             ->select('exp_generacion.generacion', 'gnral_personales.nombre', 'gnral_periodos.periodo', 'gnral_carreras.nombre as carr')
             ->get();
@@ -642,6 +684,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2019)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select('gnral_personales.nombre', 'reporte_tutor.n_cuenta', 'reporte_tutor.alumno', 'reporte_tutor.appaterno',
                 'reporte_tutor.apmaterno', 'reporte_tutor.tutoria_grupal',
                 'reporte_tutor.tutoria_individual', 'reporte_tutor.beca', 'reporte_tutor.repeticion',
@@ -655,6 +698,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2019)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.tutoria_grupal) AS grupal"))
             ->get();
         $totales2 = DB::table('reporte_tutor')
@@ -663,6 +707,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2019)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.tutoria_individual) AS individual"))
             ->get();
         $totales3 = DB::table('reporte_tutor')
@@ -671,6 +716,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2019)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.beca) AS beca"))
             ->get();
         $totales4 = DB::table('reporte_tutor')
@@ -679,6 +725,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2019)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.repeticion) AS repe"))
             ->get();
         $totales5 = DB::table('reporte_tutor')
@@ -687,6 +734,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2019)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.especial) AS espe"))
             ->get();
         $totales6 = DB::table('reporte_tutor')
@@ -695,6 +743,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2019)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.academico) AS aca"))
             ->get();
         $totales7 = DB::table('reporte_tutor')
@@ -703,6 +752,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2019)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.medico) AS med"))
             ->get();
         $totales8 = DB::table('reporte_tutor')
@@ -711,6 +761,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2019)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.psicologico) AS ps"))
             ->get();
         $totales9 = DB::table('reporte_tutor')
@@ -719,6 +770,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2019)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.baja) AS baja"))
             ->get();
         $pdf = new PDF();
@@ -829,7 +881,10 @@ class ReportePDFController extends Controller
             ->join('gnral_periodos', 'gnral_periodos.id_periodo', '=', 'gnral_jefes_periodos.id_periodo')
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
-            ->where('gnral_personales.id_perfil', '=', 7)
+            ->whereNull('exp_asigna_generacion.deleted_at')
+            ->whereNull('exp_asigna_tutor.deleted_at')
+            ->whereNull('exp_asigna_alumnos.deleted_at')
+            ->where('exp_asigna_alumnos.estado','=',1)
             ->groupBy('exp_generacion.generacion')
             ->select('exp_generacion.generacion', 'gnral_personales.nombre', 'gnral_periodos.periodo', 'gnral_carreras.nombre as carr')
             ->get();
@@ -840,6 +895,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2020)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select('gnral_personales.nombre', 'reporte_tutor.n_cuenta', 'reporte_tutor.alumno', 'reporte_tutor.appaterno',
                 'reporte_tutor.apmaterno', 'reporte_tutor.tutoria_grupal',
                 'reporte_tutor.tutoria_individual', 'reporte_tutor.beca', 'reporte_tutor.repeticion',
@@ -853,6 +909,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2020)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.tutoria_grupal) AS grupal"))
             ->get();
         $totales2 = DB::table('reporte_tutor')
@@ -861,6 +918,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2020)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.tutoria_individual) AS individual"))
             ->get();
         $totales3 = DB::table('reporte_tutor')
@@ -869,6 +927,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2020)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.beca) AS beca"))
             ->get();
         $totales4 = DB::table('reporte_tutor')
@@ -877,6 +936,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2020)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.repeticion) AS repe"))
             ->get();
         $totales5 = DB::table('reporte_tutor')
@@ -885,6 +945,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2020)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.especial) AS espe"))
             ->get();
         $totales6 = DB::table('reporte_tutor')
@@ -893,6 +954,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2020)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.academico) AS aca"))
             ->get();
         $totales7 = DB::table('reporte_tutor')
@@ -901,6 +963,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2020)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.medico) AS med"))
             ->get();
         $totales8 = DB::table('reporte_tutor')
@@ -909,6 +972,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2020)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.psicologico) AS ps"))
             ->get();
         $totales9 = DB::table('reporte_tutor')
@@ -917,6 +981,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2020)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.baja) AS baja"))
             ->get();
         $pdf = new PDF();
@@ -1027,7 +1092,10 @@ class ReportePDFController extends Controller
             ->join('gnral_periodos', 'gnral_periodos.id_periodo', '=', 'gnral_jefes_periodos.id_periodo')
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
-            ->where('gnral_personales.id_perfil', '=', 7)
+            ->whereNull('exp_asigna_generacion.deleted_at')
+            ->whereNull('exp_asigna_tutor.deleted_at')
+            ->whereNull('exp_asigna_alumnos.deleted_at')
+            ->where('exp_asigna_alumnos.estado','=',1)
             ->groupBy('exp_generacion.generacion')
             ->select('exp_generacion.generacion', 'gnral_personales.nombre', 'gnral_periodos.periodo', 'gnral_carreras.nombre as carr')
             ->get();
@@ -1038,6 +1106,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2021)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select('gnral_personales.nombre', 'reporte_tutor.n_cuenta', 'reporte_tutor.alumno', 'reporte_tutor.appaterno',
                 'reporte_tutor.apmaterno', 'reporte_tutor.tutoria_grupal',
                 'reporte_tutor.tutoria_individual', 'reporte_tutor.beca', 'reporte_tutor.repeticion',
@@ -1051,6 +1120,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2021)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.tutoria_grupal) AS grupal"))
             ->get();
         $totales2 = DB::table('reporte_tutor')
@@ -1059,6 +1129,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2021)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.tutoria_individual) AS individual"))
             ->get();
         $totales3 = DB::table('reporte_tutor')
@@ -1067,6 +1138,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2021)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.beca) AS beca"))
             ->get();
         $totales4 = DB::table('reporte_tutor')
@@ -1075,6 +1147,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2021)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.repeticion) AS repe"))
             ->get();
         $totales5 = DB::table('reporte_tutor')
@@ -1083,6 +1156,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2021)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.especial) AS espe"))
             ->get();
         $totales6 = DB::table('reporte_tutor')
@@ -1091,6 +1165,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2021)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.academico) AS aca"))
             ->get();
         $totales7 = DB::table('reporte_tutor')
@@ -1099,6 +1174,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2021)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.medico) AS med"))
             ->get();
         $totales8 = DB::table('reporte_tutor')
@@ -1107,6 +1183,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2021)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.psicologico) AS ps"))
             ->get();
         $totales9 = DB::table('reporte_tutor')
@@ -1115,6 +1192,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2021)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.baja) AS baja"))
             ->get();
         $pdf = new PDF();
@@ -1225,7 +1303,10 @@ class ReportePDFController extends Controller
             ->join('gnral_periodos', 'gnral_periodos.id_periodo', '=', 'gnral_jefes_periodos.id_periodo')
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
-            ->where('gnral_personales.id_perfil', '=', 7)
+            ->whereNull('exp_asigna_generacion.deleted_at')
+            ->whereNull('exp_asigna_tutor.deleted_at')
+            ->whereNull('exp_asigna_alumnos.deleted_at')
+            ->where('exp_asigna_alumnos.estado','=',1)
             ->groupBy('exp_generacion.generacion')
             ->select('exp_generacion.generacion', 'gnral_personales.nombre', 'gnral_periodos.periodo', 'gnral_carreras.nombre as carr')
             ->get();
@@ -1236,6 +1317,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2022)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select('gnral_personales.nombre', 'reporte_tutor.n_cuenta', 'reporte_tutor.alumno', 'reporte_tutor.appaterno',
                 'reporte_tutor.apmaterno', 'reporte_tutor.tutoria_grupal',
                 'reporte_tutor.tutoria_individual', 'reporte_tutor.beca', 'reporte_tutor.repeticion',
@@ -1249,6 +1331,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2022)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.tutoria_grupal) AS grupal"))
             ->get();
         $totales2 = DB::table('reporte_tutor')
@@ -1257,6 +1340,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2022)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.tutoria_individual) AS individual"))
             ->get();
         $totales3 = DB::table('reporte_tutor')
@@ -1265,6 +1349,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2022)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.beca) AS beca"))
             ->get();
         $totales4 = DB::table('reporte_tutor')
@@ -1273,6 +1358,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2022)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.repeticion) AS repe"))
             ->get();
         $totales5 = DB::table('reporte_tutor')
@@ -1281,6 +1367,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2022)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.especial) AS espe"))
             ->get();
         $totales6 = DB::table('reporte_tutor')
@@ -1289,6 +1376,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2022)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.academico) AS aca"))
             ->get();
         $totales7 = DB::table('reporte_tutor')
@@ -1297,6 +1385,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2022)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.medico) AS med"))
             ->get();
         $totales8 = DB::table('reporte_tutor')
@@ -1305,6 +1394,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2022)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.psicologico) AS ps"))
             ->get();
         $totales9 = DB::table('reporte_tutor')
@@ -1313,6 +1403,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2022)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.baja) AS baja"))
             ->get();
         $pdf = new PDF();
@@ -1423,7 +1514,10 @@ class ReportePDFController extends Controller
             ->join('gnral_periodos', 'gnral_periodos.id_periodo', '=', 'gnral_jefes_periodos.id_periodo')
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
-            ->where('gnral_personales.id_perfil', '=', 7)
+            ->whereNull('exp_asigna_generacion.deleted_at')
+            ->whereNull('exp_asigna_tutor.deleted_at')
+            ->whereNull('exp_asigna_alumnos.deleted_at')
+            ->where('exp_asigna_alumnos.estado','=',1)
             ->groupBy('exp_generacion.generacion')
             ->select('exp_generacion.generacion', 'gnral_personales.nombre', 'gnral_periodos.periodo', 'gnral_carreras.nombre as carr')
             ->get();
@@ -1434,6 +1528,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2023)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select('gnral_personales.nombre', 'reporte_tutor.n_cuenta', 'reporte_tutor.alumno', 'reporte_tutor.appaterno',
                 'reporte_tutor.apmaterno', 'reporte_tutor.tutoria_grupal',
                 'reporte_tutor.tutoria_individual', 'reporte_tutor.beca', 'reporte_tutor.repeticion',
@@ -1447,6 +1542,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2023)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.tutoria_grupal) AS grupal"))
             ->get();
         $totales2 = DB::table('reporte_tutor')
@@ -1455,6 +1551,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2023)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.tutoria_individual) AS individual"))
             ->get();
         $totales3 = DB::table('reporte_tutor')
@@ -1463,6 +1560,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2023)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.beca) AS beca"))
             ->get();
         $totales4 = DB::table('reporte_tutor')
@@ -1471,6 +1569,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2023)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.repeticion) AS repe"))
             ->get();
         $totales5 = DB::table('reporte_tutor')
@@ -1479,6 +1578,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2023)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.especial) AS espe"))
             ->get();
         $totales6 = DB::table('reporte_tutor')
@@ -1487,6 +1587,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2023)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.academico) AS aca"))
             ->get();
         $totales7 = DB::table('reporte_tutor')
@@ -1495,6 +1596,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2023)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.medico) AS med"))
             ->get();
         $totales8 = DB::table('reporte_tutor')
@@ -1503,6 +1605,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2023)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.psicologico) AS ps"))
             ->get();
         $totales9 = DB::table('reporte_tutor')
@@ -1511,6 +1614,7 @@ class ReportePDFController extends Controller
             ->join('users', 'users.email', '=', 'gnral_personales.correo')
             ->where('users.email', '=', $pr)
             ->where('reporte_tutor.generacion', '=', 2023)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select(DB::raw("count(reporte_tutor.baja) AS baja"))
             ->get();
         $pdf = new PDF();
