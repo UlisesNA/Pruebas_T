@@ -793,7 +793,7 @@
                 areap:[['trg','trf','trm'],['reng','renf','renm'],['comg','comf','comm'],['retg','retf','retm'],['exag','exaf','exam'],
                 ['cong','conf','conm'],['bbg','bbf','bbm'],['oig','oif','oim'],['matg','matf','matm']],
                 direcciones_img:[],
-                arreglo_graficas:['genero','hf','hm','etg','etf','etm','enfcg','enfcf','enfcm','eag','eaf','eam','bf','bm'],
+                arreglo_graficas:['genero','hf','hm','etf','etm','enfcf','enfcm','eaf','eam','bf','bm'],
 
             },
             methods:{
@@ -861,6 +861,7 @@
                             chart: {
                                 type: 'column'
                             },
+
                             exporting: {
                                 url: 'http://localhost',
                             },
@@ -1583,7 +1584,7 @@
                         axios.post(exportUrl,obj).then(response=> {
                             this.direcciones_img.push(exportUrl+response.data);
                            // console.log(this.direcciones_img.length);
-                            if((this.direcciones_img.length-1)=='13') {
+                            if((this.direcciones_img.length-1)=='10') {
 
                                 axios.post(this.rep,{id_asigna_generacion:this.idasigna,id_carrera:this.idca,generacion:this.gen,imagen:this.direcciones_img},{
                                     headers: {

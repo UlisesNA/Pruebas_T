@@ -93,7 +93,7 @@ class ReporteGController extends Controller
         $pdf->MultiCell(180,6,utf8_decode("Valle de Bravo, México; a " .$dd." de ".$mm. " de ".$aa."."),0,"R","","");
         $pdf->Ln(1);
         //$pdf->MultiCell(167,6,utf8_decode(""),0,"R","","");
-        $pdf->Ln(4);
+        $pdf->Ln(2);
 
         $pdf->SetFont('Times', 'B', 9);
         $pdf->Cell(167,6,utf8_decode($profesor[0]->nombre),0,1,"","");
@@ -108,14 +108,52 @@ class ReporteGController extends Controller
         $pdf->Cell(170,6,utf8_decode((Session::get('nombre_periodo').".")),0,1,"");
 
         /*GRAFICAS*/
+        $pdf->Ln(3);
+        $pdf->SetFont('Times', 'B', 9);
+        $pdf->Cell(160,6,utf8_decode("Total de alumnos"),0,1,"","");
+        $pdf->Image($request->imagen[0],70,100,80,55,'PNG');
 
-        $pdf->Image($request->imagen[0],20,100,80,55,'PNG');
-        $pdf->Image($request->imagen[1],20,190,80,55,'PNG');
+        $pdf->Ln(70);
+        $pdf->Cell(160,6,utf8_decode("Número de hijos"),0,1,"","");
+        $pdf->Image($request->imagen[1],20,170,80,55,'PNG');
+        $pdf->Image($request->imagen[2],100,170,80,55,'PNG');
+
+
+
+        $pdf-> AddPage('P','Letter',360);
+        //$pdf->Ln(2);
+        $pdf->Cell(160,6,utf8_decode("Pertenecen a etnia indígena"),0,0,"","");
+        $pdf->Image($request->imagen[3],20,38,80,55,'PNG');
+        $pdf->Image($request->imagen[4],105,38,80,55,'PNG');
+
+
+
+        $pdf->Ln(90);
+        $pdf->Cell(160,6,utf8_decode("Padecen enfermedad crónica"),0,1,"","");
+        $pdf->Image($request->imagen[5],10,130,80,55,'PNG');
+        $pdf->Image($request->imagen[6],115,130,80,55,'PNG');
+
+
+        $pdf-> AddPage('P','Letter',360);
+        //$pdf->Ln(2);
+        $pdf->Cell(160,6,utf8_decode("Estado académico"),0,0,"","");
+        $pdf->Image($request->imagen[7],10,38,80,55,'PNG');
+        $pdf->Image($request->imagen[8],105,38,80,55,'PNG');
+
+
+
+        $pdf->Ln(90);
+        $pdf->Cell(160,6,utf8_decode("Cuentan con beca"),0,1,"","");
+        $pdf->Image($request->imagen[9],20,130,80,55,'PNG');
+        $pdf->Image($request->imagen[10],105,130,80,55,'PNG');
+
+
+
 
 
 
         /*FIRMA*/
-        $pdf->Ln(128);
+        $pdf->Ln(100);
         $pdf->SetFont('Times', 'B', 9);
         $pdf->Cell(($pdf->GetPageWidth()),3,"". utf8_decode(mb_strtoupper("________________________________________________")),0,1,"C");
         $pdf->Ln(3);
