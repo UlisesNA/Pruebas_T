@@ -11,15 +11,20 @@ class ReporteController extends Controller
         $pr=Auth::user()->email;
         $tabla=DB::table('exp_generacion')
             ->join('exp_asigna_generacion','exp_asigna_generacion.id_generacion','=','exp_generacion.id_generacion')
-            ->join('exp_asigna_alumnos','exp_asigna_alumnos.id_asigna_generacion','=','exp_asigna_generacion.id_asigna_generacion')
-            ->join('gnral_alumnos','gnral_alumnos.id_alumno','=','exp_asigna_alumnos.id_alumno')
+            ->join('gnral_jefes_periodos','gnral_jefes_periodos.id_jefe_periodo','=','exp_asigna_generacion.id_jefe_periodo')
             ->join('exp_asigna_tutor','exp_asigna_tutor.id_asigna_generacion','=','exp_asigna_generacion.id_asigna_generacion')
+            ->join('exp_asigna_alumnos','exp_asigna_alumnos.id_asigna_generacion','=','exp_asigna_generacion.id_asigna_generacion')
             ->join('gnral_personales','gnral_personales.id_personal','=','exp_asigna_tutor.id_personal')
+            ->join('gnral_jefes_periodos as p','p.id_jefe_periodo','=','exp_asigna_tutor.id_jefe_periodo')
+            ->join('gnral_alumnos','gnral_alumnos.id_alumno','=','exp_asigna_alumnos.id_alumno')
             ->join('users','users.email','=','gnral_personales.correo')
             ->where('users.email','=',$pr)
-            ->where('gnral_personales.id_perfil','=',7)
+            ->whereNull('exp_asigna_generacion.deleted_at')
+            ->whereNull('exp_asigna_tutor.deleted_at')
+            ->whereNull('exp_asigna_alumnos.deleted_at')
+            ->where('exp_asigna_alumnos.estado','=',1)
             ->groupBy('exp_generacion.generacion')
-            ->select('exp_generacion.id_generacion','exp_generacion.generacion')
+            ->select('exp_generacion.id_generacion','exp_generacion.generacion','exp_asigna_generacion.grupo')
             ->get();
         //////////////////////
         $consulta=DB::table('reporte_tutor')
@@ -27,6 +32,7 @@ class ReporteController extends Controller
             ->join('gnral_personales','gnral_personales.id_personal', '=', 'exp_asigna_tutor.id_personal')
             ->join('users','users.email','=','gnral_personales.correo')
             ->where('users.email','=',$pr)
+            ->whereNull('exp_asigna_tutor.deleted_at')
             ->select('reporte_tutor.generacion','reporte_tutor.id_reporte_tutor as id','reporte_tutor.n_cuenta as cuenta','reporte_tutor.alumno as alum','reporte_tutor.appaterno as ap',
                 'reporte_tutor.apmaterno as am','reporte_tutor.tutoria_grupal as tg',
                 'reporte_tutor.tutoria_individual as ti','reporte_tutor.beca  as beca','reporte_tutor.repeticion as repe',
@@ -37,7 +43,7 @@ class ReporteController extends Controller
     }
     public function store(Request $request)
     {
-        $activa = array("activador"=>$request->activador,);
+        $activa = array("activador"=>$request->activador);
         $acti=implode($activa);
         $email=Auth::user()->email;
         $users = DB::table('users')
@@ -46,6 +52,10 @@ class ReporteController extends Controller
             ->select('gnral_personales.id_personal')
             ->get();
         DB::select('call reportes(?,?)',array($acti,$users));
+
+        $activa_d = array("actualiza"=>$request->actualiza);
+        $acti_d=implode($activa_d);
+        DB::select('call reportes_u(?,?)',array($acti_d,$users));
     }
     public function edit($id)
     {
