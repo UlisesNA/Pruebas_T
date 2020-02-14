@@ -6,7 +6,13 @@
             <div class="col-sm-1"></div>
             <div class="col-sm-9" align="center"><h5>Reporte Semestral del Tutor</h5></div>
             <div class="col-sm-1" align="right">
-                <a class="btn btn-primary" data-toggle="modal" data-target="#info1" style="background: #067a39;color: white" id="insert">+</a>
+                <div class="dropdown">
+                    <a class="btn btn-lg dropdown-toggle" id="dropdown" data-toggle="dropdown"  style="background: #067a39;color: white"><i class="fas fa-plus fa-sm"></i></a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown">
+                        <a class="dropdown-item" data-toggle="modal" data-target="#info1">Agregar</a>
+                        <a class="dropdown-item" data-toggle="modal" data-target="#info2">Actualizar</a>
+                    </div>
+                </div>
             </div>
             <div class="col-sm-1" align="left">
                 <div class="dropdown">
@@ -55,7 +61,7 @@
                                 <div class="tab-content" id="nav-tabContent">
                                     <div class="tab-pane fade show active" id="primero" role="tabpanel" aria-labelledby="primero-tab">
                                         <div class="form-group row">
-                                            <div class="col-sm-11" align="center"><h5>Alumnos de la Generación {{$dato->generacion}}</h5></div>
+                                            <div class="col-sm-11" align="center"><h5>Alumnos de la Generación {{$dato->generacion}}  Grupo: {{$dato->grupo}}</h5></div>
                                         </div>
                                     </div>
                                     <table class="table">
@@ -337,6 +343,26 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="info2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form id="reporte-update">
+                        {{ csrf_field() }}
+                        <div class="form-group">
+                            <div align="center"><h4>¿Desea actualizar los datos de sus Tutorados?</h4></div>
+                             <input type="text" id="actualiza" name="actualiza" value="1" hidden>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-primary" id="final_actualiza" data-dismiss="modal" style="color: white" onclick="reload(2);">Aceptar</a>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 <script src="{{asset('js/jquery.js')}}"></script>
 <script>
@@ -344,6 +370,19 @@
         $('#final_rep').click(function(){
             var con= true;
             var datos = $('#reporte-insert').serialize();
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "reporte",
+                method: "POST",
+                dataType: "json",
+                data:datos,
+            });
+        });
+        $('#final_actualiza').click(function(){
+            var con= true;
+            var datos = $('#reporte-update').serialize();
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

@@ -827,7 +827,6 @@
                 direcciones_img: [],
                 arreglo_graficas: ['genero', 'hf', 'hm', 'etg', 'etf', 'etm', 'enfcg', 'enfcf', 'enfcm', 'eag', 'eaf', 'eam', 'bf', 'bm'],
                 nuevos: [],
-
             },
             methods: {
                 getTut: function () {
@@ -900,6 +899,7 @@
                             chart: {
                                 type: 'column'
                             },
+
                             exporting: {
                                 url: 'http://localhost',
                             },
