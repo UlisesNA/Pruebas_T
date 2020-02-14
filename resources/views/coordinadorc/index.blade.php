@@ -16,6 +16,14 @@
             </div>
         </div>
         <div class="row" v-if="menucarrera" >
+            <div class="row">
+                <div class="col-12 pb-3">
+                    <i class="fas fa-chevron-right h5"></i>
+                    <a href="{{url('/carreras')}}" class="font-weight-bold h6 pb-1">{{\Illuminate\Support\Facades\Session::get('coordinador')>1?'CARRERAS':'CARRERA'}}</a>
+                    <i class="fas fa-chevron-right h5"></i>
+                    <a class="text-primary h6" v-if="menucarrera==true">PRINCIPAL</a>
+                </div>
+            </div>
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">@{{ nombrecarrera }}</div>
@@ -58,24 +66,36 @@
                                             <div class="row p-3">
                                                 <div class="col-12">
                                                     <div class="row">
-                                                        <div class="col-4"><button @click="getGraficas()" class="btn btn-outline-success" data-toggle="tooltip" data-placement="bottom" title="Gráficas">Estadísticas <i class="fas fa-chart-pie"></i></button></div>
+                                                        <div class="col-6 pb-3" v-if="(alumno.length>0)">
+                                                            <form id="search">
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text" id="inputGroupPrepend3"><i class="fas fa-search"></i></span>
+                                                                    </div>
+                                                                    <input class="form-control" name="query" v-model="searchQuery" placeholder="Buscar">
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                        <div class="col-2 offset-4"><button @click="getGraficas()" class="btn btn-outline-success" data-toggle="tooltip" data-placement="bottom" title="Gráficas">Estadísticas <i class="fas fa-chart-pie"></i></button></div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="tableFixHead">
-                                                <table class="table">
-                                                    <thead>
-                                                    <th>Cuenta</th>
-                                                    <th>Nombre</th>
-                                                    <th></th>
-                                                    </thead>
-                                                    <tbody>
-                                                    <tr v-for="alu in alumno">
-                                                        <td>@{{alu.cuenta}}</td>
-                                                        <td>@{{alu.apaterno}} @{{alu.amaterno}} @{{alu.nombre}}</td>
-                                                    </tr>
-                                                    </tbody>
-                                                </table>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="tableFixHead">
+                                                        <data-table class=" col-12 table table-sm" :data="alumno" :columns-to-display="gridColumns" :filter-key="searchQuery">
+                                                            <template slot="Cuenta" scope="alu">
+                                                                <div class="font-weight-bold pt-2">@{{alu.entry.cuenta}}</div>
+                                                            </template>
+                                                            <template slot="Nombre" scope="alu">
+                                                                <div class="pt-2">@{{ alu.entry.apaterno }} @{{ alu.entry.amaterno}} @{{ alu.entry.nombre }}</div>
+                                                            </template>
+                                                            <template slot="nodata">
+                                                                <div class=" alert font-weight-bold alert-danger text-center">Ningún dato encontrado</div>
+                                                            </template>
+                                                        </data-table>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="row" v-if="alumno.length==0 && clicgrupo==true">
@@ -102,6 +122,8 @@
                 this.getCarreras();
             },
             data:{
+                searchQuery: '',
+                gridColumns: ['Cuenta','Nombre'],
                 rut:"/carrera",
                 gen:'/generacionca',
                 alugrupo:'/alumnosgrupo',

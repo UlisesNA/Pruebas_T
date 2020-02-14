@@ -5,31 +5,39 @@
                 <h5 class="modal-title" id="exampleModalScrollableTitle">Asignar Alumnos</h5>
             </div>
             <div class="modal-body">
+                <form id="search1" class="pb-2" v-if="alumnosgeneracion.length>0">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="i"><i class="fas fa-search"></i></span>
+                        </div>
+                        <input class="form-control" name="query" v-model="searchQuery1" placeholder="Buscar">
+                    </div>
+                </form>
                 <div class="tableFixHeadModal" v-if="alumnosgeneracion.length>0">
-                    <table class="table">
-                        <thead>
-                        <th>
+                    <data-table class=" col-12 table table-sm" :data="alumnosgeneracion" :columns-to-display="columnasM" :filter-key="searchQuery1">
+                        <template slot="columns-to-display" scope="alu">
                             <label class="form-checkbox">
                                 <input type="checkbox" v-model="selectAll" @click="seleccionar_todos">
                                 <i class="form-icon"></i>
                             </label>
-                        </th>
-                        <th>Cuenta</th>
-                        <th>Nombre</th>
-                        </thead>
-                        <tbody>
-                        <tr v-for="alu in alumnosgeneracion">
-                            <td>
-                                <label class="form-checkbox">
-                                    <input type="checkbox" :value="alu.id_alumno" v-model="seleccionados">
-                                    <i class="form-icon"></i>
-                                </label>
-                            </td>
-                            <td>@{{alu.cuenta}}</td>
-                            <td>@{{alu.apaterno}} @{{alu.amaterno}} @{{alu.nombre}}</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                        </template>
+                        <template slot=" " scope="alu">
+                            <input type="checkbox" :value="alu.entry.id_alumno" v-model="seleccionados">
+                            <i class="form-icon"></i>
+
+                        </template>
+                        <template slot="Cuenta" scope="alu">
+                            <div class="font-weight-bold pt-2">
+                                @{{alu.entry.cuenta}}
+                            </div>
+                        </template>
+                        <template slot="Nombre" scope="alu">
+                            <div class="pt-2">@{{ alu.entry.apaterno }} @{{ alu.entry.amaterno}} @{{ alu.entry.nombre }}</div>
+                        </template>
+                        <template slot="nodata">
+                            <div class=" alert font-weight-bold alert-danger text-center">Ningún dato encontrado</div>
+                        </template>
+                    </data-table>
                 </div>
                 <div class="row" v-else>
                     <div class="col-12 text-center">

@@ -109,8 +109,15 @@ class ReporteGController extends Controller
 
         /*GRAFICAS*/
 
-        $pdf->Image($request->imagen[0],20,100,80,55,'PNG');
-        $pdf->Image($request->imagen[1],20,190,80,55,'PNG');
+        $pdf->Image($request->imagen[0],20,100,40,40,'PNG');
+        $pdf->Image($request->imagen[1],20,140,40,40,'PNG');
+        $pdf->Image($request->imagen[2],20,180,40,40,'PNG');
+        $pdf->Image($request->imagen[3],20,220,40,40,'PNG');
+        $pdf->Image($request->imagen[4],20,260,40,40,'PNG');
+        $pdf->Image($request->imagen[5],20,300,40,40,'PNG');
+        $pdf->Image($request->imagen[6],20,340,40,40,'PNG');
+        $pdf->Image($request->imagen[7],20,380,40,40,'PNG');
+        $pdf->Image($request->imagen[8],20,420,40,40,'PNG');
 
 
 
