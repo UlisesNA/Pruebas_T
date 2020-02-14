@@ -123,32 +123,29 @@ class ReporteGController extends Controller
         $pdf-> AddPage('P','Letter',360);
         //$pdf->Ln(2);
         $pdf->Cell(160,6,utf8_decode("Pertenecen a etnia indígena"),0,0,"","");
-        $pdf->Image($request->imagen[3],20,38,80,55,'PNG');
-        $pdf->Image($request->imagen[4],105,38,80,55,'PNG');
+        $pdf->Image($request->imagen[4],20,38,80,55,'PNG');
+        $pdf->Image($request->imagen[5],105,38,80,55,'PNG');
 
 
 
         $pdf->Ln(90);
         $pdf->Cell(160,6,utf8_decode("Padecen enfermedad crónica"),0,1,"","");
-        $pdf->Image($request->imagen[5],10,130,80,55,'PNG');
-        $pdf->Image($request->imagen[6],115,130,80,55,'PNG');
+        $pdf->Image($request->imagen[7],10,130,80,55,'PNG');
+        $pdf->Image($request->imagen[8],115,130,80,55,'PNG');
 
 
         $pdf-> AddPage('P','Letter',360);
         //$pdf->Ln(2);
         $pdf->Cell(160,6,utf8_decode("Estado académico"),0,0,"","");
-        $pdf->Image($request->imagen[7],10,38,80,55,'PNG');
-        $pdf->Image($request->imagen[8],105,38,80,55,'PNG');
+        $pdf->Image($request->imagen[10],10,38,80,55,'PNG');
+        $pdf->Image($request->imagen[11],105,38,80,55,'PNG');
 
 
 
         $pdf->Ln(90);
         $pdf->Cell(160,6,utf8_decode("Cuentan con beca"),0,1,"","");
-        $pdf->Image($request->imagen[9],20,130,80,55,'PNG');
-        $pdf->Image($request->imagen[10],105,130,80,55,'PNG');
-
-
-
+        $pdf->Image($request->imagen[12],20,130,80,55,'PNG');
+        $pdf->Image($request->imagen[13],105,130,80,55,'PNG');
 
         /*FIRMA*/
         $pdf->Ln(100);
