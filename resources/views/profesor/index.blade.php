@@ -809,7 +809,6 @@
                         id_alumno: "",
                     },
                     cadena: null
-
                 },
                 fin: true,
                 titulosGrafica: ['General', 'Mujeres', 'Hombres'],
@@ -836,7 +835,6 @@
                     });
                 },
                 getlista: function (grupo) {
-
                     this.idca = grupo.id_carrera;
                     this.idasigna = grupo.id_asigna_generacion;
                     this.carrera = grupo.nombre;
@@ -857,8 +855,6 @@
                         this.graficas = false;
                         this.datos = response.data;
                         this.nuevos = response.data;
-
-
                     }).catch(error => {
                     });
                 },
@@ -881,11 +877,9 @@
                         this.graficas = false;
                         this.datos1 = response.data;
                     });
-
                     //this.datos=response.data;
                 },
                 graficagenero: function () {
-
                     this.lista = false;
                     this.menugrupos = false;
                     this.graficas = true;
@@ -899,7 +893,6 @@
                             chart: {
                                 type: 'column'
                             },
-
                             exporting: {
                                 url: 'http://localhost',
                             },
@@ -950,7 +943,6 @@
                                     data: this.alumnog
                                 }
                             ],
-
                         });
                     }).catch(error => {
                     });
@@ -965,7 +957,6 @@
                                     chart: {
                                         type: 'column'
                                     },
-
                                     exporting: {
                                         url: 'http://localhost',
                                     },
@@ -977,7 +968,6 @@
                                     credits: {
                                         enabled: false
                                     },
-
                                     title: {
                                         text: this.titulosGrafica[z]
                                     },
@@ -1087,7 +1077,6 @@
                                 });
                             }
                         }
-
                     }).catch(error => {
                     });
                     axios.post(this.familiares, {
@@ -1154,7 +1143,6 @@
                                 });
                             }
                         }
-
                     }).catch(error => {
                     });
                     axios.post(this.habitos, {
@@ -1221,7 +1209,6 @@
                                 });
                             }
                         }
-
                     }).catch(error => {
                     });
                     axios.post(this.salud, {
@@ -1288,7 +1275,6 @@
                                 });
                             }
                         }
-
                     }).catch(error => {
                     });
                     axios.post(this.area, {
@@ -1357,14 +1343,10 @@
                         }
                         this.direcciones_img = [];
                         this.exportIMG(0);
-
-
                     }).catch(error => {
                     });
-
                 },
                 exportIMG: function (cont) {
-
                     if(cont<=13)
                     {
                         var obj = {}, exportUrl;
@@ -1380,7 +1362,6 @@
                             }
                         });
                     }
-
                 },
                 cambio: function (alumno, num) {
                     axios.post(this.cambios, {id_asigna_alumno: alumno.id_asigna_alumno, estado: num}).then(response => {
@@ -1452,8 +1433,6 @@
                     } else {
                         this.fin = false;
                     }
-
-
                 },
                 ver: function (alumno) {
                     console.log(alumno);
@@ -1608,7 +1587,6 @@
                         this.escala = response.data.escala;
                         this.bebidas = response.data.bebidas;
                         this.becas = response.data.becas;
-
                     });
                 },
                 borra_institucion: function () {
@@ -1674,8 +1652,6 @@
                     });
                 },
             },
-
         });
-
     </script>
 @endsection

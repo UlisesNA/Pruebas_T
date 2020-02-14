@@ -123,45 +123,29 @@ class ReporteGController extends Controller
         $pdf-> AddPage('P','Letter',360);
         //$pdf->Ln(2);
         $pdf->Cell(160,6,utf8_decode("Pertenecen a etnia indígena"),0,0,"","");
-        $pdf->Image($request->imagen[3],20,38,80,55,'PNG');
-        $pdf->Image($request->imagen[4],105,38,80,55,'PNG');
+        $pdf->Image($request->imagen[4],20,38,80,55,'PNG');
+        $pdf->Image($request->imagen[5],105,38,80,55,'PNG');
 
 
 
         $pdf->Ln(90);
         $pdf->Cell(160,6,utf8_decode("Padecen enfermedad crónica"),0,1,"","");
-        $pdf->Image($request->imagen[5],10,130,80,55,'PNG');
-        $pdf->Image($request->imagen[6],115,130,80,55,'PNG');
+        $pdf->Image($request->imagen[7],10,130,80,55,'PNG');
+        $pdf->Image($request->imagen[8],115,130,80,55,'PNG');
 
 
         $pdf-> AddPage('P','Letter',360);
         //$pdf->Ln(2);
         $pdf->Cell(160,6,utf8_decode("Estado académico"),0,0,"","");
-        $pdf->Image($request->imagen[7],10,38,80,55,'PNG');
-        $pdf->Image($request->imagen[8],105,38,80,55,'PNG');
+        $pdf->Image($request->imagen[10],10,38,80,55,'PNG');
+        $pdf->Image($request->imagen[11],105,38,80,55,'PNG');
 
 
 
         $pdf->Ln(90);
         $pdf->Cell(160,6,utf8_decode("Cuentan con beca"),0,1,"","");
-        $pdf->Image($request->imagen[9],20,130,80,55,'PNG');
-        $pdf->Image($request->imagen[10],105,130,80,55,'PNG');
-
-
-
-<<<<<<< HEAD
-        $pdf->Image($request->imagen[0],20,100,40,40,'PNG');
-        $pdf->Image($request->imagen[1],20,140,40,40,'PNG');
-        $pdf->Image($request->imagen[2],20,180,40,40,'PNG');
-        $pdf->Image($request->imagen[3],20,220,40,40,'PNG');
-        $pdf->Image($request->imagen[4],20,260,40,40,'PNG');
-        $pdf->Image($request->imagen[5],20,300,40,40,'PNG');
-        $pdf->Image($request->imagen[6],20,340,40,40,'PNG');
-        $pdf->Image($request->imagen[7],20,380,40,40,'PNG');
-        $pdf->Image($request->imagen[8],20,420,40,40,'PNG');
-=======
->>>>>>> 4c180af7c7fb5e5c6c175877edcafe644cae7b42
-
+        $pdf->Image($request->imagen[12],20,130,80,55,'PNG');
+        $pdf->Image($request->imagen[13],105,130,80,55,'PNG');
 
 
         /*FIRMA*/
