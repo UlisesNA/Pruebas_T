@@ -40,7 +40,7 @@
                                         @foreach($consulta as $con)
                                             @if($dato->generacion==$con->generacion)
                                                 <tr onmouseover="this.style.backgroundColor='#DBE7F3'" onmouseout="this.style.backgroundColor='white'">
-                                                    <td>{{$con->nombre}}</td>
+                                                    <td>{{strtoupper($con->nombre)}}</td>
                                                     <td align="center">{{$con->no_hijos-1}}</td>
                                                     @if($con->trabaja==1)
                                                         <td align="center">Si</td>
@@ -64,7 +64,7 @@
                                                     @if($con->tot_repe==NULL)
                                                         <td align="center">0</td>
                                                     @else
-                                                        <td align="center">{{$con->tot_repe}}</td>
+                                                        <td align="center">{{$con->tot_repe-1}}</td>
                                                     @endif
                                                     @if($con->materias_especial==1)
                                                         <td align="center">Si</td>
@@ -74,7 +74,7 @@
                                                     @if($con->tot_espe==NULL)
                                                         <td align="center">0</td>
                                                     @else
-                                                        <td align="center">{{$con->tot_espe}}</td>
+                                                        <td align="center">{{$con->tot_espe-1}}</td>
                                                     @endif
                                                     @if($con->id_carrera_v+$con->sexo_v+$con->id_estado_civil_v+$con->no_hijos_v+$con->no_hermanos_v+$con->enfermedad_cronica_v
                                                     +$con->trabaja_v+$con->practica_deporte_v+$con->actividades_culturales_v+$con->etnia_indigena_v+$con->lugar_nacimientos_v
