@@ -63,6 +63,13 @@
         </div>
     </div>
     @endif
+    @if(Session::has('tutor_asignado'))
+        <div class="row">
+            <div class="col-12 text-right ">
+                <h5> <span class="badge badge-info">Tutor {{ Session::get('tutor_asignado')}}     {{ Session::get('generacion_asignada')}} </span></h5>
+            </div>
+        </div>
+    @endif
     <nav class="navbar navbar-expand-md navbar-light shadow-sm subm bg-white">
         <div class="container" >
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -75,7 +82,7 @@
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ml-auto">
                     <!-- Authentication Links -->
-                    @if (Session::has('cuenta'))
+                    @if (Session::has('tutor_asignado'))
                         <li class="nav-item">
                             <a class="nav-link" href="/inicioalu">Expediente</a>
                         </li>
@@ -145,7 +152,7 @@
                                             Tutorías
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="MenuTutor">
-                                            <a class="dropdown-item" href="/tutorvista">Grupos Tutorías</a>
+                                            <a class="dropdown-item" href="/tutorvista">{{\Illuminate\Support\Facades\Session::get('tutor')>1?'Grupos Tutorías':'Grupo Tutorías'}}</a>
                                             <a class="dropdown-item" href="/eventos">Eventos</a>
                                             <a class="dropdown-item" href="/desercion">Deserción</a>
                                             <a class="dropdown-item" href="/reporte">Reporte</a>

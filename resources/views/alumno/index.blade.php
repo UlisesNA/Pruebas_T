@@ -2,17 +2,17 @@
 @section('content')
     <div class="container" id="alumnoP">
         <div class="row justify-content-center">
-            <div class="col-md-10">
+            <div class="col-md-11">
                 <div class="card">
                     <div class="card-header">Alumnos</div>
                         <div class="card-body">
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item">
-                                  <a class="nav-link" id="generacion-tab" data-toggle="tab" href="#generacion" role="tab"  aria-controls="generacion" aria-selected="false">Generacion</a>
+                                  <a class="nav-link active" id="generacion-tab" data-toggle="tab" href="#generacion" role="tab"  aria-controls="generacion" aria-selected="false">Generacion</a>
                                 </li>
                             </ul>
                             <div class="tab-content" id="myTabContent">
-                                <div class="tab-pane fade pt-4" id="generacion" role="tabpanel" aria-labelledby="generacion-tab">
+                                <div class="tab-pane fade pt-4 show active" id="generacion" role="tabpanel" aria-labelledby="generacion-tab">
                                     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                         <li class="nav-item" v-for="gen in generacion">
                                             <a class="nav-link border m-1" @click="borrarAlumno(gen.generacion)" :id="'pills-'+gen.generacion+'-tab'" data-toggle="pill" :href="'#pills-'+gen.generacion" role="tab" :aria-controls="'pills-'+gen.generacion" aria-selected="true">@{{ gen.generacion }}</a>
@@ -36,32 +36,50 @@
                                                     <a href="#"><i class="fas text-danger fa-times h4 pt-3" data-toggle="tooltip" data-placement="bottom" title="Eliminar Grupo" @click="ConfirmaBorrar(grupo)"></i></a></td>
                                                 </li>
                                             </ul>
-                                            <div class="row border-bottom-1" v-if="clicgrupo">
+                                            <div class="row border-bottom-1" >
                                                 <div class="col-12">
                                                     <div class="row pb-3 pl-3">
-                                                        <button type="button" class="btn btn-outline-success" @click="Agregar()"> <i class="fas fa-plus"></i>Asignar alumnos</button>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="tab-content" id="grupo-tabContent" v-if="(alumno.length>0)">
-                                                <div class="tableFixHead" id="LISTA">
-                                                    <table class="table">
-                                                        <thead>
-                                                            <th>Cuenta</th>
-                                                            <th>Nombre</th>
-                                                            <th></th>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr v-for="alu in alumno">
-                                                                <td>@{{alu.cuenta}}</td>
-                                                                <td>@{{alu.apaterno}} @{{alu.amaterno}} @{{alu.nombre}}</td>
-                                                                <td v-if="clicgrupo"><button class="btn btn-outline-danger" @click="ConfirmaAlumno(alu)"><i class="fas fa-times" data-toggle="tooltip" data-placement="bottom" title="Eliminar"></i></button></td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
+                                            <div class="tab-content" id="grupo-tabContent">
+                                                <div class="row">
+                                                    <div class="col-6 pb-3" v-if="(alumno.length>0)">
+                                                        <form id="search">
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text" id="inputGroupPrepend3"><i class="fas fa-search"></i></span>
+                                                                </div>
+                                                                <input class="form-control" name="query" v-model="searchQuery" placeholder="Buscar">
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div class="col-3 " v-bind:class="[alumno.length==0? 'offset-9': 'offset-3']" v-if="clicgrupo">
+                                                        <button type="button" class="btn btn-outline-success" @click="Agregar()"> <i class="fas fa-plus"></i> Asignar alumnos</button>
+                                                    </div>
+                                                </div>
+                                                <div class="row" v-if="(alumno.length>0)">
+                                                    <div class="col-12">
+                                                        <div class="tableFixHead" id="LISTA">
+                                                            <data-table class=" col-12 table table-sm" :data="alumno" :columns-to-display="gridColumns" :filter-key="searchQuery">
+                                                                <template slot="Cuenta" scope="alu">
+                                                                    <div class="font-weight-bold pt-2">@{{alu.entry.cuenta}}</div>
+                                                                </template>
+                                                                <template slot="Nombre" scope="alu">
+                                                                    <div class="pt-2">@{{ alu.entry.apaterno }} @{{ alu.entry.amaterno}} @{{ alu.entry.nombre }}</div>
+                                                                </template>
+                                                                <template slot="Acción" scope="alu">
+                                                                    <div v-if="clicgrupo"><button class="btn btn-outline-danger" @click="ConfirmaAlumno(alu.entry)"><i class="fas fa-times" data-toggle="tooltip" data-placement="bottom" title="Eliminar"></i></button></div>
+                                                                </template>
+                                                                <template slot="nodata">
+                                                                    <div class=" alert font-weight-bold alert-danger text-center">Ningún dato encontrado</div>
+                                                                </template>
+                                                            </data-table>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="row" v-if="alumno.length==0 && clicgrupo==true">
+                                            <div class="row pt-3" v-if="alumno.length==0 && clicgrupo==true">
                                                 <div class="col-12 border-danger">
                                                     <h5 class="font-weight-bold text-center alert alert-danger">No existen alumnos asignados al grupo</h5>
                                                 </div>
@@ -79,6 +97,7 @@
         @include('alumno.EliminarGrupo')
         @include('alumno.AgregarAlumnos')
         @include('alumno.EliminarAlumno')
+        <pre>@{{ seleccionados }}</pre>
         </div>
     </div>
     <script>
@@ -114,6 +133,10 @@
                 selectAll: false,
                 nombrealumno:null,
                 idalumno:null,
+                searchQuery: '',
+                searchQuery1: '',
+                columnasM:[' ','Cuenta','Nombre'],
+                gridColumns: [],
             },
             methods:{
                 getGeneracion:function () {
@@ -124,6 +147,7 @@
                 getAlumnosGrupo:function (grupo) {
                     this.idasignageneracion=grupo;
                     this.clicgrupo=true;
+                    this.gridColumns= ['Cuenta','Nombre','Acción'];
                     this.clicgeneracion=false;
                     axios.post(this.alugrupo,{generacion:grupo}).then(response=>{
                         this.alumno=response.data;
@@ -132,6 +156,7 @@
                 getAlumnosGeneracion:function(genera)
                 {
                     this.clicgrupo=false;
+                    this.gridColumns= ['Cuenta','Nombre'];
                     this.clicgeneracion=true;
                     axios.post(this.alugeneracion,{generacion:genera}).then(response=>{
                         this.alumno=response.data;

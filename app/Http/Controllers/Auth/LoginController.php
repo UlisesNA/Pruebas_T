@@ -35,7 +35,30 @@ class LoginController extends Controller
              Session::put('cuenta',$alumno[0]->cuenta);
              Session::put('nombre',mb_strtoupper(($alumno[0]->apaterno." ".$alumno[0]->amaterno." ".$alumno[0]->nombre),'utf-8'));
              Session::put('id_alumno',$alumno[0]->id_alumno);
-             return redirect('inicioalu');
+
+             $tutorasignado=DB::table('exp_asigna_alumnos')
+                 ->join('exp_asigna_tutor','exp_asigna_tutor.id_asigna_generacion','=','exp_asigna_alumnos.id_asigna_generacion')
+                 ->join('gnral_jefes_periodos','gnral_jefes_periodos.id_jefe_periodo','=','exp_asigna_tutor.id_jefe_periodo')
+                 ->join('gnral_personales','gnral_personales.id_personal','=','exp_asigna_tutor.id_personal')
+                 ->join('exp_asigna_generacion','exp_asigna_generacion.id_asigna_generacion','exp_asigna_alumnos.id_asigna_generacion')
+                 ->join('exp_generacion','exp_generacion.id_generacion','exp_asigna_generacion.id_generacion')
+                 ->select('gnral_personales.nombre','exp_generacion.generacion','exp_asigna_generacion.grupo')
+                 ->whereNull('exp_asigna_alumnos.deleted_at')
+                 ->whereNull('exp_asigna_tutor.deleted_at')
+                 ->where('gnral_jefes_periodos.id_periodo','=',Session::get('id_periodo'))
+                 ->where('exp_asigna_alumnos.id_alumno','=',Session::get('id_alumno'))
+                 ->get();
+             if (count($tutorasignado)>0)
+             {
+                 Session::put('generacion_asignada','Generación '.$tutorasignado[0]->generacion." Grupo ".$tutorasignado[0]->grupo);
+                 Session::put('tutor_asignado',$tutorasignado[0]->nombre);
+                 //dd($tutorasignado);
+                 return redirect('inicioalu');
+             }
+             else{
+                 return "No se ha asignado un tutor";
+             }
+
             // return redirect('/panel');
          }else
          if ($user->tipo_usuario==2) {
@@ -76,7 +99,7 @@ class LoginController extends Controller
 
              if(count($estutor)>0){
                  //Session::put('coordinador',AsignaCoordinador::isCoordinador());
-                 Session::put('tutor',$tutor[0]->id_personal);
+                 Session::put('tutor',count($estutor));
                  Session::put('nombre',$tutor[0]->nombre);
              }
              if(count($escoordinador)>0){
