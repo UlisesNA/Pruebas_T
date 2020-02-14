@@ -847,7 +847,6 @@
                 arreglo_graficas:['genero','hf','hm','etf','etm','enfcf','enfcm','eaf','eam','bf','bm'],
                 nuevos:[],
 
-
             },
             methods:{
                 getTut:function(){
@@ -1626,9 +1625,7 @@
                     });
                 },
                 reporte:function () {
-
                     this.direcciones_img=[];
-
                     for(let p in this.arreglo_graficas)
                     {
                         var chart = $('#'+this.arreglo_graficas[p]).highcharts();
@@ -1636,12 +1633,10 @@
                         obj.type = 'image/png';
                         obj.async = true;
                         obj.svg=chart.getSVG();
-
                         axios.post(exportUrl,obj).then(response=> {
                             this.direcciones_img.push(exportUrl+response.data);
-                           // console.log(this.direcciones_img.length);
+                            // console.log(this.direcciones_img.length);
                             if((this.direcciones_img.length-1)=='10') {
-
                                 axios.post(this.rep,{id_asigna_generacion:this.idasigna,id_carrera:this.idca,generacion:this.gen,imagen:this.direcciones_img},{
                                     headers: {
                                         'Content-Type': 'application/json',
@@ -1654,10 +1649,8 @@
                                     const objectUrl = URL.createObjectURL(blob);
                                     window.open(objectUrl)
                                 });
-
                             }
                         });
-
                     }
                 },
                 pdfAlumno:function (alumno) {
