@@ -90,6 +90,13 @@
                                                             <template slot="Nombre" scope="alu">
                                                                 <div class="pt-2">@{{ alu.entry.apaterno }} @{{ alu.entry.amaterno}} @{{ alu.entry.nombre }}</div>
                                                             </template>
+                                                            <template slot="Nombre" scope="alu">
+                                                                <div class="pt-2">@{{ alu.entry.apaterno }} @{{ alu.entry.amaterno}} @{{ alu.entry.nombre }}</div>
+                                                            </template>
+                                                            <template slot="Revalidación" scope="alu">
+                                                                <a v-if="alu.entry.revalidacion==0" class="pt-2 font-weight-bold text-secondary">No</a>
+                                                                <a v-if="alu.entry.revalidacion==1" class="pt-2 font-weight-bold text-danger">Sí</a>
+                                                            </template>
                                                             <template slot="nodata">
                                                                 <div class=" alert font-weight-bold alert-danger text-center">Ningún dato encontrado</div>
                                                             </template>
@@ -125,7 +132,7 @@
             },
             data:{
                 searchQuery: '',
-                gridColumns: ['Cuenta','Nombre'],
+                gridColumns: ['Cuenta','Nombre','Revalidación'],
                 rut:"/carrera",
                 gen:'/generacionca',
                 alugrupo:'/alumnosgrupo',

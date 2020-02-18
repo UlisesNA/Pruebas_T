@@ -44,7 +44,7 @@
                                             </div>
                                             <div class="tab-content" id="grupo-tabContent">
                                                 <div class="row">
-                                                    <div class="col-6 pb-3" v-if="(alumno.length>0)">
+                                                    <div class="col-7 pb-3" v-if="(alumno.length>0)">
                                                         <form id="search">
                                                             <div class="input-group">
                                                                 <div class="input-group-prepend">
@@ -54,7 +54,7 @@
                                                             </div>
                                                         </form>
                                                     </div>
-                                                    <div class="col-3 " v-bind:class="[alumno.length==0? 'offset-9': 'offset-3']" v-if="clicgrupo">
+                                                    <div class="col-3 " v-bind:class="[alumno.length==0? 'offset-9': 'offset-2']" v-if="clicgrupo">
                                                         <button type="button" class="btn btn-outline-success" @click="Agregar()"> <i class="fas fa-plus"></i> Asignar alumnos</button>
                                                     </div>
                                                 </div>
@@ -70,6 +70,10 @@
                                                                 </template>
                                                                 <template slot="Acción" scope="alu">
                                                                     <div v-if="clicgrupo"><button class="btn btn-outline-danger" @click="ConfirmaAlumno(alu.entry)"><i class="fas fa-times" data-toggle="tooltip" data-placement="bottom" title="Eliminar"></i></button></div>
+                                                                </template>
+                                                                <template slot="Revalidación" scope="alu">
+                                                                    <a v-if="alu.entry.revalidacion==0" @click="confirmaRevalidacion(alu.entry)" class="pt-2 cursorM"><i class="fas fa-toggle-off text-secondary h1" data-toggle="tooltip" data-placement="bottom" title="Desactivado"></i></a>
+                                                                    <a v-if="alu.entry.revalidacion==1" @click="quitaRevalidacion(alu.entry)" class="pt-2 cursorM"><i class="fas fa-toggle-on text-secondary h1" data-toggle="tooltip" data-placement="bottom" title="Activo"></i></a>
                                                                 </template>
                                                                 <template slot="nodata">
                                                                     <div class=" alert font-weight-bold alert-danger text-center">Ningún dato encontrado</div>
@@ -97,13 +101,11 @@
         @include('alumno.EliminarGrupo')
         @include('alumno.AgregarAlumnos')
         @include('alumno.EliminarAlumno')
-        <pre>@{{ seleccionados }}</pre>
+        @include('alumno.ConfirmaRevalidacion')
+        @include('alumno.QuitarRevalidacion')
         </div>
     </div>
     <script>
-        $(document).ready(function() {
-            $('#LISTA').DataTable();
-        } );
         new Vue({
             el:"#alumnoP",
             created:function(){
@@ -137,6 +139,7 @@
                 searchQuery1: '',
                 columnasM:[' ','Cuenta','Nombre'],
                 gridColumns: [],
+                id_revalida:null,
             },
             methods:{
                 getGeneracion:function () {
@@ -156,7 +159,7 @@
                 getAlumnosGeneracion:function(genera)
                 {
                     this.clicgrupo=false;
-                    this.gridColumns= ['Cuenta','Nombre'];
+                    this.gridColumns= ['Cuenta','Nombre','Revalidación'];
                     this.clicgeneracion=true;
                     axios.post(this.alugeneracion,{generacion:genera}).then(response=>{
                         this.alumno=response.data;
@@ -231,6 +234,31 @@
                         this.getAlumnosGrupo(response.data);
                         this.popToast('Eliminado correctamente');
 
+                    }).catch(error=>{ });
+                },
+                confirmaRevalidacion:function(alumno)
+                {
+                    this.nombrealumno=alumno.apaterno+" "+alumno.amaterno+" "+alumno.nombre;
+                    this.id_revalida=alumno.id_alumno;
+                    $('#confirmarevalidacion').modal('show');
+                },
+                revalidaSI:function(){
+                    axios.post('/revalida',{id_alumno:this.id_revalida}).then(response=>{
+                        $('#confirmarevalidacion').modal('hide');
+                        this.getAlumnosGeneracion(response.data);
+                        this.popToast('Asignación exitosa');
+                    }).catch(error=>{ });
+                },
+                quitaRevalidacion:function(alumno){
+                    this.nombrealumno=alumno.apaterno+" "+alumno.amaterno+" "+alumno.nombre;
+                    this.id_revalida=alumno.id_alumno;
+                    $('#quitarevalidacion').modal('show');
+                },
+                revalidaNO:function(){
+                    axios.post('/revalidano',{id_alumno:this.id_revalida}).then(response=>{
+                        $('#quitarevalidacion').modal('hide');
+                        this.getAlumnosGeneracion(response.data);
+                        this.popToast('Se ha eliminado la revalidación correctamente');
                     }).catch(error=>{ });
                 },
                 BorrarSeleccionados:function () {

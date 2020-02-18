@@ -48,11 +48,30 @@ class AlumnosController extends Controller
     {
 
         $carrera=DB::select('SELECT id_carrera from gnral_jefes_periodos where id_jefe_periodo='.Session::get('id_jefe_periodo'));
+/*CONSULTA DE ALUMNO EN REVALIDACION EN ALGUN GRUPO DE LA GENERACION
+        $alu=DB::select('SELECT gnral_alumnos.id_alumno from gnral_alumnos JOIN exp_asigna_alumnos 
+ON gnral_alumnos.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_asigna_generacion ON exp_asigna_generacion.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+WHERE gnral_alumnos.id_carrera='.$carrera[0]->id_carrera.' and exp_asigna_alumnos.id_asigna_generacion in (SELECT exp_asigna_generacion.id_asigna_generacion from exp_asigna_generacion 
+ join gnral_jefes_periodos ON gnral_jefes_periodos.id_jefe_periodo=exp_asigna_generacion.id_jefe_periodo JOIN 
+ exp_generacion ON exp_generacion.id_generacion=exp_asigna_generacion.id_generacion where exp_asigna_generacion.deleted_at is  null 
+ and exp_generacion.generacion='.$request->generacion.' AND exp_asigna_generacion.id_jefe_periodo='.Session::get('id_jefe_periodo').') and 
+ exp_asigna_generacion.deleted_at is null and exp_asigna_alumnos.deleted_at is null and gnral_alumnos.revalidacion=1');*/
 
+/*CONSULTA QUE MUESTRA LISTA GENERAL DE GENERACION CON ALUMNOS EN REVALIDACION
+        $alus=DB::select('SELECT UPPER(gnral_alumnos.nombre) as nombre, UPPER(gnral_alumnos.apaterno) as apaterno, UPPER(gnral_alumnos.amaterno) as amaterno, gnral_alumnos.cuenta,gnral_alumnos.revalidacion,gnral_alumnos.id_alumno FROM gnral_alumnos 
+ where gnral_alumnos.id_carrera='.$carrera[0]->id_carrera.' and (substring(gnral_alumnos.cuenta, 1, 4)='.$request->generacion.' or gnral_alumnos.id_alumno in (
+ SELECT gnral_alumnos.id_alumno from gnral_alumnos JOIN exp_asigna_alumnos 
+ON gnral_alumnos.id_alumno=exp_asigna_alumnos.id_alumno JOIN exp_asigna_generacion ON exp_asigna_generacion.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion 
+WHERE gnral_alumnos.id_carrera='.$carrera[0]->id_carrera.' and exp_asigna_alumnos.id_asigna_generacion in (SELECT exp_asigna_generacion.id_asigna_generacion from exp_asigna_generacion 
+ join gnral_jefes_periodos ON gnral_jefes_periodos.id_jefe_periodo=exp_asigna_generacion.id_jefe_periodo JOIN 
+ exp_generacion ON exp_generacion.id_generacion=exp_asigna_generacion.id_generacion where exp_asigna_generacion.deleted_at is  null 
+ and exp_generacion.generacion='.$request->generacion.' AND exp_asigna_generacion.id_jefe_periodo='.Session::get('id_jefe_periodo').') and 
+ exp_asigna_generacion.deleted_at is null and exp_asigna_alumnos.deleted_at is null and gnral_alumnos.revalidacion=1
+ ) ) order by gnral_alumnos.apaterno ');*/
         $alumnos=DB::table('gnral_alumnos')
             ->where('gnral_alumnos.id_carrera',$carrera[0]->id_carrera)
             ->where(DB::raw('substr(gnral_alumnos.cuenta, 1, 4)'), '=' , $request->generacion)
-            ->select(DB::raw('UPPER(gnral_alumnos.nombre) as nombre, UPPER(gnral_alumnos.apaterno) as apaterno, UPPER(gnral_alumnos.amaterno) as amaterno, gnral_alumnos.cuenta'))
+            ->select(DB::raw('UPPER(gnral_alumnos.nombre) as nombre, UPPER(gnral_alumnos.apaterno) as apaterno, UPPER(gnral_alumnos.amaterno) as amaterno, gnral_alumnos.cuenta,gnral_alumnos.revalidacion,gnral_alumnos.id_alumno'))
             ->orderBy('gnral_alumnos.apaterno','asc')
             ->get();
 
@@ -63,7 +82,7 @@ class AlumnosController extends Controller
     public function alumnosgrupo(Request $request)
     {
         $carrera=DB::select('SELECT id_carrera from gnral_jefes_periodos where id_jefe_periodo='.Session::get('id_jefe_periodo'));
-        $alumnos=DB::select('SELECT UPPER(gnral_alumnos.nombre) as nombre,UPPER(gnral_alumnos.apaterno) as apaterno, UPPER(gnral_alumnos.amaterno) as amaterno,gnral_alumnos.cuenta,gnral_alumnos.id_alumno,exp_asigna_alumnos.id_asigna_alumno  
+        $alumnos=DB::select('SELECT UPPER(gnral_alumnos.nombre) as nombre,UPPER(gnral_alumnos.apaterno) as apaterno, UPPER(gnral_alumnos.amaterno) as amaterno,gnral_alumnos.cuenta,gnral_alumnos.id_alumno,exp_asigna_alumnos.id_asigna_alumno, gnral_alumnos.revalidacion   
                         from gnral_alumnos join exp_asigna_alumnos on exp_asigna_alumnos.id_alumno=gnral_alumnos.id_alumno 
                          where gnral_alumnos.id_carrera='.$carrera[0]->id_carrera.' and exp_asigna_alumnos.id_asigna_generacion='.$request->generacion.' 
                           and exp_asigna_alumnos.deleted_at is null  order by gnral_alumnos.apaterno');
@@ -94,12 +113,12 @@ class AlumnosController extends Controller
     {
         $carrera=DB::select('SELECT id_carrera from gnral_jefes_periodos where id_jefe_periodo='.Session::get('id_jefe_periodo'));
 
-        $alumnos=DB::select('select UPPER(gnral_alumnos.nombre) as nombre, UPPER(gnral_alumnos.apaterno)as amaterno, UPPER(gnral_alumnos.amaterno) as amaterno, 
-                gnral_alumnos.cuenta,gnral_alumnos.id_alumno FROM gnral_alumnos WHERE gnral_alumnos.id_carrera='.$carrera[0]->id_carrera.' and 
-                substr(gnral_alumnos.cuenta, 1, 4)='.$request->generacion.' and gnral_alumnos.id_alumno NOT IN (SELECT exp_asigna_alumnos.id_alumno 
-                from exp_asigna_alumnos WHERE exp_asigna_alumnos.deleted_at is null and exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.') 
-                 AND gnral_alumnos.id_alumno NOT IN (SELECT exp_asigna_alumnos.id_alumno 
-                from exp_asigna_alumnos WHERE exp_asigna_alumnos.deleted_at is null) ORDER BY gnral_alumnos.apaterno ');
+        $alumnos=DB::select('select UPPER(gnral_alumnos.nombre) as nombre, UPPER(gnral_alumnos.apaterno)as apaterno, UPPER(gnral_alumnos.amaterno) as amaterno, 
+                  gnral_alumnos.cuenta,gnral_alumnos.id_alumno FROM gnral_alumnos WHERE gnral_alumnos.id_carrera='.$carrera[0]->id_carrera.' and 
+                  (substr(gnral_alumnos.cuenta, 1, 4)='.$request->generacion.' OR gnral_alumnos.revalidacion=1) and gnral_alumnos.id_alumno NOT IN (SELECT exp_asigna_alumnos.id_alumno 
+                  from exp_asigna_alumnos WHERE exp_asigna_alumnos.deleted_at is null and exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.') 
+                   AND gnral_alumnos.id_alumno NOT IN (SELECT exp_asigna_alumnos.id_alumno 
+                  from exp_asigna_alumnos WHERE exp_asigna_alumnos.deleted_at is null) ORDER BY gnral_alumnos.apaterno ');
 
         return $alumnos;
     }
@@ -128,6 +147,29 @@ class AlumnosController extends Controller
 
         return $request->id_asigna_generacion;
 
+    }
+    public function revalidacionSI(Request $request)
+    {
+        $rev=DB::update('UPDATE gnral_alumnos set revalidacion=1 where gnral_alumnos.id_alumno='.$request->id_alumno);
+        $gen=DB::select('SELECT SUBSTRING(gnral_alumnos.cuenta,1,4) FROM gnral_alumnos where id_alumno='.$request->id_alumno);
+        return $gen;
+    }
+    public function revalidacionNO(Request $request)
+    {
+
+
+        $idgen=DB::select('SELECT exp_asigna_alumnos.id_asigna_alumno FROM exp_asigna_generacion 
+JOIN exp_asigna_alumnos ON  exp_asigna_alumnos.id_asigna_generacion=exp_asigna_generacion.id_asigna_generacion
+where exp_asigna_generacion.id_jefe_periodo='.Session::get('id_jefe_periodo').' and exp_asigna_alumnos.id_alumno='.$request->id_alumno.' 
+and exp_asigna_alumnos.deleted_at is null and exp_asigna_generacion.deleted_at is null');
+
+        if(count($idgen)==1)
+        {
+            Exp_asigna_alumnos::find($idgen[0]->id_asigna_alumno)->delete();
+        }
+        $rev=DB::update('UPDATE gnral_alumnos set revalidacion=0 where gnral_alumnos.id_alumno='.$request->id_alumno);
+        $gen=DB::select('SELECT SUBSTRING(gnral_alumnos.cuenta,1,4) FROM gnral_alumnos where id_alumno='.$request->id_alumno);
+        return $gen;
     }
     /**
      * Show the form for creating a new resource.

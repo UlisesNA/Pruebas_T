@@ -143,7 +143,6 @@ class ReporteGController extends Controller
         $pdf->Image($request->imagen[12],20,130,80,55,'PNG');
         $pdf->Image($request->imagen[13],105,130,80,55,'PNG');
 
-
         /*FIRMA*/
         $pdf->Ln(100);
         $pdf->SetFont('Times', 'B', 9);

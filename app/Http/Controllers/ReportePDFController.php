@@ -188,7 +188,7 @@ class ReportePDFController extends Controller
          for ($i = 0; $i < count($consulta); $i++) {
              $pdf->Cell(15, 4, "" . utf8_decode($consulta[$i]->n_cuenta), 1, 0, "C");
              $pdf->SetFont('Arial', 'B', 5);
-             $pdf->Cell(45, 4, utf8_decode($consulta[$i]->alumno) . " " . utf8_decode($consulta[$i]->appaterno) . " " . utf8_decode($consulta[$i]->apmaterno), 1, 0, "L", "true");
+             $pdf->Cell(45, 4, utf8_decode(strtoupper($consulta[$i]->alumno)) . " " . utf8_decode(strtoupper($consulta[$i]->appaterno)) . " " . utf8_decode(strtoupper($consulta[$i]->apmaterno)), 1, 0, "L", "true");
              $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_grupal), 1, 0, "C");
              $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_individual), 1, 0, "C");
              $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->beca), 1, 0, "C");
@@ -399,7 +399,7 @@ class ReportePDFController extends Controller
         for ($i = 0; $i < count($consulta); $i++) {
             $pdf->Cell(15, 4, "" . utf8_decode($consulta[$i]->n_cuenta), 1, 0, "C");
             $pdf->SetFont('Arial', 'B', 5);
-            $pdf->Cell(45, 4, utf8_decode($consulta[$i]->alumno) . " " . utf8_decode($consulta[$i]->appaterno) . " " . utf8_decode($consulta[$i]->apmaterno), 1, 0, "L", "true");
+            $pdf->Cell(45, 4, utf8_decode(strtoupper($consulta[$i]->alumno)) . " " . utf8_decode(strtoupper($consulta[$i]->appaterno)) . " " . utf8_decode(strtoupper($consulta[$i]->apmaterno)), 1, 0, "L", "true");
             $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_grupal), 1, 0, "C");
             $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_individual), 1, 0, "C");
             $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->beca), 1, 0, "C");
@@ -610,7 +610,7 @@ class ReportePDFController extends Controller
         for ($i = 0; $i < count($consulta); $i++) {
             $pdf->Cell(15, 4, "" . utf8_decode($consulta[$i]->n_cuenta), 1, 0, "C");
             $pdf->SetFont('Arial', 'B', 5);
-            $pdf->Cell(45, 4, utf8_decode($consulta[$i]->alumno) . " " . utf8_decode($consulta[$i]->appaterno) . " " . utf8_decode($consulta[$i]->apmaterno), 1, 0, "L", "true");
+            $pdf->Cell(45, 4, utf8_decode(strtoupper($consulta[$i]->alumno)) . " " . utf8_decode(strtoupper($consulta[$i]->appaterno)) . " " . utf8_decode(strtoupper($consulta[$i]->apmaterno)), 1, 0, "L", "true");
             $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_grupal), 1, 0, "C");
             $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_individual), 1, 0, "C");
             $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->beca), 1, 0, "C");
@@ -821,7 +821,7 @@ class ReportePDFController extends Controller
         for ($i = 0; $i < count($consulta); $i++) {
             $pdf->Cell(15, 4, "" . utf8_decode($consulta[$i]->n_cuenta), 1, 0, "C");
             $pdf->SetFont('Arial', 'B', 5);
-            $pdf->Cell(45, 4, utf8_decode($consulta[$i]->alumno) . " " . utf8_decode($consulta[$i]->appaterno) . " " . utf8_decode($consulta[$i]->apmaterno), 1, 0, "L", "true");
+            $pdf->Cell(45, 4, utf8_decode(strtoupper($consulta[$i]->alumno)) . " " . utf8_decode(strtoupper($consulta[$i]->appaterno)) . " " . utf8_decode(strtoupper($consulta[$i]->apmaterno)), 1, 0, "L", "true");
             $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_grupal), 1, 0, "C");
             $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_individual), 1, 0, "C");
             $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->beca), 1, 0, "C");
@@ -1032,7 +1032,7 @@ class ReportePDFController extends Controller
         for ($i = 0; $i < count($consulta); $i++) {
             $pdf->Cell(15, 4, "" . utf8_decode($consulta[$i]->n_cuenta), 1, 0, "C");
             $pdf->SetFont('Arial', 'B', 5);
-            $pdf->Cell(45, 4, utf8_decode($consulta[$i]->alumno) . " " . utf8_decode($consulta[$i]->appaterno) . " " . utf8_decode($consulta[$i]->apmaterno), 1, 0, "L", "true");
+            $pdf->Cell(45, 4, utf8_decode(strtoupper($consulta[$i]->alumno)) . " " . utf8_decode(strtoupper($consulta[$i]->appaterno)) . " " . utf8_decode(strtoupper($consulta[$i]->apmaterno)), 1, 0, "L", "true");
             $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_grupal), 1, 0, "C");
             $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_individual), 1, 0, "C");
             $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->beca), 1, 0, "C");
@@ -1243,7 +1243,7 @@ class ReportePDFController extends Controller
         for ($i = 0; $i < count($consulta); $i++) {
             $pdf->Cell(15, 4, "" . utf8_decode($consulta[$i]->n_cuenta), 1, 0, "C");
             $pdf->SetFont('Arial', 'B', 5);
-            $pdf->Cell(45, 4, utf8_decode($consulta[$i]->alumno) . " " . utf8_decode($consulta[$i]->appaterno) . " " . utf8_decode($consulta[$i]->apmaterno), 1, 0, "L", "true");
+            $pdf->Cell(45, 4, utf8_decode(strtoupper($consulta[$i]->alumno)) . " " . utf8_decode(strtoupper($consulta[$i]->appaterno)) . " " . utf8_decode(strtoupper($consulta[$i]->apmaterno)), 1, 0, "L", "true");
             $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_grupal), 1, 0, "C");
             $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_individual), 1, 0, "C");
             $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->beca), 1, 0, "C");
@@ -1454,7 +1454,7 @@ class ReportePDFController extends Controller
         for ($i = 0; $i < count($consulta); $i++) {
             $pdf->Cell(15, 4, "" . utf8_decode($consulta[$i]->n_cuenta), 1, 0, "C");
             $pdf->SetFont('Arial', 'B', 5);
-            $pdf->Cell(45, 4, utf8_decode($consulta[$i]->alumno) . " " . utf8_decode($consulta[$i]->appaterno) . " " . utf8_decode($consulta[$i]->apmaterno), 1, 0, "L", "true");
+            $pdf->Cell(45, 4, utf8_decode(strtoupper($consulta[$i]->alumno)) . " " . utf8_decode(strtoupper($consulta[$i]->appaterno)) . " " . utf8_decode(strtoupper($consulta[$i]->apmaterno)), 1, 0, "L", "true");
             $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_grupal), 1, 0, "C");
             $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_individual), 1, 0, "C");
             $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->beca), 1, 0, "C");
@@ -1665,7 +1665,7 @@ class ReportePDFController extends Controller
         for ($i = 0; $i < count($consulta); $i++) {
             $pdf->Cell(15, 4, "" . utf8_decode($consulta[$i]->n_cuenta), 1, 0, "C");
             $pdf->SetFont('Arial', 'B', 5);
-            $pdf->Cell(45, 4, utf8_decode($consulta[$i]->alumno) . " " . utf8_decode($consulta[$i]->appaterno) . " " . utf8_decode($consulta[$i]->apmaterno), 1, 0, "L", "true");
+            $pdf->Cell(45, 4, utf8_decode(strtoupper($consulta[$i]->alumno)) . " " . utf8_decode(strtoupper($consulta[$i]->appaterno)) . " " . utf8_decode(strtoupper($consulta[$i]->apmaterno)), 1, 0, "L", "true");
             $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_grupal), 1, 0, "C");
             $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_individual), 1, 0, "C");
             $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->beca), 1, 0, "C");

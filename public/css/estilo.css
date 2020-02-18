@@ -27,6 +27,10 @@
     height: 400px;
 }
 
+.cursorM{
+    cursor:pointer;
+}
+
 /*TABLA SCROLL 100%*/
 .tableFixHead{ overflow-y: auto; height: 600px; }
 .tableFixHead thead th { position: sticky; top: 0; }
@@ -35,7 +39,7 @@
 .tableFixHead th     { background:#eee; }
 
 /*TABLA SCROLL MODAL 100%*/
-.tableFixHeadModal{ overflow-y: auto; height: 450px; }
+.tableFixHeadModal{ overflow-y: auto; height: 370px; }
 .tableFixHeadModal thead th { position: sticky; top: 0; }
 .tableFixHeadModal table  { border-collapse: collapse; width: 100%; }
 .tableFixHeadModal th, td { padding: 8px 16px; }
