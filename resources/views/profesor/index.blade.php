@@ -658,6 +658,7 @@
                 graficas: false,
                 carrera: "",
                 gen: "",
+                gene: "",
                 idca: null,
                 idasigna: null,
                 content_modal: "",
@@ -839,6 +840,7 @@
                     this.idasigna = grupo.id_asigna_generacion;
                     this.carrera = grupo.nombre;
                     this.gen = " GENERACIÓN " + grupo.generacion + " GRUPO " + grupo.grupo;
+                    this.gene = " GENERACIÓN " + grupo.generacion;
                     this.getAlumnos();
                     //this.getAlumnos1();
                 },
@@ -1623,6 +1625,7 @@
                         id_asigna_generacion: this.idasigna,
                         id_carrera: this.idca,
                         generacion: this.gen,
+                        genera:this.gene,
                         imagen: this.direcciones_img
                     }, {
                         headers: {

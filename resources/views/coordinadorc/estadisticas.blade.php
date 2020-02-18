@@ -3,8 +3,8 @@
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header alert alert-primary">
-                <h4 class=" font-weight-bold modal-title col-10">Estadísticas</h4>
-                <button @click="reporte()" target="_blank" class="btn text-white btn-danger m-1" ><i class="fas fa-file-pdf"></i></button>
+                <h4 class="font-weight-bold modal-title col-10">Estadísticas</h4>
+                <button target="_blank" class="btn text-white btn-danger" ><i class="fas fa-file-pdf"></i></button>
                 <button type="button col-1" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

@@ -27,8 +27,9 @@
                     </div>
                 </div>
             </div>
-            @include('coordina_inst.estadisticas')
+
         </div>
+        @include('coordina_inst.estadisticas')
     </div>
 
     <script>
@@ -73,10 +74,12 @@
                 grafinshab:'/grafinstitut/habitos',
                 grafinssal:'/grafinstitut/salud',
                 grafinsare:'/grafinstitut/area',
+                carreraidg: "pdf/carreraid",
                 alumnog:[],
                 generocarrera:[],
                 inst:false,
                 rep:"pdf/reporte",
+                instit: "pdf/institucional",
                 direcciones_img:[],
                 arreglo_graficas:['genero','hf','hm','etg','etf','etm','enfcg','enfcf','enfcm','eag','eaf','eam','bf','bm'],
 
@@ -710,7 +713,10 @@
                                 });
                             }
                         }
+                        this.direcciones_img = [];
+                        this.exportIMG(0);
                     }).catch(error=>{ });
+                    /*m1*/
                     $('#modalgraficas').modal('show');
 
                 },
@@ -1103,14 +1109,32 @@
                                 });
                             }
                         }
+                        this.direcciones_img = [];
+                        this.exportIMG(0);
                     }).catch(error=>{ });
+                    /*m2*/
                     $('#modalgraficas').modal('show');
 
                 },
-
-
+                exportIMG: function (cont) {
+                    if(cont<=13)
+                    {
+                        var obj = {}, exportUrl;
+                        var chart = $('#' + this.arreglo_graficas[cont]).highcharts();
+                        exportUrl = 'http://localhost:8004/';
+                        obj.type = 'image/png';
+                        obj.async = true;
+                        obj.svg = chart.getSVG();
+                        axios.post(exportUrl, obj).then(response => {
+                            this.direcciones_img[cont] = exportUrl + response.data;
+                            if (cont <=13) {
+                                this.exportIMG(cont + 1)
+                            }
+                        });
+                    }
+                },
             },
-            reporte:function () {
+           /* reporte:function () {
 
                 this.direcciones_img=[];
 
@@ -1144,7 +1168,7 @@
                     });
 
                 }
-            },
+            },*/
 
         });
     </script>

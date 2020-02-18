@@ -106,11 +106,13 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
+                    @include('coordinadorc.estadisticas')
                 </div>
             </div>
-            @include('coordinadorc.estadisticas')
+          <!--1-->
 
         </div>
     </div>
@@ -136,7 +138,7 @@
                 nombrecarrera:null,
                 clicgrupo:false,
                 id_asigna:null,
-                generacion:null,
+                generacion: null,
                 id_carrera: null,
                 titulosGrafica:['General','Mujeres','Hombres'],
                 general:[
@@ -179,6 +181,9 @@
                 grafcasal:'/grafcarrera/salud',
                 grafcaare:'/grafcarrera/area',
                 rep:"pdf/reporte",
+                generac: "pdf/generacionn",
+                carreracor: "pdf/carreraco",
+                grupocor: "pdf/grupoco",
                 direcciones_img:[],
                 arreglo_graficas:['genero','hf','hm','etg','etf','etm','enfcg','enfcf','enfcm','eag','eaf','eam','bf','bm'],
 
@@ -663,7 +668,10 @@
                                     });
                                 }
                             }
+                            this.direcciones_img = [];
+                            this.exportIMG(0);
                         }).catch(error=>{ });
+                        /*m1*/
                         $('#modalgraficas').modal('show');
                     } else if(this.clicgrupo==false)
                     {
@@ -1112,7 +1120,10 @@
                                     });
                                 }
                             }
+                            this.direcciones_img = [];
+                            this.exportIMG(0);
                         }).catch(error=>{ });
+                        /*m2*/
                         $('#modalgraficas').modal('show');
                     }
 
@@ -1564,14 +1575,53 @@
                                 });
                             }
                         }
+                        this.direcciones_img = [];
+                        this.exportIMG(0);
                     }).catch(error=>{ });
+                    /*m3*/
                     $('#modalgraficas').modal('show');
 
+                },
+                exportIMG: function (cont) {
+                    if(cont<=13)
+                    {
+                        var obj = {}, exportUrl;
+                        var chart = $('#' + this.arreglo_graficas[cont]).highcharts();
+                        exportUrl = 'http://localhost:8004/';
+                        obj.type = 'image/png';
+                        obj.async = true;
+                        obj.svg = chart.getSVG();
+                        axios.post(exportUrl, obj).then(response => {
+                            this.direcciones_img[cont] = exportUrl + response.data;
+                            if (cont <=13) {
+                                this.exportIMG(cont + 1)
+                            }
+                        });
+                    }
                 },
                 borrarAlumno:function (nombre) {
                     this.alumno=[];
                     this.clicgrupo=false;
                 },
+                carreraco: function () {
+                    axios.post(this.carreracor, {
+                        id_carrera: this.id_carrera,
+                        generacion: this.generacion,
+                        imagen: this.direcciones_img
+                    }, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/pdf'
+                        },
+                        responseType: "blob"
+                    }).then(response => {
+                        // console.log(response.data);
+                        const blob = new Blob([response.data], {type: 'application/pdf'});
+                        const objectUrl = URL.createObjectURL(blob);
+                        window.open(objectUrl)
+                    });
+                },
+/*
                 reporte:function () {
 
                     this.direcciones_img=[];
@@ -1607,7 +1657,7 @@
 
                     }
                 },
-
+*/
 
             },
 
