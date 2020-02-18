@@ -110,11 +110,13 @@ class LoginController extends Controller
              if(count($escoordinadorgeneral)>0){
                  //Session::put('coordinador',AsignaCoordinador::isCoordinador());
                  Session::put('coordinadorgeneral',count($escoordinadorgeneral));
+                 Session::put('PuestoTutorias','coordinadorgeneral');
                  Session::put('nombre',$tutor[0]->nombre);
              }
              if($tutor[0]->id_departamento==4){
                  //Session::put('coordinador',AsignaCoordinador::isCoordinador());
                  Session::put('desarrollo',$tutor[0]->id_personal);
+                 Session::put('PuestoTutorias','desarrollo');
                  Session::put('nombre',$tutor[0]->nombre);
                  //Session::put('departamento',$tutor[0]->id-);
              }

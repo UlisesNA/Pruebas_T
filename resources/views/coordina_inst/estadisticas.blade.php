@@ -4,7 +4,8 @@
         <div class="modal-content">
             <div class="modal-header alert alert-primary">
                 <h4 class=" font-weight-bold modal-title col-10">Estadísticas</h4>
-                <button target="_blank" class="btn text-white btn-danger offset-1" ><i class="fas fa-file-pdf"></i></button>
+                <button target="_blank" v-if="inst==false" @click="reporte('ReporteCarrera')" class="btn text-white btn-danger offset-1" ><i class="fas fa-file-pdf"></i></button>
+                <button target="_blank" v-if="inst==true" @click="reporte('ReporteInstitucional')" class="btn text-white btn-danger offset-1" ><i class="fas fa-file-pdf"></i></button>
                 <button type="button col-1" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

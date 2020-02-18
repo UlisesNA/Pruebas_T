@@ -1622,11 +1622,10 @@
                 },
                 reporte: function () {
                     axios.post(this.rep, {
-                        id_asigna_generacion: this.idasigna,
                         id_carrera: this.idca,
-                        generacion: this.gen,
-                        genera:this.gene,
-                        imagen: this.direcciones_img
+                        generacion_grupo: this.gen,
+                        imagen: this.direcciones_img,
+                        cargo:"tutor"
                     }, {
                         headers: {
                             'Content-Type': 'application/json',

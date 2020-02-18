@@ -188,11 +188,9 @@
                 grafcasal:'/grafcarrera/salud',
                 grafcaare:'/grafcarrera/area',
                 rep:"pdf/reporte",
-                generac: "pdf/generacionn",
-                carreracor: "pdf/carreraco",
-                grupocor: "pdf/grupoco",
                 direcciones_img:[],
                 arreglo_graficas:['genero','hf','hm','etg','etf','etm','enfcg','enfcf','enfcm','eag','eaf','eam','bf','bm'],
+                reporteGen:false,
 
             },
             methods:{
@@ -214,14 +212,17 @@
 
                     this.clicgrupo=true;
                     this.id_asigna=grupo;
+                    this.reporteGen=false;
                     axios.post(this.alugrupo,{generacion:grupo}).then(response=>{
                         this.alumno=response.data;
                     }).catch(error=>{ });
                 },
                 getAlumnosGeneracion:function(genera)
                 {
+
                     this.clicgrupo=false;
                     this.generacion=genera;
+                    this.reporteGen=false;
                     axios.post(this.alugeneracion,{generacion:genera}).then(response=>{
                         this.alumno=response.data;
                     }).catch(error=>{ });
@@ -1137,6 +1138,7 @@
                 },
                 getGraficasCarrera:function ()
                 {
+                    this.reporteGen=true;
                     axios.post(this.grafcagene,{id_carrera:this.id_carrera}).then(response=>{
                         this.alumnog=response.data;
                         Highcharts.chart('genero', {
@@ -1610,62 +1612,71 @@
                     this.alumno=[];
                     this.clicgrupo=false;
                 },
-                carreraco: function () {
-                    axios.post(this.carreracor, {
-                        id_carrera: this.id_carrera,
-                        generacion: this.generacion,
-                        imagen: this.direcciones_img
-                    }, {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/pdf'
-                        },
-                        responseType: "blob"
-                    }).then(response => {
-                        // console.log(response.data);
-                        const blob = new Blob([response.data], {type: 'application/pdf'});
-                        const objectUrl = URL.createObjectURL(blob);
-                        window.open(objectUrl)
-                    });
-                },
-/*
-                reporte:function () {
-
-                    this.direcciones_img=[];
-
-                    for(let p in this.arreglo_graficas)
+                reporte: function (tipoR) {
+                    if(tipoR=='ReporteGeneracion')
                     {
-                        var chart = $('#'+this.arreglo_graficas[p]).highcharts();
-                        var obj = {}, exportUrl = 'http://localhost:8004/';
-                        obj.type = 'image/png';
-                        obj.async = true;
-                        obj.svg=chart.getSVG();
-
-                        axios.post(exportUrl,obj).then(response=> {
-                            this.direcciones_img.push(exportUrl+response.data);
-                            // console.log(this.direcciones_img.length);
-                            if((this.direcciones_img.length-1)=='13') {
-
-                                axios.post(this.rep,{id_asigna_generacion:this.idasigna,id_carrera:this.idca,generacion:this.gen,imagen:this.direcciones_img},{
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'Accept': 'application/pdf'
-                                    },
-                                    responseType: "blob"
-                                }).then(response=>{
-                                    // console.log(response.data);
-                                    const blob = new Blob([response.data], { type: 'application/pdf' });
-                                    const objectUrl = URL.createObjectURL(blob);
-                                    window.open(objectUrl)
-                                });
-
-                            }
+                        axios.post(this.rep, {
+                            id_carrera: this.id_carrera,
+                            generacion_grupo: null,
+                            generacion:this.generacion,
+                            imagen: this.direcciones_img,
+                            cargo:"coordinadorc"
+                        }, {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/pdf'
+                            },
+                            responseType: "blob"
+                        }).then(response => {
+                            // console.log(response.data);
+                            const blob = new Blob([response.data], {type: 'application/pdf'});
+                            const objectUrl = URL.createObjectURL(blob);
+                            window.open(objectUrl)
                         });
-
+                    }
+                    else if(tipoR=='ReporteGrupo')
+                    {
+                        axios.post(this.rep, {
+                            id_carrera: this.id_carrera,
+                            generacion_grupo: this.id_asigna,
+                            generacion:null,
+                            imagen: this.direcciones_img,
+                            cargo:"coordinadorc"
+                        }, {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/pdf'
+                            },
+                            responseType: "blob"
+                        }).then(response => {
+                            // console.log(response.data);
+                            const blob = new Blob([response.data], {type: 'application/pdf'});
+                            const objectUrl = URL.createObjectURL(blob);
+                            window.open(objectUrl)
+                        });
+                    }
+                    else if(tipoR=='ReporteCarrera')
+                    {
+                        axios.post(this.rep, {
+                            id_carrera: this.id_carrera,
+                            generacion_grupo: null,
+                            generacion:null,
+                            imagen: this.direcciones_img,
+                            cargo:"coordinadorc"
+                        }, {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/pdf'
+                            },
+                            responseType: "blob"
+                        }).then(response => {
+                            // console.log(response.data);
+                            const blob = new Blob([response.data], {type: 'application/pdf'});
+                            const objectUrl = URL.createObjectURL(blob);
+                            window.open(objectUrl)
+                        });
                     }
                 },
-*/
-
             },
 
         });
