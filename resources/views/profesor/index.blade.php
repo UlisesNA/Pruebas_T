@@ -728,6 +728,7 @@
                 graficas: false,
                 carrera: "",
                 gen: "",
+                gene: "",
                 idca: null,
                 idasigna: null,
                 content_modal: "",
@@ -933,6 +934,7 @@
                     this.idasigna = grupo.id_asigna_generacion;
                     this.carrera = grupo.nombre;
                     this.gen = " GENERACIÓN " + grupo.generacion + " GRUPO " + grupo.grupo;
+                    this.gene = " GENERACIÓN " + grupo.generacion;
                     this.getAlumnos();
                     //this.getAlumnos1();
                 },
@@ -1746,10 +1748,10 @@
                 },
                 reporte: function () {
                     axios.post(this.rep, {
-                        id_asigna_generacion: this.idasigna,
                         id_carrera: this.idca,
-                        generacion: this.gen,
-                        imagen: this.direcciones_img
+                        generacion_grupo: this.gen,
+                        imagen: this.direcciones_img,
+                        cargo:"tutor"
                     }, {
                         headers: {
                             'Content-Type': 'application/json',

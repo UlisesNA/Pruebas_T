@@ -18,7 +18,7 @@ class Exp_asigna_generacion extends Model
 
     function getGeneracion()
     {
-        return $this->hasMany('App\Exp_generacion','id_generacion','id_generacion');
+        return $this->hasOne('App\Exp_generacion','id_generacion','id_generacion');
     }
     public static function getGeneraciont(){
 

@@ -3,8 +3,10 @@
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header alert alert-primary">
-                <h4 class=" font-weight-bold modal-title col-10">Estadísticas</h4>
-                <button @click="reporte()" target="_blank" class="btn text-white btn-danger m-1" ><i class="fas fa-file-pdf"></i></button>
+                <h4 class="font-weight-bold modal-title col-10">Estadísticas</h4>
+                <button target="_blank" class="btn text-white btn-danger" v-if="(clicgrupo==false && reporteGen==false)" @click="reporte('ReporteGeneracion')"  ><i class="fas fa-file-pdf"></i></button>
+                <button target="_blank" class="btn text-white btn-danger" v-if="(clicgrupo==true && reporteGen==false)" @click="reporte('ReporteGrupo')" ><i class="fas fa-file-pdf"></i></button>
+                <button target="_blank" class="btn text-white btn-danger" v-if="reporteGen==true" @click="reporte('ReporteCarrera')" ><i class="fas fa-file-pdf"></i></button>
                 <button type="button col-1" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

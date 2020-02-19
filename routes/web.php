@@ -190,6 +190,7 @@ Route::get("pdf/all","PdfController@pdf_all")->name("pdf_all");
 Route::post("pdf/lista","PdfController@pdf_lista")->name("pdf_lista");
 Route::post("pdf/alumno","PdfController@pdf_alumno")->name("pdf_alumno");
 Route::post("pdf/reporte","ReporteGController@pdf_reporte")->name("pdf_reporte");
+Route::post("pdf/carreraco","ReporteGController@pdf_carreraco")->name("pdf/carreraco");
 Route::get("reporte_pdf","ReportePDFController@reporte_pdf")->name("reporte_pdf");
 Route::get("reporte_pdf2","ReportePDFController@reporte_pdf2")->name("reporte_pdf2");
 Route::get("reporte_pdf3","ReportePDFController@reporte_pdf3")->name("reporte_pdf3");
