@@ -22,6 +22,7 @@ class ProfesorController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+
     public function alumnos(Request $request)
     {
         //dd($request);
@@ -48,18 +49,33 @@ class ProfesorController extends Controller
         return $datos;
 
     }
-    public function alumnos1(Request $request)
+    public function planeacion(Request $request)
     {
-        return (DB::select('SELECT gnral_carreras.nombre as carre,gnral_semestres.descripcion as sem,gnral_grupos.grupo as grup,gnral_alumnos.*
-                                    FROM gnral_carreras,gnral_semestres,gnral_alumnos,gnral_grupos
-                                    WHERE gnral_carreras.id_carrera=gnral_alumnos.id_carrera
-                                    and gnral_semestres.id_semestre=gnral_alumnos.id_semestre
-                                    and gnral_grupos.id_grupo=gnral_alumnos.grupo
-                                    and gnral_alumnos.id_alumno='.$request->id_alumno));
+        $plan=DB::select('SELECT plan_actividades.id_plan_actividad,plan_actividades.fi_actividad,
+plan_actividades.ff_actividad,plan_actividades.desc_actividad,
+plan_actividades.objetivo_actividad,plan_asigna_planeacion_tutor.id_estrategia,
+plan_asigna_planeacion_tutor.estrategia,plan_asigna_planeacion_tutor.id_sugerencia,plan_asigna_planeacion_tutor.sugerencia,plan_asigna_planeacion_tutor.requiere_evidencia,
+plan_asigna_planeacion_tutor.id_asigna_planeacion_tutor,plan_asigna_planeacion_tutor.desc_actividad_cambio,
+plan_asigna_planeacion_tutor.objetivo_actividad_cambio
+FROM  plan_asigna_planeacion_actividad
+JOIN plan_actividades ON  plan_actividades.id_plan_actividad=plan_asigna_planeacion_actividad.id_plan_actividad
+JOIN plan_planeacion ON plan_planeacion.id_planeacion=plan_asigna_planeacion_actividad.id_planeacion
+JOIN exp_generacion ON exp_generacion.id_generacion=plan_planeacion.id_generacion
+JOIN plan_asigna_planeacion_tutor ON plan_asigna_planeacion_tutor.id_asigna_planeacion_actividad=plan_asigna_planeacion_actividad.id_asigna_planeacion_actividad
+JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_tutor=plan_asigna_planeacion_tutor.id_asigna_tutor
+JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
+JOIN exp_asigna_generacion ON exp_asigna_generacion.id_generacion=plan_planeacion.id_generacion
+WHERE plan_asigna_planeacion_actividad.id_estado=1
+    AND gnral_personales.tipo_usuario='.Auth::user()->id.'
+    AND exp_asigna_generacion.id_asigna_generacion='.$request->id_asigna_generacion);
+
+
+        return $plan;
     }
     public  function grupos()
     {
-        $grupos=DB::select('select gnral_carreras.id_carrera, gnral_carreras.nombre,exp_generacion.generacion, 
+        //dd(Session::get('id_periodo'));
+        $datos=DB::select('select gnral_carreras.id_carrera, gnral_carreras.nombre,exp_generacion.generacion, 
                 exp_asigna_generacion.grupo, exp_asigna_generacion.id_asigna_generacion from gnral_jefes_periodos
                 JOIN exp_asigna_tutor on exp_asigna_tutor.id_jefe_periodo=gnral_jefes_periodos.id_jefe_periodo JOIN
                 gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal JOIN gnral_carreras on
@@ -69,7 +85,7 @@ class ProfesorController extends Controller
                 gnral_jefes_periodos.id_periodo='.Session::get('id_periodo').' and 
                 exp_asigna_tutor.deleted_at is null and gnral_personales.tipo_usuario='.Auth::user()->id);
 
-        return $grupos;
+        return $datos;
     }
     public function cambio(Request $request)
     {

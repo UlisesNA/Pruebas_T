@@ -179,6 +179,7 @@
                                             <div class="dropdown-menu" aria-labelledby="MenuCoordinadorGeneral">
                                                 <a class="dropdown-item" href="/planeacioncoorgen">Planeación</a>
                                                 <a class="dropdown-item" href="/estadisticas/carreras">Carreras</a>
+                                                <a class="dropdown-item" href="/revision">Revisar Planeación</a>
                                             </div>
                                         </div>
                                     @endif
