@@ -114,7 +114,9 @@
                                                     </form>
                                                 </div>
                                                 <div class="col-1 offset-5">
-                                                    <button @click="pdf()" target="_blank" class="btn btn-danger text-white float-right" data-toggle="tooltip" data-placement="bottom" title="Generar lista"> <i class="fas fa-file-pdf"></i></button>
+                                                    <button @click="pdf1()" target="_blank" class="btn btn-danger text-white float-right"
+                                                             data-toggle="tooltip" data-placement="bottom" title="Generar planeacion">
+                                                        <i class="fas fa-file-pdf"></i></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -688,6 +690,7 @@
                 salud: "/graphics/salud",
                 area: "/graphics/area",
                 pd: "pdf/lista",
+                pl: "pdf/planeacion",
                 rep: "pdf/reporte",
                 palu: 'pdf/alumno',
                 veralu: '/ver',
@@ -1745,6 +1748,24 @@
                         const objectUrl = URL.createObjectURL(blob);
                         window.open(objectUrl)
                     });
+                },
+                pdf1: function () {
+                    axios.post(this.pl, {
+                        id_asigna_generacion: this.idasigna,
+                        id_carrera: this.idca,
+                        generacion: this.gen
+                    }, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/pdf'
+                        },
+                        responseType: "blob"
+                    }).then(response => {
+                        console.log(response.data);
+                    const blob = new Blob([response.data], {type: 'application/pdf'});
+                    const objectUrl = URL.createObjectURL(blob);
+                    window.open(objectUrl)
+                });
                 },
                 reporte: function () {
                     axios.post(this.rep, {

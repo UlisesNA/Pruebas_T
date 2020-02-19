@@ -200,6 +200,9 @@ Route::get("reporte_pdf6","ReportePDFController@reporte_pdf6")->name("reporte_pd
 Route::get("reporte_pdf7","ReportePDFController@reporte_pdf7")->name("reporte_pdf7");
 Route::get("reporte_pdf8","ReportePDFController@reporte_pdf8")->name("reporte_pdf8");
 //Route::get("reporte_grafica","ReporteGController@reporte_grafica")->name("reporte_grafica");
+
+//Ruta planeacion
+Route::post("pdf/planeacion","PlaneacionPDFController@pdf_planeacion")->name("pdf_planeacion");
 ?>
 
 
