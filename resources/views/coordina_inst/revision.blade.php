@@ -79,19 +79,34 @@
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="tableFixHead">
-                                                        <data-table class=" col-12 table table-sm" :data="alumno" :columns-to-display="gridColumns" :filter-key="searchQuery">
-                                                            <template slot="Cuenta" scope="alu">
-                                                                <div class="font-weight-bold pt-2">@{{alu.entry.cuenta}}</div>
+                                                        <data-table class=" col-12 table table-sm" :data="alumno" :columns-to-display="gridColumns1" :filter-key="searchQuery">
+                                                            <template slot="Fecha Inicio" scope="alumno">
+                                                                <div class="text-center">@{{ alumno.entry.fi_actividad }}</div>
                                                             </template>
-                                                            <template slot="Nombre" scope="alu">
-                                                                <div class="pt-2">@{{ alu.entry.apaterno }} @{{ alu.entry.amaterno}} @{{ alu.entry.nombre }}</div>
+                                                            <template slot="Fecha Fin" scope="alumno">
+                                                                <div class="text-center">@{{ alumno.entry.ff_actividad }}</div>
                                                             </template>
-                                                            <template slot="Nombre" scope="alu">
-                                                                <div class="pt-2">@{{ alu.entry.apaterno }} @{{ alu.entry.amaterno}} @{{ alu.entry.nombre }}</div>
+                                                            <template  slot="Decripción Actividad" scope="alumno">
+                                                                <div class="text-center">@{{ alumno.entry.desc_actividad }}</div>
                                                             </template>
-                                                            <template slot="Revalidación" scope="alu">
-                                                                <a v-if="alu.entry.revalidacion==0" class="pt-2 font-weight-bold text-secondary">No</a>
-                                                                <a v-if="alu.entry.revalidacion==1" class="pt-2 font-weight-bold text-danger">Sí</a>
+                                                            <template slot="Objetivo" scope="alumno">
+                                                                <div class="text-center">@{{ alumno.entry.objetivo_actividad }}</div>
+                                                            </template>
+                                                            <template slot="Sugerencia" scope="alumno">
+                                                                <div class="text-center" v-if="alumno.entry.id_sugerencia==1">
+                                                                    <button class="btn btn-outline-primary m-1" @click="versugerencia(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Editar Sugerencia"><i class="far fa-edit"></i></button>
+                                                                </div>
+                                                                <div v-else class="text-center">
+                                                                    <button class="btn btn-outline-primary m-1" @click="versugerencia(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Agregar Sugerencia">+</button>
+                                                                </div>
+                                                            </template>
+                                                            <template slot="Estrategia" scope="alumno">
+                                                                <div class="text-center" v-if="alumno.entry.id_estrategia==1">
+                                                                    <button class="btn btn-outline-primary m-1" @click="verestrategia(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Editar Estrategia"><i class="far fa-edit"></i></button>
+                                                                </div>
+                                                                <div v-else class="text-center">
+                                                                    <button class="btn btn-outline-primary m-1" @click="verestrategia(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Agregar Estrategia">+</button>
+                                                                </div>
                                                             </template>
                                                             <template slot="nodata">
                                                                 <div class=" alert font-weight-bold alert-danger text-center">Ningún dato encontrado</div>
@@ -103,7 +118,7 @@
                                         </div>
                                         <div class="row" v-if="alumno.length==0 && clicgrupo==true">
                                             <div class="col-12 border-danger">
-                                                <h5 class="font-weight-bold text-center alert alert-danger">No existen alumnos asignados al grupo</h5>
+                                                <h5 class="font-weight-bold text-center alert alert-danger">No existen actividades asignadas a la planeacion</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -114,7 +129,7 @@
                 </div>
             </div>
             @include('coordinadorc.estadisticas')
-
+            
         </div>
     </div>
 
@@ -127,12 +142,15 @@
             data:{
                 searchQuery: '',
                 gridColumns: ['Cuenta','Nombre','Revalidación'],
+                gridColumns1: ['Fecha Inicio', 'Fecha Fin', 'Decripción Actividad', 'Objetivo', 'Sugerencia','Estrategia'],
                 rut:"/carrerasinst",
                 gen:'/generacionca',
                 alugrupo:'/alumnosgrupo',
+                plan:'/planeacioninst',
                 alugeneracion:'/alumnosgeneracion',
                 carreras:[],
                 alumno:[],
+                datos1:[],
                 menu:true,
                 menucarrera:false,
                 generaciones:[],
@@ -205,7 +223,7 @@
 
                     this.clicgrupo=true;
                     this.id_asigna=grupo;
-                    axios.post(this.alugrupo,{generacion:grupo}).then(response=>{
+                    axios.post(this.plan,{generacion:grupo}).then(response=>{
                         this.alumno=response.data;
                     }).catch(error=>{ });
                 },

@@ -136,6 +136,7 @@ Route::Resource('/alumnos','AlumnosController');
 Route::get('/generaciones','AlumnosController@generaciones');
 Route::post('/alumnosgeneracion','AlumnosController@alumnosgeneracion');
 Route::post('/alumnosgrupo','AlumnosController@alumnosgrupo');
+Route::post('/planeacioninst','AlumnosController@planeacion');
 
 Route::post('/creargrupo','AlumnosController@creargrupo');
 Route::post('/buscaalumnos','AlumnosController@BuscarAlumnosGrupo');
