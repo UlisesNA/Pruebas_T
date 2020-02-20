@@ -77,7 +77,7 @@
                                             @if($dato->generacion==$c->generacion)
                                             <tr onmouseover="this.style.backgroundColor='#DBE7F3'" onmouseout="this.style.backgroundColor='white'">
                                                 <td>{{$c->cuenta}}</td>
-                                                <td>{{strtoupper($c->alum)}} {{strtoupper($c->ap)}} {{strtoupper($c->am)}}</td>
+                                                <td>{{mb_strtoupper($c->ap)}} {{mb_strtoupper($c->am)}} {{mb_strtoupper($c->alum)}}</td>
                                                 <td align="center">
                                                     <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$c->id}}_tar" style="background: #f0f0f0;">
                                                         <i class="far fa-address-card" style="color: black"></i>
@@ -101,7 +101,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">{{strtoupper($c->alum)}} {{strtoupper($c->ap)}} {{strtoupper($c->am)}}</h5>
+                        <h5 class="modal-title">{{mb_strtoupper($c->ap)}} {{mb_strtoupper($c->am)}} {{mb_strtoupper($c->alum)}}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
