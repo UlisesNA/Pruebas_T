@@ -23,6 +23,8 @@ use App\Exp_opc_vives;
 use App\Exp_parentesco;
 use App\Exp_tiempoestudia;
 use App\Exp_turno;
+use App\Plan_actividades;
+use App\Plan_asigna_planeacion_tutor;
 use Illuminate\Support\Carbon;
 use App\gnral_alumnos;
 use App\Gnral_carreras;
@@ -115,6 +117,18 @@ class ViewAlumnosController extends Controller
         return $data;
     }
 
+    public  function verestrategia(Request $request)
+    {
+        $data['planeacion']=Plan_asigna_planeacion_tutor::where('id_asigna_planeacion_tutor',$request->id)->get();
+        return $data;
+    }
+    public  function versugerencia(Request $request)
+    {
+        $data['sugerencia']=Plan_asigna_planeacion_tutor::where('id_asigna_planeacion_tutor',$request->id)->get();
+        $data['actividad']=Plan_actividades::where('id_plan_actividad',$request->id_actividad)->get();
+        return $data;
+    }
+
     public function actualiza(Request $request)
     {
         $generales = Exp_generale::find($request->alu['generales']['id_exp_general']);
@@ -130,6 +144,18 @@ class ViewAlumnosController extends Controller
         $area = Exp_area_psicopedagogica::find($request->alu['area']['id_exp_area_psicopedagogica']);
         $area->update($request->alu['area']);
 
+        return('ok');
+    }
+    public function actualizaestrategia(Request $request)
+    {
+        $planeacion = Plan_asigna_planeacion_tutor::find($request->estra['planeacion']['id_asigna_planeacion_tutor']);
+        $planeacion->update($request->estra['planeacion']);
+        return('ok');
+    }
+    public function actualizasugerencia(Request $request)
+    {
+        $sugerencia = Plan_asigna_planeacion_tutor::find($request->suge['sugerencia']['id_asigna_planeacion_tutor']);
+        $sugerencia->update($request->suge['sugerencia']);
         return('ok');
     }
 

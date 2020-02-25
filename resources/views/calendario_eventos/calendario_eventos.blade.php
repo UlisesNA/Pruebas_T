@@ -63,7 +63,7 @@
                         title: '{{ $even->desc_actividad }}',
                         start: '{{ $even->fi_actividad }}',
                         end:'{{ $even->ff_actividad }}',
-                        color: '#adad6e',
+                        color: '#6dad75',
                         textColor: '#080808',
                         objetivo:'{{ $even->objetivo_actividad }}'
                     },

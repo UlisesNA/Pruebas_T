@@ -41,6 +41,7 @@ class ReportePDFController extends Controller
              ->whereNull('exp_asigna_tutor.deleted_at')
              ->whereNull('exp_asigna_alumnos.deleted_at')
              ->where('exp_asigna_alumnos.estado','=',1)
+             ->where('exp_generacion.generacion','=',2016)
              ->groupBy('exp_generacion.generacion')
              ->select('exp_generacion.generacion', 'gnral_personales.nombre', 'gnral_periodos.periodo', 'gnral_carreras.nombre as carr')
              ->get();
@@ -185,21 +186,24 @@ class ReportePDFController extends Controller
          $pdf->SetDrawColor(010, 010, 010);
          //tabla
          $pdf->SetFont('Arial', 'B', 5);
-         for ($i = 0; $i < count($consulta); $i++) {
-             $pdf->Cell(15, 4, "" . utf8_decode($consulta[$i]->n_cuenta), 1, 0, "C");
-             $pdf->SetFont('Arial', 'B', 5);
-             $pdf->Cell(45, 4, utf8_decode(strtoupper($consulta[$i]->alumno)) . " " . utf8_decode(strtoupper($consulta[$i]->appaterno)) . " " . utf8_decode(strtoupper($consulta[$i]->apmaterno)), 1, 0, "L", "true");
-             $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_grupal), 1, 0, "C");
-             $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_individual), 1, 0, "C");
-             $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->beca), 1, 0, "C");
-             $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->repeticion), 1, 0, "C");
-             $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->especial), 1, 0, "C");
-             $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->academico), 1, 0, "C");
-             $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->medico), 1, 0, "C");
-             $pdf->Cell(13, 4, "" . utf8_decode($consulta[$i]->psicologico), 1, 0, "C");
-             $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->baja), 1, 0, "C");
-             $pdf->Cell(35, 4, "" . utf8_decode($consulta[$i]->observaciones), 1, 0, "C");
-             $pdf->ln();
+         if(count($consulta)==0){}
+         else{
+             for ($i = 0; $i < count($consulta); $i++) {
+                 $pdf->Cell(15, 4, "" . utf8_decode($consulta[$i]->n_cuenta), 1, 0, "C");
+                 $pdf->SetFont('Arial', 'B', 5);
+                 $pdf->Cell(45, 4, utf8_decode(mb_strtoupper($consulta[$i]->appaterno)) . " " . utf8_decode(mb_strtoupper($consulta[$i]->apmaterno)) . " " .utf8_decode(mb_strtoupper($consulta[$i]->alumno)), 1, 0, "L", "true");
+                 $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_grupal), 1, 0, "C");
+                 $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_individual), 1, 0, "C");
+                 $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->beca), 1, 0, "C");
+                 $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->repeticion), 1, 0, "C");
+                 $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->especial), 1, 0, "C");
+                 $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->academico), 1, 0, "C");
+                 $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->medico), 1, 0, "C");
+                 $pdf->Cell(13, 4, "" . utf8_decode($consulta[$i]->psicologico), 1, 0, "C");
+                 $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->baja), 1, 0, "C");
+                 $pdf->Cell(35, 4, "" . utf8_decode($consulta[$i]->observaciones), 1, 0, "C");
+                 $pdf->ln();
+             }
          }
          $pdf->Cell(15, 4);
          $pdf->Cell(45, 4, "Total", 1, 0, "R");
@@ -213,7 +217,8 @@ class ReportePDFController extends Controller
          $pdf->Cell(13, 4, utf8_decode($totales8[0]->ps), 1, 0, "C");
          $pdf->Cell(10, 4, utf8_decode($totales9[0]->baja), 1, 0, "C");
          $pdf->ln(20);
-         $pdf->Cell(45, 4, utf8_decode($consulta[0]->nombre), 0, 0, "C");
+         if(count($consulta)==0){$pdf->Cell(45, 4, utf8_decode(""), 0, 0, "C");}
+         else{$pdf->Cell(45, 4, utf8_decode($consulta[0]->nombre), 0, 0, "C");}
          $pdf->Cell(5, 4);
          $pdf->Cell(45, 4, "Nombre", 0, 0, "C");
          $pdf->Cell(5, 4);
@@ -252,6 +257,7 @@ class ReportePDFController extends Controller
             ->whereNull('exp_asigna_tutor.deleted_at')
             ->whereNull('exp_asigna_alumnos.deleted_at')
             ->where('exp_asigna_alumnos.estado','=',1)
+            ->where('exp_generacion.generacion','=',2017)
             ->groupBy('exp_generacion.generacion')
             ->select('exp_generacion.generacion', 'gnral_personales.nombre', 'gnral_periodos.periodo', 'gnral_carreras.nombre as carr')
             ->get();
@@ -396,21 +402,24 @@ class ReportePDFController extends Controller
         $pdf->SetDrawColor(010, 010, 010);
         //tabla
         $pdf->SetFont('Arial', 'B', 5);
-        for ($i = 0; $i < count($consulta); $i++) {
-            $pdf->Cell(15, 4, "" . utf8_decode($consulta[$i]->n_cuenta), 1, 0, "C");
-            $pdf->SetFont('Arial', 'B', 5);
-            $pdf->Cell(45, 4, utf8_decode(strtoupper($consulta[$i]->alumno)) . " " . utf8_decode(strtoupper($consulta[$i]->appaterno)) . " " . utf8_decode(strtoupper($consulta[$i]->apmaterno)), 1, 0, "L", "true");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_grupal), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_individual), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->beca), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->repeticion), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->especial), 1, 0, "C");
-            $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->academico), 1, 0, "C");
-            $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->medico), 1, 0, "C");
-            $pdf->Cell(13, 4, "" . utf8_decode($consulta[$i]->psicologico), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->baja), 1, 0, "C");
-            $pdf->Cell(35, 4, "" . utf8_decode($consulta[$i]->observaciones), 1, 0, "C");
-            $pdf->ln();
+        if(count($consulta)==0){}
+        else{
+            for ($i = 0; $i < count($consulta); $i++) {
+                $pdf->Cell(15, 4, "" . utf8_decode($consulta[$i]->n_cuenta), 1, 0, "C");
+                $pdf->SetFont('Arial', 'B', 5);
+                $pdf->Cell(45, 4, utf8_decode(mb_strtoupper($consulta[$i]->appaterno)) . " " . utf8_decode(mb_strtoupper($consulta[$i]->apmaterno)) . " " .utf8_decode(mb_strtoupper($consulta[$i]->alumno)), 1, 0, "L", "true");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_grupal), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_individual), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->beca), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->repeticion), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->especial), 1, 0, "C");
+                $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->academico), 1, 0, "C");
+                $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->medico), 1, 0, "C");
+                $pdf->Cell(13, 4, "" . utf8_decode($consulta[$i]->psicologico), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->baja), 1, 0, "C");
+                $pdf->Cell(35, 4, "" . utf8_decode($consulta[$i]->observaciones), 1, 0, "C");
+                $pdf->ln();
+            }
         }
         $pdf->Cell(15, 4);
         $pdf->Cell(45, 4, "Total", 1, 0, "R");
@@ -424,7 +433,8 @@ class ReportePDFController extends Controller
         $pdf->Cell(13, 4, utf8_decode($totales8[0]->ps), 1, 0, "C");
         $pdf->Cell(10, 4, utf8_decode($totales9[0]->baja), 1, 0, "C");
         $pdf->ln(20);
-        $pdf->Cell(45, 4, utf8_decode($consulta[0]->nombre), 0, 0, "C");
+        if(count($consulta)==0){$pdf->Cell(45, 4, utf8_decode(""), 0, 0, "C");}
+        else{$pdf->Cell(45, 4, utf8_decode($consulta[0]->nombre), 0, 0, "C");}
         $pdf->Cell(5, 4);
         $pdf->Cell(45, 4, "Nombre", 0, 0, "C");
         $pdf->Cell(5, 4);
@@ -463,6 +473,7 @@ class ReportePDFController extends Controller
             ->whereNull('exp_asigna_tutor.deleted_at')
             ->whereNull('exp_asigna_alumnos.deleted_at')
             ->where('exp_asigna_alumnos.estado','=',1)
+            ->where('exp_generacion.generacion','=',2018)
             ->groupBy('exp_generacion.generacion')
             ->select('exp_generacion.generacion', 'gnral_personales.nombre', 'gnral_periodos.periodo', 'gnral_carreras.nombre as carr')
             ->get();
@@ -607,21 +618,24 @@ class ReportePDFController extends Controller
         $pdf->SetDrawColor(010, 010, 010);
         //tabla
         $pdf->SetFont('Arial', 'B', 5);
-        for ($i = 0; $i < count($consulta); $i++) {
-            $pdf->Cell(15, 4, "" . utf8_decode($consulta[$i]->n_cuenta), 1, 0, "C");
-            $pdf->SetFont('Arial', 'B', 5);
-            $pdf->Cell(45, 4, utf8_decode(strtoupper($consulta[$i]->alumno)) . " " . utf8_decode(strtoupper($consulta[$i]->appaterno)) . " " . utf8_decode(strtoupper($consulta[$i]->apmaterno)), 1, 0, "L", "true");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_grupal), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_individual), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->beca), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->repeticion), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->especial), 1, 0, "C");
-            $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->academico), 1, 0, "C");
-            $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->medico), 1, 0, "C");
-            $pdf->Cell(13, 4, "" . utf8_decode($consulta[$i]->psicologico), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->baja), 1, 0, "C");
-            $pdf->Cell(35, 4, "" . utf8_decode($consulta[$i]->observaciones), 1, 0, "C");
-            $pdf->ln();
+        if(count($consulta)==0){}
+        else{
+            for ($i = 0; $i < count($consulta); $i++) {
+                $pdf->Cell(15, 4, "" . utf8_decode($consulta[$i]->n_cuenta), 1, 0, "C");
+                $pdf->SetFont('Arial', 'B', 5);
+                $pdf->Cell(45, 4, utf8_decode(mb_strtoupper($consulta[$i]->appaterno)) . " " . utf8_decode(mb_strtoupper($consulta[$i]->apmaterno)) . " " .utf8_decode(mb_strtoupper($consulta[$i]->alumno)), 1, 0, "L", "true");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_grupal), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_individual), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->beca), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->repeticion), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->especial), 1, 0, "C");
+                $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->academico), 1, 0, "C");
+                $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->medico), 1, 0, "C");
+                $pdf->Cell(13, 4, "" . utf8_decode($consulta[$i]->psicologico), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->baja), 1, 0, "C");
+                $pdf->Cell(35, 4, "" . utf8_decode($consulta[$i]->observaciones), 1, 0, "C");
+                $pdf->ln();
+            }
         }
         $pdf->Cell(15, 4);
         $pdf->Cell(45, 4, "Total", 1, 0, "R");
@@ -635,7 +649,8 @@ class ReportePDFController extends Controller
         $pdf->Cell(13, 4, utf8_decode($totales8[0]->ps), 1, 0, "C");
         $pdf->Cell(10, 4, utf8_decode($totales9[0]->baja), 1, 0, "C");
         $pdf->ln(20);
-        $pdf->Cell(45, 4, utf8_decode($consulta[0]->nombre), 0, 0, "C");
+        if(count($consulta)==0){$pdf->Cell(45, 4, utf8_decode(""), 0, 0, "C");}
+        else{$pdf->Cell(45, 4, utf8_decode($consulta[0]->nombre), 0, 0, "C");}
         $pdf->Cell(5, 4);
         $pdf->Cell(45, 4, "Nombre", 0, 0, "C");
         $pdf->Cell(5, 4);
@@ -674,6 +689,7 @@ class ReportePDFController extends Controller
             ->whereNull('exp_asigna_tutor.deleted_at')
             ->whereNull('exp_asigna_alumnos.deleted_at')
             ->where('exp_asigna_alumnos.estado','=',1)
+            ->where('exp_generacion.generacion','=',2019)
             ->groupBy('exp_generacion.generacion')
             ->select('exp_generacion.generacion', 'gnral_personales.nombre', 'gnral_periodos.periodo', 'gnral_carreras.nombre as carr')
             ->get();
@@ -818,21 +834,24 @@ class ReportePDFController extends Controller
         $pdf->SetDrawColor(010, 010, 010);
         //tabla
         $pdf->SetFont('Arial', 'B', 5);
-        for ($i = 0; $i < count($consulta); $i++) {
-            $pdf->Cell(15, 4, "" . utf8_decode($consulta[$i]->n_cuenta), 1, 0, "C");
-            $pdf->SetFont('Arial', 'B', 5);
-            $pdf->Cell(45, 4, utf8_decode(strtoupper($consulta[$i]->alumno)) . " " . utf8_decode(strtoupper($consulta[$i]->appaterno)) . " " . utf8_decode(strtoupper($consulta[$i]->apmaterno)), 1, 0, "L", "true");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_grupal), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_individual), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->beca), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->repeticion), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->especial), 1, 0, "C");
-            $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->academico), 1, 0, "C");
-            $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->medico), 1, 0, "C");
-            $pdf->Cell(13, 4, "" . utf8_decode($consulta[$i]->psicologico), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->baja), 1, 0, "C");
-            $pdf->Cell(35, 4, "" . utf8_decode($consulta[$i]->observaciones), 1, 0, "C");
-            $pdf->ln();
+        if(count($consulta)==0){}
+        else{
+            for ($i = 0; $i < count($consulta); $i++) {
+                $pdf->Cell(15, 4, "" . utf8_decode($consulta[$i]->n_cuenta), 1, 0, "C");
+                $pdf->SetFont('Arial', 'B', 5);
+                $pdf->Cell(45, 4, utf8_decode(mb_strtoupper($consulta[$i]->appaterno)) . " " . utf8_decode(mb_strtoupper($consulta[$i]->apmaterno)) . " " .utf8_decode(mb_strtoupper($consulta[$i]->alumno)), 1, 0, "L", "true");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_grupal), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_individual), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->beca), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->repeticion), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->especial), 1, 0, "C");
+                $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->academico), 1, 0, "C");
+                $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->medico), 1, 0, "C");
+                $pdf->Cell(13, 4, "" . utf8_decode($consulta[$i]->psicologico), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->baja), 1, 0, "C");
+                $pdf->Cell(35, 4, "" . utf8_decode($consulta[$i]->observaciones), 1, 0, "C");
+                $pdf->ln();
+            }
         }
         $pdf->Cell(15, 4);
         $pdf->Cell(45, 4, "Total", 1, 0, "R");
@@ -846,7 +865,8 @@ class ReportePDFController extends Controller
         $pdf->Cell(13, 4, utf8_decode($totales8[0]->ps), 1, 0, "C");
         $pdf->Cell(10, 4, utf8_decode($totales9[0]->baja), 1, 0, "C");
         $pdf->ln(20);
-        $pdf->Cell(45, 4, utf8_decode($consulta[0]->nombre), 0, 0, "C");
+        if(count($consulta)==0){$pdf->Cell(45, 4, utf8_decode(""), 0, 0, "C");}
+        else{$pdf->Cell(45, 4, utf8_decode($consulta[0]->nombre), 0, 0, "C");}
         $pdf->Cell(5, 4);
         $pdf->Cell(45, 4, "Nombre", 0, 0, "C");
         $pdf->Cell(5, 4);
@@ -885,6 +905,7 @@ class ReportePDFController extends Controller
             ->whereNull('exp_asigna_tutor.deleted_at')
             ->whereNull('exp_asigna_alumnos.deleted_at')
             ->where('exp_asigna_alumnos.estado','=',1)
+            ->where('exp_generacion.generacion','=',2020)
             ->groupBy('exp_generacion.generacion')
             ->select('exp_generacion.generacion', 'gnral_personales.nombre', 'gnral_periodos.periodo', 'gnral_carreras.nombre as carr')
             ->get();
@@ -1029,21 +1050,24 @@ class ReportePDFController extends Controller
         $pdf->SetDrawColor(010, 010, 010);
         //tabla
         $pdf->SetFont('Arial', 'B', 5);
-        for ($i = 0; $i < count($consulta); $i++) {
-            $pdf->Cell(15, 4, "" . utf8_decode($consulta[$i]->n_cuenta), 1, 0, "C");
-            $pdf->SetFont('Arial', 'B', 5);
-            $pdf->Cell(45, 4, utf8_decode(strtoupper($consulta[$i]->alumno)) . " " . utf8_decode(strtoupper($consulta[$i]->appaterno)) . " " . utf8_decode(strtoupper($consulta[$i]->apmaterno)), 1, 0, "L", "true");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_grupal), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_individual), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->beca), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->repeticion), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->especial), 1, 0, "C");
-            $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->academico), 1, 0, "C");
-            $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->medico), 1, 0, "C");
-            $pdf->Cell(13, 4, "" . utf8_decode($consulta[$i]->psicologico), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->baja), 1, 0, "C");
-            $pdf->Cell(35, 4, "" . utf8_decode($consulta[$i]->observaciones), 1, 0, "C");
-            $pdf->ln();
+        if(count($consulta)==0){}
+        else{
+            for ($i = 0; $i < count($consulta); $i++) {
+                $pdf->Cell(15, 4, "" . utf8_decode($consulta[$i]->n_cuenta), 1, 0, "C");
+                $pdf->SetFont('Arial', 'B', 5);
+                $pdf->Cell(45, 4, utf8_decode(mb_strtoupper($consulta[$i]->appaterno)) . " " . utf8_decode(mb_strtoupper($consulta[$i]->apmaterno)) . " " .utf8_decode(mb_strtoupper($consulta[$i]->alumno)), 1, 0, "L", "true");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_grupal), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_individual), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->beca), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->repeticion), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->especial), 1, 0, "C");
+                $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->academico), 1, 0, "C");
+                $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->medico), 1, 0, "C");
+                $pdf->Cell(13, 4, "" . utf8_decode($consulta[$i]->psicologico), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->baja), 1, 0, "C");
+                $pdf->Cell(35, 4, "" . utf8_decode($consulta[$i]->observaciones), 1, 0, "C");
+                $pdf->ln();
+            }
         }
         $pdf->Cell(15, 4);
         $pdf->Cell(45, 4, "Total", 1, 0, "R");
@@ -1057,7 +1081,8 @@ class ReportePDFController extends Controller
         $pdf->Cell(13, 4, utf8_decode($totales8[0]->ps), 1, 0, "C");
         $pdf->Cell(10, 4, utf8_decode($totales9[0]->baja), 1, 0, "C");
         $pdf->ln(20);
-        $pdf->Cell(45, 4, utf8_decode($consulta[0]->nombre), 0, 0, "C");
+        if(count($consulta)==0){$pdf->Cell(45, 4, utf8_decode(""), 0, 0, "C");}
+        else{$pdf->Cell(45, 4, utf8_decode($consulta[0]->nombre), 0, 0, "C");}
         $pdf->Cell(5, 4);
         $pdf->Cell(45, 4, "Nombre", 0, 0, "C");
         $pdf->Cell(5, 4);
@@ -1096,6 +1121,7 @@ class ReportePDFController extends Controller
             ->whereNull('exp_asigna_tutor.deleted_at')
             ->whereNull('exp_asigna_alumnos.deleted_at')
             ->where('exp_asigna_alumnos.estado','=',1)
+            ->where('exp_generacion.generacion','=',2021)
             ->groupBy('exp_generacion.generacion')
             ->select('exp_generacion.generacion', 'gnral_personales.nombre', 'gnral_periodos.periodo', 'gnral_carreras.nombre as carr')
             ->get();
@@ -1240,21 +1266,24 @@ class ReportePDFController extends Controller
         $pdf->SetDrawColor(010, 010, 010);
         //tabla
         $pdf->SetFont('Arial', 'B', 5);
-        for ($i = 0; $i < count($consulta); $i++) {
-            $pdf->Cell(15, 4, "" . utf8_decode($consulta[$i]->n_cuenta), 1, 0, "C");
-            $pdf->SetFont('Arial', 'B', 5);
-            $pdf->Cell(45, 4, utf8_decode(strtoupper($consulta[$i]->alumno)) . " " . utf8_decode(strtoupper($consulta[$i]->appaterno)) . " " . utf8_decode(strtoupper($consulta[$i]->apmaterno)), 1, 0, "L", "true");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_grupal), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_individual), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->beca), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->repeticion), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->especial), 1, 0, "C");
-            $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->academico), 1, 0, "C");
-            $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->medico), 1, 0, "C");
-            $pdf->Cell(13, 4, "" . utf8_decode($consulta[$i]->psicologico), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->baja), 1, 0, "C");
-            $pdf->Cell(35, 4, "" . utf8_decode($consulta[$i]->observaciones), 1, 0, "C");
-            $pdf->ln();
+        if(count($consulta)==0){}
+        else{
+            for ($i = 0; $i < count($consulta); $i++) {
+                $pdf->Cell(15, 4, "" . utf8_decode($consulta[$i]->n_cuenta), 1, 0, "C");
+                $pdf->SetFont('Arial', 'B', 5);
+                $pdf->Cell(45, 4, utf8_decode(mb_strtoupper($consulta[$i]->appaterno)) . " " . utf8_decode(mb_strtoupper($consulta[$i]->apmaterno)) . " " .utf8_decode(mb_strtoupper($consulta[$i]->alumno)), 1, 0, "L", "true");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_grupal), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_individual), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->beca), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->repeticion), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->especial), 1, 0, "C");
+                $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->academico), 1, 0, "C");
+                $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->medico), 1, 0, "C");
+                $pdf->Cell(13, 4, "" . utf8_decode($consulta[$i]->psicologico), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->baja), 1, 0, "C");
+                $pdf->Cell(35, 4, "" . utf8_decode($consulta[$i]->observaciones), 1, 0, "C");
+                $pdf->ln();
+            }
         }
         $pdf->Cell(15, 4);
         $pdf->Cell(45, 4, "Total", 1, 0, "R");
@@ -1268,7 +1297,8 @@ class ReportePDFController extends Controller
         $pdf->Cell(13, 4, utf8_decode($totales8[0]->ps), 1, 0, "C");
         $pdf->Cell(10, 4, utf8_decode($totales9[0]->baja), 1, 0, "C");
         $pdf->ln(20);
-        $pdf->Cell(45, 4, utf8_decode($consulta[0]->nombre), 0, 0, "C");
+        if(count($consulta)==0){$pdf->Cell(45, 4, utf8_decode(""), 0, 0, "C");}
+        else{$pdf->Cell(45, 4, utf8_decode($consulta[0]->nombre), 0, 0, "C");}
         $pdf->Cell(5, 4);
         $pdf->Cell(45, 4, "Nombre", 0, 0, "C");
         $pdf->Cell(5, 4);
@@ -1307,6 +1337,7 @@ class ReportePDFController extends Controller
             ->whereNull('exp_asigna_tutor.deleted_at')
             ->whereNull('exp_asigna_alumnos.deleted_at')
             ->where('exp_asigna_alumnos.estado','=',1)
+            ->where('exp_generacion.generacion','=',2022)
             ->groupBy('exp_generacion.generacion')
             ->select('exp_generacion.generacion', 'gnral_personales.nombre', 'gnral_periodos.periodo', 'gnral_carreras.nombre as carr')
             ->get();
@@ -1451,21 +1482,24 @@ class ReportePDFController extends Controller
         $pdf->SetDrawColor(010, 010, 010);
         //tabla
         $pdf->SetFont('Arial', 'B', 5);
-        for ($i = 0; $i < count($consulta); $i++) {
-            $pdf->Cell(15, 4, "" . utf8_decode($consulta[$i]->n_cuenta), 1, 0, "C");
-            $pdf->SetFont('Arial', 'B', 5);
-            $pdf->Cell(45, 4, utf8_decode(strtoupper($consulta[$i]->alumno)) . " " . utf8_decode(strtoupper($consulta[$i]->appaterno)) . " " . utf8_decode(strtoupper($consulta[$i]->apmaterno)), 1, 0, "L", "true");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_grupal), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_individual), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->beca), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->repeticion), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->especial), 1, 0, "C");
-            $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->academico), 1, 0, "C");
-            $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->medico), 1, 0, "C");
-            $pdf->Cell(13, 4, "" . utf8_decode($consulta[$i]->psicologico), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->baja), 1, 0, "C");
-            $pdf->Cell(35, 4, "" . utf8_decode($consulta[$i]->observaciones), 1, 0, "C");
-            $pdf->ln();
+        if(count($consulta)==0){}
+        else{
+            for ($i = 0; $i < count($consulta); $i++) {
+                $pdf->Cell(15, 4, "" . utf8_decode($consulta[$i]->n_cuenta), 1, 0, "C");
+                $pdf->SetFont('Arial', 'B', 5);
+                $pdf->Cell(45, 4, utf8_decode(mb_strtoupper($consulta[$i]->appaterno)) . " " . utf8_decode(mb_strtoupper($consulta[$i]->apmaterno)) . " " .utf8_decode(mb_strtoupper($consulta[$i]->alumno)), 1, 0, "L", "true");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_grupal), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_individual), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->beca), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->repeticion), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->especial), 1, 0, "C");
+                $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->academico), 1, 0, "C");
+                $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->medico), 1, 0, "C");
+                $pdf->Cell(13, 4, "" . utf8_decode($consulta[$i]->psicologico), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->baja), 1, 0, "C");
+                $pdf->Cell(35, 4, "" . utf8_decode($consulta[$i]->observaciones), 1, 0, "C");
+                $pdf->ln();
+            }
         }
         $pdf->Cell(15, 4);
         $pdf->Cell(45, 4, "Total", 1, 0, "R");
@@ -1479,7 +1513,8 @@ class ReportePDFController extends Controller
         $pdf->Cell(13, 4, utf8_decode($totales8[0]->ps), 1, 0, "C");
         $pdf->Cell(10, 4, utf8_decode($totales9[0]->baja), 1, 0, "C");
         $pdf->ln(20);
-        $pdf->Cell(45, 4, utf8_decode($consulta[0]->nombre), 0, 0, "C");
+        if(count($consulta)==0){$pdf->Cell(45, 4, utf8_decode(""), 0, 0, "C");}
+        else{$pdf->Cell(45, 4, utf8_decode($consulta[0]->nombre), 0, 0, "C");}
         $pdf->Cell(5, 4);
         $pdf->Cell(45, 4, "Nombre", 0, 0, "C");
         $pdf->Cell(5, 4);
@@ -1518,6 +1553,7 @@ class ReportePDFController extends Controller
             ->whereNull('exp_asigna_tutor.deleted_at')
             ->whereNull('exp_asigna_alumnos.deleted_at')
             ->where('exp_asigna_alumnos.estado','=',1)
+            ->where('exp_generacion.generacion','=',2023)
             ->groupBy('exp_generacion.generacion')
             ->select('exp_generacion.generacion', 'gnral_personales.nombre', 'gnral_periodos.periodo', 'gnral_carreras.nombre as carr')
             ->get();
@@ -1662,21 +1698,24 @@ class ReportePDFController extends Controller
         $pdf->SetDrawColor(010, 010, 010);
         //tabla
         $pdf->SetFont('Arial', 'B', 5);
-        for ($i = 0; $i < count($consulta); $i++) {
-            $pdf->Cell(15, 4, "" . utf8_decode($consulta[$i]->n_cuenta), 1, 0, "C");
-            $pdf->SetFont('Arial', 'B', 5);
-            $pdf->Cell(45, 4, utf8_decode(strtoupper($consulta[$i]->alumno)) . " " . utf8_decode(strtoupper($consulta[$i]->appaterno)) . " " . utf8_decode(strtoupper($consulta[$i]->apmaterno)), 1, 0, "L", "true");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_grupal), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_individual), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->beca), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->repeticion), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->especial), 1, 0, "C");
-            $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->academico), 1, 0, "C");
-            $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->medico), 1, 0, "C");
-            $pdf->Cell(13, 4, "" . utf8_decode($consulta[$i]->psicologico), 1, 0, "C");
-            $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->baja), 1, 0, "C");
-            $pdf->Cell(35, 4, "" . utf8_decode($consulta[$i]->observaciones), 1, 0, "C");
-            $pdf->ln();
+        if(count($consulta)==0){}
+        else{
+            for ($i = 0; $i < count($consulta); $i++) {
+                $pdf->Cell(15, 4, "" . utf8_decode($consulta[$i]->n_cuenta), 1, 0, "C");
+                $pdf->SetFont('Arial', 'B', 5);
+                $pdf->Cell(45, 4, utf8_decode(mb_strtoupper($consulta[$i]->appaterno)) . " " . utf8_decode(mb_strtoupper($consulta[$i]->apmaterno)) . " " .utf8_decode(mb_strtoupper($consulta[$i]->alumno)), 1, 0, "L", "true");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_grupal), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->tutoria_individual), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->beca), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->repeticion), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->especial), 1, 0, "C");
+                $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->academico), 1, 0, "C");
+                $pdf->Cell(11, 4, "" . utf8_decode($consulta[$i]->medico), 1, 0, "C");
+                $pdf->Cell(13, 4, "" . utf8_decode($consulta[$i]->psicologico), 1, 0, "C");
+                $pdf->Cell(10, 4, "" . utf8_decode($consulta[$i]->baja), 1, 0, "C");
+                $pdf->Cell(35, 4, "" . utf8_decode($consulta[$i]->observaciones), 1, 0, "C");
+                $pdf->ln();
+            }
         }
         $pdf->Cell(15, 4);
         $pdf->Cell(45, 4, "Total", 1, 0, "R");
@@ -1690,7 +1729,8 @@ class ReportePDFController extends Controller
         $pdf->Cell(13, 4, utf8_decode($totales8[0]->ps), 1, 0, "C");
         $pdf->Cell(10, 4, utf8_decode($totales9[0]->baja), 1, 0, "C");
         $pdf->ln(20);
-        $pdf->Cell(45, 4, utf8_decode($consulta[0]->nombre), 0, 0, "C");
+        if(count($consulta)==0){$pdf->Cell(45, 4, utf8_decode(""), 0, 0, "C");}
+        else{$pdf->Cell(45, 4, utf8_decode($consulta[0]->nombre), 0, 0, "C");}
         $pdf->Cell(5, 4);
         $pdf->Cell(45, 4, "Nombre", 0, 0, "C");
         $pdf->Cell(5, 4);

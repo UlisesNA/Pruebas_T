@@ -93,6 +93,29 @@ WHERE gnral_alumnos.id_carrera='.$carrera[0]->id_carrera.' and exp_asigna_alumno
         return $alumnos;
 
     }
+    public function planeacion(Request $request)
+    {
+        $carrera=DB::select('SELECT id_carrera from gnral_jefes_periodos where id_jefe_periodo='.Session::get('id_jefe_periodo'));
+        $alumnos=DB::select('SELECT plan_actividades.desc_actividad,plan_actividades.objetivo_actividad,plan_actividades.fi_actividad, plan_actividades.ff_actividad,
+plan_asigna_planeacion_tutor.estrategia,plan_asigna_planeacion_tutor.id_asigna_planeacion_tutor,plan_asigna_planeacion_tutor.id_sugerencia,
+plan_asigna_planeacion_tutor.desc_actividad_cambio,plan_asigna_planeacion_tutor.objetivo_actividad_cambio, exp_asigna_tutor.id_asigna_tutor,
+exp_asigna_tutor.id_asigna_generacion
+FROM plan_actividades, plan_asigna_planeacion_tutor,plan_asigna_planeacion_actividad,plan_planeacion,exp_asigna_generacion,exp_asigna_tutor
+WHERE 
+plan_asigna_planeacion_actividad.id_plan_actividad=plan_actividades.id_plan_actividad
+AND plan_planeacion.id_planeacion=plan_asigna_planeacion_actividad.id_planeacion
+AND plan_asigna_planeacion_tutor.id_asigna_planeacion_actividad=plan_asigna_planeacion_actividad.id_asigna_planeacion_actividad
+AND exp_asigna_generacion.id_generacion=plan_planeacion.id_generacion
+AND exp_asigna_tutor.id_asigna_generacion=exp_asigna_generacion.id_asigna_generacion
+AND exp_asigna_tutor.id_asigna_tutor=plan_asigna_planeacion_tutor.id_asigna_tutor
+AND exp_asigna_tutor.deleted_at IS null
+AND exp_asigna_tutor.id_asigna_generacion='.$request->generacion.' 
+AND plan_actividades.deleted_at IS null');
+        //return array_map('mb_strtoupper',[$alumnos[0],'UTF8']);
+
+        return $alumnos;
+
+    }
     public function getlist(Request $id)
     {
 

@@ -33,6 +33,22 @@ class CoordinadorCarreraController extends Controller
             ->get();*/
         return $carreras;
     }
+    public function carreras1()
+    {
+
+        $carreras=DB::select('select gnral_carreras.nombre,gnral_carreras.id_carrera from gnral_carreras
+             ORDER BY gnral_carreras.nombre ');
+        /* $carreras=DB::table('exp_asigna_coordinador')
+             ->join('gnral_personales','gnral_personales.id_personal','=','exp_asigna_coordinador.id_personal')
+             ->join('gnral_jefes_periodos','exp_asigna_coordinador.id_jefe_periodo','=','gnral_jefes_periodos.id_jefe_periodo')
+             ->join('gnral_carreras','gnral_carreras.id_carrera','=','gnral_jefes_periodos.id_carrera')
+             ->whereIn('exp_asigna_coordinador.id_jefe_periodo',DB::raw('SELECT gnral_jefes_periodos.id_jefe_periodo from gnral_jefes_periodos where gnral_jefes_periodos.id_periodo='.Session::get('id_periodo')))
+             ->whereNull('exp_asigna_coordinador.deleted_at')
+             ->select('gnral_carreras.nombre','gnral_carreras.id_carrera')
+             ->orderBy('gnral_carreras.nombre')
+             ->get();*/
+        return $carreras;
+    }
     public function generaciones(Request $request)
     {
         $jefeperiodo=GnralJefePeriodos::where('id_periodo',Session::get('id_periodo'))

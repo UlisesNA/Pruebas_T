@@ -22,7 +22,7 @@ class DesercionController extends Controller
         ->whereNull('exp_asigna_tutor.deleted_at')
         ->whereNull('exp_asigna_alumnos.deleted_at')
         ->where('exp_asigna_alumnos.estado','=',1)
-        ->groupBy('exp_generacion.generacion')
+        ->groupBY('exp_generacion.generacion')
         ->select('exp_generacion.id_generacion','exp_generacion.generacion','exp_asigna_generacion.grupo')
         ->get();
         ///////////////
@@ -41,7 +41,7 @@ class DesercionController extends Controller
             ->whereNull('exp_asigna_tutor.deleted_at')
             ->whereNull('exp_asigna_alumnos.deleted_at')
             ->where('exp_asigna_alumnos.estado','=',1)
-            ->select('exp_generacion.generacion','prediccion.nombre','prediccion.no_hijos','prediccion.trabaja','prediccion.id_expbebidas','prediccion.materias_repeticion',
+            ->select('exp_generacion.generacion','prediccion.ap','prediccion.am','prediccion.nom','prediccion.no_hijos','prediccion.trabaja','prediccion.id_expbebidas','prediccion.materias_repeticion',
                 'prediccion.tot_repe','prediccion.materias_especial','prediccion.tot_espe','prediccion.id_carrera_v',
                 'prediccion.sexo_v','prediccion.id_estado_civil_v','prediccion.no_hijos_v','prediccion.no_hermanos_v',
                 'prediccion.enfermedad_cronica_v','prediccion.trabaja_v','prediccion.practica_deporte_v','prediccion.actividades_culturales_v'
