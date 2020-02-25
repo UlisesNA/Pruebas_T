@@ -4,9 +4,14 @@
         <div class="modal-content">
             <div class="modal-header alert alert-primary">
                 <h4 class=" font-weight-bold modal-title col-10">Estadísticas</h4>
-                <button target="_blank" v-if="inst==false" @click="reporte('ReporteCarrera')" class="btn text-white btn-danger offset-1" ><i class="fas fa-file-pdf"></i></button>
-                <button target="_blank" v-if="inst==true" @click="reporte('ReporteInstitucional')" class="btn text-white btn-danger offset-1" ><i class="fas fa-file-pdf"></i></button>
-                <button type="button col-1" class="close" data-dismiss="modal" aria-label="Close">
+                @if(\Illuminate\Support\Facades\Session::get('PuestoTutorias')=='coordinadorgeneral')
+                    <button target="_blank" v-if="inst==false" @click="reporte('ReporteCarrera')" class="btn text-white btn-danger offset-1" ><i class="fas fa-file-pdf"></i></button>
+                    <button target="_blank" v-if="inst==true" @click="reporte('ReporteInstitucional')" class="btn text-white btn-danger offset-1" ><i class="fas fa-file-pdf"></i></button>
+                 @elseif (\Illuminate\Support\Facades\Session::get('PuestoTutorias')=='desarrollo')
+                    <button target="_blank" v-if="inst==false" @click="DatosReporte()" class="btn text-white btn-danger offset-1" ><i class="fas fa-file-pdf"></i></button>
+                    <button target="_blank" v-if="inst==true" @click="DatosReporte()" class="btn text-white btn-danger offset-1" ><i class="fas fa-file-pdf"></i></button>
+                @endif
+                    <button type="button col-1" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -103,9 +108,9 @@
                                                         <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Tipo de beca</h5></div>
                                                     </div>
                                                     <div class="row">
-                                                        <div class="col-4 grafmd" id="tbg"></div>
-                                                        <div class="col-4 grafmd" id="tbf"></div>
-                                                        <div class="col-4 grafmd" id="tbm"></div>
+                                                        <div class="col-4 graftb" id="tbg"></div>
+                                                        <div class="col-4 graftb" id="tbf"></div>
+                                                        <div class="col-4 graftb" id="tbm"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -187,9 +192,9 @@
                                                         <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Actualmente viven con</h5></div>
                                                     </div>
                                                     <div class="row">
-                                                        <div class="col-4 grafmd" id="vg"></div>
-                                                        <div class="col-4 grafmd" id="vf"></div>
-                                                        <div class="col-4 grafmd" id="vm"></div>
+                                                        <div class="col-4 graftb" id="vg"></div>
+                                                        <div class="col-4 graftb" id="vf"></div>
+                                                        <div class="col-4 graftb" id="vm"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -241,9 +246,9 @@
                                                         <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Tiempo dedicado a estudiar</h5></div>
                                                     </div>
                                                     <div class="row">
-                                                        <div class="col-4 grafmd" id="tg"></div>
-                                                        <div class="col-4 grafmd" id="tf"></div>
-                                                        <div class="col-4 grafmd" id="tm"></div>
+                                                        <div class="col-4 graftb" id="tg"></div>
+                                                        <div class="col-4 graftb" id="tf"></div>
+                                                        <div class="col-4 graftb" id="tm"></div>
                                                     </div>
                                                 </div>
                                             </div>
