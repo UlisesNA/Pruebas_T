@@ -69,10 +69,12 @@ WHERE gnral_alumnos.id_carrera='.$carrera[0]->id_carrera.' and exp_asigna_alumno
  exp_asigna_generacion.deleted_at is null and exp_asigna_alumnos.deleted_at is null and gnral_alumnos.revalidacion=1
  ) ) order by gnral_alumnos.apaterno ');*/
         $alumnos=DB::table('gnral_alumnos')
+            ->join('eva_carga_academica','eva_carga_academica.id_alumno','gnral_alumnos.id_alumno')
             ->where('gnral_alumnos.id_carrera',$carrera[0]->id_carrera)
+            ->where('eva_carga_academica.id_periodo',Session::get('id_periodo'))
             ->where(DB::raw('substr(gnral_alumnos.cuenta, 1, 4)'), '=' , $request->generacion)
-            ->select(DB::raw('UPPER(gnral_alumnos.nombre) as nombre, UPPER(gnral_alumnos.apaterno) as apaterno, UPPER(gnral_alumnos.amaterno) as amaterno, gnral_alumnos.cuenta,gnral_alumnos.revalidacion,gnral_alumnos.id_alumno'))
-            ->orderBy('gnral_alumnos.apaterno','asc')
+            ->select(DB::raw('DISTINCT UPPER(gnral_alumnos.nombre) as nombre, UPPER(gnral_alumnos.apaterno) as apaterno, UPPER(gnral_alumnos.amaterno) as amaterno, gnral_alumnos.cuenta,gnral_alumnos.revalidacion,gnral_alumnos.id_alumno'))
+            ->orderBy('gnral_alumnos.cuenta','asc')
             ->get();
 
         //dd($alumnos);
@@ -85,7 +87,7 @@ WHERE gnral_alumnos.id_carrera='.$carrera[0]->id_carrera.' and exp_asigna_alumno
         $alumnos=DB::select('SELECT UPPER(gnral_alumnos.nombre) as nombre,UPPER(gnral_alumnos.apaterno) as apaterno, UPPER(gnral_alumnos.amaterno) as amaterno,gnral_alumnos.cuenta,gnral_alumnos.id_alumno,exp_asigna_alumnos.id_asigna_alumno, gnral_alumnos.revalidacion   
                         from gnral_alumnos join exp_asigna_alumnos on exp_asigna_alumnos.id_alumno=gnral_alumnos.id_alumno 
                          where gnral_alumnos.id_carrera='.$carrera[0]->id_carrera.' and exp_asigna_alumnos.id_asigna_generacion='.$request->generacion.' 
-                          and exp_asigna_alumnos.deleted_at is null  order by gnral_alumnos.apaterno');
+                          and exp_asigna_alumnos.deleted_at is null  order by gnral_alumnos.cuenta');
         //return array_map('mb_strtoupper',[$alumnos[0],'UTF8']);
 
         return $alumnos;
@@ -113,12 +115,12 @@ WHERE gnral_alumnos.id_carrera='.$carrera[0]->id_carrera.' and exp_asigna_alumno
     {
         $carrera=DB::select('SELECT id_carrera from gnral_jefes_periodos where id_jefe_periodo='.Session::get('id_jefe_periodo'));
 
-        $alumnos=DB::select('select UPPER(gnral_alumnos.nombre) as nombre, UPPER(gnral_alumnos.apaterno)as apaterno, UPPER(gnral_alumnos.amaterno) as amaterno, 
-                  gnral_alumnos.cuenta,gnral_alumnos.id_alumno FROM gnral_alumnos WHERE gnral_alumnos.id_carrera='.$carrera[0]->id_carrera.' and 
+        $alumnos=DB::select('select distinct UPPER(gnral_alumnos.nombre) as nombre, UPPER(gnral_alumnos.apaterno)as apaterno, UPPER(gnral_alumnos.amaterno) as amaterno, 
+                  gnral_alumnos.cuenta,gnral_alumnos.id_alumno FROM gnral_alumnos JOIN eva_carga_academica ON eva_carga_academica.id_alumno=gnral_alumnos.id_alumno WHERE eva_carga_academica.id_periodo='.Session::get('id_periodo').' and gnral_alumnos.id_carrera='.$carrera[0]->id_carrera.' and 
                   (substr(gnral_alumnos.cuenta, 1, 4)='.$request->generacion.' OR gnral_alumnos.revalidacion=1) and gnral_alumnos.id_alumno NOT IN (SELECT exp_asigna_alumnos.id_alumno 
                   from exp_asigna_alumnos WHERE exp_asigna_alumnos.deleted_at is null and exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.') 
                    AND gnral_alumnos.id_alumno NOT IN (SELECT exp_asigna_alumnos.id_alumno 
-                  from exp_asigna_alumnos WHERE exp_asigna_alumnos.deleted_at is null) ORDER BY gnral_alumnos.apaterno ');
+                  from exp_asigna_alumnos WHERE exp_asigna_alumnos.deleted_at is null) ORDER BY gnral_alumnos.cuenta ');
 
         return $alumnos;
     }

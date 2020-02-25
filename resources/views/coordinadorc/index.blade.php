@@ -33,7 +33,7 @@
                                 <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab" @click="refrescar()" aria-controls="general" aria-selected="true">General</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="generacion-tab" data-toggle="tab" href="#generacion" role="tab"  aria-controls="generacion" aria-selected="false">Generacion</a>
+                                <a class="nav-link" id="generacion-tab" data-toggle="tab" href="#generacion" role="tab"  aria-controls="generacion" aria-selected="false">Generaciones</a>
                             </li>
                         </ul>
                         <div class="tab-content" id="myTabContent">
@@ -86,9 +86,6 @@
                                                         <data-table class=" col-12 table table-sm" :data="alumno" :columns-to-display="gridColumns" :filter-key="searchQuery">
                                                             <template slot="Cuenta" scope="alu">
                                                                 <div class="font-weight-bold pt-2">@{{alu.entry.cuenta}}</div>
-                                                            </template>
-                                                            <template slot="Nombre" scope="alu">
-                                                                <div class="pt-2">@{{ alu.entry.apaterno }} @{{ alu.entry.amaterno}} @{{ alu.entry.nombre }}</div>
                                                             </template>
                                                             <template slot="Nombre" scope="alu">
                                                                 <div class="pt-2">@{{ alu.entry.apaterno }} @{{ alu.entry.amaterno}} @{{ alu.entry.nombre }}</div>
@@ -210,6 +207,7 @@
                 },
                 getAlumnosGrupo:function (grupo) {
 
+                    this.searchQuery='';
                     this.clicgrupo=true;
                     this.id_asigna=grupo;
                     this.reporteGen=false;
@@ -219,7 +217,7 @@
                 },
                 getAlumnosGeneracion:function(genera)
                 {
-
+                    this.searchQuery='';
                     this.clicgrupo=false;
                     this.generacion=genera;
                     this.reporteGen=false;

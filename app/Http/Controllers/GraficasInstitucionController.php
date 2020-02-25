@@ -32,13 +32,19 @@ class GraficasInstitucionController extends Controller
 
         ///ALUMNOS TOTALES
         $F=DB::table('gnral_alumnos')
+            ->join('eva_carga_academica','eva_carga_academica.id_alumno','gnral_alumnos.id_alumno')
+            ->where('eva_carga_academica.id_periodo','=',Session::get('id_periodo'))
             ->where('gnral_alumnos.genero','F')
-            ->select('gnral_alumnos.nombre')
+            ->select('gnral_alumnos.id_alumno')
+            ->distinct()
             ->get()->count();
 
         $M=DB::table('gnral_alumnos')
+            ->join('eva_carga_academica','eva_carga_academica.id_alumno','gnral_alumnos.id_alumno')
+            ->where('eva_carga_academica.id_periodo','=',Session::get('id_periodo'))
             ->where('gnral_alumnos.genero','M')
-            ->select('gnral_alumnos.nombre')
+            ->select('gnral_alumnos.id_alumno')
+            ->distinct()
             ->get()->count();
         $total=$F+$M;
 

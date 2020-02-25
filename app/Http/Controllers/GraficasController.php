@@ -47,8 +47,8 @@ class GraficasController extends Controller
         WHERE gnral_alumnos.genero="F" AND exp_asigna_alumnos.deleted_at is null AND gnral_alumnos.id_carrera='.$request->id_carrera.' AND
         exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.') as FEM');
 
-        $total=$datos[0]->MAS+$datos[0]->FEM;
 
+        $total=$datos[0]->MAS+$datos[0]->FEM;
         return response()->json(
             [["name"=>"Hombres","y"=>round(($datos[0]->MAS)*100/($total==0?1:$total))],
                 ["name"=>"Mujeres","y"=>round(($datos[0]->FEM)*100/($total==0?1:$total))]],200
