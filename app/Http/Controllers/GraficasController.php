@@ -47,8 +47,8 @@ class GraficasController extends Controller
         WHERE gnral_alumnos.genero="F" AND exp_asigna_alumnos.deleted_at is null AND gnral_alumnos.id_carrera='.$request->id_carrera.' AND
         exp_asigna_alumnos.id_asigna_generacion='.$request->id_asigna_generacion.') as FEM');
 
-        $total=$datos[0]->MAS+$datos[0]->FEM;
 
+        $total=$datos[0]->MAS+$datos[0]->FEM;
         return response()->json(
             [["name"=>"Hombres","y"=>round(($datos[0]->MAS)*100/($total==0?1:$total))],
                 ["name"=>"Mujeres","y"=>round(($datos[0]->FEM)*100/($total==0?1:$total))]],200
@@ -497,13 +497,13 @@ class GraficasController extends Controller
                 ],
                 [
                     [
-                        ["name"=>"Regular","y"=>round(($academicogen[0]->R)*100/Session::get('total_alumnos'))],["name"=>"Irregular","y"=>round(($academicogen[0]->I)*100/Session::get('total_alumnos'))],["name"=>"Suspensión","y"=>round(($academicogen[0]->S)*100/Session::get('total_alumnos'))],["name"=>"Baja temporal","y"=>round(($academicogen[0]->BJ)*100/Session::get('total_alumnos'))],["name"=>"Baja definitiva","y"=>round(($academicogen[0]->BD)*100/Session::get('total_alumnos'))]
+                        ["name"=>"Regular","y"=>round(($academicogen[0]->R)*100/Session::get('total_alumnos'))],["name"=>"Irregular","y"=>round(($academicogen[0]->I)*100/Session::get('total_alumnos'))],["name"=>"Suspensión","y"=>round(($academicogen[0]->S)*100/Session::get('total_alumnos'))],["name"=>"Baja temporal  ","y"=>round(($academicogen[0]->BJ)*100/Session::get('total_alumnos'))],["name"=>"Baja definitiva","y"=>round(($academicogen[0]->BD)*100/Session::get('total_alumnos'))]
                     ],
                     [
-                        ["name"=>"Regular","y"=>round(($academicoF[0]->R)*100/Session::get('total_mujeres'))],["name"=>"Irregular","y"=>round(($academicoF[0]->I)*100/Session::get('total_mujeres'))],["name"=>"Suspensión","y"=>round(($academicoF[0]->S)*100/Session::get('total_mujeres'))],["name"=>"Baja temporal","y"=>round(($academicoF[0]->BJ)*100/Session::get('total_mujeres'))],["name"=>"Baja definitiva","y"=>round(($academicoF[0]->BD)*100/Session::get('total_mujeres'))]
+                        ["name"=>"Regular","y"=>round(($academicoF[0]->R)*100/Session::get('total_mujeres'))],["name"=>"Irregular","y"=>round(($academicoF[0]->I)*100/Session::get('total_mujeres'))],["name"=>"Suspensión","y"=>round(($academicoF[0]->S)*100/Session::get('total_mujeres'))],["name"=>"Baja temporal  ","y"=>round(($academicoF[0]->BJ)*100/Session::get('total_mujeres'))],["name"=>"Baja definitiva","y"=>round(($academicoF[0]->BD)*100/Session::get('total_mujeres'))]
                     ],
                     [
-                        ["name"=>"Regular","y"=>round(($academicoM[0]->R)*100/Session::get('total_hombres'))],["name"=>"Irregular","y"=>round(($academicoM[0]->I)*100/Session::get('total_hombres'))],["name"=>"Suspensión","y"=>round(($academicoM[0]->S)*100/Session::get('total_hombres'))],["name"=>"Baja temporal","y"=>round(($academicoM[0]->BJ)*100/Session::get('total_hombres'))],["name"=>"Baja definitiva","y"=>round(($academicoM[0]->BD)*100/Session::get('total_hombres'))]
+                        ["name"=>"Regular","y"=>round(($academicoM[0]->R)*100/Session::get('total_hombres'))],["name"=>"Irregular","y"=>round(($academicoM[0]->I)*100/Session::get('total_hombres'))],["name"=>"Suspensión","y"=>round(($academicoM[0]->S)*100/Session::get('total_hombres'))],["name"=>"Baja temporal  ","y"=>round(($academicoM[0]->BJ)*100/Session::get('total_hombres'))],["name"=>"Baja definitiva","y"=>round(($academicoM[0]->BD)*100/Session::get('total_hombres'))]
                     ]
                 ],
                 [

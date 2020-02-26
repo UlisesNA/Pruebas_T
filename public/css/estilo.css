@@ -26,6 +26,10 @@
     overflow: auto;
     height: 400px;
 }
+.graftb{
+    height: 350px;
+    width: 329px;
+}
 
 .cursorM{
     cursor:pointer;

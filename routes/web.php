@@ -142,6 +142,7 @@ Route::post('/creargrupo','AlumnosController@creargrupo');
 Route::post('/buscaalumnos','AlumnosController@BuscarAlumnosGrupo');
 Route::post('/asignaralumnos','AlumnosController@AsignarAlumnos');
 Route::post('/eliminaralumno','AlumnosController@EliminaAlumnoGrupo');
+Route::post('/eliminaralumnouno','AlumnosController@EliminaAlumnoGrupoUno');
 Route::get('/list', 'AlumnosController@getlist');
 Route::post('/revalida','AlumnosController@revalidacionSI');
 Route::post('/revalidano','AlumnosController@revalidacionNO');

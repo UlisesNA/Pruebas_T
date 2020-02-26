@@ -33,7 +33,7 @@ class ProfesorController extends Controller
             ->where('exp_asigna_alumnos.id_asigna_generacion', '=', $request->id_asigna_generacion)
             ->where('gnral_alumnos.id_carrera','=',$request->id_carrera)
             ->whereNull('exp_asigna_alumnos.deleted_at')
-            ->orderBy('gnral_alumnos.apaterno')
+            ->orderBy('gnral_alumnos.cuenta')
             ->get();
 
 

@@ -40,7 +40,7 @@
                                         @foreach($consulta as $con)
                                             @if($dato->generacion==$con->generacion)
                                                 <tr onmouseover="this.style.backgroundColor='#DBE7F3'" onmouseout="this.style.backgroundColor='white'">
-                                                    <td>{{strtoupper($con->nombre)}}</td>
+                                                    <td>{{mb_strtoupper($con->ap)}} {{mb_strtoupper($con->am)}} {{mb_strtoupper($con->nom)}}</td>
                                                     <td align="center">{{$con->no_hijos-1}}</td>
                                                     @if($con->trabaja==1)
                                                         <td align="center">Si</td>

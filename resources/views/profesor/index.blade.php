@@ -22,7 +22,7 @@
                 <div class="row">
                     <div class="col-12 pb-3">
                         <i class="fas fa-chevron-right h5"></i>
-                        <a href="{{url('/tutorvista')}}" class="font-weight-bold h6 pb-1">{{\Illuminate\Support\Facades\Session::get('tutor')>1?'CARRERAS':'CARRERA'}}</a>
+                        <a href="{{url('/tutorvista')}}" class="font-weight-bold h6 pb-1">{{\Illuminate\Support\Facades\Session::get('tutor')>1?'PROGRAMAS EDUCATIVOS':'PROGRAMA EDUCATIVO'}}</a>
                         <i class="fas fa-chevron-right h5"></i>
                         <a class="text-primary h6" v-if="lista==true">LISTA</a>
                         <a class="text-primary h6" v-if="graficas==true">ESTADÍSTICAS</a>
@@ -171,7 +171,7 @@
                             <div class="card-body" v-if="datos.length==0">
                                 <div class="row ">
                                     <div class="col-12 alert-info alert text-center">
-                                        <h5 class="font-weight-bold">No se han asignado alumnos al grupo</h5>
+                                        <h5 class="font-weight-bold">No se han asignado estudiantes al grupo</h5>
                                     </div>
                                 </div>
                             </div>
@@ -273,9 +273,9 @@
                                                                         <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Tipo de beca</h5></div>
                                                                     </div>
                                                                     <div class="row">
-                                                                        <div class="col-4 graf" id="tbg"></div>
-                                                                        <div class="col-4 graf" id="tbf"></div>
-                                                                        <div class="col-4 graf" id="tbm"></div>
+                                                                        <div class="col-4 graftb" id="tbg"></div>
+                                                                        <div class="col-4 graftb" id="tbf"></div>
+                                                                        <div class="col-4 graftb" id="tbm"></div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -300,7 +300,7 @@
                                                             <div class="row pt-3">
                                                                 <div class="col-12">
                                                                     <div class="row">
-                                                                        <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">¿Te gusta la carrera elegida?</h5></div>
+                                                                        <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">¿Te gusta el programa educativo elegido?</h5></div>
                                                                     </div>
                                                                     <div class="row">
                                                                         <div class="col-4 graf" id="gg"></div>
@@ -324,7 +324,7 @@
                                                             <div class="row pt-3">
                                                                 <div class="col-12">
                                                                     <div class="row">
-                                                                        <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">¿Otra carrera iniciada?</h5></div>
+                                                                        <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">¿Otro programa educativo iniciado?</h5></div>
                                                                     </div>
                                                                     <div class="row">
                                                                         <div class="col-4 graf" id="og"></div>
@@ -357,9 +357,9 @@
                                                                         <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Actualmente viven con</h5></div>
                                                                     </div>
                                                                     <div class="row">
-                                                                        <div class="col-4 grafmd" id="vg"></div>
-                                                                        <div class="col-4 grafmd" id="vf"></div>
-                                                                        <div class="col-4 grafmd" id="vm"></div>
+                                                                        <div class="col-4 graftb" id="vg"></div>
+                                                                        <div class="col-4 graftb" id="vf"></div>
+                                                                        <div class="col-4 graftb" id="vm"></div>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1011,7 +1011,7 @@
                                 enabled: false
                             },
                             title: {
-                                text: 'Alumnos por sexo'
+                                text: 'Estudiantes por sexo'
                             },
                             accessibility: {
                                 announceNewData: {
@@ -1019,22 +1019,33 @@
                                 }
                             },
                             xAxis: {
-                                type: 'category'
+                                type: 'category',
+                                labels: {
+                                    style: {
+                                        fontSize: '15px'
+                                    }
+                                }
+
                             },
                             yAxis: {
                                 title: {
-                                    text: 'Total'
-                                }
+                                    text: 'Total',
+                                    style: {
+                                        fontSize: "15px",
+                                    }
+                                },
                             },
                             legend: {
                                 enabled: false
                             },
                             plotOptions: {
                                 series: {
-                                    borderWidth: 0,
                                     dataLabels: {
                                         enabled: true,
-                                        format: '{point.y:.1f}%'
+                                        format: '{point.y:.1f}%',
+                                        style: {
+                                            fontSize:'15px'
+                                        }
                                     }
                                 }
                             },
@@ -1083,22 +1094,33 @@
                                         }
                                     },
                                     xAxis: {
-                                        type: 'category'
+                                        type: 'category',
+                                        labels: {
+                                            style: {
+                                                fontSize: '15px'
+                                            }
+                                        }
+
                                     },
                                     yAxis: {
                                         title: {
-                                            text: 'Total'
-                                        }
+                                            text: 'Total',
+                                            style: {
+                                                fontSize: "15px",
+                                            }
+                                        },
                                     },
                                     legend: {
                                         enabled: false
                                     },
                                     plotOptions: {
                                         series: {
-                                            borderWidth: 0,
                                             dataLabels: {
                                                 enabled: true,
-                                                format: '{point.y:.1f}%'
+                                                format: '{point.y:.1f}%',
+                                                style: {
+                                                    fontSize:'15px'
+                                                }
                                             }
                                         }
                                     },
@@ -1150,22 +1172,33 @@
                                         }
                                     },
                                     xAxis: {
-                                        type: 'category'
+                                        type: 'category',
+                                        labels: {
+                                            style: {
+                                                fontSize: '15px'
+                                            }
+                                        }
+
                                     },
                                     yAxis: {
                                         title: {
-                                            text: 'Total'
-                                        }
+                                            text: 'Total',
+                                            style: {
+                                                fontSize: "15px",
+                                            }
+                                        },
                                     },
                                     legend: {
                                         enabled: false
                                     },
                                     plotOptions: {
                                         series: {
-                                            borderWidth: 0,
                                             dataLabels: {
                                                 enabled: true,
-                                                format: '{point.y:.1f}%'
+                                                format: '{point.y:.1f}%',
+                                                style: {
+                                                    fontSize:'15px'
+                                                }
                                             }
                                         }
                                     },
@@ -1216,22 +1249,33 @@
                                         }
                                     },
                                     xAxis: {
-                                        type: 'category'
+                                        type: 'category',
+                                        labels: {
+                                            style: {
+                                                fontSize: '15px'
+                                            }
+                                        }
+
                                     },
                                     yAxis: {
                                         title: {
-                                            text: 'Total'
-                                        }
+                                            text: 'Total',
+                                            style: {
+                                                fontSize: "15px",
+                                            }
+                                        },
                                     },
                                     legend: {
                                         enabled: false
                                     },
                                     plotOptions: {
                                         series: {
-                                            borderWidth: 0,
                                             dataLabels: {
                                                 enabled: true,
-                                                format: '{point.y:.1f}%'
+                                                format: '{point.y:.1f}%',
+                                                style: {
+                                                    fontSize:'15px'
+                                                }
                                             }
                                         }
                                     },
@@ -1282,22 +1326,33 @@
                                         }
                                     },
                                     xAxis: {
-                                        type: 'category'
+                                        type: 'category',
+                                        labels: {
+                                            style: {
+                                                fontSize: '15px'
+                                            }
+                                        }
+
                                     },
                                     yAxis: {
                                         title: {
-                                            text: 'Total'
-                                        }
+                                            text: 'Total',
+                                            style: {
+                                                fontSize: "15px",
+                                            }
+                                        },
                                     },
                                     legend: {
                                         enabled: false
                                     },
                                     plotOptions: {
                                         series: {
-                                            borderWidth: 0,
                                             dataLabels: {
                                                 enabled: true,
-                                                format: '{point.y:.1f}%'
+                                                format: '{point.y:.1f}%',
+                                                style: {
+                                                    fontSize:'15px'
+                                                }
                                             }
                                         }
                                     },
@@ -1348,22 +1403,33 @@
                                         }
                                     },
                                     xAxis: {
-                                        type: 'category'
+                                        type: 'category',
+                                        labels: {
+                                            style: {
+                                                fontSize: '15px'
+                                            }
+                                        }
+
                                     },
                                     yAxis: {
                                         title: {
-                                            text: 'Total'
-                                        }
+                                            text: 'Total',
+                                            style: {
+                                                fontSize: "15px",
+                                            }
+                                        },
                                     },
                                     legend: {
                                         enabled: false
                                     },
                                     plotOptions: {
                                         series: {
-                                            borderWidth: 0,
                                             dataLabels: {
                                                 enabled: true,
-                                                format: '{point.y:.1f}%'
+                                                format: '{point.y:.1f}%',
+                                                style: {
+                                                    fontSize:'15px'
+                                                }
                                             }
                                         }
                                     },
@@ -1414,22 +1480,33 @@
                                         }
                                     },
                                     xAxis: {
-                                        type: 'category'
+                                        type: 'category',
+                                        labels: {
+                                            style: {
+                                                fontSize: '15px'
+                                            }
+                                        }
+
                                     },
                                     yAxis: {
                                         title: {
-                                            text: 'Total'
-                                        }
+                                            text: 'Total',
+                                            style: {
+                                                fontSize: "15px",
+                                            }
+                                        },
                                     },
                                     legend: {
                                         enabled: false
                                     },
                                     plotOptions: {
                                         series: {
-                                            borderWidth: 0,
                                             dataLabels: {
                                                 enabled: true,
-                                                format: '{point.y:.1f}%'
+                                                format: '{point.y:.1f}%',
+                                                style: {
+                                                    fontSize:'15px'
+                                                }
                                             }
                                         }
                                     },

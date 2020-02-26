@@ -34,14 +34,20 @@ class GraficasCarreraController extends Controller
 
         ///ALUMNOS TOTALES
         $F=DB::table('gnral_alumnos')
+            ->join('eva_carga_academica','eva_carga_academica.id_alumno','gnral_alumnos.id_alumno')
+            ->where('eva_carga_academica.id_periodo','=',Session::get('id_periodo'))
             ->where('gnral_alumnos.id_carrera',$request->id_carrera)
             ->where('gnral_alumnos.genero','F')
-            ->select('gnral_alumnos.nombre')
+            ->select('gnral_alumnos.id_alumno')
+            ->distinct()
             ->get()->count();
         $M=DB::table('gnral_alumnos')
+            ->join('eva_carga_academica','eva_carga_academica.id_alumno','gnral_alumnos.id_alumno')
+            ->where('eva_carga_academica.id_periodo','=',Session::get('id_periodo'))
             ->where('gnral_alumnos.id_carrera',$request->id_carrera)
             ->where('gnral_alumnos.genero','M')
-            ->select('gnral_alumnos.nombre')
+            ->select('gnral_alumnos.id_alumno')
+            ->distinct()
             ->get()->count();
         $total=$F+$M;
 
@@ -315,13 +321,13 @@ class GraficasCarreraController extends Controller
                 ],
                 [
                     [
-                        ["name"=>"Regular","y"=>round(($academicogen[0]->R)*100/Session::get('total_alumnos'))],["name"=>"Irregular","y"=>round(($academicogen[0]->I)*100/Session::get('total_alumnos'))],["name"=>"Suspensión","y"=>round(($academicogen[0]->S)*100/Session::get('total_alumnos'))],["name"=>"Baja temporal","y"=>round(($academicogen[0]->BJ)*100/Session::get('total_alumnos'))],["name"=>"Baja definitiva","y"=>round(($academicogen[0]->BD)*100/Session::get('total_alumnos'))]
+                        ["name"=>"Regular","y"=>round(($academicogen[0]->R)*100/Session::get('total_alumnos'))],["name"=>"Irregular","y"=>round(($academicogen[0]->I)*100/Session::get('total_alumnos'))],["name"=>"Suspensión","y"=>round(($academicogen[0]->S)*100/Session::get('total_alumnos'))],["name"=>"Baja temporal   ","y"=>round(($academicogen[0]->BJ)*100/Session::get('total_alumnos'))],["name"=>"Baja definitiva","y"=>round(($academicogen[0]->BD)*100/Session::get('total_alumnos'))]
                     ],
                     [
-                        ["name"=>"Regular","y"=>round(($academicoF[0]->R)*100/Session::get('total_mujeres'))],["name"=>"Irregular","y"=>round(($academicoF[0]->I)*100/Session::get('total_mujeres'))],["name"=>"Suspensión","y"=>round(($academicoF[0]->S)*100/Session::get('total_mujeres'))],["name"=>"Baja temporal","y"=>round(($academicoF[0]->BJ)*100/Session::get('total_mujeres'))],["name"=>"Baja definitiva","y"=>round(($academicoF[0]->BD)*100/Session::get('total_mujeres'))]
+                        ["name"=>"Regular","y"=>round(($academicoF[0]->R)*100/Session::get('total_mujeres'))],["name"=>"Irregular","y"=>round(($academicoF[0]->I)*100/Session::get('total_mujeres'))],["name"=>"Suspensión","y"=>round(($academicoF[0]->S)*100/Session::get('total_mujeres'))],["name"=>"Baja temporal   ","y"=>round(($academicoF[0]->BJ)*100/Session::get('total_mujeres'))],["name"=>"Baja definitiva","y"=>round(($academicoF[0]->BD)*100/Session::get('total_mujeres'))]
                     ],
                     [
-                        ["name"=>"Regular","y"=>round(($academicoM[0]->R)*100/Session::get('total_hombres'))],["name"=>"Irregular","y"=>round(($academicoM[0]->I)*100/Session::get('total_hombres'))],["name"=>"Suspensión","y"=>round(($academicoM[0]->S)*100/Session::get('total_hombres'))],["name"=>"Baja temporal","y"=>round(($academicoM[0]->BJ)*100/Session::get('total_hombres'))],["name"=>"Baja definitiva","y"=>round(($academicoM[0]->BD)*100/Session::get('total_hombres'))]
+                        ["name"=>"Regular","y"=>round(($academicoM[0]->R)*100/Session::get('total_hombres'))],["name"=>"Irregular","y"=>round(($academicoM[0]->I)*100/Session::get('total_hombres'))],["name"=>"Suspensión","y"=>round(($academicoM[0]->S)*100/Session::get('total_hombres'))],["name"=>"Baja temporal   ","y"=>round(($academicoM[0]->BJ)*100/Session::get('total_hombres'))],["name"=>"Baja definitiva","y"=>round(($academicoM[0]->BD)*100/Session::get('total_hombres'))]
                     ]
                 ],
                 [
