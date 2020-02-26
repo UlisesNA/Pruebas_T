@@ -104,9 +104,9 @@
                                                         <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Tipo de beca</h5></div>
                                                     </div>
                                                     <div class="row">
-                                                        <div class="col-4 grafmd" id="tbg"></div>
-                                                        <div class="col-4 grafmd" id="tbf"></div>
-                                                        <div class="col-4 grafmd" id="tbm"></div>
+                                                        <div class="col-4 graftb" id="tbg"></div>
+                                                        <div class="col-4 graftb" id="tbf"></div>
+                                                        <div class="col-4 graftb" id="tbm"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -188,9 +188,9 @@
                                                         <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Actualmente viven con</h5></div>
                                                     </div>
                                                     <div class="row">
-                                                        <div class="col-4 grafmd" id="vg"></div>
-                                                        <div class="col-4 grafmd" id="vf"></div>
-                                                        <div class="col-4 grafmd" id="vm"></div>
+                                                        <div class="col-4 graftb" id="vg"></div>
+                                                        <div class="col-4 graftb" id="vf"></div>
+                                                        <div class="col-4 graftb" id="vm"></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -242,9 +242,9 @@
                                                         <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">Tiempo dedicado a estudiar</h5></div>
                                                     </div>
                                                     <div class="row">
-                                                        <div class="col-4 grafmd" id="tg"></div>
-                                                        <div class="col-4 grafmd" id="tf"></div>
-                                                        <div class="col-4 grafmd" id="tm"></div>
+                                                        <div class="col-4 graftb" id="tg"></div>
+                                                        <div class="col-4 graftb" id="tf"></div>
+                                                        <div class="col-4 graftb" id="tm"></div>
                                                     </div>
                                                 </div>
                                             </div>

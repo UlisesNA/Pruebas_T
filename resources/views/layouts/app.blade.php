@@ -156,7 +156,8 @@
                                             <a class="dropdown-item" href="/eventos">Eventos</a>
                                             <a class="dropdown-item" href="/desercion">Deserción</a>
                                             <a class="dropdown-item" href="/reporte">Reporte</a>
-                                            <a class="dropdown-item" href="/planeaciontutor">Planeación</a>
+                                            <!--
+                                            <a class="dropdown-item" href="/planeaciontutor">Planeación</a>-->
                                         </div>
                                     </div>
                                 @endif

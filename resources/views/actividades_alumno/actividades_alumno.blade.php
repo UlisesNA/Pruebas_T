@@ -20,23 +20,34 @@
                     </tr>
                     @foreach ($datos as $plan)
                         <tr onmouseover="this.style.backgroundColor='#DBE7F3'" onmouseout="this.style.backgroundColor='white'">
-                            <td>{{$plan->desc_actividad}}</td>
-                            <td>{{$plan->objetivo_actividad}}</td>
-                            <td>{{$plan->fi_actividad}}</td>
-                            <td>{{$plan->ff_actividad}}</td>
-                            <td>{{$plan->estrategia}}</td>
-                            <td>
+                            @if($plan->id_sugerencia==null)
+                                <td>{{$plan->desc_actividad}}</td>
+                                <td>{{$plan->objetivo_actividad}}</td>
+                            @endif
+
+                            @if($plan->id_sugerencia==1)
+                                    <td>{{$plan->desc_actividad_cambio}}</td>
+                                    <td>{{$plan->objetivo_actividad_cambio}}</td>
+                            @endif
+
+                                <td>{{$plan->fi_actividad}}</td>
+                                <td>{{$plan->ff_actividad}}</td>
+                                <td>{{$plan->estrategia}}</td>
+
+
+                                <td>
                                 @if($plan->requiere_evidencia==null)
                                     <h6>No requiere evidencia</h6>
                                 @endif
                                 @if(isset($plan->evidencia[0]))
                                     <a href="{{url("/pdf/",$plan->evidencia[0]->evidencia)}}" target="_blank">Visualizar</a>
-                                    <button type="button" class="edit_evidencia" data-id="{{$plan->evidencia[0]->id_evidencia}}">
-                                            <i class="fas fa-pen" style="background: #f0f0f0;"></i></button>
+                                    <button type="button" class="edit_evidencia" data-id="{{$plan->evidencia[0]->id_evidencia}}"  title="Modificar evidencia">
+                                            <i class="fas fa-pen" ></i></button>
                                     @else
                                     @if($plan->requiere_evidencia==1)
-                                            <button type="button" class="btn edit" data-id="{{$plan->id_asigna_planeacion_tutor}}" style="background: #f0f0f0;">
-                                                <i class="fas fa-file-pdf"></i></button>
+                                            <button type="button" class="btn edit" data-id="{{$plan->id_asigna_planeacion_tutor}}"
+                                                    style="background: #f0f0f0;" title="Subir evidencia">
+                                                <i class="fas fa-file-upload"></i></button>
                                     @endif
                                 @endif
                             </td>

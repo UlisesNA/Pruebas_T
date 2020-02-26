@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exp_generacion;
 use App\GnralJefePeriodos;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
@@ -18,8 +19,9 @@ class CoordinadorCarreraController extends Controller
             JOIN gnral_personales ON exp_asigna_coordinador.id_personal=gnral_personales.id_personal 
             JOIN gnral_jefes_periodos ON exp_asigna_coordinador.id_jefe_periodo=gnral_jefes_periodos.id_jefe_periodo 
             JOIN gnral_carreras ON gnral_carreras.id_carrera=gnral_jefes_periodos.id_carrera WHERE exp_asigna_coordinador.id_jefe_periodo 
-            IN (SELECT gnral_jefes_periodos.id_jefe_periodo from gnral_jefes_periodos where gnral_jefes_periodos.id_periodo='.Session::get('id_periodo').') AND 
-            exp_asigna_coordinador.deleted_at is null ORDER BY gnral_carreras.nombre ');
+            IN (SELECT gnral_jefes_periodos.id_jefe_periodo from gnral_jefes_periodos 
+            JOIN gnral_personales ON gnral_personales.id_personal=gnral_jefes_periodos.id_personal where gnral_jefes_periodos.id_periodo='.Session::get('id_periodo').') AND 
+            exp_asigna_coordinador.deleted_at is null AND gnral_personales.tipo_usuario='.Auth::user()->id.'  ORDER BY gnral_carreras.nombre ');
        /* $carreras=DB::table('exp_asigna_coordinador')
             ->join('gnral_personales','gnral_personales.id_personal','=','exp_asigna_coordinador.id_personal')
             ->join('gnral_jefes_periodos','exp_asigna_coordinador.id_jefe_periodo','=','gnral_jefes_periodos.id_jefe_periodo')
@@ -29,6 +31,22 @@ class CoordinadorCarreraController extends Controller
             ->select('gnral_carreras.nombre','gnral_carreras.id_carrera')
             ->orderBy('gnral_carreras.nombre')
             ->get();*/
+        return $carreras;
+    }
+    public function carreras1()
+    {
+
+        $carreras=DB::select('select gnral_carreras.nombre,gnral_carreras.id_carrera from gnral_carreras
+             ORDER BY gnral_carreras.nombre ');
+        /* $carreras=DB::table('exp_asigna_coordinador')
+             ->join('gnral_personales','gnral_personales.id_personal','=','exp_asigna_coordinador.id_personal')
+             ->join('gnral_jefes_periodos','exp_asigna_coordinador.id_jefe_periodo','=','gnral_jefes_periodos.id_jefe_periodo')
+             ->join('gnral_carreras','gnral_carreras.id_carrera','=','gnral_jefes_periodos.id_carrera')
+             ->whereIn('exp_asigna_coordinador.id_jefe_periodo',DB::raw('SELECT gnral_jefes_periodos.id_jefe_periodo from gnral_jefes_periodos where gnral_jefes_periodos.id_periodo='.Session::get('id_periodo')))
+             ->whereNull('exp_asigna_coordinador.deleted_at')
+             ->select('gnral_carreras.nombre','gnral_carreras.id_carrera')
+             ->orderBy('gnral_carreras.nombre')
+             ->get();*/
         return $carreras;
     }
     public function generaciones(Request $request)

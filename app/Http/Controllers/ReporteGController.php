@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Exp_asigna_generacion;
+use App\GnralJefePeriodos;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Codedge\Fpdf\Fpdf\Fpdf as FPDF;
@@ -52,11 +53,42 @@ class ReporteGController extends Controller
     public function pdf_reporte(Request $request)
     {
 
+        $responsable="";
         if($request->id_carrera!=null)
         {
             $carrera=DB::table('gnral_carreras')
                 ->select('nombre')
                 ->where('id_carrera', '=', $request->id_carrera)
+                ->get();
+            if($request->cargo=="tutor")
+            {
+                $jefe=DB::table('gnral_jefes_periodos')
+                    ->where('id_periodo','=',Session::get('id_periodo'))
+                    ->where('id_carrera','=',$request->id_carrera)
+                    ->select('gnral_jefes_periodos.id_jefe_periodo')
+                    ->get();
+
+                $responsable=DB::table('gnral_personales')
+                    ->join('exp_asigna_coordinador','exp_asigna_coordinador.id_personal','=','gnral_personales.id_personal')
+                    ->whereNull('exp_asigna_coordinador.deleted_at')
+                    ->select('gnral_personales.nombre')
+                    ->where('exp_asigna_coordinador.id_jefe_periodo','=',$jefe[0]->id_jefe_periodo)
+                    ->get();
+            }
+        }
+       if($request->cargo=='coordinadorc')
+        {
+            $responsable=DB::table('desarrollo_asigna_coordinador_general')
+                ->join('gnral_personales','gnral_personales.id_personal','=','desarrollo_asigna_coordinador_general.id_personal')
+                ->select('gnral_personales.nombre')
+                ->whereNull('desarrollo_asigna_coordinador_general.deleted_at')
+                ->get();
+        }
+        else if($request->cargo=="coordinadorgeneral")
+        {
+            $responsable=DB::table('gnral_personales')
+                ->where('id_departamento','=',4)
+                ->select('gnral_personales.nombre')
                 ->get();
         }
         $profesor=DB::table('gnral_personales')
@@ -76,6 +108,48 @@ class ReporteGController extends Controller
         /*MES*/
         $mm= Carbon::now();
         $mm = $mm->format('m');
+        $mes="";
+        switch ($mm){
+            case '01':
+                $mes="enero";
+                break;
+            case '02':
+                $mes="febrero";
+                break;
+            case '03':
+                $mes="marzo";
+                break;
+            case '04':
+                $mes="abril";
+                break;
+            case '05':
+                $mes="mayo";
+                break;
+            case '06':
+                $mes="junio";
+                break;
+            case '07':
+                $mes="julio";
+                break;
+            case '08':
+                $mes="agosto";
+                break;
+            case '09':
+                $mes="septiembre";
+                break;
+            case '10':
+                $mes="octubre";
+                break;
+            case '11':
+                $mes="noviembre";
+                break;
+            case '12':
+                $mes="diciembre";
+                break;
+
+
+        }
+
         /*DIA*/
         $dd= Carbon::now();
         $dd = $dd->format('d');
@@ -88,16 +162,17 @@ class ReporteGController extends Controller
         $pdf->AddPage();
         $pdf->SetFont('Arial', '', 9);
         $pdf->Ln(4);
-        $pdf->MultiCell(180,6,utf8_decode("Valle de Bravo, México; a " .$dd." de ".$mm. " de ".$aa."."),0,"R","","");
+        $pdf->MultiCell(180,6,utf8_decode("Valle de Bravo, México; a " .$dd." de ".$mes. " de ".$aa."."),0,"R","","");
         $pdf->Ln(1);
-        //$pdf->MultiCell(167,6,utf8_decode(""),0,"R","","");
+
         $pdf->Ln(2);
 
         $pdf->SetFont('Arial', 'B', 9);
         $pdf->Cell(167,6,utf8_decode($profesor[0]->nombre),0,1,"","");
         if($request->cargo=="tutor")
         {
-            $pdf->Cell(167,6,utf8_decode("TUTOR EN EL PROGRAMA EDUCATIVO"),0,1,"","");
+            $pdf->Cell(167,6,utf8_decode($responsable[0]->nombre),0,1,"","");
+            $pdf->Cell(167,6,utf8_decode("COORDINADOR EN EL PROGRAMA EDUCATIVO"),0,1,"","");
             $pdf->Cell(167,6,"DE ".utf8_decode($carrera[0]->nombre),0,1,"","");
             $pdf->Cell(167,6,utf8_decode("P  R  E  S  E  N  T  E"),0,1,"","");
             $pdf->Ln(6);
@@ -108,12 +183,13 @@ class ReporteGController extends Controller
         }
         else if($request->cargo=="coordinadorc")
         {
-            $pdf->Cell(167,6,utf8_decode("COORDINADOR EN EL PROGRAMA EDUCATIVO"),0,1,"","");
-           // dd($request);
+            $pdf->Cell(167,6,utf8_decode($responsable[0]->nombre),0,1,"","");
+            $pdf->Cell(167,6,utf8_decode("COORDINADOR GENERAL"),0,1,"","");
+            $pdf->Cell(167,6,"DEL ".utf8_decode('TECNOLÓGICO DE ESTUDIOS SUPERIORES DE VALLE DE BRAVO'),0,1,"","");
+            $pdf->Cell(167,6,utf8_decode("P  R  E  S  E  N  T  E"),0,1,"","");
+            // dd($request);
             if($request->generacion==null && $request->generacion_grupo==null )
             {
-                $pdf->Cell(167,6,"DE ".utf8_decode($carrera[0]->nombre),0,1,"","");
-                $pdf->Cell(167,6,utf8_decode("P  R  E  S  E  N  T  E"),0,1,"","");
                 $pdf->Ln(6);
                 $pdf->SetFont('Arial', '', 9);
                 $pdf->MultiCell(($pdf->GetPageWidth()-20)/1,6,utf8_decode("Por medio del presente, me permito informarle las estadísticas correspondientes al Programa Institucional de Tutorías, correspondiente al Programa de Estudios ".$carrera[0]->nombre.", del periodo ".(Session::get('nombre_periodo').".")),0,"J","");
@@ -121,16 +197,12 @@ class ReporteGController extends Controller
             }
             else if($request->generacion_grupo==null)
             {
-                $pdf->Cell(167,6,"DE ".utf8_decode($carrera[0]->nombre),0,1,"","");
-                $pdf->Cell(167,6,utf8_decode("P  R  E  S  E  N  T  E"),0,1,"","");
                 $pdf->Ln(6);
                 $pdf->SetFont('Arial', '', 9);
                 $pdf->MultiCell(($pdf->GetPageWidth()-20)/1,6,utf8_decode("Por medio del presente, me permito informarle las estadísticas correspondientes al Programa Institucional de Tutorías, correspondiente a la GENERACIÓN ".$request->generacion.", del Programa de Estudios ".$carrera[0]->nombre.", del periodo ".(Session::get('nombre_periodo').".")),0,"J","");
             }
             else if($request->generacion==null)
             {
-                $pdf->Cell(167,6,"DE ".utf8_decode($carrera[0]->nombre),0,1,"","");
-                $pdf->Cell(167,6,utf8_decode("P  R  E  S  E  N  T  E"),0,1,"","");
                 $pdf->Ln(6);
                 $asignaeneracion=Exp_asigna_generacion::find($request->generacion_grupo);
                 $asignaeneracion->load('getGeneracion');
@@ -142,14 +214,17 @@ class ReporteGController extends Controller
         }
         else if($request->cargo=="coordinadorgeneral" || $request->cargo=="desarrollo")
         {
+
             if($request->cargo=="coordinadorgeneral")
             {
-                $pdf->Cell(167,6,utf8_decode("COORDINADOR GENERAL"),0,1,"","");
+                $pdf->Cell(167,6,utf8_decode($responsable[0]->nombre),0,1,"","");
+                $pdf->Cell(167,6,utf8_decode("JEFA DEL DEPARTAMENTO DE DESARROLLO ACADÉMICO"),0,1,"","");
                 $leyenda="COORDINADOR GENERAL";
             }
             else if($request->cargo=="desarrollo")
             {
-                $pdf->Cell(167,6,utf8_decode("JEFA DEL DEPARTAMENTO DE DESARROLLO ACADÉMICO"),0,1,"","");
+                $pdf->Cell(167,6,utf8_decode(mb_strtoupper($request->responsable, 'UTF-8')),0,1,"","");
+                $pdf->Cell(167,6,utf8_decode(mb_strtoupper($request->cargores, 'UTF-8')),0,1,"","");
                 $leyenda='JEFA DEL DEPARTAMENTO DE DESARROLLO ACADÉMICO';
             }
             $pdf->Cell(167,6,utf8_decode("DEL TECNOLÓGICO DE ESTUDIOS SUPERIORES DE VALLE DE BRAVO"),0,1,"","");

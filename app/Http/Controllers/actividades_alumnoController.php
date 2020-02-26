@@ -25,7 +25,7 @@ class actividades_alumnoController extends Controller
 
                 ->join('exp_asigna_tutor', function ($join){
                     $join->on('exp_asigna_tutor.id_asigna_tutor','=','plan_asigna_planeacion_tutor.id_asigna_tutor');
-                     //   ->where('exp_asigna_tutor.id_asigna_generacion','=','exp_asigna_generacion.id_asigna_generacion');
+                    //->where('exp_asigna_tutor.id_asigna_generacion','=','exp_asigna_generacion.id_asigna_generacion');
                 })
                     //id alumno
                 ->join('gnral_alumnos','exp_asigna_alumnos.id_alumno' , '=',  'gnral_alumnos.id_alumno')
@@ -41,7 +41,8 @@ class actividades_alumnoController extends Controller
 
                 ->select('plan_actividades.desc_actividad', 'plan_actividades.objetivo_actividad',
                     'plan_actividades.fi_actividad', 'plan_actividades.ff_actividad','plan_asigna_planeacion_tutor.estrategia','plan_asigna_planeacion_tutor.requiere_evidencia',
-                         'plan_asigna_planeacion_tutor.id_asigna_planeacion_tutor',
+                         'plan_asigna_planeacion_tutor.id_asigna_planeacion_tutor','plan_asigna_planeacion_tutor.id_sugerencia',
+                    'plan_asigna_planeacion_tutor.desc_actividad_cambio','plan_asigna_planeacion_tutor.objetivo_actividad_cambio',
                     'exp_asigna_tutor.id_asigna_generacion','exp_asigna_generacion.id_asigna_generacion as id_asigna_generacion2')
             ->get();
 

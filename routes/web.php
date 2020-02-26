@@ -105,7 +105,7 @@ Route::group(['prefix'=>'grafinstitut'],function (){
 
 
 Route::post('/profesor','ProfesorController@alumnos');
-Route::post('/semestre','ProfesorController@alumnos1');
+Route::post('/semestre','ProfesorController@planeacion');
 Route::post('/cambio','ProfesorController@cambio');
 Route::get('grupos','ProfesorController@grupos');
 Route::post('/alu','ProfesorController@alumnos');
@@ -119,7 +119,11 @@ Route::get('/Alum','ViewAlumnosController@llenar');
 Route::get('/AlumActualizar','ViewAlumnosController@actualizar');
 
 Route::post('/ver','ViewAlumnosController@veralumno');
+Route::post('/verestra','ViewAlumnosController@verestrategia');
+Route::post('/versuge','ViewAlumnosController@versugerencia');
 Route::post('/actualiza','ViewAlumnosController@actualiza');
+Route::post('/actualizaestra','ViewAlumnosController@actualizaestrategia');
+Route::post('/actualizasuge','ViewAlumnosController@actualizasugerencia');
 Route::post('/guardar','ViewAlumnosController@store');
 Route::post('/imagen','ViewAlumnosController@guardarImagen');
 
@@ -132,6 +136,7 @@ Route::Resource('/alumnos','AlumnosController');
 Route::get('/generaciones','AlumnosController@generaciones');
 Route::post('/alumnosgeneracion','AlumnosController@alumnosgeneracion');
 Route::post('/alumnosgrupo','AlumnosController@alumnosgrupo');
+Route::post('/planeacioninst','AlumnosController@planeacion');
 
 Route::post('/creargrupo','AlumnosController@creargrupo');
 Route::post('/buscaalumnos','AlumnosController@BuscarAlumnosGrupo');
@@ -148,8 +153,12 @@ Route::get('/getAlumno','PanelAlumnoController@datosPrincipales');
 Route::get('/inicioalu','PanelAlumnoController@principal');
 
 Route::get('/carrera','CoordinadorCarreraController@carreras');
+Route::get('/carrerasinst','CoordinadorCarreraController@carreras1');
 Route::get('/carreras', function () {
     return view('coordinadorc.index');
+});
+Route::get('/revision', function () {
+    return view('coordina_inst.revision');
 });
 Route::get('/estadisticas/carreras', function () {
     return view('coordina_inst.carreras');
@@ -193,6 +202,9 @@ Route::get("reporte_pdf6","ReportePDFController@reporte_pdf6")->name("reporte_pd
 Route::get("reporte_pdf7","ReportePDFController@reporte_pdf7")->name("reporte_pdf7");
 Route::get("reporte_pdf8","ReportePDFController@reporte_pdf8")->name("reporte_pdf8");
 //Route::get("reporte_grafica","ReporteGController@reporte_grafica")->name("reporte_grafica");
+
+//Ruta planeacion
+Route::post("pdf/planeacion","PlaneacionPDFController@pdf_planeacion")->name("pdf_planeacion");
 ?>
 
 

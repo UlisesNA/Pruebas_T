@@ -8,7 +8,7 @@
                         <div class="card-body">
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item">
-                                  <a class="nav-link active" id="generacion-tab" data-toggle="tab" href="#generacion" role="tab"  aria-controls="generacion" aria-selected="false">Generacion</a>
+                                  <a class="nav-link active" id="generacion-tab" data-toggle="tab" href="#generacion" role="tab"  aria-controls="generacion" aria-selected="false">Generaciones</a>
                                 </li>
                             </ul>
                             <div class="tab-content" id="myTabContent">
@@ -172,6 +172,8 @@
                     }).catch(error=>{ });
                 },
                 getAlumnosGrupo:function (grupo) {
+                   this.searchQuery='';
+                    this.searchQuery1='';
                     this.idasignageneracion=grupo;
                     this.clicgrupo=true;
                     this.gridColumns= ['Cuenta','Nombre','Acción'];
@@ -182,6 +184,8 @@
                 },
                 getAlumnosGeneracion:function(genera)
                 {
+                    this.searchQuery='';
+                    this.searchQuery1='';
                     this.clicgrupo=false;
                     this.gridColumns= ['Cuenta','Nombre','Revalidación'];
                     this.clicgeneracion=true;

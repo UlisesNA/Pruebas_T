@@ -728,6 +728,8 @@ class PdfController extends Controller
             ->where('gnral_personales.tipo_usuario', '=', Auth::user()->id)
             ->get();
 
+       
+
         //$pdf= new \Codedge\Fpdf\Fpdf\Fpdf();
         // $pdf->AddPage();
         $pdf=new PDF($orientation='P',$unit='mm',$format='Letter');
