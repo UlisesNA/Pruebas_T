@@ -36,14 +36,23 @@ class PlaneacionPDFController extends Controller
 
     public function pdf_planeacion(Request $request)
      {
-         $datos=DB::table('gnral_alumnos')
-             ->join('exp_asigna_alumnos','exp_asigna_alumnos.id_alumno','=','gnral_alumnos.id_alumno')
-             ->select('gnral_alumnos.*','exp_asigna_alumnos.estado','exp_asigna_alumnos.id_asigna_alumno')
-             ->where('exp_asigna_alumnos.id_asigna_generacion', '=', $request->id_asigna_generacion)
-             ->where('gnral_alumnos.id_carrera','=',$request->id_carrera)
-             ->whereNull('exp_asigna_alumnos.deleted_at')
-             ->orderBy('gnral_alumnos.apaterno')
-             ->get();
+         $datos=DB::select('SELECT plan_actividades.desc_actividad,plan_actividades.objetivo_actividad,plan_actividades.fi_actividad, plan_actividades.ff_actividad
+,
+plan_asigna_planeacion_tutor.estrategia,plan_asigna_planeacion_tutor.id_asigna_planeacion_tutor,plan_asigna_planeacion_tutor.id_sugerencia,
+plan_asigna_planeacion_tutor.desc_actividad_cambio,plan_asigna_planeacion_tutor.objetivo_actividad_cambio, exp_asigna_tutor.id_asigna_tutor,
+exp_asigna_tutor.id_asigna_generacion
+FROM plan_actividades, plan_asigna_planeacion_tutor,plan_asigna_planeacion_actividad,plan_planeacion,exp_asigna_generacion,exp_asigna_tutor
+WHERE 
+plan_asigna_planeacion_actividad.id_plan_actividad=plan_actividades.id_plan_actividad
+AND plan_planeacion.id_planeacion=plan_asigna_planeacion_actividad.id_planeacion
+AND plan_asigna_planeacion_tutor.id_asigna_planeacion_actividad=plan_asigna_planeacion_actividad.id_asigna_planeacion_actividad
+AND exp_asigna_generacion.id_generacion=plan_planeacion.id_generacion
+AND exp_asigna_tutor.id_asigna_generacion=exp_asigna_generacion.id_asigna_generacion
+AND exp_asigna_tutor.id_asigna_tutor=plan_asigna_planeacion_tutor.id_asigna_tutor
+AND exp_asigna_tutor.deleted_at IS null
+AND exp_asigna_tutor.id_asigna_generacion='.$request->id_asigna_generacion.' 
+AND plan_actividades.deleted_at IS null');
+
          $carrera=DB::table('gnral_carreras')
              ->select('nombre')
              ->where('id_carrera', '=', $request->id_carrera)
@@ -85,13 +94,11 @@ class PlaneacionPDFController extends Controller
          $pdf->Cell(40, 4, utf8_decode("Objetivo"), 1, 0, "C", "true");
          $pdf->Cell(36, 4, utf8_decode("Estrategias"), 1, 0, "C", "true");
          $pdf->ln(4);
-         $pdf->Cell(20, 4, utf8_decode("Fecha"), 1, 0, "C", "true");
-         $pdf->Cell(20, 4, utf8_decode("Fecha"), 1, 0, "C", "true");
-         $pdf->Cell(40, 4, utf8_decode("Sesion"), 1, 0, "C", "true");
-         $pdf->Cell(40, 4, utf8_decode("Actividades"), 1, 0, "C", "true");
-         $pdf->Cell(40, 4, utf8_decode("Objetivo"), 1, 0, "C", "true");
-         $pdf->Cell(36, 4, utf8_decode("Estrategias"), 1, 0, "C", "true");
+         foreach ($datos as $dat)
+         {
+         $pdf->Cell(20, 4, utf8_decode(mb_strtoupper($dat->fi_actividad)), 1, 0, "C");
 
+         }
          //$pdf->Cell(0,100,utf8_decode('Página '.$pdf->PageNo()),0,0,'R');
          $pdf->Ln(10);
          $pdf->Cell(($pdf->GetPageWidth()),3,"". utf8_decode(mb_strtoupper("________________________________________________")),0,1,"C");

@@ -51,21 +51,19 @@ class ProfesorController extends Controller
     }
     public function planeacion(Request $request)
     {
-        $plan=DB::select('SELECT plan_actividades.id_plan_actividad,plan_actividades.fi_actividad,
-plan_actividades.ff_actividad,plan_actividades.desc_actividad,
-plan_actividades.objetivo_actividad,plan_asigna_planeacion_tutor.id_estrategia,
-plan_asigna_planeacion_tutor.estrategia,plan_asigna_planeacion_tutor.id_sugerencia,plan_asigna_planeacion_tutor.sugerencia,plan_asigna_planeacion_tutor.requiere_evidencia,
-plan_asigna_planeacion_tutor.id_asigna_planeacion_tutor,plan_asigna_planeacion_tutor.desc_actividad_cambio,
-plan_asigna_planeacion_tutor.objetivo_actividad_cambio
-FROM  plan_asigna_planeacion_actividad
-JOIN plan_actividades ON  plan_actividades.id_plan_actividad=plan_asigna_planeacion_actividad.id_plan_actividad
-JOIN plan_planeacion ON plan_planeacion.id_planeacion=plan_asigna_planeacion_actividad.id_planeacion
-JOIN exp_generacion ON exp_generacion.id_generacion=plan_planeacion.id_generacion
-JOIN plan_asigna_planeacion_tutor ON plan_asigna_planeacion_tutor.id_asigna_planeacion_actividad=plan_asigna_planeacion_actividad.id_asigna_planeacion_actividad
-JOIN exp_asigna_tutor ON exp_asigna_tutor.id_asigna_tutor=plan_asigna_planeacion_tutor.id_asigna_tutor
-JOIN gnral_personales ON gnral_personales.id_personal=exp_asigna_tutor.id_personal
-JOIN exp_asigna_generacion ON exp_asigna_generacion.id_generacion=plan_planeacion.id_generacion
-WHERE plan_asigna_planeacion_actividad.id_estado=1
+        $plan=DB::select('SELECT plan_actividades.*,plan_asigna_planeacion_tutor.*
+FROM  plan_actividades,plan_asigna_planeacion_actividad,exp_asigna_generacion
+,plan_asigna_planeacion_tutor,gnral_personales,exp_asigna_tutor
+WHERE plan_actividades.id_plan_actividad=plan_asigna_planeacion_actividad.id_plan_actividad
+AND plan_asigna_planeacion_actividad.id_asigna_generacion=exp_asigna_generacion.id_asigna_generacion
+AND gnral_personales.id_personal=exp_asigna_tutor.id_personal
+and plan_asigna_planeacion_actividad.id_asigna_generacion=exp_asigna_tutor.id_asigna_generacion
+and plan_asigna_planeacion_tutor.id_asigna_planeacion_actividad=plan_asigna_planeacion_actividad.id_asigna_planeacion_actividad
+and plan_asigna_planeacion_tutor.id_asigna_generacion=plan_asigna_planeacion_actividad.id_asigna_generacion
+AND exp_asigna_tutor.deleted_at is null
+AND exp_asigna_generacion.deleted_at is null
+AND plan_actividades.deleted_at is null
+AND plan_asigna_planeacion_actividad.id_estado=1
     AND gnral_personales.tipo_usuario='.Auth::user()->id.'
     AND exp_asigna_generacion.id_asigna_generacion='.$request->id_asigna_generacion);
 

@@ -148,8 +148,11 @@ class ViewAlumnosController extends Controller
     }
     public function actualizaestrategia(Request $request)
     {
+
         $planeacion = Plan_asigna_planeacion_tutor::find($request->estra['planeacion']['id_asigna_planeacion_tutor']);
+
         $planeacion->update($request->estra['planeacion']);
+
         return('ok');
     }
     public function actualizasugerencia(Request $request)

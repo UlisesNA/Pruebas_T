@@ -30,7 +30,6 @@
                     <div class="card-body">
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab" @click="refrescar()" aria-controls="general" aria-selected="true">General</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="generacion-tab" data-toggle="tab" href="#generacion" role="tab"  aria-controls="generacion" aria-selected="false">Generacion</a>
@@ -41,7 +40,6 @@
                                 <div class="row p-3">
                                     <div class="col-12">
                                         <div class="row">
-                                            <div class="col-4"><button @click="getGraficasCarrera()" class="btn btn-outline-success" data-toggle="tooltip" data-placement="bottom" title="Gráficas">Estadísticas <i class="fas fa-chart-pie"></i></button></div>
                                         </div>
                                     </div>
                                 </div>
@@ -93,19 +91,8 @@
                                                                 <div class="text-center">@{{ alumno.entry.objetivo_actividad }}</div>
                                                             </template>
                                                             <template slot="Sugerencia" scope="alumno">
-                                                                <div class="text-center" v-if="alumno.entry.id_sugerencia==1">
-                                                                    <button class="btn btn-outline-primary m-1" @click="versugerencia(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Editar Sugerencia"><i class="far fa-edit"></i></button>
-                                                                </div>
-                                                                <div v-else class="text-center">
-                                                                    <button class="btn btn-outline-primary m-1" @click="versugerencia(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Agregar Sugerencia">+</button>
-                                                                </div>
-                                                            </template>
-                                                            <template slot="Estrategia" scope="alumno">
-                                                                <div class="text-center" v-if="alumno.entry.id_estrategia==1">
-                                                                    <button class="btn btn-outline-primary m-1" @click="verestrategia(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Editar Estrategia"><i class="far fa-edit"></i></button>
-                                                                </div>
-                                                                <div v-else class="text-center">
-                                                                    <button class="btn btn-outline-primary m-1" @click="verestrategia(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Agregar Estrategia">+</button>
+                                                                <div class="text-center" v-if="alumno.entry.id_sugerencia==2">
+                                                                    <button class="btn btn-outline-primary m-1" @click="versugerencia(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Ver Sugerencia"><i class="far fa-eye"></i></button>
                                                                 </div>
                                                             </template>
                                                             <template slot="nodata">
@@ -128,9 +115,12 @@
                     </div>
                 </div>
             </div>
+            @include('coordina_inst.modalsugerencia')
+            @include('coordina_inst.modalsugerencia1')
+
             @include('coordinadorc.estadisticas')
-            
         </div>
+
     </div>
 
     <script>
@@ -142,15 +132,18 @@
             data:{
                 searchQuery: '',
                 gridColumns: ['Cuenta','Nombre','Revalidación'],
-                gridColumns1: ['Fecha Inicio', 'Fecha Fin', 'Decripción Actividad', 'Objetivo', 'Sugerencia','Estrategia'],
+                gridColumns1: ['Fecha Inicio', 'Fecha Fin', 'Decripción Actividad', 'Objetivo', 'Sugerencia'],
                 rut:"/carrerasinst",
                 gen:'/generacionca',
                 alugrupo:'/alumnosgrupo',
                 plan:'/planeacioninst',
                 alugeneracion:'/alumnosgeneracion',
+                versuge: '/versuge',
+                actsuge: '/actualizasuge',
                 carreras:[],
                 alumno:[],
                 datos1:[],
+
                 menu:true,
                 menucarrera:false,
                 generaciones:[],
@@ -159,6 +152,21 @@
                 id_asigna:null,
                 generacion:null,
                 id_carrera: null,
+                suge: {
+                    sugerencia: {
+                        id_asigna_planeacion_tutor: "",
+                        id_sugerencia: 2,
+                        desc_actividad_cambio: "",
+                        objetivo_actividad_cambio : "",
+                    },
+                    actividad: {
+                        fi_actividad: "",
+                        ff_actividad: "",
+                        desc_actividad: "",
+                        objetivo_actividad : "",
+                    },
+                    cadena: null
+                },
                 titulosGrafica:['General','Mujeres','Hombres'],
                 general:[
                     ['ecg','ecf','ecm'],['neg','nef','nem'],['trag','traf','tram'],
@@ -1627,6 +1635,32 @@
                         });
 
                     }
+                },
+                versugerencia: function (alumno) {
+                    console.log(alumno);
+                    $("#modalsugerencia").modal("show");
+                    axios.post(this.versuge, {id: alumno.id_asigna_planeacion_tutor,id_actividad: alumno.id_plan_actividad}).then(response => {
+                        this.suge.sugerencia.id_asigna_planeacion_tutor = response.data.sugerencia[0].id_asigna_planeacion_tutor;
+                    //this.suge.sugerencia.id_sugerencia= response.data.sugerencia[0].id_sugerencia;
+                    this.suge.sugerencia.objetivo_actividad_cambio = response.data.sugerencia[0].objetivo_actividad_cambio;
+                    this.suge.sugerencia.desc_actividad_cambio = response.data.sugerencia[0].desc_actividad_cambio;
+                    this.suge.actividad.fi_actividad = response.data.actividad[0].fi_actividad;
+                    this.suge.actividad.ff_actividad = response.data.actividad[0].ff_actividad;
+                    this.suge.actividad.desc_actividad = response.data.actividad[0].desc_actividad;
+                    this.suge.actividad.objetivo_actividad = response.data.actividad[0].objetivo_actividad;
+                });
+                },
+                actualizasuge: function () {
+                    /*AQUI*/
+                    axios.post(this.actsuge, {suge: this.suge}).then(response => {
+                        $("#modalsugerencia").modal("hide");
+                });
+                },
+                actualizasuge1: function () {
+                    /*AQUI*/
+                    axios.post(this.actsuge, {suge: this.suge}).then(response => {
+                        $("#modalsugerencia").modal("hide");
+                });
                 },
 
 

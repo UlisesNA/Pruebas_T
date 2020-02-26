@@ -138,15 +138,20 @@
                                                         <div class="text-center">@{{ alumno.entry.objetivo_actividad }}</div>
                                                     </template>
                                                     <template slot="Sugerencia" scope="alumno">
-                                                        <div class="text-center" v-if="alumno.entry.id_sugerencia==1">
+                                                        <div class="text-center" v-if="alumno.entry.id_sugerencia==2">
                                                             <button class="btn btn-outline-primary m-1" @click="versugerencia(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Editar Sugerencia"><i class="far fa-edit"></i></button>
                                                         </div>
                                                         <div v-else class="text-center">
-                                                            <button class="btn btn-outline-primary m-1" @click="versugerencia(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Agregar Sugerencia">+</button>
+                                                            <div class="text-center" v-if="alumno.entry.id_sugerencia==1">
+                                                                <button class="btn btn-outline-primary m-1" @click="versugerencia(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Sugerencia Aprobada"><i class="far fa-eye"></i></button>
+                                                            </div>
+                                                            <div v-else class="text-center">
+                                                                <button class="btn btn-outline-primary m-1" @click="versugerencia(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Agregar Sugerencia">+</button>
+                                                            </div>
                                                         </div>
                                                     </template>
                                                     <template slot="Estrategia" scope="alumno">
-                                                        <div class="text-center" v-if="alumno.entry.id_estrategia==1">
+                                                        <div class="text-center" v-if="alumno.entry.id_estrategia==2">
                                                             <button class="btn btn-outline-primary m-1" @click="verestrategia(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Editar Estrategia"><i class="far fa-edit"></i></button>
                                                         </div>
                                                         <div v-else class="text-center">
@@ -887,16 +892,22 @@
                 estra: {
                     planeacion: {
                         id_asigna_planeacion_tutor: "",
-                        id_estrategia: "",
+                        id_estrategia: 2,
                         estrategia: "",
-                        requiere_evidencia: "",
+                        requiere_evidencia:"",
+                        //id_asigna_planeacion_actividad: 3,
+                        //id_asigna_tutor:null,
+                        //id_sugerencia:null ,
+                        //sugerencia:"hola" ,
+                        //desc_actividad_cambio:null ,
+                        //objetivo_actividad_cambio:null,
                     },
                     cadena: null
                 },
                 suge: {
                     sugerencia: {
                         id_asigna_planeacion_tutor: "",
-                        id_sugerencia: "",
+                        id_sugerencia: 2,
                         desc_actividad_cambio: "",
                         objetivo_actividad_cambio : "",
                     },
@@ -1701,9 +1712,14 @@
                     $("#modalestrategia").modal("show");
                     axios.post(this.verestra, {id: alumno.id_asigna_planeacion_tutor}).then(response => {
                         this.estra.planeacion.id_asigna_planeacion_tutor = response.data.planeacion[0].id_asigna_planeacion_tutor;
-                    this.estra.planeacion.id_estrategia = response.data.planeacion[0].id_estrategia;
                     this.estra.planeacion.estrategia = response.data.planeacion[0].estrategia;
                     this.estra.planeacion.requiere_evidencia = response.data.planeacion[0].requiere_evidencia;
+                    //this.estra.planeacion.id_asigna_planeacion_actividad=response.data.planeacion[0].id_asigna_planeacion_actividad;
+                    //this.estra.planeacion.id_asigna_tutor=response.data.planeacion[0].id_asigna_tutor;
+                        //this.estra.planeacion.id_sugerencia=response.data.planeacion[0].id_sugerencia;
+                        //this.estra.planeacion.sugerencia=response.data.planeacion[0].sugerencia;
+                        //this.estra.planeacion.desc_actividad_cambio=response.data.planeacion[0].desc_actividad_cambio;
+                        //this.estra.planeacion.objetivo_actividad_cambio=response.data.planeacion[0].objetivo_actividad_cambio;
                 });
                 },
                 versugerencia: function (alumno) {
@@ -1711,7 +1727,7 @@
                     $("#modalsugerencia").modal("show");
                     axios.post(this.versuge, {id: alumno.id_asigna_planeacion_tutor,id_actividad: alumno.id_plan_actividad}).then(response => {
                         this.suge.sugerencia.id_asigna_planeacion_tutor = response.data.sugerencia[0].id_asigna_planeacion_tutor;
-                    this.suge.sugerencia.id_sugerencia= response.data.sugerencia[0].id_sugerencia;
+                    //this.suge.sugerencia.id_sugerencia= response.data.sugerencia[0].id_sugerencia;
                     this.suge.sugerencia.objetivo_actividad_cambio = response.data.sugerencia[0].objetivo_actividad_cambio;
                     this.suge.sugerencia.desc_actividad_cambio = response.data.sugerencia[0].desc_actividad_cambio;
                     this.suge.actividad.fi_actividad = response.data.actividad[0].fi_actividad;

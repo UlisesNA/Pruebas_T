@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exp_asigna_tutor;
 use App\Gnral_periodos;
+use App\Plan_planeacion;
 use Illuminate\Http\Request;
 use App\AsignaCoordinador;
 use App\AsignaTutor;
@@ -114,7 +115,7 @@ class AsignaTutorController extends Controller
      */
     public function destroy($id)
     {
-        Exp_asigna_tutor::find($id)->delete();
 
+        Exp_asigna_tutor::find($id)->delete();
     }
 }

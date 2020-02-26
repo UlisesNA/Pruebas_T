@@ -152,7 +152,7 @@ Route::get('/getAlumno','PanelAlumnoController@datosPrincipales');
 Route::get('/inicioalu','PanelAlumnoController@principal');
 
 Route::get('/carrera','CoordinadorCarreraController@carreras');
-Route::get('/carrerasinst','CoordinadorCarreraController@carreras1');
+Route::get('/carrerasinst','Coordina_instController@carreras1');
 Route::get('/carreras', function () {
     return view('coordinadorc.index');
 });
