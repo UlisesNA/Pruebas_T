@@ -119,7 +119,7 @@
                                     <a class="dropdown-item" href="/desarrollovista">Coordinador Institucional</a>
                                     <a class="dropdown-item" href="/asignacorgenvista">Asigna Coordinador Institucional</a>
                                     <a class="dropdown-item" href="/planeaciondesarrollo">Planeación</a>
-                                    <a class="dropdown-item" href="/estadisticas/carreras">Carreras</a>
+                                    <a class="dropdown-item" href="/estadisticas/carreras">Programas educativos</a>
                                 </div>
                             </div>
                         @endif
@@ -142,7 +142,7 @@
                                             <a class="dropdown-item" href="/jefevista">Tutores y Coordinador</a>
                                             <a class="dropdown-item" href="/asignacovista">Asigna Coordinador</a>
                                             <a class="dropdown-item" href="/asignatuvista">Asigna Tutor</a>
-                                            <a class="dropdown-item" href="/alumnos">Alumnos</a>
+                                            <a class="dropdown-item" href="/alumnos">Estudiantes</a>
                                         </div>
                                     </div>
                                 @endif
@@ -166,7 +166,7 @@
                                                 Coordinador
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="MenuCoordinador">
-                                                <a class="dropdown-item" href="/carreras">{{ \Illuminate\Support\Facades\Session::get('coordinador')>1 ? 'Carreras':'Carrera' }}</a>
+                                                <a class="dropdown-item" href="/carreras">{{ \Illuminate\Support\Facades\Session::get('coordinador')>1 ? 'Programas educativos':'Programa educativo' }}</a>
                                                 <a class="dropdown-item" href="/coordina_carrera">Planeación</a>
                                             </div>
                                         </div>
@@ -178,7 +178,7 @@
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="MenuCoordinadorGeneral">
                                                 <a class="dropdown-item" href="/planeacioncoorgen">Planeación</a>
-                                                <a class="dropdown-item" href="/estadisticas/carreras">Carreras</a>
+                                                <a class="dropdown-item" href="/estadisticas/carreras">Programas educativos</a>
                                             </div>
                                         </div>
                                     @endif

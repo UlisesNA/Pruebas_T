@@ -299,13 +299,14 @@ class PdfController extends Controller
         $pdf->Cell(130,4,"". utf8_decode($datosAntecedentes[0]->materias_reprobadas),1,0,"C");
         $pdf->Ln(4);
         $pdf->SetFont('Arial', 'B', 4.8);
-        $pdf->Cell(22,4,"Otra carrera iniciada: ". utf8_decode(""),1,0,"L","true");
+        /*dos*/
+        $pdf->Cell(42,4,"Otro programa educativo iniciado: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
         $pdf->Cell(10,4,"". utf8_decode($datosAntecedentes[0]->otra_carrera_ini==1?'Si':'No'),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(15,4,utf8_decode("Institución: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        $pdf->Cell(111,4,"". utf8_decode($datosAntecedentes[0]->institucion),1,0,"C");
+        $pdf->Cell(91,4,"". utf8_decode($datosAntecedentes[0]->institucion),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(22,4,"Semestres cursados: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
@@ -326,12 +327,12 @@ class PdfController extends Controller
         $pdf->Cell(132,4,"". utf8_decode($datosAntecedentes[0]->razon_descide_estudiar_tesvb),1,0,"C");
         $pdf->Ln(4);
         $pdf->SetFont('Arial', 'B', 4.8);
-        $pdf->Cell(($pdf->GetPageWidth()-20)/2,4,utf8_decode("¿Tienes información sobre el perfil profecional de la carrera?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->Cell(($pdf->GetPageWidth()-20)/2,4,utf8_decode("¿Tienes información sobre el perfil profesional del programa educativo?: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
         $pdf->Cell(($pdf->GetPageWidth()-20)/2,4,"". utf8_decode($datosAntecedentes[0]->sabedel_perfil_profesional),1,0,"C");
         $pdf->Ln(4);
         $pdf->SetFont('Arial', 'B', 4.8);
-        $pdf->Cell(60,4,utf8_decode("¿Tuviste opciones vocacionales por otras carreras?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->Cell(60,4,utf8_decode("¿Tuviste opciones vocacionales por otros programas educativos?: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
         $pdf->Cell(13,4,"". utf8_decode($datosAntecedentes[0]->otras_opciones_vocales==1?'Si':'No'),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
@@ -340,7 +341,7 @@ class PdfController extends Controller
         $pdf->Cell(102,4,"". utf8_decode($datosAntecedentes[0]->cuales_otras_opciones_vocales),1,0,"C");
         $pdf->Ln(4);
         $pdf->SetFont('Arial', 'B', 4.8);
-        $pdf->Cell(50,4,utf8_decode("¿Te gusta la carrera elegida?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->Cell(50,4,utf8_decode("¿Te gusta el programa educativo elegido?: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
         $pdf->Cell(13,4,"". utf8_decode($datosAntecedentes[0]->tegusta_carrera_elegida==1?'Si':'No'),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
@@ -743,7 +744,7 @@ class PdfController extends Controller
         $pdf->Cell(($pdf->GetPageWidth()-20),6,"LISTA DE ASISTENCIA".utf8_decode(""),0,4,"C","true");
         $pdf->Ln(1);
         $pdf->SetFont('Times', 'B', 8);
-        $pdf->Cell(($pdf->GetPageWidth()-20),3,"CARRERA: ". utf8_decode(mb_strtoupper($carrera[0]->nombre)),0,0,"L");
+        $pdf->Cell(($pdf->GetPageWidth()-20),3,"PROGRAMA EDUCATIVO: ". utf8_decode(mb_strtoupper($carrera[0]->nombre)),0,0,"L");
         $pdf->Ln(3);
         $pdf->Cell(($pdf->GetPageWidth()-20)/3,3,"ASIGNATURA: ". utf8_decode("TUTORIAS"),0,0,"L");
         $pdf->Cell(($pdf->GetPageWidth()-20)/3,3,"". utf8_decode(""),0,0,"L");
@@ -1102,13 +1103,14 @@ class PdfController extends Controller
         $pdf->Cell(130,4,"". utf8_decode($datosAntecedentes[0]->materias_reprobadas),1,0,"C");
         $pdf->Ln(4);
         $pdf->SetFont('Arial', 'B', 4.8);
-        $pdf->Cell(22,4,"Otra carrera iniciada: ". utf8_decode(""),1,0,"L","true");
+        /*uno*/
+        $pdf->Cell(42,4,"Otro programa educativo iniciado: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
         $pdf->Cell(10,4,"". utf8_decode($datosAntecedentes[0]->otra_carrera_ini==1?'Si':'No'),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(15,4,utf8_decode("Institución: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
-        $pdf->Cell(111,4,"". utf8_decode($datosAntecedentes[0]->institucion),1,0,"C");
+        $pdf->Cell(91,4,"". utf8_decode($datosAntecedentes[0]->institucion),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
         $pdf->Cell(22,4,"Semestres cursados: ". utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
@@ -1129,12 +1131,12 @@ class PdfController extends Controller
         $pdf->Cell(132,4,"". utf8_decode($datosAntecedentes[0]->razon_descide_estudiar_tesvb),1,0,"C");
         $pdf->Ln(4);
         $pdf->SetFont('Arial', 'B', 4.8);
-        $pdf->Cell(($pdf->GetPageWidth()-20)/2,4,utf8_decode("¿Tienes información sobre el perfil profecional de la carrera?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->Cell(($pdf->GetPageWidth()-20)/2,4,utf8_decode("¿Tienes información sobre el perfil profesional del programa educativo?: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
         $pdf->Cell(($pdf->GetPageWidth()-20)/2,4,"". utf8_decode($datosAntecedentes[0]->sabedel_perfil_profesional),1,0,"C");
         $pdf->Ln(4);
         $pdf->SetFont('Arial', 'B', 4.8);
-        $pdf->Cell(60,4,utf8_decode("¿Tuviste opciones vocacionales por otras carreras?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->Cell(60,4,utf8_decode("¿Tuviste opciones vocacionales por otros programas educativos?: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
         $pdf->Cell(13,4,"". utf8_decode($datosAntecedentes[0]->otras_opciones_vocales==1?'Si':'No'),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);
@@ -1143,7 +1145,7 @@ class PdfController extends Controller
         $pdf->Cell(102,4,"". utf8_decode($datosAntecedentes[0]->cuales_otras_opciones_vocales),1,0,"C");
         $pdf->Ln(4);
         $pdf->SetFont('Arial', 'B', 4.8);
-        $pdf->Cell(50,4,utf8_decode("¿Te gusta la carrera elegida?: "). utf8_decode(""),1,0,"L","true");
+        $pdf->Cell(50,4,utf8_decode("¿Te gusta el programa educativo elegido?: "). utf8_decode(""),1,0,"L","true");
         $pdf->SetFont('Arial', '', 4.8);
         $pdf->Cell(13,4,"". utf8_decode($datosAntecedentes[0]->tegusta_carrera_elegida==1?'Si':'No'),1,0,"C");
         $pdf->SetFont('Arial', 'B', 4.8);

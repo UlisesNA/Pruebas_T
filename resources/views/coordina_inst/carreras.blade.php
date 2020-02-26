@@ -111,7 +111,7 @@
                                 enabled: false
                             },
                             title: {
-                                text: 'Alumnos por sexo'
+                                text: 'Estudiantes por sexo'
                             },
                             accessibility: {
                                 announceNewData: {
@@ -166,7 +166,7 @@
                                 enabled: false
                             },
                             title: {
-                                text: 'Alumnos por sexo'
+                                text: 'Estudiantes por sexo'
                             },
                             accessibility: {
                                 announceNewData: {
@@ -227,7 +227,7 @@
                                 enabled: false
                             },
                             title: {
-                                text: 'Alumnos por sexo'
+                                text: 'Estudiantes por sexo'
                             },
                             accessibility: {
                                 announceNewData: {
@@ -282,7 +282,7 @@
                                 enabled: false
                             },
                             title: {
-                                text: 'Alumnos por sexo'
+                                text: 'Estudiantes por sexo'
                             },
                             accessibility: {
                                 announceNewData: {

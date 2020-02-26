@@ -203,8 +203,8 @@
                                                 <option value="Cambio de carrera/institución">Cambio de carrera/institución</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-4">
-                                            <label for="satisfaccion_c">Nivel de satisfacción con la carrera</label>
+                                        <div class="col-md-5">
+                                            <label for="satisfaccion_c">Nivel de satisfacción con el programa educativo</label>
                                             <select name="satisfaccion_c" id="satisfaccion_c" v-model="alu.generales.satisfaccion_c" class="custom-select custom-select-md">
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option value="Muy satisfecho">Muy satisfecho</option>
@@ -213,7 +213,7 @@
                                                 <option value="Inconforme">Inconforme</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <label for="beca">¿Cuenta con beca? *</label>
                                             <select name="beca" id="beca" v-model="alu.generales.beca" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
@@ -369,13 +369,13 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <label for="perfil">¿Tienes información sobre el perfil profesional de la carrera?</label>
+                                            <label for="perfil">¿Tienes información sobre el perfil profesional del programa educativo?</label>
                                             <input type="text" v-model="alu.academicos.sabedel_perfil_profesional" id="perfil" name="perfil" class="form-control" placeholder="Tienes información sobre el perfil profesional de la carrera">
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <label for="cae">¿Te gusta la carrera elegida? *</label>
+                                            <label for="cae">¿Te gusta el programa educativo elegido? *</label>
                                             <select v-model="alu.academicos.tegusta_carrera_elegida" id="cae" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option value="1">Si</option>
@@ -417,7 +417,7 @@
                                             <small class="form-text text-danger" v-if='alu.academicos.teestimula_familia==null || alu.academicos.teestimula_familia=="null"'>Elija una opción</small>
                                         </div>
                                         <div class="col-md-8">
-                                            <label for="ov">¿Tuviste otras opciones vocacionales o preferencias por otras carreras?</label>
+                                            <label for="ov">¿Tuviste otras opciones vocacionales o preferencias por otros programas educativos?</label>
                                             <select id="ov" v-model="alu.academicos.otras_opciones_vocales" class="custom-select custom-select-md">
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option value="1">Si</option>
@@ -438,7 +438,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <label for="oti">Otra carrera iniciada *</label>
+                                            <label for="oti">Otro programa educativo iniciado *</label>
                                             <select v-model="alu.academicos.otra_carrera_ini" id="oti" class="custom-select custom-select-md" required>
                                                 <option value="null" selected>Elija una opción</option>
                                                 <option value="1">Si</option>

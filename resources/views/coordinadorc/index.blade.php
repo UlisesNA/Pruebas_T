@@ -19,7 +19,7 @@
             <div class="row">
                 <div class="col-12 pb-3">
                     <i class="fas fa-chevron-right h5"></i>
-                    <a href="{{url('/carreras')}}" class="font-weight-bold h6 pb-1">{{\Illuminate\Support\Facades\Session::get('coordinador')>1?'CARRERAS':'CARRERA'}}</a>
+                    <a href="{{url('/carreras')}}" class="font-weight-bold h6 pb-1">{{\Illuminate\Support\Facades\Session::get('coordinador')>1?'PROGRAMAS EDUCATIVOS':'PROGRAMA EDUCATIVO'}}</a>
                     <i class="fas fa-chevron-right h5"></i>
                     <a class="text-primary h6" v-if="menucarrera==true">PRINCIPAL</a>
                 </div>
@@ -107,7 +107,7 @@
                                         </div>
                                         <div class="row" v-if="alumno.length==0 && clicgrupo==true">
                                             <div class="col-12 border-danger">
-                                                <h5 class="font-weight-bold text-center alert alert-danger">No existen alumnos asignados al grupo</h5>
+                                                <h5 class="font-weight-bold text-center alert alert-danger">No existen estudiantes asignados al grupo</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -249,7 +249,7 @@
                                     enabled: false
                                 },
                                 title: {
-                                    text: 'Alumnos por sexo'
+                                    text: 'Estudiantes por sexo'
                                 },
                                 accessibility: {
                                     announceNewData: {
@@ -690,7 +690,7 @@
                                     type: 'column'
                                 },
                                 title: {
-                                    text: 'Alumnos por sexo'
+                                    text: 'Estudiantes por sexo'
                                 },
                                 exporting: {
                                     url: 'http://localhost',
@@ -1157,7 +1157,7 @@
                                 enabled: false
                             },
                             title: {
-                                text: 'Alumnos por sexo'
+                                text: 'Estudiantes por sexo'
                             },
                             accessibility: {
                                 announceNewData: {
