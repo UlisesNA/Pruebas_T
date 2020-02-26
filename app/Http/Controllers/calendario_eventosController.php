@@ -20,7 +20,7 @@ class calendario_eventosController extends Controller
 
 
             ->join('exp_asigna_tutor', function ($join){
-                $join->on('exp_asigna_tutor.id_asigna_tutor','=','plan_asigna_planeacion_tutor.id_asigna_generacion');
+                $join->on('exp_asigna_tutor.id_asigna_generacion','=','plan_asigna_planeacion_tutor.id_asigna_generacion');
                 //   ->where('exp_asigna_tutor.id_asigna_generacion','=','exp_asigna_generacion.id_asigna_generacion');
             })
             //id alumno
