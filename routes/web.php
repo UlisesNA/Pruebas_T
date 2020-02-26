@@ -160,6 +160,9 @@ Route::get('/carreras', function () {
 Route::get('/revision', function () {
     return view('coordina_inst.revision');
 });
+Route::get('/revisiondesarrollo', function () {
+    return view('dep_desarrollo.revisiondesarrollo');
+});
 Route::get('/estadisticas/carreras', function () {
     return view('coordina_inst.carreras');
 });

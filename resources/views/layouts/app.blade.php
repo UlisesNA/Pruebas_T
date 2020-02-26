@@ -119,6 +119,7 @@
                                     <a class="dropdown-item" href="/desarrollovista">Coordinador Institucional</a>
                                     <a class="dropdown-item" href="/asignacorgenvista">Asigna Coordinador Institucional</a>
                                     <a class="dropdown-item" href="/planeaciondesarrollo">Planeación</a>
+                                    <a class="dropdown-item" href="/revisiondesarrollo">Ver Sugerencias</a>
                                     <a class="dropdown-item" href="/estadisticas/carreras">Programas educativos</a>
                                 </div>
                             </div>

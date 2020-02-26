@@ -37,12 +37,6 @@
                 </div>
                 <div class="modal-footer">
                     <div>
-                        <button type="button" @click="actualizasuge()" class="btn btn-outline-success">Aprobar</button>
-                    </div>
-                    <div>
-                        <button type="button" @click="actualizasuge()" class="btn btn-outline-danger">Rechazar</button>
-                    </div>
-                    <div>
                         <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancelar</button>
                     </div>
                 </div>
