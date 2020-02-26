@@ -100,13 +100,13 @@ class PlaneacionPDFController extends Controller
                     plan_actividades.ff_actividad, plan_asigna_planeacion_tutor.estrategia,plan_asigna_planeacion_tutor.id_asigna_planeacion_tutor,
                     plan_asigna_planeacion_tutor.id_sugerencia, plan_asigna_planeacion_tutor.desc_actividad_cambio,
                     plan_asigna_planeacion_tutor.objetivo_actividad_cambio, exp_asigna_tutor.id_asigna_tutor, exp_asigna_tutor.id_asigna_generacion
-                    FROM plan_actividades, plan_asigna_planeacion_tutor,plan_asigna_planeacion_actividad,plan_planeacion,exp_asigna_generacion,exp_asigna_tutor
+                    FROM plan_actividades, plan_asigna_planeacion_tutor,plan_asigna_planeacion_actividad,exp_asigna_generacion,exp_asigna_tutor
                     WHERE plan_asigna_planeacion_actividad.id_plan_actividad=plan_actividades.id_plan_actividad
-                    AND plan_planeacion.id_planeacion=plan_asigna_planeacion_actividad.id_planeacion
+                   
                     AND plan_asigna_planeacion_tutor.id_asigna_planeacion_actividad=plan_asigna_planeacion_actividad.id_asigna_planeacion_actividad
-                    AND exp_asigna_generacion.id_generacion=plan_planeacion.id_generacion
+                   
                     AND exp_asigna_tutor.id_asigna_generacion=exp_asigna_generacion.id_asigna_generacion
-                    AND exp_asigna_tutor.id_asigna_tutor=plan_asigna_planeacion_tutor.id_asigna_tutor
+                    AND exp_asigna_tutor.id_asigna_generacion=plan_asigna_planeacion_tutor.id_asigna_generacion
                     AND exp_asigna_tutor.deleted_at IS null
                     AND exp_asigna_tutor.id_asigna_generacion='.$request->id_asigna_generacion.'
                     AND plan_actividades.deleted_at IS null');
