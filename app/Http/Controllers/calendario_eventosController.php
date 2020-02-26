@@ -13,14 +13,14 @@ class calendario_eventosController extends Controller
 
         $id=Auth::user()->email;
         $evento=Plan_actividades::join('plan_asigna_planeacion_actividad','plan_asigna_planeacion_actividad.id_plan_actividad','=','plan_actividades.id_plan_actividad')
-            ->join('plan_planeacion','plan_planeacion.id_planeacion','=','plan_asigna_planeacion_actividad.id_planeacion')
+           // ->join('plan_planeacion','plan_planeacion.id_planeacion','=','plan_asigna_planeacion_actividad.id_planeacion')
             ->join('plan_asigna_planeacion_tutor','plan_asigna_planeacion_tutor.id_asigna_planeacion_actividad','=','plan_asigna_planeacion_actividad.id_asigna_planeacion_actividad')
-            ->join('exp_asigna_generacion','exp_asigna_generacion.id_generacion','=','plan_planeacion.id_generacion')
+            ->join('exp_asigna_generacion','exp_asigna_generacion.id_generacion','=','plan_actividades.id_generacion')
             ->join('exp_asigna_alumnos','exp_asigna_alumnos.id_asigna_generacion','=','exp_asigna_generacion.id_asigna_generacion')
 
 
             ->join('exp_asigna_tutor', function ($join){
-                $join->on('exp_asigna_tutor.id_asigna_tutor','=','plan_asigna_planeacion_tutor.id_asigna_tutor');
+                $join->on('exp_asigna_tutor.id_asigna_tutor','=','plan_asigna_planeacion_tutor.id_asigna_generacion');
                 //   ->where('exp_asigna_tutor.id_asigna_generacion','=','exp_asigna_generacion.id_asigna_generacion');
             })
             //id alumno
