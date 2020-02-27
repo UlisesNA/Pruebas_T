@@ -142,15 +142,63 @@
                                                         </div>
                                                     </template>
                                                     <template slot="Probabilidad" scope="alumno">
-                                                        <div class="pt-2">@{{ alumno.entry.id_carrera_v+alumno.entry.sexo_v+alumno.entry.id_estado_civil_v+
-                                                            alumno.entry.no_hijos_v+alumno.entry.no_hermanos_v+alumno.entry.enfermedad_cronica_v+
-                                                            alumno.entry.trabaja_v+alumno.entry.practica_deporte_v+alumno.entry.actividades_culturales_v+
-                                                            alumno.entry.etnia_indigena_v+alumno.entry.lugar_nacimientos_v+alumno.entry.nivel_economico_v+
-                                                            alumno.entry.sostiene_economia_hogar_v+alumno.entry.tegusta_carrera_elegida_v+
-                                                            alumno.entry.beca_v+alumno.entry.estado_v+alumno.entry.id_expbebidas_v+
-                                                            alumno.entry.poblacion_v+alumno.entry.ant_inst_v+alumno.entry.satisfaccion_c_v+
-                                                            alumno.entry.materias_repeticion_v+alumno.entry.tot_repe_v+ alumno.entry.materias_especial_v+
-                                                            alumno.entry.tot_espe_v+alumno.entry.gen_espe_v}}</div>
+                                                        <div v-if="alumno.entry.id_carrera_v+alumno.entry.sexo_v+alumno.entry.id_estado_civil_v+
+                                                        alumno.entry.no_hijos_v+alumno.entry.no_hermanos_v+alumno.entry.enfermedad_cronica_v+
+                                                        alumno.entry.trabaja_v+alumno.entry.practica_deporte_v+alumno.entry.actividades_culturales_v+
+                                                        alumno.entry.etnia_indigena_v+alumno.entry.lugar_nacimientos_v+alumno.entry.nivel_economico_v+
+                                                        alumno.entry.sostiene_economia_hogar_v+alumno.entry.tegusta_carrera_elegida_v+
+                                                        alumno.entry.beca_v+alumno.entry.estado_v+alumno.entry.id_expbebidas_v+
+                                                        alumno.entry.poblacion_v+alumno.entry.ant_inst_v+alumno.entry.satisfaccion_c_v+
+                                                        alumno.entry.materias_repeticion_v+alumno.entry.tot_repe_v+ alumno.entry.materias_especial_v+
+                                                        alumno.entry.tot_espe_v+alumno.entry.gen_espe_v >= 70.0">
+                                                            <div class="pt-2" style="background: #e02224;color: black">@{{ alumno.entry.id_carrera_v+alumno.entry.sexo_v+alumno.entry.id_estado_civil_v+
+                                                                alumno.entry.no_hijos_v+alumno.entry.no_hermanos_v+alumno.entry.enfermedad_cronica_v+
+                                                                alumno.entry.trabaja_v+alumno.entry.practica_deporte_v+alumno.entry.actividades_culturales_v+
+                                                                alumno.entry.etnia_indigena_v+alumno.entry.lugar_nacimientos_v+alumno.entry.nivel_economico_v+
+                                                                alumno.entry.sostiene_economia_hogar_v+alumno.entry.tegusta_carrera_elegida_v+
+                                                                alumno.entry.beca_v+alumno.entry.estado_v+alumno.entry.id_expbebidas_v+
+                                                                alumno.entry.poblacion_v+alumno.entry.ant_inst_v+alumno.entry.satisfaccion_c_v+
+                                                                alumno.entry.materias_repeticion_v+alumno.entry.tot_repe_v+ alumno.entry.materias_especial_v+
+                                                                alumno.entry.tot_espe_v+alumno.entry.gen_espe_v}}</div>
+                                                        </div>
+                                                        <div v-else-if="alumno.entry.id_carrera_v+alumno.entry.sexo_v+alumno.entry.id_estado_civil_v+
+                                                        alumno.entry.no_hijos_v+alumno.entry.no_hermanos_v+alumno.entry.enfermedad_cronica_v+
+                                                        alumno.entry.trabaja_v+alumno.entry.practica_deporte_v+alumno.entry.actividades_culturales_v+
+                                                        alumno.entry.etnia_indigena_v+alumno.entry.lugar_nacimientos_v+alumno.entry.nivel_economico_v+
+                                                        alumno.entry.sostiene_economia_hogar_v+alumno.entry.tegusta_carrera_elegida_v+
+                                                        alumno.entry.beca_v+alumno.entry.estado_v+alumno.entry.id_expbebidas_v+
+                                                        alumno.entry.poblacion_v+alumno.entry.ant_inst_v+alumno.entry.satisfaccion_c_v+
+                                                        alumno.entry.materias_repeticion_v+alumno.entry.tot_repe_v+ alumno.entry.materias_especial_v+
+                                                        alumno.entry.tot_espe_v+alumno.entry.gen_espe_v >= 60.0">
+                                                            <div class="pt-2" style="background: #e9c423">@{{ alumno.entry.id_carrera_v+alumno.entry.sexo_v+alumno.entry.id_estado_civil_v+
+                                                                alumno.entry.no_hijos_v+alumno.entry.no_hermanos_v+alumno.entry.enfermedad_cronica_v+
+                                                                alumno.entry.trabaja_v+alumno.entry.practica_deporte_v+alumno.entry.actividades_culturales_v+
+                                                                alumno.entry.etnia_indigena_v+alumno.entry.lugar_nacimientos_v+alumno.entry.nivel_economico_v+
+                                                                alumno.entry.sostiene_economia_hogar_v+alumno.entry.tegusta_carrera_elegida_v+
+                                                                alumno.entry.beca_v+alumno.entry.estado_v+alumno.entry.id_expbebidas_v+
+                                                                alumno.entry.poblacion_v+alumno.entry.ant_inst_v+alumno.entry.satisfaccion_c_v+
+                                                                alumno.entry.materias_repeticion_v+alumno.entry.tot_repe_v+ alumno.entry.materias_especial_v+
+                                                                alumno.entry.tot_espe_v+alumno.entry.gen_espe_v}}</div>
+                                                        </div>
+                                                        <div v-else="alumno.entry.id_carrera_v+alumno.entry.sexo_v+alumno.entry.id_estado_civil_v+
+                                                        alumno.entry.no_hijos_v+alumno.entry.no_hermanos_v+alumno.entry.enfermedad_cronica_v+
+                                                        alumno.entry.trabaja_v+alumno.entry.practica_deporte_v+alumno.entry.actividades_culturales_v+
+                                                        alumno.entry.etnia_indigena_v+alumno.entry.lugar_nacimientos_v+alumno.entry.nivel_economico_v+
+                                                        alumno.entry.sostiene_economia_hogar_v+alumno.entry.tegusta_carrera_elegida_v+
+                                                        alumno.entry.beca_v+alumno.entry.estado_v+alumno.entry.id_expbebidas_v+
+                                                        alumno.entry.poblacion_v+alumno.entry.ant_inst_v+alumno.entry.satisfaccion_c_v+
+                                                        alumno.entry.materias_repeticion_v+alumno.entry.tot_repe_v+ alumno.entry.materias_especial_v+
+                                                        alumno.entry.tot_espe_v+alumno.entry.gen_espe_v">
+                                                            <div class="pt-2" style="background: #5bc013">@{{ alumno.entry.id_carrera_v+alumno.entry.sexo_v+alumno.entry.id_estado_civil_v+
+                                                                alumno.entry.no_hijos_v+alumno.entry.no_hermanos_v+alumno.entry.enfermedad_cronica_v+
+                                                                alumno.entry.trabaja_v+alumno.entry.practica_deporte_v+alumno.entry.actividades_culturales_v+
+                                                                alumno.entry.etnia_indigena_v+alumno.entry.lugar_nacimientos_v+alumno.entry.nivel_economico_v+
+                                                                alumno.entry.sostiene_economia_hogar_v+alumno.entry.tegusta_carrera_elegida_v+
+                                                                alumno.entry.beca_v+alumno.entry.estado_v+alumno.entry.id_expbebidas_v+
+                                                                alumno.entry.poblacion_v+alumno.entry.ant_inst_v+alumno.entry.satisfaccion_c_v+
+                                                                alumno.entry.materias_repeticion_v+alumno.entry.tot_repe_v+ alumno.entry.materias_especial_v+
+                                                                alumno.entry.tot_espe_v+alumno.entry.gen_espe_v}}</div>
+                                                        </div>
                                                     </template>
                                                     <template slot="nodata">
                                                         <div class=" alert font-weight-bold alert-danger text-center">Ningún dato encontrado</div>
