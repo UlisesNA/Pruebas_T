@@ -151,36 +151,40 @@ AND exp_asigna_generacion.id_asigna_generacion='.$request->generacion);
         WHERE plan_actividades.deleted_at is null
         AND plan_actividades.id_generacion='.$request->id_generacion);
 
-        $est=DB::select('SELECT plan_asigna_planeacion_actividad.id_estado,plan_asigna_planeacion_actividad.comentario
+        if($num!=null)
+        {
+            $est=DB::select('SELECT plan_asigna_planeacion_actividad.id_estado,plan_asigna_planeacion_actividad.comentario
         FROM plan_asigna_planeacion_actividad
         WHERE plan_asigna_planeacion_actividad.deleted_at is null
         AND plan_asigna_planeacion_actividad.id_plan_actividad='.$num[0]->id_plan_actividad);
-        //dd($num);
+            //dd($num);
 
-        $ic=count($num);
-        for ($i = 0; $i <$ic; $i++) {
-            Plan_asigna_planeacion_actividad::create([
-                "id_asigna_generacion"=>$id_generacion[0]->id_gen,
-                //"id_actividad "=>$id_actividad[0]->id_ac,
-            ]);
-            $id=DB::select('SELECT @@identity as id');
+            $ic=count($num);
+            for ($i = 0; $i <$ic; $i++) {
+                Plan_asigna_planeacion_actividad::create([
+                    "id_asigna_generacion"=>$id_generacion[0]->id_gen,
+                    //"id_actividad "=>$id_actividad[0]->id_ac,
+                ]);
+                $id=DB::select('SELECT @@identity as id');
 
-            $plan = Plan_asigna_planeacion_actividad::find($id[0]->id);
-            $plan->id_plan_actividad =$num[$i]->id_plan_actividad;
-            $plan->id_estado = $est[0]->id_estado;
-            $plan->comentario = $est[0]->comentario;
-            $plan->save();
+                $plan = Plan_asigna_planeacion_actividad::find($id[0]->id);
+                $plan->id_plan_actividad =$num[$i]->id_plan_actividad;
+                $plan->id_estado = $est[0]->id_estado;
+                $plan->comentario = $est[0]->comentario;
+                $plan->save();
 
-            Plan_asigna_planeacion_tutor::create([
-                "id_asigna_planeacion_actividad"=>$id[0]->id,
-                "id_asigna_generacion"=>$id_generacion[0]->id_gen,
-            ]);
-            $idt=DB::select('SELECT @@identity as idt');
-            $plan = Plan_asigna_planeacion_tutor::find($idt[0]->idt);
-            $plan->id_asigna_planeacion_actividad = $id[0]->id;
-            $plan->id_asigna_generacion = $id_generacion[0]->id_gen;
-            $plan->save();
+                Plan_asigna_planeacion_tutor::create([
+                    "id_asigna_planeacion_actividad"=>$id[0]->id,
+                    "id_asigna_generacion"=>$id_generacion[0]->id_gen,
+                ]);
+                $idt=DB::select('SELECT @@identity as idt');
+                $plan = Plan_asigna_planeacion_tutor::find($idt[0]->idt);
+                $plan->id_asigna_planeacion_actividad = $id[0]->id;
+                $plan->id_asigna_generacion = $id_generacion[0]->id_gen;
+                $plan->save();
+            }
         }
+
         //
         return $grupo;
     }

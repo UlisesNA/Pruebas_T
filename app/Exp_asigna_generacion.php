@@ -27,7 +27,7 @@ class Exp_asigna_generacion extends Model
             WHERE exp_asigna_generacion.id_generacion=exp_generacion.id_generacion
             AND exp_asigna_generacion.deleted_at is null
             and exp_asigna_generacion.id_jefe_periodo=exp_asigna_tutor.id_jefe_periodo
-            and exp_asigna_tutor.id_personal='.Auth::user()->id.'
+           
             GROUP BY exp_generacion.generacion ASC');
         return $datos;
     }
