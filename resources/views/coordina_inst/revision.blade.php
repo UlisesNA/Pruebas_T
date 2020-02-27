@@ -110,7 +110,7 @@
                                         </div>
                                         <div class="row" v-if="alumno.length==0 && clicgrupo==true">
                                             <div class="col-12 border-danger">
-                                                <h5 class="font-weight-bold text-center alert alert-danger">No existen actividades asignadas a la planeacion</h5>
+                                                <h5 class="font-weight-bold text-center alert alert-danger">No existen actividades con sugerencias en la planeacion</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -161,7 +161,7 @@
                 suge: {
                     sugerencia: {
                         id_asigna_planeacion_tutor: "",
-                        id_sugerencia: 2,
+                        id_sugerencia: 1,
                         desc_actividad_cambio: "",
                         objetivo_actividad_cambio : "",
                     },

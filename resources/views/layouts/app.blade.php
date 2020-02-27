@@ -154,7 +154,7 @@
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="MenuTutor">
                                             <a class="dropdown-item" href="/tutorvista">{{\Illuminate\Support\Facades\Session::get('tutor')>1?'Grupos Tutorías':'Grupo Tutorías'}}</a>
-                                            <a class="dropdown-item" href="/eventos">Eventos</a>
+                                            <!--<a class="dropdown-item" href="/eventos">Eventos</a>-->
                                             <a class="dropdown-item" href="/desercion">Deserción</a>
                                             <a class="dropdown-item" href="/reporte">Reporte</a>
                                             <!--
@@ -169,7 +169,7 @@
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="MenuCoordinador">
                                                 <a class="dropdown-item" href="/carreras">{{ \Illuminate\Support\Facades\Session::get('coordinador')>1 ? 'Programas educativos':'Programa educativo' }}</a>
-                                                <a class="dropdown-item" href="/coordina_carrera">Planeación</a>
+                                                <!--<a class="dropdown-item" href="/coordina_carrera">Planeación</a>-->
                                             </div>
                                         </div>
                                     @endif
