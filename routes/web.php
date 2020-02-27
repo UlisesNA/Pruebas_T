@@ -111,6 +111,8 @@ Route::get('grupos','ProfesorController@grupos');
 Route::post('/alu','ProfesorController@alumnos');
 Route::Resource('/reporte','ReporteController');
 Route::Resource('/desercion','DesercionController');
+Route::post('/probabilidad','ProbabilidadController@alumnos');
+
 
 Route::get('/getAll','ProfesorController@getAll');
 Route::get('/setAlumnId','ProfesorController@setAlumnoId');

@@ -1,122 +1,236 @@
 @extends('layouts.app')
 @section('content')
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <div class="container card">
-        <nav>
-            <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-                @foreach($tabla as $dato)
-                    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#target_{{$dato->id_generacion}}"
-                       role="tab" aria-controls="target_{{$dato->id_generacion}}" aria-selected="false">
-                        Generación {{$dato->generacion}}</a>
-                @endforeach
+    <div class="container" id="ind">
+        <div class="row" v-show="menugrupos==true">
+            <div class="col-12">
+                <div align="center">
+                    <h3>Probabilidad de Desercíon</h3>
+                </div>
+                <div class="row">
+                    <div class="col-3" v-for="grupo in grupos">
+                        <div class="card">
+                            <div class="card-header text-center font-weight-bold"> @{{ grupo.nombre }}</div>
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Generación @{{ grupo.generacion }}</h5>
+                                <p class="card-text">Grupo @{{ grupo.grupo }}</p>
+                                <a href="#?" @click="getlista(grupo)" class="btn btn-outline-primary">Ver</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </nav>
-        <div class="tab-content" id="nav-tabContent">
-            @foreach($tabla as $dato)
-                <div class="tab-pane fade" id="target_{{$dato->id_generacion}}" role="tabpanel" aria-labelledby="nav-profile-tab">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="tab-content" id="nav-tabContent">
-                                <div class="tab-pane fade show active" id="primero" role="tabpanel" aria-labelledby="primero-tab">
-                                    <br>
-                                    <div class="form-group row">
-                                        <div class="col-sm-11" align="center"><h5>Probabilidad de deserción de los tutorados: Generación {{$dato->generacion}}  Grupo: {{$dato->grupo}}</h5></div>
+        </div>
+        <div class="row" v-show="menu==true">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-12 pb-3">
+                        <i class="fas fa-chevron-left h5"></i>
+                        <a href="{{url('/desercion')}}" class="font-weight-bold h6 pb-1">{{\Illuminate\Support\Facades\Session::get('tutor')>1?'Regresar':'Regresar'}}</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div align="center">
+                                        <div class="col-9 text-center font-weight-bold">@{{ carrera }}</div>
                                     </div>
-                                    <table class="table">
-                                        <thead class="thead-dark">
-                                        <tr>
-                                            <th scope="col">Estudiante</th>
-                                            <th scope="col">No.hijos</th>
-                                            <th scope="col">Trabaja</th>
-                                            <th scope="col">Alcohol</th>
-                                            <th scope="col">Mat.Repetición</th>
-                                            <th scope="col">No.Repetición</th>
-                                            <th scope="col">Mat.Especial</th>
-                                            <th scope="col">Especiales Totales</th>
-                                            <th scope="col">Probabilidad de deserción</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        @foreach($consulta as $con)
-                                            @if($dato->generacion==$con->generacion)
-                                                <tr onmouseover="this.style.backgroundColor='#DBE7F3'" onmouseout="this.style.backgroundColor='white'">
-                                                    <td>{{mb_strtoupper($con->ap)}} {{mb_strtoupper($con->am)}} {{mb_strtoupper($con->nom)}}</td>
-                                                    <td align="center">{{$con->no_hijos-1}}</td>
-                                                    @if($con->trabaja==1)
-                                                        <td align="center">Si</td>
-                                                    @else
-                                                        <td align="center">No</td>
-                                                    @endif
-                                                    @if($con->id_expbebidas==1)
-                                                        <td align="center">Nunca</td>
-                                                    @elseif($con->id_expbebidas==2)
-                                                        <td align="center">Rara vez</td>
-                                                    @elseif($con->id_expbebidas==3)
-                                                        <td align="center">Aveces</td>
-                                                    @else
-                                                        <td align="center">Frecuentemente</td>
-                                                    @endif
-                                                    @if($con->materias_repeticion==1)
-                                                        <td align="center">Si</td>
-                                                    @else
-                                                        <td align="center">No</td>
-                                                    @endif
-                                                    @if($con->tot_repe==NULL)
-                                                        <td align="center">0</td>
-                                                    @else
-                                                        <td align="center">{{$con->tot_repe-1}}</td>
-                                                    @endif
-                                                    @if($con->materias_especial==1)
-                                                        <td align="center">Si</td>
-                                                    @else
-                                                        <td align="center">No</td>
-                                                    @endif
-                                                    @if($con->tot_espe==NULL)
-                                                        <td align="center">0</td>
-                                                    @else
-                                                        <td align="center">{{$con->tot_espe-1}}</td>
-                                                    @endif
-                                                    @if($con->id_carrera_v+$con->sexo_v+$con->id_estado_civil_v+$con->no_hijos_v+$con->no_hermanos_v+$con->enfermedad_cronica_v
-                                                    +$con->trabaja_v+$con->practica_deporte_v+$con->actividades_culturales_v+$con->etnia_indigena_v+$con->lugar_nacimientos_v
-                                                    +$con->nivel_economico_v+$con->sostiene_economia_hogar_v+$con->tegusta_carrera_elegida_v+$con->beca_v
-                                                    +$con->estado_v+$con->id_expbebidas_v+$con->poblacion_v+$con->ant_inst_v+$con->satisfaccion_c_v+
-                                                    $con->materias_repeticion_v+$con->tot_repe_v+$con->materias_especial_v+$con->tot_espe_v+$con->gen_espe_v>=70.0)
-                                                        <td style="background: #e02224;color: black" align="center">{{$con->id_carrera_v+$con->sexo_v+$con->id_estado_civil_v+$con->no_hijos_v+$con->no_hermanos_v+$con->enfermedad_cronica_v
-                                                                +$con->trabaja_v+$con->practica_deporte_v+$con->actividades_culturales_v+$con->etnia_indigena_v+$con->lugar_nacimientos_v
-                                                                +$con->nivel_economico_v+$con->sostiene_economia_hogar_v+$con->tegusta_carrera_elegida_v+$con->beca_v
-                                                                +$con->estado_v+$con->id_expbebidas_v+$con->poblacion_v+$con->ant_inst_v+$con->satisfaccion_c_v+
-                                                                $con->materias_repeticion_v+$con->tot_repe_v+$con->materias_especial_v+$con->tot_espe_v+$con->gen_espe_v}} %</td>
-                                                    @elseif($con->id_carrera_v+$con->sexo_v+$con->id_estado_civil_v+$con->no_hijos_v+$con->no_hermanos_v+$con->enfermedad_cronica_v
-                                                            +$con->trabaja_v+$con->practica_deporte_v+$con->actividades_culturales_v+$con->etnia_indigena_v+$con->lugar_nacimientos_v
-                                                            +$con->nivel_economico_v+$con->sostiene_economia_hogar_v+$con->tegusta_carrera_elegida_v+$con->beca_v
-                                                            +$con->estado_v+$con->id_expbebidas_v+$con->poblacion_v+$con->ant_inst_v+$con->satisfaccion_c_v+
-                                                            $con->materias_repeticion_v+$con->tot_repe_v+$con->materias_especial_v+$con->tot_espe_v+$con->gen_espe_v>=60.0)
-                                                        <td style="background: #e9c423" align="center">{{$con->id_carrera_v+$con->sexo_v+$con->id_estado_civil_v+$con->no_hijos_v+$con->no_hermanos_v+$con->enfermedad_cronica_v
-                                                                +$con->trabaja_v+$con->practica_deporte_v+$con->actividades_culturales_v+$con->etnia_indigena_v+$con->lugar_nacimientos_v
-                                                                +$con->nivel_economico_v+$con->sostiene_economia_hogar_v+$con->tegusta_carrera_elegida_v+$con->beca_v
-                                                                +$con->estado_v+$con->id_expbebidas_v+$con->poblacion_v+$con->ant_inst_v+$con->satisfaccion_c_v+
-                                                                $con->materias_repeticion_v+$con->tot_repe_v+$con->materias_especial_v+$con->tot_espe_v+$con->gen_espe_v}} %</td>
-                                                    @else
-                                                        <td style="background: #5bc013" align="center">{{$con->id_carrera_v+$con->sexo_v+$con->id_estado_civil_v+$con->no_hijos_v+$con->no_hermanos_v+$con->enfermedad_cronica_v
-                                                                +$con->trabaja_v+$con->practica_deporte_v+$con->actividades_culturales_v+$con->etnia_indigena_v+$con->lugar_nacimientos_v
-                                                                +$con->nivel_economico_v+$con->sostiene_economia_hogar_v+$con->tegusta_carrera_elegida_v+$con->beca_v
-                                                                +$con->estado_v+$con->id_expbebidas_v+$con->poblacion_v+$con->ant_inst_v+$con->satisfaccion_c_v+
-                                                                $con->materias_repeticion_v+$con->tot_repe_v+$con->materias_especial_v+$con->tot_espe_v+$con->gen_espe_v}} %</td>
-                                                    @endif
-                                                </tr>
-                                            @endif
-                                        @endforeach
-                                        </tbody>
-                                    </table>
+                                    <div align="center"><div class="col-9 text-center">@{{ gen }}</div></div>
+                                </div>
+                                <div class="card-body" v-if="(lista==true && datos.length>0)">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="row pb-3">
+                                                <div class="col-6">
+                                                    <form id="search">
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="inputGroupPrepend3"><i class="fas fa-search"></i></span>
+                                                            </div>
+                                                            <input class="form-control" name="query" v-model="searchQuery" placeholder="Buscar">
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="tableFixHeadLista">
+                                                <data-table class=" col-12 table table-sm" :data="datos" :columns-to-display="gridColumns" :filter-key="searchQuery">
+                                                    <template slot="Cuenta" scope="alumno">
+                                                        <div class="pt-2">@{{ alumno.entry.no_cuenta }}</div>
+                                                    </template>
+                                                    <template slot="Nombre" scope="alumno">
+                                                        <div class="pt-2">@{{ alumno.entry.ap }} @{{ alumno.entry.am }} @{{ alumno.entry.nom }}</div>
+                                                    </template>
+                                                    <template slot="No.hijos" scope="alumno">
+                                                        <div class="pt-2">@{{ alumno.entry.no_hijos-1 }}</div>
+                                                    </template>
+                                                    <template slot="Trabaja" scope="alumno">
+                                                        <div v-if="alumno.entry.trabaja == 1">
+                                                            <div class="pt-2">Si</div>
+                                                        </div>
+                                                        <div v-else>
+                                                            <div class="pt-2">No</div>
+                                                        </div>
+                                                    </template>
+                                                    <template slot="Alcoholismo" scope="alumno">
+                                                        <div v-if="alumno.entry.id_expbebidas == 1">
+                                                            <div class="pt-2">Nunca</div>
+                                                        </div>
+                                                        <div v-else-if="alumno.entry.id_expbebidas == 2">
+                                                            <div class="pt-2">Rara Vez</div>
+                                                        </div>
+                                                        <div v-else-if="alumno.entry.id_expbebidas == 3">
+                                                            <div class="pt-2">A veces</div>
+                                                        </div>
+                                                        <div v-else>
+                                                            <div class="pt-2">Frecuentemente</div>
+                                                        </div>
+                                                    </template>
+                                                    <template slot="No.Repeticiones" scope="alumno">
+                                                        <div v-if="alumno.entry.tot_repe == NULL">
+                                                            <div class="pt-2">0</div>
+                                                        </div>
+                                                        <div v-else-if="alumno.entry.tot_repe == 1">
+                                                            <div class="pt-2">0</div>
+                                                        </div>
+                                                        <div v-else-if="alumno.entry.tot_repe == 2">
+                                                            <div class="pt-2">1</div>
+                                                        </div>
+                                                        <div v-else-if="alumno.entry.tot_repe == 3">
+                                                            <div class="pt-2">2</div>
+                                                        </div>
+                                                        <div v-else>
+                                                            <div class="pt-2">3 o más</div>
+                                                        </div>
+                                                    </template>
+                                                    <template slot="No.Especiales" scope="alumno">
+                                                        <div v-if="alumno.entry.tot_espe == NULL">
+                                                            <div class="pt-2">0</div>
+                                                        </div>
+                                                        <div v-else-if="alumno.entry.tot_espe == 1">
+                                                            <div class="pt-2">0</div>
+                                                        </div>
+                                                        <div v-else-if="alumno.entry.tot_espe == 2">
+                                                            <div class="pt-2">1</div>
+                                                        </div>
+                                                        <div v-else-if="alumno.entry.tot_espe == 3">
+                                                            <div class="pt-2">2</div>
+                                                        </div>
+                                                        <div v-else>
+                                                            <div class="pt-2">3 o más</div>
+                                                        </div>
+                                                    </template>
+                                                    <template slot="Total Especiales" scope="alumno">
+                                                        <div v-if="alumno.entry.gen_espe == NULL">
+                                                            <div class="pt-2">0</div>
+                                                        </div>
+                                                        <div v-else-if="alumno.entry.gen_espe == 1">
+                                                            <div class="pt-2">0</div>
+                                                        </div>
+                                                        <div v-else-if="alumno.entry.gen_espe == 2">
+                                                            <div class="pt-2">1</div>
+                                                        </div>
+                                                        <div v-else-if="alumno.entry.gen_espe == 3">
+                                                            <div class="pt-2">2</div>
+                                                        </div>
+                                                        <div v-else>
+                                                            <div class="pt-2">3 o más</div>
+                                                        </div>
+                                                    </template>
+                                                    <template slot="Probabilidad" scope="alumno">
+                                                        <div class="pt-2">@{{ alumno.entry.id_carrera_v+alumno.entry.sexo_v+alumno.entry.id_estado_civil_v+
+                                                            alumno.entry.no_hijos_v+alumno.entry.no_hermanos_v+alumno.entry.enfermedad_cronica_v+
+                                                            alumno.entry.trabaja_v+alumno.entry.practica_deporte_v+alumno.entry.actividades_culturales_v+
+                                                            alumno.entry.etnia_indigena_v+alumno.entry.lugar_nacimientos_v+alumno.entry.nivel_economico_v+
+                                                            alumno.entry.sostiene_economia_hogar_v+alumno.entry.tegusta_carrera_elegida_v+
+                                                            alumno.entry.beca_v+alumno.entry.estado_v+alumno.entry.id_expbebidas_v+
+                                                            alumno.entry.poblacion_v+alumno.entry.ant_inst_v+alumno.entry.satisfaccion_c_v+
+                                                            alumno.entry.materias_repeticion_v+alumno.entry.tot_repe_v+ alumno.entry.materias_especial_v+
+                                                            alumno.entry.tot_espe_v+alumno.entry.gen_espe_v}}</div>
+                                                    </template>
+                                                    <template slot="nodata">
+                                                        <div class=" alert font-weight-bold alert-danger text-center">Ningún dato encontrado</div>
+                                                    </template>
+                                                </data-table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body" v-if="datos.length==0">
+                                <div class="row ">
+                                    <div class="col-12 alert-info alert text-center">
+                                        <h5 class="font-weight-bold">Los estudiantes no han completado su expediente</h5>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            @endforeach
+            </div>
         </div>
     </div>
+    <script type="text/javascript">
+        Vue.use(DataTable);
+        new Vue({
+            el: "#ind",
+            created: function () {
+                this.lista = false;
+                this.menugrupos = true;
+                this.menu = false;
+                this.getTut();
+            },
+            data: {
+                searchQuery: '',
+                gridColumns: ['Cuenta', 'Nombre', 'No.hijos', 'Trabaja', 'Alcoholismo','No.Repeticiones','No.Especiales','Total Especiales','Probabilidad'],
+                rut: "/probabilidad",
+                grup: "/grupos",
+                veralu: '/ver',
+                datos: [],
+                grupos: [],
+                alumnog: [],
+                vista: [],
+                periodos: [],
+                semestres: [],
+                carreras: [],
+                grupo: [],
+            },
+            methods: {
+                getTut: function () {
+                    axios.get(this.grup).then(response => {
+                        this.grupos = response.data;
+                }).catch(error => {
+                    });
+                },
+                getlista: function (grupo) {
+                    this.idca = grupo.id_carrera;
+                    this.idasigna = grupo.id_asigna_generacion;
+                    this.carrera = grupo.nombre;
+                    this.gen = " GENERACIÓN " + grupo.generacion + " GRUPO " + grupo.grupo;
+                    this.gene = " GENERACIÓN " + grupo.generacion;
+                    this.getAlumnos();
+                },
+                getAlumnos: function () {
+                    axios.post(this.rut, {
+                        id_asigna_generacion: this.idasigna,
+                        id_carrera: this.idca
+                    }).then(response => {
+                        this.menugrupos = false;
+                    this.menu = true;
+                    this.lista = true;
+                    this.plan = false;
+                    this.listacanaliza = false;
+                    this.graficas = false;
+                    this.datos = response.data;
+                    this.nuevos = response.data;
+                }).catch(error => {
+                    });
+                },
+            },
+        });
+    </script>
 @endsection
-<script src="{{asset('js/jquery.js')}}"></script>
-
-
