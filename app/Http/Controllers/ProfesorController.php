@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Exp_generale;
 use Illuminate\Http\Request;
 use App\Profesor;
@@ -12,8 +10,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use phpDocumentor\Reflection\Types\Array_;
-
-
 class ProfesorController extends Controller
 {
     /**
