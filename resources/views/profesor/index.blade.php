@@ -1028,6 +1028,7 @@
 
                             },
                             yAxis: {
+                                max:100,
                                 title: {
                                     text: 'Total',
                                     style: {
@@ -1103,6 +1104,7 @@
 
                                     },
                                     yAxis: {
+                                        max:100,
                                         title: {
                                             text: 'Total',
                                             style: {
@@ -1181,6 +1183,7 @@
 
                                     },
                                     yAxis: {
+                                        max:100,
                                         title: {
                                             text: 'Total',
                                             style: {
@@ -1258,6 +1261,7 @@
 
                                     },
                                     yAxis: {
+                                        max:100,
                                         title: {
                                             text: 'Total',
                                             style: {
@@ -1335,6 +1339,7 @@
 
                                     },
                                     yAxis: {
+                                        max:100,
                                         title: {
                                             text: 'Total',
                                             style: {
@@ -1412,6 +1417,7 @@
 
                                     },
                                     yAxis: {
+                                        max:100,
                                         title: {
                                             text: 'Total',
                                             style: {
@@ -1489,6 +1495,7 @@
 
                                     },
                                     yAxis: {
+                                        max:100,
                                         title: {
                                             text: 'Total',
                                             style: {

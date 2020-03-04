@@ -21,7 +21,7 @@ class PDF extends FPDF
         $this->Image('img/TESVB.png',145,3,28,11);
         $this->Image('img/edomex1.png',176,2,30,13);
         $this->Line(175,2.5,175,14);
-        $this->SetFont('Arial', '', 8);
+        $this->SetFont('Helvetica', '', 8);
         $this->Cell(175,6,utf8_decode('2020. "Año de Laura Méndez de Cuenca; emblema de la mujer Mexiquense".'),0,4,"C");
 
     }
@@ -29,7 +29,7 @@ class PDF extends FPDF
     function Footer()
     {
         $this->SetY(-22);
-        $this->SetFont('Arial','',8);
+        $this->SetFont('Helvetica','',8);
         $this->Image('img/abajo solo.png',0,246,217,34);
         $this->Image('img/res.jpg',51,241,38,22);
         $this->Image('img/cir.jpg',89,241,19,19);
@@ -160,15 +160,14 @@ class ReporteGController extends Controller
         $pdf->SetMargins(10, 19 , 1);
         //$pdf->SetAutoPageBreak(true,25);
         $pdf->AddPage();
-        $pdf->SetFont('Arial', '', 9);
+        $pdf->SetFont('Helvetica', '', 9);
         $pdf->Ln(4);
         $pdf->MultiCell(180,6,utf8_decode("Valle de Bravo, México; a " .$dd." de ".$mes. " de ".$aa."."),0,"R","","");
         $pdf->Ln(1);
 
         $pdf->Ln(2);
 
-        $pdf->SetFont('Arial', 'B', 9);
-        $pdf->Cell(167,6,utf8_decode($profesor[0]->nombre),0,1,"","");
+        $pdf->SetFont('Helvetica', 'B', 9);
         if($request->cargo=="tutor")
         {
             $pdf->Cell(167,6,utf8_decode($responsable[0]->nombre),0,1,"","");
@@ -176,7 +175,7 @@ class ReporteGController extends Controller
             $pdf->Cell(167,6,"DE ".utf8_decode($carrera[0]->nombre),0,1,"","");
             $pdf->Cell(167,6,utf8_decode("P  R  E  S  E  N  T  E"),0,1,"","");
             $pdf->Ln(6);
-            $pdf->SetFont('Arial', '', 9);
+            $pdf->SetFont('Helvetica', '', 9);
             $pdf->MultiCell(($pdf->GetPageWidth()-20)/1,6,utf8_decode("Por medio del presente, me permito informarle las estadísticas correspondientes al Programa Institucional de Tutorías, correspondiente a la ".$request->generacion_grupo.", del Programa de Estudios ".$carrera[0]->nombre.", del periodo ".(Session::get('nombre_periodo').".")),0,"J");
             $leyenda="TUTOR DE LA ".$request->generacion_grupo;
 
@@ -191,14 +190,14 @@ class ReporteGController extends Controller
             if($request->generacion==null && $request->generacion_grupo==null )
             {
                 $pdf->Ln(6);
-                $pdf->SetFont('Arial', '', 9);
+                $pdf->SetFont('Helvetica', '', 9);
                 $pdf->MultiCell(($pdf->GetPageWidth()-20)/1,6,utf8_decode("Por medio del presente, me permito informarle las estadísticas correspondientes al Programa Institucional de Tutorías, correspondiente al Programa de Estudios ".$carrera[0]->nombre.", del periodo ".(Session::get('nombre_periodo').".")),0,"J","");
 
             }
             else if($request->generacion_grupo==null)
             {
                 $pdf->Ln(6);
-                $pdf->SetFont('Arial', '', 9);
+                $pdf->SetFont('Helvetica', '', 9);
                 $pdf->MultiCell(($pdf->GetPageWidth()-20)/1,6,utf8_decode("Por medio del presente, me permito informarle las estadísticas correspondientes al Programa Institucional de Tutorías, correspondiente a la GENERACIÓN ".$request->generacion.", del Programa de Estudios ".$carrera[0]->nombre.", del periodo ".(Session::get('nombre_periodo').".")),0,"J","");
             }
             else if($request->generacion==null)
@@ -206,7 +205,7 @@ class ReporteGController extends Controller
                 $pdf->Ln(6);
                 $asignaeneracion=Exp_asigna_generacion::find($request->generacion_grupo);
                 $asignaeneracion->load('getGeneracion');
-                $pdf->SetFont('Arial', '', 9);
+                $pdf->SetFont('Helvetica', '', 9);
                 $pdf->MultiCell(($pdf->GetPageWidth()-20)/1,6,utf8_decode("Por medio del presente, me permito informarle las estadísticas correspondientes al Programa Institucional de Tutorías, correspondiente a la GENERACIÓN ".$asignaeneracion->getGeneracion->generacion." GRUPO ".$asignaeneracion->grupo.", del Programa de Estudios ".$carrera[0]->nombre.", del periodo ".(Session::get('nombre_periodo').".")),0,"J","");
             }
             $leyenda="COORDINADOR DEL PROGRAMA EDUCATIVO ".$carrera[0]->nombre;
@@ -230,7 +229,7 @@ class ReporteGController extends Controller
             $pdf->Cell(167,6,utf8_decode("DEL TECNOLÓGICO DE ESTUDIOS SUPERIORES DE VALLE DE BRAVO"),0,1,"","");
             $pdf->Cell(167,6,utf8_decode("P  R  E  S  E  N  T  E"),0,1,"","");
             $pdf->Ln(6);
-            $pdf->SetFont('Arial', '', 9);
+            $pdf->SetFont('Helvetica', '', 9);
             if($request->id_carrera!=null)
             {
                 $pdf->MultiCell(($pdf->GetPageWidth()-20)/1,6,utf8_decode("Por medio del presente, me permito informarle las estadísticas correspondientes al Programa Institucional de Tutorías, correspondiente al Programa de Estudios ".$carrera[0]->nombre.", del periodo ".(Session::get('nombre_periodo').".")),0,"J","");
@@ -246,7 +245,7 @@ class ReporteGController extends Controller
 
         /*GRAFICAS*/
         $pdf->Ln(3);
-        $pdf->SetFont('Arial', 'B', 9);
+        $pdf->SetFont('Helvetica', 'B', 9);
         $pdf->Cell(160,6,utf8_decode("Total de alumnos"),0,1,"","");
         $pdf->Image($request->imagen[0],60,95,87,62,'PNG');
 
@@ -294,7 +293,7 @@ class ReporteGController extends Controller
         $pdf->SetFont('Times', 'B', 9);
         $pdf->Cell(($pdf->GetPageWidth()),3,"". utf8_decode(mb_strtoupper("________________________________________________")),0,1,"C");
         $pdf->Ln(3);
-        $pdf->SetFont('Arial', 'B', 9);
+        $pdf->SetFont('Helvetica', 'B', 9);
         $pdf->Cell(($pdf->GetPageWidth()),3,"". utf8_decode(mb_strtoupper($profesor[0]->nombre)),0,1,"C");
         $pdf->Ln(3);
         $pdf->Cell(($pdf->GetPageWidth()),3,utf8_decode($leyenda),0,1,"C");
