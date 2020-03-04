@@ -66,12 +66,10 @@ class AsignaCoordinadorGeneralController extends Controller
      */
     public function store(Request $request)
     {
-        //
         Desarrollo_asigna_coordinador_general::create([
             "id_personal_asigna"=>Session::get('desarrollo'),
             "id_personal"=>$request->get("id_personal")
         ]);
-
     }
 
     /**
