@@ -15,6 +15,6 @@ class Plan_asigna_planeacion_actividad extends Model
     use SoftDeletes;
     protected $table='plan_asigna_planeacion_actividad';
     protected $primaryKey='id_asigna_planeacion_actividad';
-    protected $fillable=['id_planeacion','id_plan_actividad','comentario','id_estado'];
+    protected $fillable=['id_asigna_generacion','id_plan_actividad','comentario','id_estado'];
 
 }

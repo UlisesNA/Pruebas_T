@@ -68,7 +68,7 @@ class AsignaCoordinadorGeneralController extends Controller
     {
         //
         Desarrollo_asigna_coordinador_general::create([
-            "id_personal_asigna"=>Session::get('id_jefe_periodo'),
+            "id_personal_asigna"=>Session::get('desarrollo'),
             "id_personal"=>$request->get("id_personal")
         ]);
 
@@ -116,7 +116,7 @@ class AsignaCoordinadorGeneralController extends Controller
      */
     public function destroy($id)
     {
-        Exp_asigna_coordinador::find($id)->delete();
+        Desarrollo_asigna_coordinador_general::find($id)->delete();
 
     }
 }

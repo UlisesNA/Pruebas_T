@@ -16,6 +16,7 @@
                 {{ csrf_field() }}
                 <div class="modal-body">
                     <div class="form-group col-md-12">
+                        <!--<pre>@{{ suge }}</pre>-->
                             <div class="form-group col-md-12">
                                 <label>Decripción Actividad</label>
                                 <textarea class="form-control" rows="4" disabled v-model="suge.actividad.desc_actividad"></textarea>
@@ -31,7 +32,7 @@
                             <div class="form-group col-md-12">
                                 <label>Sugerencia de Cambio de Objetivo</label>
                                 <textarea class="form-control" rows="4" name="objetivo_actividad_cambio" v-model="suge.sugerencia.objetivo_actividad_cambio"></textarea>
-                                <input type="number" value="2" name="id_sugerencia">
+
                             </div>
                     </div>
                 </div>

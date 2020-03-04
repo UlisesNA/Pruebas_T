@@ -95,11 +95,6 @@
                                                                     <button class="btn btn-outline-primary m-1" @click="versugerencia(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Ver Sugerencia"><i class="far fa-eye"></i></button>
                                                                 </div>
                                                             </template>
-                                                            <template slot="Estrategia" scope="alumno">
-                                                                <div class="text-center" v-if="alumno.entry.id_estrategia==2">
-                                                                    <button class="btn btn-outline-primary m-1" @click="verestrategia(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Ver Sugerencia"><i class="far fa-eye"></i></button>
-                                                                </div>
-                                                            </template>
                                                             <template slot="nodata">
                                                                 <div class=" alert font-weight-bold alert-danger text-center">Ningún dato encontrado</div>
                                                             </template>
@@ -110,7 +105,7 @@
                                         </div>
                                         <div class="row" v-if="alumno.length==0 && clicgrupo==true">
                                             <div class="col-12 border-danger">
-                                                <h5 class="font-weight-bold text-center alert alert-danger">No existen actividades con sugerencias en la planeacion</h5>
+                                                <h5 class="font-weight-bold text-center alert alert-danger">No existen actividades asignadas a la planeacion</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -120,10 +115,7 @@
                     </div>
                 </div>
             </div>
-            @include('coordina_inst.modalsugerencia')
-            @include('coordina_inst.modalestrategia')
-
-            @include('coordinadorc.estadisticas')
+            @include('dep_desarrollo.modalsugerencia')
         </div>
 
     </div>
@@ -137,14 +129,13 @@
             data:{
                 searchQuery: '',
                 gridColumns: ['Cuenta','Nombre','Revalidación'],
-                gridColumns1: ['Fecha Inicio', 'Fecha Fin', 'Decripción Actividad', 'Objetivo', 'Sugerencia','Estrategia'],
+                gridColumns1: ['Fecha Inicio', 'Fecha Fin', 'Decripción Actividad', 'Objetivo', 'Sugerencia'],
                 rut:"/carrerasinst",
                 gen:'/generacionca',
                 alugrupo:'/alumnosgrupo',
                 plan:'/planeacioninst',
                 alugeneracion:'/alumnosgeneracion',
                 versuge: '/versuge',
-                verestra: '/verestra',
                 actsuge: '/actualizasuge',
                 carreras:[],
                 alumno:[],
@@ -161,7 +152,7 @@
                 suge: {
                     sugerencia: {
                         id_asigna_planeacion_tutor: "",
-                        id_sugerencia: 1,
+                        id_sugerencia: 2,
                         desc_actividad_cambio: "",
                         objetivo_actividad_cambio : "",
                     },
@@ -170,21 +161,6 @@
                         ff_actividad: "",
                         desc_actividad: "",
                         objetivo_actividad : "",
-                    },
-                    cadena: null
-                },
-                estra: {
-                    planeacion: {
-                        id_asigna_planeacion_tutor: "",
-                        id_estrategia: 2,
-                        estrategia: "",
-                        requiere_evidencia:"",
-                        //id_asigna_planeacion_actividad: 3,
-                        //id_asigna_tutor:null,
-                        //id_sugerencia:null ,
-                        //sugerencia:"hola" ,
-                        //desc_actividad_cambio:null ,
-                        //objetivo_actividad_cambio:null,
                     },
                     cadena: null
                 },
@@ -1669,21 +1645,6 @@
                     this.suge.actividad.ff_actividad = response.data.actividad[0].ff_actividad;
                     this.suge.actividad.desc_actividad = response.data.actividad[0].desc_actividad;
                     this.suge.actividad.objetivo_actividad = response.data.actividad[0].objetivo_actividad;
-                });
-                },
-                verestrategia: function (alumno) {
-                    console.log(alumno);
-                    $("#modalestrategia").modal("show");
-                    axios.post(this.verestra, {id: alumno.id_asigna_planeacion_tutor}).then(response => {
-                        this.estra.planeacion.id_asigna_planeacion_tutor = response.data.planeacion[0].id_asigna_planeacion_tutor;
-                    this.estra.planeacion.estrategia = response.data.planeacion[0].estrategia;
-                    this.estra.planeacion.requiere_evidencia = response.data.planeacion[0].requiere_evidencia;
-                    //this.estra.planeacion.id_asigna_planeacion_actividad=response.data.planeacion[0].id_asigna_planeacion_actividad;
-                    //this.estra.planeacion.id_asigna_tutor=response.data.planeacion[0].id_asigna_tutor;
-                    //this.estra.planeacion.id_sugerencia=response.data.planeacion[0].id_sugerencia;
-                    //this.estra.planeacion.sugerencia=response.data.planeacion[0].sugerencia;
-                    //this.estra.planeacion.desc_actividad_cambio=response.data.planeacion[0].desc_actividad_cambio;
-                    //this.estra.planeacion.objetivo_actividad_cambio=response.data.planeacion[0].objetivo_actividad_cambio;
                 });
                 },
                 actualizasuge: function () {

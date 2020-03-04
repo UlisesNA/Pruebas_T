@@ -34,7 +34,7 @@
                                                         <th>Revisar</th>
                                                     </tr>
                                                     @foreach($tabla1 as $dat)
-                                                        @if($dato->id_generacion==$dat->id_generacion)
+                                                        @if($dato->id_asigna_generacion==$dat->id_asigna_generacion)
                                                             <tr onmouseover="this.style.backgroundColor='#DBE7F3'" onmouseout="this.style.backgroundColor='white'">
                                                                 <td>{{$dat->fi_actividad}}</td>
                                                                 <td>{{$dat->ff_actividad}}</td>
@@ -137,7 +137,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{route('dep_desarrollo.update',$dato->id_asigna_planeacion_actividad)}}" method="post">
+                        <form action="{{route('dep_desarrollo.update',$dato->id_plan_actividad)}}" method="post">
                             @csrf
                             @method('PUT')
 
@@ -202,7 +202,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="{{route('dep_segundo.update',$dato->id_asigna_planeacion_actividad)}}" method="post">
+                <form action="{{route('dep_segundo.update',$dato->id_plan_actividad)}}" method="post">
                     @csrf
                     @method('PUT')
                     <div class="modal-body">

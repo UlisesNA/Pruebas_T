@@ -111,6 +111,8 @@ Route::get('grupos','ProfesorController@grupos');
 Route::post('/alu','ProfesorController@alumnos');
 Route::Resource('/reporte','ReporteController');
 Route::Resource('/desercion','DesercionController');
+Route::post('/probabilidad','ProbabilidadController@alumnos');
+
 
 Route::get('/getAll','ProfesorController@getAll');
 Route::get('/setAlumnId','ProfesorController@setAlumnoId');
@@ -153,12 +155,15 @@ Route::get('/getAlumno','PanelAlumnoController@datosPrincipales');
 Route::get('/inicioalu','PanelAlumnoController@principal');
 
 Route::get('/carrera','CoordinadorCarreraController@carreras');
-Route::get('/carrerasinst','CoordinadorCarreraController@carreras1');
+Route::get('/carrerasinst','Coordina_instController@carreras1');
 Route::get('/carreras', function () {
     return view('coordinadorc.index');
 });
 Route::get('/revision', function () {
     return view('coordina_inst.revision');
+});
+Route::get('/revisiondesarrollo', function () {
+    return view('dep_desarrollo.revisiondesarrollo');
 });
 Route::get('/estadisticas/carreras', function () {
     return view('coordina_inst.carreras');
