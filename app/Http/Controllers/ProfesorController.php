@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Controllers;
+use App\Canalizacion;
 use App\Exp_generale;
 use Illuminate\Http\Request;
 use App\Profesor;
@@ -36,6 +37,12 @@ class ProfesorController extends Controller
         $datos->map(function ($value, $key) {
             $gen=Exp_generale::where('id_alumno',$value->id_alumno)->count();
             $value->expediente=$gen>0?true:false;
+            //$value->nombrec=$value->apaterno+" "+$value->amaterno+" "+$value->nombre;
+            return $value;
+        });
+        $datos->map(function ($value, $key) {
+            $can=Canalizacion::where('id_alumno',$value->id_alumno)->count();
+            $value->canalizacion=$can>0?true:false;
             //$value->nombrec=$value->apaterno+" "+$value->amaterno+" "+$value->nombre;
             return $value;
         });

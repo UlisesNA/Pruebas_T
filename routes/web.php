@@ -121,8 +121,9 @@ Route::get('/Alum','ViewAlumnosController@llenar');
 Route::get('/AlumActualizar','ViewAlumnosController@actualizar');
 
 Route::post('/ver','ViewAlumnosController@veralumno');
-Route::post('/verestra','ViewAlumnosController@verestrategia');
-Route::post('/versuge','ViewAlumnosController@versugerencia');
+Route::post('/verestra','ViewAlumnosController@verestrategia');////////////////////////////////si se usa
+Route::post('/versuge','ViewAlumnosController@versugerencia');//////////////////////////////////si se usa
+Route::post('/vercanaliza','ViewAlumnosController@veralumno1');/////////////////////////////////si se utiliza
 Route::post('/actualiza','ViewAlumnosController@actualiza');
 Route::post('/actualizaestra','ViewAlumnosController@actualizaestrategia');
 Route::post('/actualizasuge','ViewAlumnosController@actualizasugerencia');

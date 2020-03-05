@@ -89,7 +89,13 @@
                                                         <div v-else class="text-center" ><i class="fas h4 fa-times text-danger pt-2 " data-toggle="tooltip" data-placement="bottom" title="Expediente sin llenar"></i></div>
                                                     </template>
                                                     <template slot="Canalizacion" scope="alumno">
-                                                        <div class="text-center offset-1"><button class="btn btn-outline-secondary"  @click="getAlumnos2(alumno.entry)"><i class="fas fa-check-square"></i></button></div>
+                                                        <div class="text-center" v-if="alumno.entry.canalizacion">
+                                                            <button class="btn btn-outline-primary m-1" @click="vercanaliza(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="far fa-edit"></i></button>
+                                                            <button class="btn btn-outline-danger" @click="pdfAlumno(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Expediente"><i class="far fa-file-pdf"></i></button>
+                                                        </div>
+                                                        <div v-else class="text-center">
+                                                            <button class="btn btn-outline-primary m-1" @click="vercanaliza(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Canalizar"><i class="far fa-check-square "></i></button>
+                                                        </div>
                                                     </template>
                                                     <template slot="nodata">
                                                         <div class=" alert font-weight-bold alert-danger text-center">Ningún dato encontrado</div>
@@ -662,6 +668,7 @@
         @include('profesor.modaleditar')
         @include('profesor.modalestrategia')
         @include('profesor.modalsugerencia')
+        @include('profesor.modalcanalizacion')
 
     </div>
     <script type="text/javascript">
@@ -699,6 +706,7 @@
                 rep: "pdf/reporte",
                 palu: 'pdf/alumno',
                 veralu: '/ver',
+                vercanalizacion: '/vercanaliza',
                 verestra: '/verestra',
                 versuge: '/versuge',
                 datos: [],
@@ -919,6 +927,41 @@
                     },
                     cadena: null
                 },
+                canaliza: {
+                    valores: {
+                        grupo: "",
+                        nombre: "",
+                        apaterno: "",
+                        amaterno: "",
+                        carrera: "",
+                        descripcion: "",
+                        id_alumno: "",
+                        nombre_tut: "",
+                        id_personal: "",
+                    },
+                    canalizacion:{
+                        id_alumno:"",
+                        id_personal:"",
+                        fecha_canalizacion:"",
+                        fecha_canalizacion_anterior:"",
+                        fecha_canalizacion_siguiente:"",
+                        hora:"",
+                        aspectos_sociologicos1:"",
+                        aspectos_sociologicos2:"",
+                        aspectos_sociologicos3:"",
+                        aspectos_academicos1:"",
+                        aspectos_academicos2:"",
+                        aspectos_academicos3:"",
+                        observaciones:"",
+                        otros:"",
+                        notificacion:"",
+                        id_area:"",
+                        id_subarea:"",
+                        status:"",
+                    }
+                },
+                areas: [],
+                subareas: [],
                 fin: true,
                 titulosGrafica: ['General', 'Mujeres', 'Hombres'],
                 general: [
@@ -983,7 +1026,6 @@
                 }).catch(error => {
                     });
                 },
-
                 graficagenero: function () {
                     this.lista = false;
                     this.plan = false;
@@ -1789,6 +1831,24 @@
                     this.escala = response.data.escala;
                     this.bebidas = response.data.bebidas;
                     this.becas = response.data.becas;
+                });
+                },
+                vercanaliza: function (alumno) {
+                    console.log(alumno);
+                    $("#modalcanalizacion").modal("show");
+                    axios.post(this.vercanalizacion, {id: alumno.id_alumno}).then(response => {
+                        this.canaliza.valores.grupo = response.data.valores[0].grupo;
+                    this.canaliza.valores.nombre = response.data.valores[0].nombre;
+                    this.canaliza.valores.apaterno = response.data.valores[0].apaterno;
+                    this.canaliza.valores.amaterno = response.data.valores[0].amaterno;
+                    this.canaliza.valores.carrera = response.data.valores[0].carrera;
+                    this.canaliza.valores.descripcion = response.data.valores[0].descripcion;
+                    this.canaliza.valores.id_alumno = response.data.valores[0].id_alumno;
+                    this.canaliza.valores.nombre_tut = response.data.valores[0].nombre_tut;
+                    this.canaliza.valores.id_personal = response.data.valores[0].id_personal;
+                    /////areas
+                    this.areas= response.data.areas;
+                    this.subareas= response.data.subareas;
                 });
                 },
                 verestrategia: function (alumno) {
