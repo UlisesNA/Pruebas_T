@@ -26,7 +26,7 @@ class LoginController extends Controller
          $periodo=DB::selectOne('SELECT *FROM  gnral_periodos where "'.$fecha_hoy.'" BETWEEN fecha_inicio AND fecha_termino');
 
          //dd($periodo);
-         Session::put('id_periodo',$periodo->id_periodo);
+         Session::put('id_periodo',20);
          Session::put('nombre_periodo',$periodo->periodo);
 
          if ($user->tipo_usuario==1) {
@@ -75,15 +75,15 @@ class LoginController extends Controller
              //dd($jefe);
              $tutor=GnralPersonales::where('tipo_usuario',Auth::user()->id)->get();
                 //dd($tutor[0]->id_departamento);
-             $estutor=DB::select('SELECT id_asigna_tutor from exp_asigna_tutor where id_personal='.$tutor[0]->id_personal.' 
+             $estutor=DB::select('SELECT id_asigna_tutor from exp_asigna_tutor where id_personal='.$tutor[0]->id_personal.'
              AND exp_asigna_tutor.deleted_at is null and id_jefe_periodo in (Select id_jefe_periodo from gnral_jefes_periodos where id_periodo='.Session::get('id_periodo').')');
 
-             $escoordinador=DB::select('SELECT id_asigna_coordinador from exp_asigna_coordinador where id_personal='.$tutor[0]->id_personal.' 
+             $escoordinador=DB::select('SELECT id_asigna_coordinador from exp_asigna_coordinador where id_personal='.$tutor[0]->id_personal.'
              AND exp_asigna_coordinador.deleted_at is null and id_jefe_periodo in (Select id_jefe_periodo from gnral_jefes_periodos where id_periodo='.Session::get('id_periodo').')');
 
              $escoordinadorgeneral=DB::select('SELECT id_asigna_coordinador_general
                                                         from desarrollo_asigna_coordinador_general
-                                                        where id_personal='.$tutor[0]->id_personal.' 
+                                                        where id_personal='.$tutor[0]->id_personal.'
                                                         AND desarrollo_asigna_coordinador_general.deleted_at is null');
 
              //$esdesarrollo=DB::select();

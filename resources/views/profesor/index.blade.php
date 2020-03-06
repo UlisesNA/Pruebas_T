@@ -3,8 +3,8 @@
     <div class="container" id="ind">
         <div class="row" v-show="menugrupos==true">
             <div class="col-12">
-                <div class="row">
-                    <div class="col-3" v-for="grupo in grupos">
+                <div class="row" >
+                    <div class="col-3 pt-4" v-for="grupo in grupos">
                         <div class="card">
                             <div class="card-header text-center font-weight-bold"> @{{ grupo.nombre }}</div>
                             <div class="card-body text-center">

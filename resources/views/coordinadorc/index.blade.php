@@ -5,7 +5,7 @@
             <div class="col-12">
                 <div class="row">
                     <div class="col-3" v-for="carrera in carreras">
-                        <div class="card">
+                        <div class="card pt-4">
                             <div class="card-header text-center font-weight-bold"> @{{ carrera.nombre }}</div>
                             <div class="card-body text-center">
                                 <a href="#" @click="getGeneracion(carrera)" class="btn btn-outline-primary">Ver</a>
