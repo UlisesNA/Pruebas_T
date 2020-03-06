@@ -2,7 +2,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalScrollableTitle">Asignar Alumnos</h5>
+                <h5 class="modal-title" id="exampleModalScrollableTitle">Asignar Estudiantes</h5>
             </div>
             <div class="modal-body">
                 <form id="search1" class="pb-3" v-if="alumnosgeneracion.length>0">
@@ -38,7 +38,7 @@
                 </div>
                 <div class="row" v-else>
                     <div class="col-12 text-center">
-                        <h5 class="alert alert-info font-weight-bold">Se han asignado todos los alumnos</h5>
+                        <h5 class="alert alert-info font-weight-bold">Se han asignado todos los estudiantes</h5>
                     </div>
                 </div>
             </div>

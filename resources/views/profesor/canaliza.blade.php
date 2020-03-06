@@ -101,13 +101,6 @@
                                     <table class="table table-bordered">
                                         <tbody>
                                         <tr>
-                                            <td>
-                                                <select name="notificacion" id="notificacion" class="custom-select custom-select-md">
-                                                    <option value="" selected>Elija Opción</option>
-                                                    <option value="1" >Si</option>
-                                                    <option value="0" >No</option>
-                                                </select>
-                                            </td>
                                             <td rowspan="">CORREO: <br>@foreach ($prof as $dato)
                                                     {{$dato->correo}}
                                                 @endforeach

@@ -119,7 +119,8 @@
                                     <a class="dropdown-item" href="/desarrollovista">Coordinador Institucional</a>
                                     <a class="dropdown-item" href="/asignacorgenvista">Asigna Coordinador Institucional</a>
                                     <a class="dropdown-item" href="/planeaciondesarrollo">Planeación</a>
-                                    <a class="dropdown-item" href="/estadisticas/carreras">Programas Educativos</a>
+                                    <a class="dropdown-item" href="/revisiondesarrollo">Ver Sugerencias</a>
+                                    <a class="dropdown-item" href="/estadisticas/carreras">Programas educativos</a>
                                 </div>
                             </div>
                         @endif
@@ -153,7 +154,7 @@
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="MenuTutor">
                                             <a class="dropdown-item" href="/tutorvista">{{\Illuminate\Support\Facades\Session::get('tutor')>1?'Grupos Tutorías':'Grupo Tutorías'}}</a>
-                                            <a class="dropdown-item" href="/eventos">Eventos</a>
+                                            <!--<a class="dropdown-item" href="/eventos">Eventos</a>-->
                                             <a class="dropdown-item" href="/desercion">Deserción</a>
                                             <a class="dropdown-item" href="/reporte">Reporte</a>
                                             <!--
@@ -167,8 +168,8 @@
                                                 Coordinador
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="MenuCoordinador">
-                                                <a class="dropdown-item" href="/carreras">{{ \Illuminate\Support\Facades\Session::get('coordinador')>1 ? 'Programas Educativos':'Programa Educativo' }}</a>
-                                                <a class="dropdown-item" href="/coordina_carrera">Planeación</a>
+                                                <a class="dropdown-item" href="/carreras">{{ \Illuminate\Support\Facades\Session::get('coordinador')>1 ? 'Programas educativos':'Programa educativo' }}</a>
+                                                <!--<a class="dropdown-item" href="/coordina_carrera">Planeación</a>-->
                                             </div>
                                         </div>
                                     @endif
@@ -179,7 +180,8 @@
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="MenuCoordinadorGeneral">
                                                 <a class="dropdown-item" href="/planeacioncoorgen">Planeación</a>
-                                                <a class="dropdown-item" href="/estadisticas/carreras">Programas Educativos</a>
+                                                <a class="dropdown-item" href="/revision">Revisar Sugerencias</a>
+                                                <a class="dropdown-item" href="/estadisticas/carreras">Programas educativos</a>
                                             </div>
                                         </div>
                                     @endif

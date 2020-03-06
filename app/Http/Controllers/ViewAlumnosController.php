@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\areas_canalizacion;
 use App\AsignaExpediente;
 use App\Exp_antecedentes_academico;
 use App\Exp_area_psicopedagogica;
@@ -25,6 +26,7 @@ use App\Exp_tiempoestudia;
 use App\Exp_turno;
 use App\Plan_actividades;
 use App\Plan_asigna_planeacion_tutor;
+use App\subareas_canalizacion;
 use Illuminate\Support\Carbon;
 use App\gnral_alumnos;
 use App\Gnral_carreras;
@@ -91,7 +93,7 @@ class ViewAlumnosController extends Controller
 
     public  function veralumno(Request $request)
     {
-        $data['generales']=Exp_generale::where('id_alumno',$request->id)->get();
+        $data['grupo']=Exp_generale::where('id_alumno',$request->id)->get();
         $data['academicos']=Exp_antecedentes_academico::where('id_alumno',$request->id)->get();
         $data['familiares']=Exp_datos_familiare::where('id_alumno',$request->id)->get();
         $data['estudio']=Exp_habitos_estudio::where('id_alumno',$request->id)->get();
@@ -117,6 +119,24 @@ class ViewAlumnosController extends Controller
         return $data;
     }
 
+    public  function veralumno1(Request $request)
+    {
+        $data['valores']=DB::select('SELECT exp_asigna_generacion.grupo,gnral_alumnos.id_alumno,gnral_alumnos.nombre,gnral_alumnos.apaterno,
+            gnral_alumnos.amaterno,gnral_carreras.nombre as carrera,gnral_semestres.descripcion,gnral_personales.nombre as nombre_tut,gnral_personales.id_personal
+            FROM exp_asigna_generacion,exp_asigna_alumnos,gnral_alumnos,gnral_carreras,
+            gnral_semestres,gnral_personales,exp_asigna_tutor
+            WHERE exp_asigna_generacion.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion
+            AND gnral_alumnos.id_alumno=exp_asigna_alumnos.id_alumno
+            AND gnral_alumnos.id_carrera=gnral_carreras.id_carrera
+            AND gnral_alumnos.id_semestre=gnral_semestres.id_semestre
+            AND gnral_personales.id_personal=exp_asigna_tutor.id_personal
+            AND exp_asigna_tutor.id_asigna_generacion=exp_asigna_generacion.id_asigna_generacion
+            AND exp_asigna_alumnos.id_alumno='.$request->id);
+
+        $data['areas']= areas_canalizacion::all();
+        $data['subareas']= subareas_canalizacion::all();
+        return $data;
+    }
     public  function verestrategia(Request $request)
     {
         $data['planeacion']=Plan_asigna_planeacion_tutor::where('id_asigna_planeacion_tutor',$request->id)->get();
@@ -148,8 +168,11 @@ class ViewAlumnosController extends Controller
     }
     public function actualizaestrategia(Request $request)
     {
+
         $planeacion = Plan_asigna_planeacion_tutor::find($request->estra['planeacion']['id_asigna_planeacion_tutor']);
+
         $planeacion->update($request->estra['planeacion']);
+
         return('ok');
     }
     public function actualizasugerencia(Request $request)

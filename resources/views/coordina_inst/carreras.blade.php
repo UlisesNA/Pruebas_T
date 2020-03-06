@@ -115,7 +115,7 @@
                                 enabled: false
                             },
                             title: {
-                                text: 'Alumnos por sexo'
+                                text: 'Estudiantes por sexo'
                             },
                             accessibility: {
                                 announceNewData: {
@@ -132,6 +132,7 @@
 
                             },
                             yAxis: {
+                                max:100,
                                 title: {
                                     text: 'Total',
                                     style: {
@@ -181,7 +182,7 @@
                                 enabled: false
                             },
                             title: {
-                                text: 'Alumnos por sexo'
+                                text: 'Estudiantes por sexo'
                             },
                             accessibility: {
                                 announceNewData: {
@@ -198,6 +199,7 @@
 
                             },
                             yAxis: {
+                                max:100,
                                 title: {
                                     text: 'Total',
                                     style: {
@@ -253,7 +255,7 @@
                                 enabled: false
                             },
                             title: {
-                                text: 'Alumnos por sexo'
+                                text: 'Estudiantes por sexo'
                             },
                             accessibility: {
                                 announceNewData: {
@@ -270,6 +272,7 @@
 
                             },
                             yAxis: {
+                                max:100,
                                 title: {
                                     text: 'Total',
                                     style: {
@@ -319,7 +322,7 @@
                                 enabled: false
                             },
                             title: {
-                                text: 'Alumnos por sexo'
+                                text: 'Estudiantes por sexo'
                             },
                             accessibility: {
                                 announceNewData: {
@@ -336,6 +339,7 @@
 
                             },
                             yAxis: {
+                                max:100,
                                 title: {
                                     text: 'Total',
                                     style: {
@@ -412,6 +416,7 @@
 
                                     },
                                     yAxis: {
+                                        max:100,
                                         title: {
                                             text: 'Total',
                                             style: {
@@ -487,6 +492,7 @@
 
                                     },
                                     yAxis: {
+                                        max:100,
                                         title: {
                                             text: 'Total',
                                             style: {
@@ -563,6 +569,7 @@
 
                                     },
                                     yAxis: {
+                                        max:100,
                                         title: {
                                             text: 'Total',
                                             style: {
@@ -639,6 +646,7 @@
 
                                     },
                                     yAxis: {
+                                        max:100,
                                         title: {
                                             text: 'Total',
                                             style: {
@@ -715,6 +723,7 @@
 
                                     },
                                     yAxis: {
+                                        max:100,
                                         title: {
                                             text: 'Total',
                                             style: {
@@ -791,6 +800,7 @@
 
                                     },
                                     yAxis: {
+                                        max:100,
                                         title: {
                                             text: 'Total',
                                             style: {
@@ -874,6 +884,7 @@
 
                                     },
                                     yAxis: {
+                                        max:100,
                                         title: {
                                             text: 'Total',
                                             style: {
@@ -949,6 +960,7 @@
 
                                     },
                                     yAxis: {
+                                        max:100,
                                         title: {
                                             text: 'Total',
                                             style: {
@@ -1025,6 +1037,7 @@
 
                                     },
                                     yAxis: {
+                                        max:100,
                                         title: {
                                             text: 'Total',
                                             style: {
@@ -1101,6 +1114,7 @@
 
                                     },
                                     yAxis: {
+                                        max:100,
                                         title: {
                                             text: 'Total',
                                             style: {
@@ -1177,6 +1191,7 @@
 
                                     },
                                     yAxis: {
+                                        max:100,
                                         title: {
                                             text: 'Total',
                                             style: {
@@ -1253,6 +1268,7 @@
 
                                     },
                                     yAxis: {
+                                        max:100,
                                         title: {
                                             text: 'Total',
                                             style: {

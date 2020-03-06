@@ -26,6 +26,8 @@ class LoginController extends Controller
          $periodo=DB::selectOne('SELECT *FROM  gnral_periodos where "'.$fecha_hoy.'" BETWEEN fecha_inicio AND fecha_termino');
 
          //dd($periodo);
+
+         //Session::put('id_periodo',$periodo->id_periodo);
          Session::put('id_periodo',20);
          Session::put('nombre_periodo',$periodo->periodo);
 

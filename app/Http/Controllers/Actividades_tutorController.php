@@ -43,35 +43,21 @@ class Actividades_tutorController extends Controller
         );
         Plan_actividades::create($planea);
         return response()->json();*/
-        $num=DB::select('SELECT id_planeacion FROM plan_planeacion WHERE id_generacion='.$request->id_generacion);
-        $gen=DB::select('SELECT exp_asigna_tutor.id_asigna_tutor
-                                    FROM exp_asigna_tutor,exp_asigna_generacion,exp_generacion
-                                    WHERE exp_generacion.id_generacion=exp_asigna_generacion.id_generacion
-                                    AND exp_asigna_generacion.id_asigna_generacion=exp_asigna_tutor.id_asigna_generacion
-                                    AND exp_asigna_tutor.deleted_at is null
-                                    AND exp_generacion.id_generacion='.$request->id_generacion.'
-                                    GROUP BY exp_asigna_tutor.id_personal;');
-        //dd($gen);
+        $num=DB::select('SELECT exp_asigna_generacion.id_asigna_generacion
+        FROM exp_asigna_generacion
+        WHERE exp_asigna_generacion.deleted_at is null
+        AND exp_asigna_generacion.id_generacion='.$request->id_generacion);
 
+        //dd($num);
 
-        if($num==null)
-        {
-           // dd($request->id_generacion);
+        $datos=request()->except('_token');
+        Plan_actividades::create($datos);
+        $id_actividad=DB::select('SELECT @@identity as id_ac');
 
-            //dd($id_planeacion);
-            $datos=request()->except('_token');
-            //dd($request->id_generacion);
-            Plan_actividades::create($datos);
-            $id_actividad=DB::select('SELECT @@identity as id_ac');
-
-            Plan_Planeacion::create([
-                "id_periodo"=>Session::get('id_periodo'),
-                "id_generacion"=>$request->id_generacion
-            ]);
-            $id_planeacion=DB::select('SELECT @@identity as id_p');
-            //dd($id_planeacion);
+        $ic=count($num);
+        for ($i = 0; $i <$ic; $i++) {
             Plan_asigna_planeacion_actividad::create([
-                "id_planeacion"=>$id_planeacion[0]->id_p,
+                "id_asigna_generacion"=>$num[$i]->id_asigna_generacion,
                 //"id_actividad "=>$id_actividad[0]->id_ac,
             ]);
             $id=DB::select('SELECT @@identity as id');
@@ -81,63 +67,18 @@ class Actividades_tutorController extends Controller
             $plan->id_estado = $request->id_estado;
             $plan->save();
 
-            $ic=count($gen);
-            for ($i = 0; $i <$ic; $i++) {
-                Plan_asigna_planeacion_tutor::create([
-                    "id_asigna_planeacion_actividad"=>$id[0]->id,
-                    "id_asigna_tutor"=>$gen[$i]->id_asigna_tutor,
-                ]);
-                $idt=DB::select('SELECT @@identity as idt');
-                $plan = Plan_asigna_planeacion_tutor::find($idt[0]->idt);
-                $plan->id_asigna_planeacion_actividad = $id[0]->id;
-                $plan->id_asigna_tutor = $gen[$i]->id_asigna_tutor;
-                $plan->save();
-            }
-            //dd($plan);
-            //return redirect()->back();
-        }else
-        {
-            //dd($num);
-            $datos=request()->except('_token');
-            //dd($request->id_generacion);
-            Plan_actividades::create($datos);
-            $id_actividad=DB::select('SELECT @@identity as id_ac');
-
-            Plan_asigna_planeacion_actividad::create([
-                "id_planeacion"=>$num[0]->id_planeacion,
-                //"id_actividad "=>$id_actividad[0]->id_ac,
+            Plan_asigna_planeacion_tutor::create([
+                "id_asigna_planeacion_actividad"=>$id[0]->id,
+                "id_asigna_generacion"=>$num[$i]->id_asigna_generacion,
             ]);
-            $id=DB::select('SELECT @@identity as id');
-
-            $plan = Plan_asigna_planeacion_actividad::find($id[0]->id);
-            $plan->id_plan_actividad = $id_actividad[0]->id_ac;
-            $plan->id_estado = $request->id_estado;
+            $idt=DB::select('SELECT @@identity as idt');
+            $plan = Plan_asigna_planeacion_tutor::find($idt[0]->idt);
+            $plan->id_asigna_planeacion_actividad = $id[0]->id;
+            $plan->id_asigna_generacion = $num[$i]->id_asigna_generacion;
             $plan->save();
-
-
-            /*foreach ($gen as $dato)
-            {
-                dd($gen->id_tutor);
-                Plan_asigna_planeacion_tutor::create([
-                    "id_asigna_planeacion_actividad"=>$id[0]->id,
-                    "id_tutor"=>$dato->id_tutor,
-                ]);
-            }*/
-            $ic=count($gen);
-            for ($i = 0; $i <$ic; $i++) {
-                Plan_asigna_planeacion_tutor::create([
-                    "id_asigna_planeacion_actividad"=>$id[0]->id,
-                    "id_asigna_tutor"=>$gen[$i]->id_asigna_tutor,
-                ]);
-                $idt=DB::select('SELECT @@identity as idt');
-                $plan = Plan_asigna_planeacion_tutor::find($idt[0]->idt);
-                $plan->id_asigna_planeacion_actividad = $id[0]->id;
-                $plan->id_asigna_tutor = $gen[$i]->id_asigna_tutor;
-                $plan->save();
-            }
-            //dd($i);
-            return redirect()->back();
         }
+
+        return redirect()->back();
     }
 
     public function update(Request $request, $id)
@@ -148,13 +89,18 @@ class Actividades_tutorController extends Controller
         $plan->desc_actividad = $request->desc_actividad;
         $plan->objetivo_actividad = $request->objetivo_actividad;
         $plan->save();
-        $id_plan_asigna_planeacion_actividad=DB::select('SELECT id_asigna_planeacion_actividad 
-                                                                    from plan_asigna_planeacion_actividad 
-                                                                    where id_plan_actividad ='.$id);
-        //dd($id_plan_asigna_planeacion_actividad[0]->id_asigna_planeacion_actividad);
-        $plan1 = Plan_asigna_planeacion_actividad::find($id_plan_asigna_planeacion_actividad[0]->id_asigna_planeacion_actividad);
-        $plan1->id_estado = $request->id_estado;
-        $plan1->save();
+        $num=DB::select('SELECT plan_asigna_planeacion_actividad.id_asigna_planeacion_actividad
+        FROM plan_asigna_planeacion_actividad,plan_actividades
+        WHERE plan_actividades.deleted_at is null
+        AND plan_actividades.id_plan_actividad=plan_asigna_planeacion_actividad.id_plan_actividad
+        AND plan_asigna_planeacion_actividad.id_plan_actividad='.$id);
+        //dd($num);
+        $ic=count($num);
+        for ($i = 0; $i <$ic; $i++) {
+            $plan = Plan_asigna_planeacion_actividad::find($num[$i]->id_asigna_planeacion_actividad);
+            $plan->id_estado = $request->id_estado;
+            $plan->save();
+        }
         return redirect()->back();
     }
     public function update1(Request $request, $id)

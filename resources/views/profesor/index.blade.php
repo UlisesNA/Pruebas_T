@@ -22,7 +22,7 @@
                 <div class="row">
                     <div class="col-12 pb-3">
                         <i class="fas fa-chevron-right h5"></i>
-                        <a href="{{url('/tutorvista')}}" class="font-weight-bold h6 pb-1">{{\Illuminate\Support\Facades\Session::get('tutor')>1?'CARRERAS':'CARRERA'}}</a>
+                        <a href="{{url('/tutorvista')}}" class="font-weight-bold h6 pb-1">{{\Illuminate\Support\Facades\Session::get('tutor')>1?'PROGRAMAS EDUCATIVOS':'PROGRAMA EDUCATIVO'}}</a>
                         <i class="fas fa-chevron-right h5"></i>
                         <a class="text-primary h6" v-if="lista==true">LISTA</a>
                         <a class="text-primary h6" v-if="graficas==true">ESTADÍSTICAS</a>
@@ -89,7 +89,13 @@
                                                         <div v-else class="text-center" ><i class="fas h4 fa-times text-danger pt-2 " data-toggle="tooltip" data-placement="bottom" title="Expediente sin llenar"></i></div>
                                                     </template>
                                                     <template slot="Canalizacion" scope="alumno">
-                                                        <div class="text-center offset-1"><button class="btn btn-outline-secondary"  @click="getAlumnos2(alumno.entry)"><i class="fas fa-check-square"></i></button></div>
+                                                        <div class="text-center" v-if="alumno.entry.canalizacion">
+                                                            <button class="btn btn-outline-primary m-1" @click="vercanaliza(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="far fa-edit"></i></button>
+                                                            <button class="btn btn-outline-danger" @click="pdfAlumno(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Expediente"><i class="far fa-file-pdf"></i></button>
+                                                        </div>
+                                                        <div v-else class="text-center">
+                                                            <button class="btn btn-outline-primary m-1" @click="vercanaliza(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Canalizar"><i class="far fa-check-square "></i></button>
+                                                        </div>
                                                     </template>
                                                     <template slot="nodata">
                                                         <div class=" alert font-weight-bold alert-danger text-center">Ningún dato encontrado</div>
@@ -138,15 +144,20 @@
                                                         <div class="text-center">@{{ alumno.entry.objetivo_actividad }}</div>
                                                     </template>
                                                     <template slot="Sugerencia" scope="alumno">
-                                                        <div class="text-center" v-if="alumno.entry.id_sugerencia==1">
+                                                        <div class="text-center" v-if="alumno.entry.id_sugerencia==2">
                                                             <button class="btn btn-outline-primary m-1" @click="versugerencia(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Editar Sugerencia"><i class="far fa-edit"></i></button>
                                                         </div>
                                                         <div v-else class="text-center">
-                                                            <button class="btn btn-outline-primary m-1" @click="versugerencia(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Agregar Sugerencia">+</button>
+                                                            <div class="text-center" v-if="alumno.entry.id_sugerencia==1">
+                                                                <button class="btn btn-outline-primary m-1" @click="versugerencia(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Sugerencia Aprobada"><i class="far fa-eye"></i></button>
+                                                            </div>
+                                                            <div v-else class="text-center">
+                                                                <button class="btn btn-outline-primary m-1" @click="versugerencia(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Agregar Sugerencia">+</button>
+                                                            </div>
                                                         </div>
                                                     </template>
                                                     <template slot="Estrategia" scope="alumno">
-                                                        <div class="text-center" v-if="alumno.entry.id_estrategia==1">
+                                                        <div class="text-center" v-if="alumno.entry.id_estrategia==2">
                                                             <button class="btn btn-outline-primary m-1" @click="verestrategia(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Editar Estrategia"><i class="far fa-edit"></i></button>
                                                         </div>
                                                         <div v-else class="text-center">
@@ -166,7 +177,7 @@
                             <div class="card-body" v-if="datos.length==0">
                                 <div class="row ">
                                     <div class="col-12 alert-info alert text-center">
-                                        <h5 class="font-weight-bold">No se han asignado alumnos al grupo</h5>
+                                        <h5 class="font-weight-bold">No se han asignado estudiantes al grupo</h5>
                                     </div>
                                 </div>
                             </div>
@@ -295,7 +306,7 @@
                                                             <div class="row pt-3">
                                                                 <div class="col-12">
                                                                     <div class="row">
-                                                                        <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">¿Te gusta la carrera elegida?</h5></div>
+                                                                        <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">¿Te gusta el programa educativo elegido?</h5></div>
                                                                     </div>
                                                                     <div class="row">
                                                                         <div class="col-4 graf" id="gg"></div>
@@ -319,7 +330,7 @@
                                                             <div class="row pt-3">
                                                                 <div class="col-12">
                                                                     <div class="row">
-                                                                        <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">¿Otra carrera iniciada?</h5></div>
+                                                                        <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">¿Otro programa educativo iniciado?</h5></div>
                                                                     </div>
                                                                     <div class="row">
                                                                         <div class="col-4 graf" id="og"></div>
@@ -657,6 +668,7 @@
         @include('profesor.modaleditar')
         @include('profesor.modalestrategia')
         @include('profesor.modalsugerencia')
+        @include('profesor.modalcanalizacion')
 
     </div>
     <script type="text/javascript">
@@ -694,6 +706,7 @@
                 rep: "pdf/reporte",
                 palu: 'pdf/alumno',
                 veralu: '/ver',
+                vercanalizacion: '/vercanaliza',
                 verestra: '/verestra',
                 versuge: '/versuge',
                 datos: [],
@@ -887,16 +900,22 @@
                 estra: {
                     planeacion: {
                         id_asigna_planeacion_tutor: "",
-                        id_estrategia: "",
+                        id_estrategia: 2,
                         estrategia: "",
-                        requiere_evidencia: "",
+                        requiere_evidencia:"",
+                        //id_asigna_planeacion_actividad: 3,
+                        //id_asigna_tutor:null,
+                        //id_sugerencia:null ,
+                        //sugerencia:"hola" ,
+                        //desc_actividad_cambio:null ,
+                        //objetivo_actividad_cambio:null,
                     },
                     cadena: null
                 },
                 suge: {
                     sugerencia: {
                         id_asigna_planeacion_tutor: "",
-                        id_sugerencia: "",
+                        id_sugerencia: 2,
                         desc_actividad_cambio: "",
                         objetivo_actividad_cambio : "",
                     },
@@ -908,6 +927,41 @@
                     },
                     cadena: null
                 },
+                canaliza: {
+                    valores: {
+                        grupo: "",
+                        nombre: "",
+                        apaterno: "",
+                        amaterno: "",
+                        carrera: "",
+                        descripcion: "",
+                        id_alumno: "",
+                        nombre_tut: "",
+                        id_personal: "",
+                    },
+                    canalizacion:{
+                        id_alumno:"",
+                        id_personal:"",
+                        fecha_canalizacion:"",
+                        fecha_canalizacion_anterior:"",
+                        fecha_canalizacion_siguiente:"",
+                        hora:"",
+                        aspectos_sociologicos1:"",
+                        aspectos_sociologicos2:"",
+                        aspectos_sociologicos3:"",
+                        aspectos_academicos1:"",
+                        aspectos_academicos2:"",
+                        aspectos_academicos3:"",
+                        observaciones:"",
+                        otros:"",
+                        notificacion:"",
+                        id_area:"",
+                        id_subarea:"",
+                        status:"",
+                    }
+                },
+                areas: [],
+                subareas: [],
                 fin: true,
                 titulosGrafica: ['General', 'Mujeres', 'Hombres'],
                 general: [
@@ -972,7 +1026,6 @@
                 }).catch(error => {
                     });
                 },
-
                 graficagenero: function () {
                     this.lista = false;
                     this.plan = false;
@@ -1000,7 +1053,7 @@
                                 enabled: false
                             },
                             title: {
-                                text: 'Alumnos por sexo'
+                                text: 'Estudiantes por sexo'
                             },
                             accessibility: {
                                 announceNewData: {
@@ -1017,6 +1070,7 @@
 
                             },
                             yAxis: {
+                                max:100,
                                 title: {
                                     text: 'Total',
                                     style: {
@@ -1092,6 +1146,7 @@
 
                                     },
                                     yAxis: {
+                                        max:100,
                                         title: {
                                             text: 'Total',
                                             style: {
@@ -1170,6 +1225,7 @@
 
                                     },
                                     yAxis: {
+                                        max:100,
                                         title: {
                                             text: 'Total',
                                             style: {
@@ -1247,6 +1303,7 @@
 
                                     },
                                     yAxis: {
+                                        max:100,
                                         title: {
                                             text: 'Total',
                                             style: {
@@ -1324,6 +1381,7 @@
 
                                     },
                                     yAxis: {
+                                        max:100,
                                         title: {
                                             text: 'Total',
                                             style: {
@@ -1401,6 +1459,7 @@
 
                                     },
                                     yAxis: {
+                                        max:100,
                                         title: {
                                             text: 'Total',
                                             style: {
@@ -1478,6 +1537,7 @@
 
                                     },
                                     yAxis: {
+                                        max:100,
                                         title: {
                                             text: 'Total',
                                             style: {
@@ -1773,14 +1833,37 @@
                     this.becas = response.data.becas;
                 });
                 },
+                vercanaliza: function (alumno) {
+                    console.log(alumno);
+                    $("#modalcanalizacion").modal("show");
+                    axios.post(this.vercanalizacion, {id: alumno.id_alumno}).then(response => {
+                        this.canaliza.valores.grupo = response.data.valores[0].grupo;
+                    this.canaliza.valores.nombre = response.data.valores[0].nombre;
+                    this.canaliza.valores.apaterno = response.data.valores[0].apaterno;
+                    this.canaliza.valores.amaterno = response.data.valores[0].amaterno;
+                    this.canaliza.valores.carrera = response.data.valores[0].carrera;
+                    this.canaliza.valores.descripcion = response.data.valores[0].descripcion;
+                    this.canaliza.valores.id_alumno = response.data.valores[0].id_alumno;
+                    this.canaliza.valores.nombre_tut = response.data.valores[0].nombre_tut;
+                    this.canaliza.valores.id_personal = response.data.valores[0].id_personal;
+                    /////areas
+                    this.areas= response.data.areas;
+                    this.subareas= response.data.subareas;
+                });
+                },
                 verestrategia: function (alumno) {
                     console.log(alumno);
                     $("#modalestrategia").modal("show");
                     axios.post(this.verestra, {id: alumno.id_asigna_planeacion_tutor}).then(response => {
                         this.estra.planeacion.id_asigna_planeacion_tutor = response.data.planeacion[0].id_asigna_planeacion_tutor;
-                    this.estra.planeacion.id_estrategia = response.data.planeacion[0].id_estrategia;
                     this.estra.planeacion.estrategia = response.data.planeacion[0].estrategia;
                     this.estra.planeacion.requiere_evidencia = response.data.planeacion[0].requiere_evidencia;
+                    //this.estra.planeacion.id_asigna_planeacion_actividad=response.data.planeacion[0].id_asigna_planeacion_actividad;
+                    //this.estra.planeacion.id_asigna_tutor=response.data.planeacion[0].id_asigna_tutor;
+                        //this.estra.planeacion.id_sugerencia=response.data.planeacion[0].id_sugerencia;
+                        //this.estra.planeacion.sugerencia=response.data.planeacion[0].sugerencia;
+                        //this.estra.planeacion.desc_actividad_cambio=response.data.planeacion[0].desc_actividad_cambio;
+                        //this.estra.planeacion.objetivo_actividad_cambio=response.data.planeacion[0].objetivo_actividad_cambio;
                 });
                 },
                 versugerencia: function (alumno) {
@@ -1788,7 +1871,7 @@
                     $("#modalsugerencia").modal("show");
                     axios.post(this.versuge, {id: alumno.id_asigna_planeacion_tutor,id_actividad: alumno.id_plan_actividad}).then(response => {
                         this.suge.sugerencia.id_asigna_planeacion_tutor = response.data.sugerencia[0].id_asigna_planeacion_tutor;
-                    this.suge.sugerencia.id_sugerencia= response.data.sugerencia[0].id_sugerencia;
+                    //this.suge.sugerencia.id_sugerencia= response.data.sugerencia[0].id_sugerencia;
                     this.suge.sugerencia.objetivo_actividad_cambio = response.data.sugerencia[0].objetivo_actividad_cambio;
                     this.suge.sugerencia.desc_actividad_cambio = response.data.sugerencia[0].desc_actividad_cambio;
                     this.suge.actividad.fi_actividad = response.data.actividad[0].fi_actividad;

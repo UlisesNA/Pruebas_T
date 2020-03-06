@@ -19,9 +19,20 @@ class Dep_desarrolloController extends Controller
 
     public function update(Request $request, $id)
     {
-        $plan = Plan_asigna_planeacion_actividad::find($id);
-        $plan->id_estado = $request->id_estado;
-        $plan->save();
+        $num=DB::select('SELECT plan_asigna_planeacion_actividad.id_asigna_planeacion_actividad
+        FROM plan_asigna_planeacion_actividad,plan_actividades
+        WHERE plan_actividades.deleted_at is null
+        AND plan_actividades.id_plan_actividad=plan_asigna_planeacion_actividad.id_plan_actividad
+        AND plan_asigna_planeacion_actividad.id_plan_actividad='.$id);
+        //dd($num);
+
+        $ic=count($num);
+        for ($i = 0; $i <$ic; $i++) {
+            $plan = Plan_asigna_planeacion_actividad::find($num[$i]->id_asigna_planeacion_actividad);
+            $plan->id_estado = $request->id_estado;
+            $plan->save();
+        }
+
         return redirect()->back();
     }
 }

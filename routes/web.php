@@ -111,6 +111,8 @@ Route::get('grupos','ProfesorController@grupos');
 Route::post('/alu','ProfesorController@alumnos');
 Route::Resource('/reporte','ReporteController');
 Route::Resource('/desercion','DesercionController');
+Route::post('/probabilidad','ProbabilidadController@alumnos');
+
 
 Route::get('/getAll','ProfesorController@getAll');
 Route::get('/setAlumnId','ProfesorController@setAlumnoId');
@@ -119,8 +121,9 @@ Route::get('/Alum','ViewAlumnosController@llenar');
 Route::get('/AlumActualizar','ViewAlumnosController@actualizar');
 
 Route::post('/ver','ViewAlumnosController@veralumno');
-Route::post('/verestra','ViewAlumnosController@verestrategia');
-Route::post('/versuge','ViewAlumnosController@versugerencia');
+Route::post('/verestra','ViewAlumnosController@verestrategia');////////////////////////////////si se usa
+Route::post('/versuge','ViewAlumnosController@versugerencia');//////////////////////////////////si se usa
+Route::post('/vercanaliza','ViewAlumnosController@veralumno1');/////////////////////////////////si se utiliza
 Route::post('/actualiza','ViewAlumnosController@actualiza');
 Route::post('/actualizaestra','ViewAlumnosController@actualizaestrategia');
 Route::post('/actualizasuge','ViewAlumnosController@actualizasugerencia');
@@ -142,6 +145,7 @@ Route::post('/creargrupo','AlumnosController@creargrupo');
 Route::post('/buscaalumnos','AlumnosController@BuscarAlumnosGrupo');
 Route::post('/asignaralumnos','AlumnosController@AsignarAlumnos');
 Route::post('/eliminaralumno','AlumnosController@EliminaAlumnoGrupo');
+Route::post('/eliminaralumnouno','AlumnosController@EliminaAlumnoGrupoUno');
 Route::get('/list', 'AlumnosController@getlist');
 Route::post('/revalida','AlumnosController@revalidacionSI');
 Route::post('/revalidano','AlumnosController@revalidacionNO');
@@ -152,12 +156,15 @@ Route::get('/getAlumno','PanelAlumnoController@datosPrincipales');
 Route::get('/inicioalu','PanelAlumnoController@principal');
 
 Route::get('/carrera','CoordinadorCarreraController@carreras');
-Route::get('/carrerasinst','CoordinadorCarreraController@carreras1');
+Route::get('/carrerasinst','Coordina_instController@carreras1');
 Route::get('/carreras', function () {
     return view('coordinadorc.index');
 });
 Route::get('/revision', function () {
     return view('coordina_inst.revision');
+});
+Route::get('/revisiondesarrollo', function () {
+    return view('dep_desarrollo.revisiondesarrollo');
 });
 Route::get('/estadisticas/carreras', function () {
     return view('coordina_inst.carreras');

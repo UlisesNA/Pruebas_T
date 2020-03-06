@@ -35,6 +35,16 @@ class Coordina_instController extends Controller
             ->get();
         return $carreras;
     }
+    public function carreras1()
+    {
+        $carreras=DB::table('gnral_carreras')
+            ->where('nombre','!=','INGLES')
+            ->where('nombre','!=','EDUCACIÓN CONTINUA')
+            ->where('nombre','!=','ACTIVIDADES CULTURALES Y DEPORTIVAS')
+            ->orderBy('id_carrera')
+            ->get();
+        return $carreras;
+    }
     /*public function store(Request $request)
     {
         $planea = array(

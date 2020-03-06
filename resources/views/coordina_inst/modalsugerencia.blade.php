@@ -16,13 +16,14 @@
                 {{ csrf_field() }}
                 <div class="modal-body">
                     <div class="form-group col-md-12">
+                        <!--<pre>@{{ suge }}</pre>-->
                             <div class="form-group col-md-12">
                                 <label>Decripción Actividad</label>
                                 <textarea class="form-control" rows="4" disabled v-model="suge.actividad.desc_actividad"></textarea>
                             </div>
                             <div class="form-group col-md-12">
                                 <label>Sugerencia de Cambio de Decripción Actividad</label>
-                                <textarea class="form-control" rows="4" name="desc_actividad_cambio" v-model="suge.sugerencia.desc_actividad_cambio"></textarea>
+                                <textarea class="form-control" rows="4" name="desc_actividad_cambio" disabled v-model="suge.sugerencia.desc_actividad_cambio"></textarea>
                             </div>
                             <div class="form-group col-md-12">
                                 <label>Objetivo</label>
@@ -30,17 +31,19 @@
                             </div>
                             <div class="form-group col-md-12">
                                 <label>Sugerencia de Cambio de Objetivo</label>
-                                <textarea class="form-control" rows="4" name="objetivo_actividad_cambio" v-model="suge.sugerencia.objetivo_actividad_cambio"></textarea>
-                                <input type="number" value="2" name="id_sugerencia">
+                                <textarea class="form-control" rows="4" name="objetivo_actividad_cambio" disabled v-model="suge.sugerencia.objetivo_actividad_cambio"></textarea>
                             </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <div>
-                        <button type="button" @click="actualizasuge()" class="btn btn-outline-primary">Guardar</button>
+                        <button type="button" @click="actualizasuge()" class="btn btn-outline-success">Aprobar</button>
                     </div>
                     <div>
-                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" @click="actualizasuge()" class="btn btn-outline-danger">Rechazar</button>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancelar</button>
                     </div>
                 </div>
             </form>

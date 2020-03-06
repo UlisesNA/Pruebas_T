@@ -30,11 +30,11 @@
                                                         <th>Fecha Fin</th>
                                                         <th>Nombre de Actividad</th>
                                                         <th>Objetivo</th>
-                                                        <th>Editar</th>
-                                                        <th>Quitar</th>
+                                                        <th>Acciones</th>
+                                                        <th>Acciones</th>
                                                     </tr>
                                                     @foreach($tabla1 as $dat)
-                                                        @if($dato->id_generacion==$dat->id_generacion)
+                                                        @if($dato->id_asigna_generacion==$dat->id_asigna_generacion)
                                                             <tr onmouseover="this.style.backgroundColor='#DBE7F3'" onmouseout="this.style.backgroundColor='white'">
                                                                 <td>{{$dat->fi_acti}}</td>
                                                                 <td>{{$dat->ff_acti}}</td>
@@ -149,7 +149,11 @@
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary" style="background: #0c7a0e" id="trg1">Guardar</button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <a class="btn" style="background: #e0e0e0">Cerrar</a>
+                        </button>
                     </div>
+
                     </form>
 
                 </div>
@@ -159,14 +163,12 @@
 
     <!-- editar actividad-->
     @foreach($tabla1 as $dato)
-        <div class="modal fade" id="myModal_{{$dato->id_plan_actividad}}_tar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+        <div class="modal fade" id="myModal_{{$dato->id_plan_actividad}}_tar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Editar Actividad</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+
                     </div>
                     <div class="modal-body">
                         <form action="{{route('actividades.update',$dato->id_plan_actividad)}}" method="post">
@@ -208,6 +210,9 @@
                             </div>
                             <div class="modal-footer">
                                 <div align="center"><button type="submit" class="btn" style="background: #e0e0e0">Enviar</button></div>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <a class="btn" style="background: #e0e0e0">Cerrar</a>
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -223,9 +228,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Ver Actividad</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+
                     </div>
                     <div class="modal-body">
                         <form  method="post">

@@ -135,7 +135,7 @@
                                             <div class="row pt-3">
                                                 <div class="col-12">
                                                     <div class="row">
-                                                        <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">¿Te gusta la carrera elegida?</h5></div>
+                                                        <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">¿Te gusta el programa educativo elegido?</h5></div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-4 graf" id="gg"></div>
@@ -159,7 +159,7 @@
                                             <div class="row pt-3">
                                                 <div class="col-12">
                                                     <div class="row">
-                                                        <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">¿Otra carrera iniciada?</h5></div>
+                                                        <div class="col-10 offset-1"><h5 class="alert alert-info text-center font-weight-bold">¿Otro programa iniciado?</h5></div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-4 graf" id="og"></div>
