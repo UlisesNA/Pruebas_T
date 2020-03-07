@@ -93,7 +93,7 @@ class ViewAlumnosController extends Controller
 
     public  function veralumno(Request $request)
     {
-        $data['grupo']=Exp_generale::where('id_alumno',$request->id)->get();
+        $data['generales']=Exp_generale::where('id_alumno',$request->id)->get();
         $data['academicos']=Exp_antecedentes_academico::where('id_alumno',$request->id)->get();
         $data['familiares']=Exp_datos_familiare::where('id_alumno',$request->id)->get();
         $data['estudio']=Exp_habitos_estudio::where('id_alumno',$request->id)->get();

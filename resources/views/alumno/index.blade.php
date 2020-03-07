@@ -55,14 +55,14 @@
                                                         </form>
                                                         <br>
                                                         <div class="row">
-                                                            <div class="col-md-6">
+                                                            <div class="col-md-4">
                                                                 <label class="form-checkbox" v-if="clicgrupo" v-if="alumno.length>1">
                                                                     <input type="checkbox" v-model="selectAllE" @click="seleccionar_todosE">
                                                                     <i class="form-icon text-primary"> Seleccionar todo</i>
                                                                 </label>
                                                             </div>
-                                                            <div class="col-md-6">
-                                                                <button  type="button" @click="EliminaAlumnoE()" class="btn btn-outline-danger" v-if="alumno.length>0 && seleccionadosE.length>1">Eliminar</button>
+                                                            <div class="col-md-1">
+                                                                <button  type="button" @click="EliminaAlumnoE()" class="btn btn-outline-danger" v-if="alumno.length>0 && seleccionadosE.length>0">Eliminar</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -73,7 +73,7 @@
                                                 <div class="row" v-if="(alumno.length>0)">
                                                     <div class="col-12">
                                                         <div class="tableFixHead" id="LISTA">
-                                                            <data-table class=" col-12 table table-sm" :data="alumno" :columns-to-display="columnasA" :filter-key="searchQuery">
+                                                            <data-table class=" col-12 table table-sm" :data="alumno" :columns-to-display="gridColumns" :filter-key="searchQuery">
                                                                 <template v-if="clicgrupo" slot=" " scope="alu">
                                                                     <input type="checkbox" :value="alu.entry.id_alumno" v-model="seleccionadosE">
                                                                     <i class="form-icon"></i>
@@ -86,15 +86,11 @@
                                                                 </template>
                                                                 <template slot="Acción" scope="alu">
                                                                     <div v-if="clicgrupo"><button class="btn btn-outline-danger" @click="ConfirmaAlumno(alu.entry)"><i class="fas fa-times" data-toggle="tooltip" data-placement="bottom" title="Eliminar"></i></button></div>
-                                                                    <div v-if="clicgeneracion">
-                                                                        <a v-if="alu.entry.revalidacion==0" @click="confirmaRevalidacion(alu.entry)" class="pt-2 cursorM"><i class="fas fa-toggle-off text-secondary h1" data-toggle="tooltip" data-placement="bottom" title="Desactivado"></i></a>
-                                                                        <a v-if="alu.entry.revalidacion==1" @click="quitaRevalidacion(alu.entry)" class="pt-2 cursorM"><i class="fas fa-toggle-on text-secondary h1" data-toggle="tooltip" data-placement="bottom" title="Activo"></i></a>
-                                                                    </div>
                                                                 </template>
-                                                               <!-- <template v-if="clicgeneracion" slot="Revalidación" scope="alu">
+                                                               <template v-if="clicgeneracion" slot="Revalidación" scope="alu">
                                                                     <a v-if="alu.entry.revalidacion==0" @click="confirmaRevalidacion(alu.entry)" class="pt-2 cursorM"><i class="fas fa-toggle-off text-secondary h1" data-toggle="tooltip" data-placement="bottom" title="Desactivado"></i></a>
                                                                     <a v-if="alu.entry.revalidacion==1" @click="quitaRevalidacion(alu.entry)" class="pt-2 cursorM"><i class="fas fa-toggle-on text-secondary h1" data-toggle="tooltip" data-placement="bottom" title="Activo"></i></a>
-                                                                </template>-->
+                                                                </template>
                                                                 <template slot="nodata">
                                                                     <div class=" alert font-weight-bold alert-danger text-center">Ningún dato encontrado</div>
                                                                 </template>
@@ -105,7 +101,7 @@
                                             </div>
                                             <div class="row pt-3" v-if="alumno.length==0 && clicgrupo==true">
                                                 <div class="col-12 border-danger">
-                                                    <h5 class="font-weight-bold text-center alert alert-danger">No existen estudiantess asignados al grupo</h5>
+                                                    <h5 class="font-weight-bold text-center alert alert-danger">No existen estudiantes asignados al grupo</h5>
                                                 </div>
                                             </div>
                                         </div>
@@ -131,19 +127,17 @@
                 this.getGeneracion();
             },
             data:{
-                gene:'/generaciones',
-                alugeneracion:'/alumnosgeneracion',
-                alugrupo:'/alumnosgrupo',
-                grup:'/creargrupo',
-                borra:'/borragrupo',
-                buscar:'/buscaalumnos',
-                asignar:'/asignaralumnos',
-                eliminar:'/eliminaralumno',
-                eliminarU:'/eliminaralumnouno',
+                gene:'/tutorias/generaciones',
+                alugeneracion:'/tutorias/alumnosgeneracion',
+                alugrupo:'/tutorias/alumnosgrupo',
+                grup:'/tutorias/creargrupo',
+                buscar:'/tutorias/buscaalumnos',
+                asignar:'/tutorias/asignaralumnos',
+                eliminar:'/tutorias/eliminaralumno',
+                eliminarU:'/tutorias/eliminaralumnouno',
                 generacion:[],
                 alumno:[],
                 alumnosgeneracion:[],
-               // alumnosgeneracionE:[],
                 idgeneracion:null,
                 nomg:null,
                 nomgen:null,
@@ -160,9 +154,8 @@
                 idalumno:null,
                 searchQuery: '',
                 searchQuery1: '',
-                columnasA:[' ','Cuenta','Nombre','Acción'],
-                columnasM:[' ','Cuenta','Nombre'],
                 gridColumns: [],
+                columnasM:[' ','Cuenta','Nombre'],
                 id_revalida:null,
             },
             methods:{
@@ -176,7 +169,7 @@
                     this.searchQuery1='';
                     this.idasignageneracion=grupo;
                     this.clicgrupo=true;
-                    this.gridColumns= ['Cuenta','Nombre','Acción'];
+                    this.gridColumns= [' ','Cuenta','Nombre','Acción'];
                     this.clicgeneracion=false;
                     axios.post(this.alugrupo,{generacion:grupo}).then(response=>{
                         this.alumno=response.data;
@@ -187,7 +180,7 @@
                     this.searchQuery='';
                     this.searchQuery1='';
                     this.clicgrupo=false;
-                    this.gridColumns= ['Cuenta','Nombre','Revalidación'];
+                    this.gridColumns= [' ','Cuenta','Nombre','Revalidación'];
                     this.clicgeneracion=true;
                     axios.post(this.alugeneracion,{generacion:genera}).then(response=>{
                         this.alumno=response.data;
@@ -218,7 +211,7 @@
                     $('#EliminarGrupo').modal('show');
                 },
                 borrarGrupo:function () {
-                    var url = '/alumnos/'+this.idasignagen;
+                    var url = '/tutorias/alumnos/'+this.idasignagen;
                     axios.delete(url).then(response => {
                         this.getGeneracion();
                         this.alumno=[];
@@ -289,7 +282,7 @@
                     $('#confirmarevalidacion').modal('show');
                 },
                 revalidaSI:function(){
-                    axios.post('/revalida',{id_alumno:this.id_revalida}).then(response=>{
+                    axios.post('/tutorias/revalida',{id_alumno:this.id_revalida}).then(response=>{
                         $('#confirmarevalidacion').modal('hide');
                         this.getAlumnosGeneracion(response.data);
                         this.popToast('Asignación exitosa');
@@ -301,7 +294,7 @@
                     $('#quitarevalidacion').modal('show');
                 },
                 revalidaNO:function(){
-                    axios.post('/revalidano',{id_alumno:this.id_revalida}).then(response=>{
+                    axios.post('/tutorias/revalidano',{id_alumno:this.id_revalida}).then(response=>{
                         $('#quitarevalidacion').modal('hide');
                         this.getAlumnosGeneracion(response.data);
                         this.popToast('Se ha eliminado la revalidación correctamente');

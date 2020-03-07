@@ -10,7 +10,7 @@
                             <div class="row">
                                 <div class="col-10 align-middle"><h5>{{Session::get('nombre')}}</h5></div>
                                 <div class="col-2" v-if="datos==1">
-                                    <a href="{{route('pdf_all')}}" target="_blank" class="btn btn-danger text-white float-right"> <i class="fas fa-file-pdf"></i></a>
+                                    <a href="{{url('/tutorias/pdf/all')}}" target="_blank" class="btn btn-danger text-white float-right"> <i class="fas fa-file-pdf"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -34,7 +34,7 @@
             this.getDatos();
         },
         data: {
-            rut: "/panel",
+            rut: "/tutorias/panel",
             datos:[],
         },
         methods: {

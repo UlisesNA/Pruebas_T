@@ -55,7 +55,7 @@ class LoginController extends Controller
                  Session::put('generacion_asignada','Generación '.$tutorasignado[0]->generacion." Grupo ".$tutorasignado[0]->grupo);
                  Session::put('tutor_asignado',$tutorasignado[0]->nombre);
                  //dd($tutorasignado);
-                 return redirect('inicioalu');
+                 return redirect('/tutorias/inicioalu');
              }
              else{
                  return "No se ha asignado un tutor";

@@ -27,7 +27,7 @@ Route::Resource('/dep_sexto','Dep_desarrollo_seController');
 Route::Resource('/dep_septimo','Dep_desarrollo_sepController');
 Route::Resource('/dep_octavo','Dep_desarrollo_oController');
 
-Route::Resource('/jefe','JefeController');
+
 
 Route::resource("canalizacion","Canaliza_tutorController");
 Route::resource("canalizados","Canalizados_tutorController");
@@ -45,159 +45,192 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::Resource('/actividad','actividades_alumnoController');
 Route::Resource('/calendario','calendario_eventosController');
 
-Route::get('/ftp', ['as ' => 'ftp', 'uses' => 'FtpController@index']);
-Route::post('/ftp/Up', 'FtpController@upload');
+
+/////CONTROLADORES EXPEDIENTE TUTORIAS OK!
+///
+Route::group(['prefix'=>'tutorias'],function () {
+    ///RUTAS JEFE DE DIV
+    Route::Resource('jefe','JefeController');
+    Route::Resource('jefevista','JefeVistaController');
+            ///TUTORES
+    Route::Resource('asignatutores', 'AsignaTutorController');
+    Route::get('asignatutores/{id}/destroy', [
+        'uses' => 'AsignaTutorController@destroy',
+        'as' => 'asignatutores.destroy'
+    ]);
+    Route::Resource('asignatuvista','AsignaTuController');
+            ///COORDINADOR
+    Route::Resource('asignacoordinador','AsignaCoordinadorController');
+    Route::Resource('asignacovista','AsignaCoController');
+            ///ALUMNOS
+    Route::Resource('alumnos','AlumnosController');
+    Route::get('generaciones','AlumnosController@generaciones');
+    Route::post('alumnosgeneracion','AlumnosController@alumnosgeneracion');
+    Route::post('alumnosgrupo','AlumnosController@alumnosgrupo');
+    Route::post('creargrupo','AlumnosController@creargrupo');
+    Route::post('buscaalumnos','AlumnosController@BuscarAlumnosGrupo');
+    Route::post('asignaralumnos','AlumnosController@AsignarAlumnos');
+    Route::post('eliminaralumno','AlumnosController@EliminaAlumnoGrupo');
+    Route::post('eliminaralumnouno','AlumnosController@EliminaAlumnoGrupoUno');
+    Route::post('revalida','AlumnosController@revalidacionSI');
+    Route::post('revalidano','AlumnosController@revalidacionNO');
+
+    ///TUTOR
+    Route::Resource('tutorvista','TutorVistaController');
+    Route::post('profesor','ProfesorController@alumnos');
+    Route::post('cambio','ProfesorController@cambio');
+    Route::post('ver','ViewAlumnosController@veralumno');
+    Route::post("pdf/alumno","PdfController@pdf_alumno")->name("pdf_alumno");
+    Route::post("pdf/lista","PdfController@pdf_lista")->name("pdf_lista");
+    Route::get('grupos','ProfesorController@grupos');
+
+
+    ///COORDINADOR DE CARRERA
+    Route::get('carreras', function () {
+        return view('coordinadorc.index');
+    });
+    Route::get('carrera','CoordinadorCarreraController@carreras');
+    Route::post('generacionca','CoordinadorCarreraController@generaciones');
+
+    ///COORDINADOR INSTITUCIONAL
+    Route::get('tes/carreras','Coordina_instController@carreras');
+    Route::get('estadisticas/carreras', function () {
+        return view('coordina_inst.carreras');
+    });
+
+    ///ALUMNO
+    Route::get('inicioalu','PanelAlumnoController@principal');
+    Route::Resource('panel','PanelAlumnoController');
+    Route::get('AlumActualizar','ViewAlumnosController@actualizar');
+    Route::get('getDatos','PanelAlumnoController@datosAlu');
+    Route::post('actualiza','ViewAlumnosController@actualiza');
+    Route::get("pdf/all","PdfController@pdf_all")->name("pdf_all");
+    Route::get('Alum','ViewAlumnosController@llenar');
+    Route::get('getAlumno','PanelAlumnoController@datosPrincipales');
+    Route::post('guardar','ViewAlumnosController@store');
+    Route::post('imagen','ViewAlumnosController@guardarImagen');
+    ///GRAFICAS
+    ///GRAFICAS TUTOR
+    Route::group(['prefix'=>'graphics'],function (){
+        Route::post('genero', 'GraficasController@genero');
+        Route::post('academico', 'GraficasController@academico');
+        Route::post('generales', 'GraficasController@generales');
+        Route::post('familiares', 'GraficasController@familiares');
+        Route::post('habitos', 'GraficasController@habitos');
+        Route::post('salud', 'GraficasController@salud');
+        Route::post('area', 'GraficasController@area');
+    });
+    ///GRAFICAS CARRERA
+    Route::group(['prefix'=>'grafcarrera'],function (){
+        Route::post('genero', 'GraficasCarreraController@genero');
+        Route::post('academico', 'GraficasCarreraController@academico');
+        Route::post('generales', 'GraficasCarreraController@generales');
+        Route::post('familiares', 'GraficasCarreraController@familiares');
+        Route::post('habitos', 'GraficasCarreraController@habitos');
+        Route::post('salud', 'GraficasCarreraController@salud');
+        Route::post('area', 'GraficasCarreraController@area');
+    });
+
+    ///GRAFICAS GENERACION
+    Route::group(['prefix'=>'grafgeneracion'],function (){
+        Route::post('genero', 'GraficasGeneracionController@genero');
+        Route::post('academico', 'GraficasGeneracionController@academico');
+        Route::post('generales', 'GraficasGeneracionController@generales');
+        Route::post('familiares', 'GraficasGeneracionController@familiares');
+        Route::post('habitos', 'GraficasGeneracionController@habitos');
+        Route::post('salud', 'GraficasGeneracionController@salud');
+        Route::post('area', 'GraficasGeneracionController@area');
+    });
+    ///GRAFICAS INSTITUCIONALES
+    Route::group(['prefix'=>'grafinstitut'],function (){
+        Route::get('genero', 'GraficasInstitucionController@genero');
+        Route::get('academico', 'GraficasInstitucionController@academico');
+        Route::get('generales', 'GraficasInstitucionController@generales');
+        Route::get('familiares', 'GraficasInstitucionController@familiares');
+        Route::get('habitos', 'GraficasInstitucionController@habitos');
+        Route::get('salud', 'GraficasInstitucionController@salud');
+        Route::get('area', 'GraficasInstitucionController@area');
+    });
+
+    ///REPORTE GRAFICAS
+    Route::post("pdf/reporte","ReporteGController@pdf_reporte")->name("pdf_reporte");
+});
 
 
 
-/////CONTROLADORES EXPEDIENTE
 
-Route::Resource('/jefevista','JefeVistaController');
+
+
+
+
+////SIN CLASIFICAR
+
 Route::Resource('/desarrollovista','DesarrolloVistaController');
-Route::Resource('/asignacovista','AsignaCoController');
 Route::Resource('/asignacorgenvista','AsignaCorGenController');
-Route::Resource('/asignatuvista','AsignaTuController');
-
-Route::Resource('/tutorvista','TutorVistaController');
-
-Route::Resource('/jefe','JefeController');
 Route::Resource('/desarrollo','DesarrolloController');
-Route::post('/jefeAct','JefeController@UpdateCoo');
-Route::post('/jefeActTuto','JefeController@UpdateTuto');
 
 
-Route::group(['prefix'=>'graphics'],function (){
-    Route::post('genero', 'GraficasController@genero');
-    Route::post('academico', 'GraficasController@academico');
-    Route::post('generales', 'GraficasController@generales');
-    Route::post('familiares', 'GraficasController@familiares');
-    Route::post('habitos', 'GraficasController@habitos');
-    Route::post('salud', 'GraficasController@salud');
-    Route::post('area', 'GraficasController@area');
-});
-Route::group(['prefix'=>'grafgeneracion'],function (){
-    Route::post('genero', 'GraficasGeneracionController@genero');
-    Route::post('academico', 'GraficasGeneracionController@academico');
-    Route::post('generales', 'GraficasGeneracionController@generales');
-    Route::post('familiares', 'GraficasGeneracionController@familiares');
-    Route::post('habitos', 'GraficasGeneracionController@habitos');
-    Route::post('salud', 'GraficasGeneracionController@salud');
-    Route::post('area', 'GraficasGeneracionController@area');
-});
-Route::group(['prefix'=>'grafcarrera'],function (){
-    Route::post('genero', 'GraficasCarreraController@genero');
-    Route::post('academico', 'GraficasCarreraController@academico');
-    Route::post('generales', 'GraficasCarreraController@generales');
-    Route::post('familiares', 'GraficasCarreraController@familiares');
-    Route::post('habitos', 'GraficasCarreraController@habitos');
-    Route::post('salud', 'GraficasCarreraController@salud');
-    Route::post('area', 'GraficasCarreraController@area');
-});
-Route::group(['prefix'=>'grafinstitut'],function (){
-    Route::get('genero', 'GraficasInstitucionController@genero');
-    Route::get('academico', 'GraficasInstitucionController@academico');
-    Route::get('generales', 'GraficasInstitucionController@generales');
-    Route::get('familiares', 'GraficasInstitucionController@familiares');
-    Route::get('habitos', 'GraficasInstitucionController@habitos');
-    Route::get('salud', 'GraficasInstitucionController@salud');
-    Route::get('area', 'GraficasInstitucionController@area');
-});
-
-
-Route::post('/profesor','ProfesorController@alumnos');
 Route::post('/semestre','ProfesorController@planeacion');
-Route::post('/cambio','ProfesorController@cambio');
-Route::get('grupos','ProfesorController@grupos');
-Route::post('/alu','ProfesorController@alumnos');
+
 Route::Resource('/reporte','ReporteController');
 Route::Resource('/desercion','DesercionController');
 Route::post('/probabilidad','ProbabilidadController@alumnos');
 
 
-Route::get('/getAll','ProfesorController@getAll');
-Route::get('/setAlumnId','ProfesorController@setAlumnoId');
-
-Route::get('/Alum','ViewAlumnosController@llenar');
-Route::get('/AlumActualizar','ViewAlumnosController@actualizar');
-
-Route::post('/ver','ViewAlumnosController@veralumno');
 Route::post('/verestra','ViewAlumnosController@verestrategia');////////////////////////////////si se usa
 Route::post('/versuge','ViewAlumnosController@versugerencia');//////////////////////////////////si se usa
 Route::post('/vercanaliza','ViewAlumnosController@veralumno1');/////////////////////////////////si se utiliza
-Route::post('/actualiza','ViewAlumnosController@actualiza');
+
 Route::post('/actualizaestra','ViewAlumnosController@actualizaestrategia');
 Route::post('/actualizasuge','ViewAlumnosController@actualizasugerencia');
-Route::post('/guardar','ViewAlumnosController@store');
-Route::post('/imagen','ViewAlumnosController@guardarImagen');
 
 
-Route::post('/UpdateAlum','ViewAlumnosController@updateExp');
 Route::post('/cerrar','ViewAlumnosController@cerrar');
-Route::post('/UpdateA','TutorExpedienteController@mostrar');
 
-Route::Resource('/alumnos','AlumnosController');
-Route::get('/generaciones','AlumnosController@generaciones');
-Route::post('/alumnosgeneracion','AlumnosController@alumnosgeneracion');
-Route::post('/alumnosgrupo','AlumnosController@alumnosgrupo');
+
+
+
 Route::post('/planeacioninst','AlumnosController@planeacion');
 
-Route::post('/creargrupo','AlumnosController@creargrupo');
-Route::post('/buscaalumnos','AlumnosController@BuscarAlumnosGrupo');
-Route::post('/asignaralumnos','AlumnosController@AsignarAlumnos');
-Route::post('/eliminaralumno','AlumnosController@EliminaAlumnoGrupo');
-Route::post('/eliminaralumnouno','AlumnosController@EliminaAlumnoGrupoUno');
-Route::get('/list', 'AlumnosController@getlist');
-Route::post('/revalida','AlumnosController@revalidacionSI');
-Route::post('/revalidano','AlumnosController@revalidacionNO');
 
-Route::Resource('/panel','PanelAlumnoController');
-Route::get('/getDatos','PanelAlumnoController@datosAlu');
-Route::get('/getAlumno','PanelAlumnoController@datosPrincipales');
-Route::get('/inicioalu','PanelAlumnoController@principal');
 
-Route::get('/carrera','CoordinadorCarreraController@carreras');
+
+
+
+
+
+
+
 Route::get('/carrerasinst','Coordina_instController@carreras1');
-Route::get('/carreras', function () {
-    return view('coordinadorc.index');
-});
+
+
 Route::get('/revision', function () {
     return view('coordina_inst.revision');
 });
 Route::get('/revisiondesarrollo', function () {
     return view('dep_desarrollo.revisiondesarrollo');
 });
-Route::get('/estadisticas/carreras', function () {
-    return view('coordina_inst.carreras');
-});
-Route::get('/e', function () {
-    return view('profesor.p');
-});
-Route::post('/generacionca','CoordinadorCarreraController@generaciones');
+
+
+
 Route::post('/generacion','CoordinadorCarrController@generaciones');
 
 
-Route::Resource('/graficasCoordinador','GraficasCoordinadorController');
-Route::get('/getCarrCoo','GraficasCoordinadorController@getCarrCoo');
-Route::get('/getAG','GraficasCoordinadorController@getAlCoo');
 
-Route::get('/getG', 'AsignaTutorController@getAllGrupoAct');
-Route::Resource('/asignacoordinador','AsignaCoordinadorController');
+
 Route::Resource('/asignacoordinadorgeneral','AsignaCoordinadorGeneralController');
 Route::Resource('/planeacioncoorgen','Coordina_instController');
-Route::get('/tes/carreras','Coordina_instController@carreras');
+
 Route::Resource('/planeaciondesarrollo','Dep_desarrolloController');
 Route::Resource('/planeaciontutor','Planea_tutorController');
 Route::get('/repo','AsignaCoordinadorController@repo');
 
-Route::Resource('asignatutores','AsignaTutorController');
-Route::get('asignatutores/{id}/destroy',[
-    'uses' => 'AsignaTutorController@destroy',
-    'as' => 'asignatutores.destroy'
-]);
-Route::get("pdf/all","PdfController@pdf_all")->name("pdf_all");
-Route::post("pdf/lista","PdfController@pdf_lista")->name("pdf_lista");
-Route::post("pdf/alumno","PdfController@pdf_alumno")->name("pdf_alumno");
-Route::post("pdf/reporte","ReporteGController@pdf_reporte")->name("pdf_reporte");
+
+
+
+
+
+
 Route::post("pdf/carreraco","ReporteGController@pdf_carreraco")->name("pdf/carreraco");
 Route::get("reporte_pdf","ReportePDFController@reporte_pdf")->name("reporte_pdf");
 Route::get("reporte_pdf2","ReportePDFController@reporte_pdf2")->name("reporte_pdf2");

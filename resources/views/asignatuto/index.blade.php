@@ -86,7 +86,7 @@
                 this.getDatos();
             },
             data:{
-                tut:"{{url("/asignatutores")}}",
+                tut:"{{url("/tutorias/asignatutores")}}",
                 selected:null,
                 datos:[],
                 grup:null,
@@ -158,5 +158,5 @@
         });
     </script>
 @endsection
-<!--script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script-->
-<script src="{{asset('js/jquery.js')}}"></script>
+
+

@@ -1078,8 +1078,8 @@
                 this.getDatos();
             },
             data: {
-                rut: "/getAlumno",
-                ruta:'/guardar',
+                rut: "/tutorias/getAlumno",
+                ruta:'/tutorias/guardar',
                 datos:[],
                 periodos:[],
                 semestres:[],
@@ -1505,11 +1505,11 @@
                         formData.append('nombre',this.alu.generales.no_cuenta);
                         formData.append('ext',this.alu.generales.foto);
                         //console.log(formData);
-                        axios.post('/imagen',formData).then(response=>{
+                        axios.post('/tutorias/imagen',formData).then(response=>{
                             //window.location='inicioalu';
                         }).catch(error=>{  });
                         axios.post(this.ruta,{alu:this.alu}).then(response=>{
-                            window.location='inicioalu';
+                            window.location='/tutorias/inicioalu';
                         }).catch(error=>{  });
                     }
                     else

@@ -84,7 +84,7 @@
                     <!-- Authentication Links -->
                     @if (Session::has('tutor_asignado'))
                         <li class="nav-item">
-                            <a class="nav-link" href="/inicioalu">Expediente</a>
+                            <a class="nav-link" href="/tutorias/inicioalu">Expediente</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" href=/actividad>Actividades</a>
@@ -110,20 +110,7 @@
                             </div>
                         </li>
                     @else
-                        @if (Session::get('desarrollo'))
-                            <div class="dropdown">
-                                <a class="dropdown-toggle btn border-0" type="button" id="MenuCoordinador" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Desarrollo Académico
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="MenuDesarrollo">
-                                    <a class="dropdown-item" href="/desarrollovista">Coordinador Institucional</a>
-                                    <a class="dropdown-item" href="/asignacorgenvista">Asigna Coordinador Institucional</a>
-                                    <a class="dropdown-item" href="/planeaciondesarrollo">Planeación</a>
-                                    <a class="dropdown-item" href="/revisiondesarrollo">Ver Sugerencias</a>
-                                    <a class="dropdown-item" href="/estadisticas/carreras">Programas educativos</a>
-                                </div>
-                            </div>
-                        @endif
+
                         @guest
                             <li class="nav-item">
                                 <a class="nav-link text-dark" href="{{ route('login') }}">{{ __('Iniciar Sesión') }}</a>
@@ -140,10 +127,10 @@
                                             Tutorías
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="MenuJefe">
-                                            <a class="dropdown-item" href="/jefevista">Tutores y Coordinador</a>
-                                            <a class="dropdown-item" href="/asignacovista">Asigna Coordinador</a>
-                                            <a class="dropdown-item" href="/asignatuvista">Asigna Tutor</a>
-                                            <a class="dropdown-item" href="/alumnos">Estudiantes</a>
+                                            <a class="dropdown-item" href="/tutorias/jefevista">Tutores y Coordinador</a>
+                                            <a class="dropdown-item" href="/tutorias/asignacovista">Asigna Coordinador</a>
+                                            <a class="dropdown-item" href="/tutorias/asignatuvista">Asigna Tutor</a>
+                                            <a class="dropdown-item" href="/tutorias/alumnos">Estudiantes</a>
                                         </div>
                                     </div>
                                 @endif
@@ -153,7 +140,7 @@
                                             Tutorías
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="MenuTutor">
-                                            <a class="dropdown-item" href="/tutorvista">{{\Illuminate\Support\Facades\Session::get('tutor')>1?'Grupos Tutorías':'Grupo Tutorías'}}</a>
+                                            <a class="dropdown-item" href="/tutorias/tutorvista">{{\Illuminate\Support\Facades\Session::get('tutor')>1?'Grupos Tutorías':'Grupo Tutorías'}}</a>
                                             <!--<a class="dropdown-item" href="/eventos">Eventos</a>-->
                                             <a class="dropdown-item" href="/desercion">Deserción</a>
                                             <a class="dropdown-item" href="/reporte">Reporte</a>
@@ -168,7 +155,7 @@
                                                 Coordinador
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="MenuCoordinador">
-                                                <a class="dropdown-item" href="/carreras">{{ \Illuminate\Support\Facades\Session::get('coordinador')>1 ? 'Programas educativos':'Programa educativo' }}</a>
+                                                <a class="dropdown-item" href="/tutorias/carreras">{{ \Illuminate\Support\Facades\Session::get('coordinador')>1 ? 'Programas educativos':'Programa educativo' }}</a>
                                                 <!--<a class="dropdown-item" href="/coordina_carrera">Planeación</a>-->
                                             </div>
                                         </div>
@@ -181,7 +168,21 @@
                                             <div class="dropdown-menu" aria-labelledby="MenuCoordinadorGeneral">
                                                 <a class="dropdown-item" href="/planeacioncoorgen">Planeación</a>
                                                 <a class="dropdown-item" href="/revision">Revisar Sugerencias</a>
-                                                <a class="dropdown-item" href="/estadisticas/carreras">Programas educativos</a>
+                                                <a class="dropdown-item" href="/tutorias/estadisticas/carreras">Programas educativos</a>
+                                            </div>
+                                        </div>
+                                    @endif
+                                    @if (Session::get('desarrollo'))
+                                        <div class="dropdown">
+                                            <a class="dropdown-toggle btn border-0" type="button" id="MenuCoordinador" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Desarrollo Académico
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="MenuDesarrollo">
+                                                <a class="dropdown-item" href="/desarrollovista">Coordinador Institucional</a>
+                                                <a class="dropdown-item" href="/asignacorgenvista">Asigna Coordinador Institucional</a>
+                                                <a class="dropdown-item" href="/planeaciondesarrollo">Planeación</a>
+                                                <a class="dropdown-item" href="/revisiondesarrollo">Ver Sugerencias</a>
+                                                <a class="dropdown-item" href="/tutorias/estadisticas/carreras">Programas educativos</a>
                                             </div>
                                         </div>
                                     @endif

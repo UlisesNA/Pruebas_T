@@ -79,7 +79,7 @@
                 this.getDatos();
             },
             data:{
-                jefe:"{{url("/jefe")}}",
+                jefe:"{{url("/tutorias/jefe")}}",
                 datos:[],
                 id_tu:null,
                 id_c:null
@@ -91,7 +91,7 @@
                     }).catch(error=>{ });
                 },
                 deleteT:function () {
-                    var url = '/asignatutores/' + this.id_tu;
+                    var url = '/tutorias/asignatutores/' + this.id_tu;
                     //alert(id);
                     axios.delete(url).then(response => {
                         this.getDatos();
@@ -103,7 +103,7 @@
                     $('#Eliminar').modal('show');
                 },
                 deleteC:function () {
-                    var url = '/asignacoordinador/' + this.id_co;
+                    var url = '/tutorias/asignacoordinador/' + this.id_co;
                     axios.delete(url).then(response => {
                         this.getDatos();
                     });

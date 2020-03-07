@@ -126,14 +126,6 @@ AND exp_asigna_generacion.id_asigna_generacion='.$request->generacion);
         return $alumnos;
 
     }
-    public function getlist(Request $id)
-    {
-
-        $alumno=Alumno::lista_grupo($id);
-        //dd($alumno);
-        return $alumno;
-        //return 'dsads';
-    }
 
     public function creargrupo(Request $request)
     {

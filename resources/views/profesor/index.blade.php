@@ -22,7 +22,7 @@
                 <div class="row">
                     <div class="col-12 pb-3">
                         <i class="fas fa-chevron-right h5"></i>
-                        <a href="{{url('/tutorvista')}}" class="font-weight-bold h6 pb-1">{{\Illuminate\Support\Facades\Session::get('tutor')>1?'PROGRAMAS EDUCATIVOS':'PROGRAMA EDUCATIVO'}}</a>
+                        <a href="{{url('/tutorias/tutorvista')}}" class="font-weight-bold h6 pb-1">{{\Illuminate\Support\Facades\Session::get('tutor')>1?'PROGRAMAS EDUCATIVOS':'PROGRAMA EDUCATIVO'}}</a>
                         <i class="fas fa-chevron-right h5"></i>
                         <a class="text-primary h6" v-if="lista==true">LISTA</a>
                         <a class="text-primary h6" v-if="graficas==true">ESTADÍSTICAS</a>
@@ -687,25 +687,25 @@
                 searchQuery: '',
                 gridColumns: ['Cuenta', 'Nombre', 'Acciones', 'Expediente', 'Canalizacion'],
                 gridColumns1: ['Fecha Inicio', 'Fecha Fin', 'Decripción Actividad', 'Objetivo', 'Sugerencia','Estrategia'],
-                rut: "/profesor",
-                rutaa: "/semestre",
-                grup: "/grupos",
+                rut: "/tutorias/profesor",
+                rutaa: "semestre",
+                grup: "/tutorias/grupos",
                 act: '/actualiza',
                 actestra: '/actualizaestra',
                 actsuge: '/actualizasuge',
-                cambios: '/cambio',
-                academico: 'graphics/academico',
-                rutgen: "/graphics/genero",
-                generales: "/graphics/generales",
-                familiares: "/graphics/familiares",
-                habitos: "/graphics/habitos",
-                salud: "/graphics/salud",
-                area: "/graphics/area",
-                pd: "pdf/lista",
+                cambios: '/tutorias/cambio',
+                academico: '/tutorias/graphics/academico',
+                rutgen: "/tutorias/graphics/genero",
+                generales: "/tutorias/graphics/generales",
+                familiares: "/tutorias/graphics/familiares",
+                habitos: "/tutorias/graphics/habitos",
+                salud: "/tutorias/graphics/salud",
+                area: "/tutorias/graphics/area",
+                pd: "/tutorias/pdf/lista",
                 pl: "pdf/planeacion",
-                rep: "pdf/reporte",
-                palu: 'pdf/alumno',
-                veralu: '/ver',
+                rep: "/tutorias/pdf/reporte",
+                palu: '/tutorias/pdf/alumno',
+                veralu: '/tutorias/ver',
                 vercanalizacion: '/vercanaliza',
                 verestra: '/verestra',
                 versuge: '/versuge',
@@ -1679,7 +1679,7 @@
                 });
                 },
                 ver: function (alumno) {
-                    console.log(alumno);
+                    ///console.log(alumno);
                     $("#modaleditar").modal("show");
                     axios.post(this.veralu, {id: alumno.id_alumno}).then(response => {
                         this.alu.generales.id_exp_general = response.data.generales[0].id_exp_general;

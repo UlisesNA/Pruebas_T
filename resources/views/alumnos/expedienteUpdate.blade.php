@@ -1034,8 +1034,8 @@
                 this.getDatos();
             },
             data: {
-                rut: "/getDatos",
-                act:'/actualiza',
+                rut: "/tutorias/getDatos",
+                act:'/tutorias/actualiza',
                 datos:[],
                 periodos:[],
                 semestres:[],
@@ -1419,7 +1419,7 @@
                                 this.popToast();
                                 if(this.mensaje==true)
                                 {
-                                    window.location='inicioalu';
+                                    window.location='/tutorias/inicioalu';
                                 }
                             });
                         }
@@ -1437,7 +1437,7 @@
                                 this.popToast();
                                 if(this.mensaje==true)
                                 {
-                                    window.location='inicioalu';
+                                    window.location='/tutorias/inicioalu';
                                 }
                             });
                         }

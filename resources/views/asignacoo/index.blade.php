@@ -65,7 +65,7 @@
 
         },
         data:{
-            coor:"{{url("/asignacoordinador")}}",
+            coor:"{{url("/tutorias/asignacoordinador")}}",
             datos:[],
             name:"",
             bselected:false,
