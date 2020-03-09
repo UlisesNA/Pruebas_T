@@ -235,9 +235,9 @@
             data: {
                 searchQuery: '',
                 gridColumns: ['Cuenta', 'Nombre', 'No.hijos', 'Trabaja', 'Alcoholismo','No.Repeticiones','No.Especiales','Total Especiales','Probabilidad'],
-                rut: "/probabilidad",
-                grup: "/grupos",
-                veralu: '/ver',
+                rut: "/tutorias/probabilidad",
+                grup: "/tutorias/grupos",
+                veralu: "/tutorias/ver",
                 datos: [],
                 grupos: [],
                 alumnog: [],

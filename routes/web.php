@@ -83,6 +83,8 @@ Route::group(['prefix'=>'tutorias'],function () {
     Route::post("pdf/alumno","PdfController@pdf_alumno")->name("pdf_alumno");
     Route::post("pdf/lista","PdfController@pdf_lista")->name("pdf_lista");
     Route::get('grupos','ProfesorController@grupos');
+    Route::Resource('/desercion','DesercionController');
+    Route::post('/probabilidad','ProbabilidadController@alumnos');
 
 
     ///COORDINADOR DE CARRERA
@@ -172,10 +174,6 @@ Route::Resource('/desarrollo','DesarrolloController');
 
 Route::post('/semestre','ProfesorController@planeacion');
 
-Route::Resource('/reporte','ReporteController');
-Route::Resource('/desercion','DesercionController');
-Route::post('/probabilidad','ProbabilidadController@alumnos');
-
 
 Route::post('/verestra','ViewAlumnosController@verestrategia');////////////////////////////////si se usa
 Route::post('/versuge','ViewAlumnosController@versugerencia');//////////////////////////////////si se usa
@@ -232,14 +230,6 @@ Route::get('/repo','AsignaCoordinadorController@repo');
 
 
 Route::post("pdf/carreraco","ReporteGController@pdf_carreraco")->name("pdf/carreraco");
-Route::get("reporte_pdf","ReportePDFController@reporte_pdf")->name("reporte_pdf");
-Route::get("reporte_pdf2","ReportePDFController@reporte_pdf2")->name("reporte_pdf2");
-Route::get("reporte_pdf3","ReportePDFController@reporte_pdf3")->name("reporte_pdf3");
-Route::get("reporte_pdf4","ReportePDFController@reporte_pdf4")->name("reporte_pdf4");
-Route::get("reporte_pdf5","ReportePDFController@reporte_pdf5")->name("reporte_pdf5");
-Route::get("reporte_pdf6","ReportePDFController@reporte_pdf6")->name("reporte_pdf6");
-Route::get("reporte_pdf7","ReportePDFController@reporte_pdf7")->name("reporte_pdf7");
-Route::get("reporte_pdf8","ReportePDFController@reporte_pdf8")->name("reporte_pdf8");
 //Route::get("reporte_grafica","ReporteGController@reporte_grafica")->name("reporte_grafica");
 
 //Ruta planeacion
