@@ -25,7 +25,7 @@
                 <div class="row">
                     <div class="col-12 pb-3">
                         <i class="fas fa-chevron-left h5"></i>
-                        <a href="{{url('/desercion')}}" class="font-weight-bold h6 pb-1">{{\Illuminate\Support\Facades\Session::get('tutor')>1?'Regresar':'Regresar'}}</a>
+                        <a href="{{url('/tutorias/desercion')}}" class="font-weight-bold h6 pb-1">{{\Illuminate\Support\Facades\Session::get('tutor')>1?'Regresar':'Regresar'}}</a>
                     </div>
                 </div>
                 <div class="row">
