@@ -142,8 +142,8 @@
                                         <div class="dropdown-menu" aria-labelledby="MenuTutor">
                                             <a class="dropdown-item" href="/tutorias/tutorvista">{{\Illuminate\Support\Facades\Session::get('tutor')>1?'Grupos Tutorías':'Grupo Tutorías'}}</a>
                                             <!--<a class="dropdown-item" href="/eventos">Eventos</a>-->
+                                            <a class="dropdown-item" href="/tutorias/seguimiento">Seguimiento</a>
                                             <a class="dropdown-item" href="/tutorias/desercion">Deserción</a>
-                                            <!--<a class="dropdown-item" href="/reporte">Reporte</a>-->
                                             <!--<a class="dropdown-item" href="/planeaciontutor">Planeación</a>-->
                                         </div>
                                     </div>
