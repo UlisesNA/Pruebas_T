@@ -165,8 +165,8 @@
                                                 Coordinador Institucional
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="MenuCoordinadorGeneral">
-                                                <a class="dropdown-item" href="/planeacioncoorgen">Planeación</a>
-                                                <a class="dropdown-item" href="/revision">Revisar Sugerencias</a>
+                                                <a class="dropdown-item" href="/tutorias/planeacioncoorgen">Planeación</a>
+                                                <a class="dropdown-item" href="/tutorias/revision">Revisar Sugerencias</a>
                                                 <a class="dropdown-item" href="/tutorias/estadisticas/carreras">Programas educativos</a>
                                             </div>
                                         </div>
@@ -177,10 +177,10 @@
                                                 Desarrollo Académico
                                             </a>
                                             <div class="dropdown-menu" aria-labelledby="MenuDesarrollo">
-                                                <a class="dropdown-item" href="/desarrollovista">Coordinador Institucional</a>
-                                                <a class="dropdown-item" href="/asignacorgenvista">Asigna Coordinador Institucional</a>
-                                                <a class="dropdown-item" href="/planeaciondesarrollo">Planeación</a>
-                                                <a class="dropdown-item" href="/revisiondesarrollo">Ver Sugerencias</a>
+                                                <a class="dropdown-item" href="/tutorias/desarrollovista">Coordinador Institucional</a>
+                                                <a class="dropdown-item" href="/tutorias/asignacorgenvista">Asigna Coordinador Institucional</a>
+                                                <a class="dropdown-item" href="/tutorias/planeaciondesarrollo">Planeación</a>
+                                                <a class="dropdown-item" href="/tutorias/revisiondesarrollo">Ver Sugerencias</a>
                                                 <a class="dropdown-item" href="/tutorias/estadisticas/carreras">Programas educativos</a>
                                             </div>
                                         </div>

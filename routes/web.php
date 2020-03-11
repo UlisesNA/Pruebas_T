@@ -156,6 +156,61 @@ Route::group(['prefix'=>'tutorias'],function () {
 
     ///REPORTE GRAFICAS
     Route::post("pdf/reporte","ReporteGController@pdf_reporte")->name("pdf_reporte");
+
+    ///PLANEACION DESARROLLO ACADEMICO
+    Route::Resource('/planeaciondesarrollo','Dep_desarrolloController');
+
+    ///REVISION DE PLANEACION DESARROLLO ACADEMICO
+    Route::get('/revisiondesarrollo', function () {
+        return view('dep_desarrollo.revisiondesarrollo');
+    });
+
+    ///CONSULTA MUESTRA COORDINADOR INSTITUCIONAL EN DESARROLLO ACADEMICO
+    Route::Resource('/desarrollo','DesarrolloController');
+
+    ///LISTA DE PROFESORES EN ASIGNA COORDINADOR INSTITUCIONAL
+    Route::Resource('/asignacoordinadorgeneral','AsignaCoordinadorGeneralController');
+
+    ///LISTA DE CARRERAS EN REVISION DE DE PLANEACION EN DESARROLLO ACADEMICO
+    Route::get('/carrerasinst','Coordina_instController@carreras1');
+
+    ///LISTA DE PLANEACION EN REVISION DE DESARROLLO ACADEMICO
+    Route::post('/planeacioninst','AlumnosController@planeacion');
+
+    ///VISTA DE QUIEN ES EL COORDINADOR INSTITUCIONAL
+    Route::Resource('/desarrollovista','DesarrolloVistaController');
+
+    ///ASIGNAR COORDINDOR INSTITUCIONAL
+    Route::Resource('/asignacorgenvista','AsignaCorGenController');
+
+    ///PLANEACION DE COORDINADOR INSTITUCIONAL
+    Route::Resource('/planeacioncoorgen','Coordina_instController');
+
+    ///REVISION DE PLANEACION COORDINADOR INSTITUCIOANL
+    Route::get('/revision', function () {
+        return view('coordina_inst.revision');
+    });
+
+    ///VISTA PLANEACION TUTOR
+    Route::post('/semestre','ProfesorController@planeacion');
+
+    ///INSERTE Y ACTUALIZA ESTRATEGIA TUTOR
+    Route::post('/actualizaestra','ViewAlumnosController@actualizaestrategia');
+
+    ///INSERTE Y ACTUALIZA SUGERENCIA TUTOR
+    Route::post('/actualizasuge','ViewAlumnosController@actualizasugerencia');
+
+    ///VER ESTRATEGIA TUTOR
+    Route::post('/verestra','ViewAlumnosController@verestrategia');
+
+    ///VER SUGERENCIA TUTOR
+    Route::post('/versuge','ViewAlumnosController@versugerencia');
+
+    ///VER CANALIZACION TUTOR
+    Route::post('/vercanaliza','ViewAlumnosController@veralumno1');/////////////////////////////////si se utiliza
+
+    ///Ruta planeacion pdf tutor
+    Route::post("pdf/planeacion","PlaneacionPDFController@pdf_planeacion")->name("pdf_planeacion");
 });
 
 
@@ -167,60 +222,11 @@ Route::group(['prefix'=>'tutorias'],function () {
 
 ////SIN CLASIFICAR
 
-Route::Resource('/desarrollovista','DesarrolloVistaController');
-Route::Resource('/asignacorgenvista','AsignaCorGenController');
-Route::Resource('/desarrollo','DesarrolloController');
-
-
-Route::post('/semestre','ProfesorController@planeacion');
-
-
-Route::post('/verestra','ViewAlumnosController@verestrategia');////////////////////////////////si se usa
-Route::post('/versuge','ViewAlumnosController@versugerencia');//////////////////////////////////si se usa
-Route::post('/vercanaliza','ViewAlumnosController@veralumno1');/////////////////////////////////si se utiliza
-
-Route::post('/actualizaestra','ViewAlumnosController@actualizaestrategia');
-Route::post('/actualizasuge','ViewAlumnosController@actualizasugerencia');
-
 
 Route::post('/cerrar','ViewAlumnosController@cerrar');
 
+Route::post('/generacion','CoordinadorCarrController@generaciones');////////////////si se usa
 
-
-
-Route::post('/planeacioninst','AlumnosController@planeacion');
-
-
-
-
-
-
-
-
-
-
-Route::get('/carrerasinst','Coordina_instController@carreras1');
-
-
-Route::get('/revision', function () {
-    return view('coordina_inst.revision');
-});
-Route::get('/revisiondesarrollo', function () {
-    return view('dep_desarrollo.revisiondesarrollo');
-});
-
-
-
-Route::post('/generacion','CoordinadorCarrController@generaciones');
-
-
-
-
-Route::Resource('/asignacoordinadorgeneral','AsignaCoordinadorGeneralController');
-Route::Resource('/planeacioncoorgen','Coordina_instController');
-
-Route::Resource('/planeaciondesarrollo','Dep_desarrolloController');
-Route::Resource('/planeaciontutor','Planea_tutorController');
 Route::get('/repo','AsignaCoordinadorController@repo');
 
 
@@ -232,8 +238,7 @@ Route::get('/repo','AsignaCoordinadorController@repo');
 Route::post("pdf/carreraco","ReporteGController@pdf_carreraco")->name("pdf/carreraco");
 //Route::get("reporte_grafica","ReporteGController@reporte_grafica")->name("reporte_grafica");
 
-//Ruta planeacion
-Route::post("pdf/planeacion","PlaneacionPDFController@pdf_planeacion")->name("pdf_planeacion");
+
 ?>
 
 

@@ -50,7 +50,7 @@
                 this.getDatos();
             },
             data:{
-                jefe:"{{url("/desarrollo")}}",
+                jefe:"{{url("/tutorias/desarrollo")}}",
                 datos:[],
                 id_tu:null,
                 id_c:null

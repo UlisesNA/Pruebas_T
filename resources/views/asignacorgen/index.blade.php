@@ -65,7 +65,7 @@
 
         },
         data:{
-            coor:"{{url("/asignacoordinadorgeneral")}}",
+            coor:"{{url("/tutorias/asignacoordinadorgeneral")}}",
             datos:[],
             name:"",
             bselected:false,
