@@ -109,14 +109,14 @@
                             <tbody>
                             <tr>
                                 <td>
-                                    <select name="id_area" id="id_area" class="custom-select custom-select-md" v-model="alu.generales.id_estado_civil" required>
+                                    <select name="id_area" id="id_area" class="custom-select custom-select-md" v-model="alu.generales.id_area" required>
                                         <option value="null" selected >Elija Área a canalizar</option>
                                         <option v-bind:value="ar.id_area" v-for="ar in areas">@{{ar.descripcion_area}}</option>
                                     </select>
                                     <small class="form-text text-danger" v-if='alu.generales.id_estado_civil==null || alu.generales.id_estado_civil=="null"'>Elija una opción</small>
                                 </td>
                                 <td>
-                                    <select name="id_subarea" id="id_subarea" class="custom-select custom-select-md" v-model="alu.generales.id_estado_civil" required>
+                                    <select name="id_subarea" id="id_subarea" class="custom-select custom-select-md" v-model="alu.generales.id_subarea" required>
                                         <option value="null" selected >Elija Subarea a canalizar</option>
                                         <option v-bind:value="sub_ar.id_subarea" v-for="sub_ar in subareas">@{{sub_ar.descripcion_subarea}}</option>
                                     </select>

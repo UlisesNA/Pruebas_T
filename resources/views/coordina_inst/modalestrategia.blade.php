@@ -14,13 +14,13 @@
                 <div class="modal-body">
                     <!--<pre>@{{ estra }}</pre>-->
                     <div class="form-group col-md-12">
-                        <textarea required class="form-control" rows="8" id="estrategia" name="estrategia" v-model="estra.planeacion.estrategia"></textarea>
+                        <textarea required class="form-control" rows="8" id="estrategia" name="estrategia" v-model="estra.planeacion.estrategia" disabled></textarea>
                         <label>Requiere subir evidencia</label>
                         <div v-if="estra.planeacion.requiere_evidencia==1">
-                            <input type="checkbox" class="" id="requiere_evidencia" name="requiere_evidencia" v-model="estra.planeacion.requiere_evidencia" checked>
+                            <input type="checkbox" class="" id="requiere_evidencia" name="requiere_evidencia" v-model="estra.planeacion.requiere_evidencia" checked disabled>
                         </div>
                         <div v-else>
-                            <input type="checkbox" class="" id="requiere_evidencia" name="requiere_evidencia"  v-model="estra.planeacion.requiere_evidencia">
+                            <input type="checkbox" class="" id="requiere_evidencia" name="requiere_evidencia"  v-model="estra.planeacion.requiere_evidencia" disabled>
                         </div>
                     </div>
                 </div>

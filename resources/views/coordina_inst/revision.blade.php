@@ -19,7 +19,7 @@
             <div class="row">
                 <div class="col-12 pb-3">
                     <i class="fas fa-chevron-right h5"></i>
-                    <a href="{{url('/revision')}}" class="font-weight-bold h6 pb-1">{{\Illuminate\Support\Facades\Session::get('coordinador')>1?'CARRERAS':'CARRERAS'}}</a>
+                    <a href="{{url('/tutorias/revision')}}" class="font-weight-bold h6 pb-1">{{\Illuminate\Support\Facades\Session::get('coordinador')>1?'PROGRAMAS EDUCATIVOS':'PROGRAMAS EDUCATIVOS'}}</a>
                     <i class="fas fa-chevron-right h5"></i>
                     <a class="text-primary h6" v-if="menucarrera==true">PRINCIPAL</a>
                 </div>
@@ -161,7 +161,7 @@
                 suge: {
                     sugerencia: {
                         id_asigna_planeacion_tutor: "",
-                        id_sugerencia: 1,
+                        id_sugerencia: "",
                         desc_actividad_cambio: "",
                         objetivo_actividad_cambio : "",
                     },
@@ -1686,8 +1686,9 @@
                     //this.estra.planeacion.objetivo_actividad_cambio=response.data.planeacion[0].objetivo_actividad_cambio;
                 });
                 },
-                actualizasuge: function () {
+                actualizasuge: function (estado) {
                     /*AQUI*/
+                    this.suge.sugerencia.id_sugerencia=estado;
                     axios.post(this.actsuge, {suge: this.suge}).then(response => {
                         $("#modalsugerencia").modal("hide");
                 });
