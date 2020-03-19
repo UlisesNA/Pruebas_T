@@ -85,7 +85,8 @@ Route::group(['prefix'=>'tutorias'],function () {
     Route::get('grupos','ProfesorController@grupos');
     Route::Resource('/desercion','DesercionController');
     Route::post('/probabilidad','ProbabilidadController@alumnos');
-
+    Route::Resource('/seguimiento','SeguimientoController');
+    Route::post('/seguimientoplan','SeguimientoPlanController@alumnos');
 
     ///COORDINADOR DE CARRERA
     Route::get('carreras', function () {

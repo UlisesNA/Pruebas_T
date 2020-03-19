@@ -16,6 +16,7 @@
                                 <a href="#?" @click="getlista(grupo)" class="btn btn-outline-primary">Ver</a>
                             </div>
                         </div>
+                        <br>
                     </div>
                 </div>
             </div>
