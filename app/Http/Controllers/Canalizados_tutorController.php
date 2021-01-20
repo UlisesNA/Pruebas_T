@@ -9,119 +9,89 @@ use Illuminate\Http\Request;
 use DB;
 class Canalizados_tutorController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        //
-        //$alumnos= gnral_alumnos::getAlumnos();
-        //$datos['alumnos']=Tutor::paginate(5);
-       // $carreras=asigna_tutor::getCarrera();
-        $carreras1=asigna_tutor::getCarrera1();
-        $datos= asigna_tutor::getDatos();
-        //$alumnos=gnral_alumnos::getAlumnos();
-        return view('profesor.canalizados',compact("datos","carreras1"));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-
+        $pa = array('id_alumno' =>$request->id_alumno , 
+                    'id_personal' =>$request->id_personal,
+                    'fecha_canalizacion'=>$request->fecha_canalizacion,
+                    'hora'=>$request->hora,
+                    'observaciones'=>$request->observaciones,
+                    'aspectos_sociologicos1'=>$request->aspectos_sociologicos1,
+                    'aspectos_sociologicos2'=>$request->aspectos_sociologicos2,
+                    'aspectos_sociologicos3'=>$request->aspectos_sociologicos3,
+                    'aspectos_academicos1'=>$request->aspectos_academicos1,
+                    'aspectos_academicos2'=>$request->aspectos_academicos2,
+                    'aspectos_academicos3'=>$request->aspectos_academicos3,
+                    'otros'=>$request->otros,
+                    'status'=>$request->status,
+                    'desc_area'=>$request->desc_area,
+                    'desc_subarea'=>$request->desc_subarea,);
+        Canalizacion::create($pa);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    public function canactualiza(Request $request)
+    {
+        $data['va']=DB::select('SELECT exp_asigna_generacion.grupo,gnral_alumnos.id_alumno,gnral_alumnos.nombre,gnral_alumnos.apaterno,
+            gnral_alumnos.amaterno,gnral_carreras.nombre as carrera,gnral_semestres.descripcion,gnral_personales.nombre as nombre_tut,gnral_personales.id_personal,DATE_FORMAT(canalizacion.fecha_canalizacion,"%d-%m-%Y")as fecha_canalizacion,
+                canalizacion.hora,canalizacion.observaciones,canalizacion.aspectos_sociologicos1,canalizacion.aspectos_sociologicos2,
+                canalizacion.aspectos_sociologicos3,canalizacion.aspectos_academicos1,canalizacion.aspectos_academicos2,
+                canalizacion.aspectos_academicos3,canalizacion.otros,canalizacion.status,canalizacion.desc_area,
+                canalizacion.desc_subarea
+            FROM exp_asigna_generacion,exp_asigna_alumnos,gnral_alumnos,gnral_carreras,
+            gnral_semestres,gnral_personales,exp_asigna_tutor,canalizacion
+            WHERE exp_asigna_generacion.id_asigna_generacion=exp_asigna_alumnos.id_asigna_generacion
+            AND gnral_alumnos.id_alumno=exp_asigna_alumnos.id_alumno
+            AND gnral_alumnos.id_carrera=gnral_carreras.id_carrera
+            AND gnral_alumnos.id_semestre=gnral_semestres.id_semestre
+            AND gnral_personales.id_personal=exp_asigna_tutor.id_personal
+            AND exp_asigna_tutor.id_asigna_generacion=exp_asigna_generacion.id_asigna_generacion
+            AND gnral_alumnos.id_alumno = canalizacion.id_alumno
+            AND gnral_personales.id_personal = canalizacion.id_personal
+            AND exp_asigna_alumnos.id_alumno='.$request->id);
+        return $data;
+    }
+
+    public function datosact(Request $request)
+    {
+        DB::table('canalizacion')
+                ->where('id_alumno', '=', $request->id_alumno)
+                ->update(array("fecha_canalizacion"=>$request->fecha_canalizacion,
+                               "hora"=>$request->hora,
+                               "aspectos_sociologicos1"=>$request->aspectos_sociologicos1,
+                               "aspectos_sociologicos2"=>$request->aspectos_sociologicos2,
+                               "aspectos_sociologicos3"=>$request->aspectos_sociologicos3,
+                               "aspectos_academicos1"=>$request->aspectos_academicos1,
+                               "aspectos_academicos2"=>$request->aspectos_academicos2,
+                               "aspectos_academicos3"=>$request->aspectos_academicos3,
+                               "otros"=>$request->otros,
+                               "observaciones"=>$request->observaciones,
+                               "status"=>$request->status,
+                               "desc_area"=>$request->desc_area,
+                               "desc_subarea"=>$request->desc_subarea));
+    }
+
     public function show($id)
     {
-        $areas=areas_canalizacion::all();
-        $datos=asigna_tutor::getDatosall();
-        $alumno=gnral_alumnos::find($id);
-        return view('profesor.canaliza',compact('alumno',"areas","datos"));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
-    {
-        //
-        $areas=areas_canalizacion::all();
-        $carreras=DB::select('SELECT c.nombre FROM gnral_carreras as c,gnral_alumnos as a, canalizacion WHERE a.id_carrera= c.id_carrera and a.id_alumno =canalizacion.id_alumno and canalizacion.id_canalizacion='.$id);
-        $semestre=DB::select('SELECT s.descripcion FROM gnral_semestres as s,gnral_alumnos as a,canalizacion WHERE a.id_semestre= s.id_semestre and a.id_alumno=canalizacion.id_alumno and canalizacion.id_canalizacion='.$id);
-        $prof=DB::select('SELECT t.id_personal,t.nombre,t.correo FROM gnral_personales as t,asigna_tutor as ast,gnral_alumnos as a ,gnral_semestres as s,gnral_grupos as g, gnral_carreras as c,canalizacion WHERE a.grupo= g.id_grupo and a.id_semestre=s.id_semestre and a.id_carrera=c.id_carrera and ast.id_personal=t.id_personal and ast.id_semestre=a.id_semestre and ast.id_carrera=a.id_carrera and a.id_alumno=canalizacion.id_alumno and canalizacion.id_canalizacion='.$id);
-        $grupo=DB::select('SELECT g.grupo FROM gnral_grupos as g,gnral_alumnos as a,canalizacion WHERE a.grupo= g.id_grupo and a.id_alumno =canalizacion.id_alumno and canalizacion.id_canalizacion='.$id);
-        $alumno=DB::select('SELECT gnral_alumnos.id_alumno,gnral_alumnos.nombre,gnral_alumnos.apaterno,gnral_alumnos.amaterno FROM gnral_alumnos,canalizacion WHERE gnral_alumnos.id_alumno=canalizacion.id_alumno and canalizacion.id_canalizacion='.$id);
-        $plan = Canalizacion::find($id);
-        //return $alumno;
-        return view('profesor.edit', compact('plan','areas','carreras','semestre','prof','grupo','alumno'));
+    {   
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
- //       dd($request->hora);
-        $plan = Canalizacion::find($id);
-       // $plan=request()->except('updated_at');
-        $plan->fecha_canalizacion = $request->get('fecha_canalizacion');
-        $plan->fecha_canalizacion_anterior = $request->get('fecha_canalizacion_anterior');
-        $plan->fecha_canalizacion_siguiente = $request->get('fecha_canalizacion_siguiente');
-        $plan->hora = $request->hora;
-        $plan->aspectos_sociologicos1 = $request->get('aspectos_sociologicos1');
-        $plan->aspectos_sociologicos2 = $request->get('aspectos_sociologicos2');
-        $plan->aspectos_sociologicos3 = $request->get('aspectos_sociologicos3');
-        $plan->aspectos_academicos1 = $request->get('aspectos_academicos1');
-        $plan->aspectos_academicos2 = $request->get('aspectos_academicos2');
-        $plan->aspectos_academicos3 = $request->get('aspectos_academicos3');
-        $plan->observaciones = $request->get('observaciones');
-        $plan->otros = $request->get('otros');
-        $plan->notificacion = $request->get('notificacion');
-        $plan->id_area = $request->get('id_area');
-        $plan->status = $request->get('status');
-        $plan->save();
-        //return view('profesor.canalizados');
-        //return view('profesor.canalizados');
-        return redirect()->back();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
-    {
-        //
+    {    
     }
 }

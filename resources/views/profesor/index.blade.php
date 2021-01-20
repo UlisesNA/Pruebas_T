@@ -90,8 +90,9 @@
                                                     </template>
                                                     <template slot="Canalizacion" scope="alumno">
                                                         <div class="text-center" v-if="alumno.entry.canalizacion">
-                                                            <button class="btn btn-outline-primary m-1" @click="vercanaliza(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="far fa-edit"></i></button>
-                                                            <button class="btn btn-outline-danger" @click="pdfAlumno(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Expediente"><i class="far fa-file-pdf"></i></button>
+                                                            <button class="btn btn-outline-primary m-1" 
+                                                            @click="acanaliza(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Editar"><i class="far fa-edit"></i></button>
+                                                            <button class="btn btn-outline-danger" @click="pdfCana(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Expediente"><i class="far fa-file-pdf"></i></button>
                                                         </div>
                                                         <div v-else class="text-center">
                                                             <button class="btn btn-outline-primary m-1" @click="vercanaliza(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Canalizar"><i class="far fa-check-square "></i></button>
@@ -670,6 +671,7 @@
         @include('profesor.modalestrategia')
         @include('profesor.modalsugerencia')
         @include('profesor.modalcanalizacion')
+        @include('profesor.modalcanalizacionact')
 
     </div>
     <script type="text/javascript">
@@ -708,8 +710,12 @@
                 palu: '/tutorias/pdf/alumno',
                 veralu: '/tutorias/ver',
                 vercanalizacion: '/tutorias/vercanaliza',
+                pdfcan: '/tutorias/pdf/citacan',
+                canalizaciona : '/tutorias/modalact',
+                pruebact: '/tutorias/actualizadatos',
                 verestra: '/tutorias/verestra',
                 versuge: '/tutorias/versuge',
+                prueba: '/tutorias/pcan',
                 datos: [],
                 datos1: [],
                 grupos: [],
@@ -940,27 +946,32 @@
                         nombre_tut: "",
                         id_personal: "",
                     },
-                    canalizacion:{
-                        id_alumno:"",
-                        id_personal:"",
-                        fecha_canalizacion:"",
-                        fecha_canalizacion_anterior:"",
-                        fecha_canalizacion_siguiente:"",
+                },  
+                can: {
+                    va: {
+                        grupo: "",
+                        nombre: "",
+                        apaterno: "",
+                        amaterno: "",
+                        carrera: "",
+                        descripcion: "",
+                        id_alumno: "",
+                        nombre_tut: "",
+                        id_personal: "",
                         hora:"",
+                        observaciones:"",
                         aspectos_sociologicos1:"",
                         aspectos_sociologicos2:"",
                         aspectos_sociologicos3:"",
                         aspectos_academicos1:"",
                         aspectos_academicos2:"",
                         aspectos_academicos3:"",
-                        observaciones:"",
                         otros:"",
-                        notificacion:"",
-                        id_area:"",
-                        id_subarea:"",
                         status:"",
-                    }
-                },
+                        desc_area:"",
+                        desc_subarea:"",
+                    },
+                }, 
                 areas: [],
                 subareas: [],
                 fin: true,
@@ -1852,6 +1863,80 @@
                     this.subareas= response.data.subareas;
                 });
                 },
+                submitForm: function(){
+                    axios.post(this.prueba,  {
+                                    id_alumno: this.canaliza.valores.id_alumno,
+                                    id_personal:this.canaliza.valores.id_personal,
+                                    fecha_canalizacion:this.fecha_canalizacion,
+                                    hora:this.hora,
+                                    observaciones:this.observaciones,
+                                    aspectos_sociologicos1:this.aspectos_sociologicos1,
+                                    aspectos_sociologicos2:this.aspectos_sociologicos2,
+                                    aspectos_sociologicos3:this.aspectos_sociologicos3,
+                                    aspectos_academicos1:this.aspectos_academicos1,
+                                    aspectos_academicos2:this.aspectos_academicos2,
+                                    aspectos_academicos3:this.aspectos_academicos3,
+                                    otros:this.otros,
+                                    status:this.status,
+                                    desc_area:this.desc_area,
+                                    desc_subarea:this.desc_subarea,
+                                    })
+                    .then(response => {
+                        $("#modalcanalizacion").modal("hide");
+                    });
+                },
+                acanaliza: function (alumno) {
+                    console.log(alumno);
+                    $("#actualizacanalizacion").modal("show");
+                    axios.post(this.canalizaciona, {id: alumno.id_alumno}).then(response => {
+                        this.can.va.grupo = response.data.va[0].grupo;
+                        this.can.va.nombre = response.data.va[0].nombre;
+                        this.can.va.apaterno = response.data.va[0].apaterno;
+                        this.can.va.amaterno = response.data.va[0].amaterno;
+                        this.can.va.carrera = response.data.va[0].carrera;
+                        this.can.va.descripcion = response.data.va[0].descripcion;
+                        this.can.va.id_alumno = response.data.va[0].id_alumno;
+                        this.can.va.nombre_tut = response.data.va[0].nombre_tut;
+                        this.can.va.id_personal = response.data.va[0].id_personal;
+                        /////areas
+                        this.can.va.fecha_canalizacion = response.data.va[0].fecha_canalizacion;
+                        this.can.va.hora = response.data.va[0].hora;
+                        this.can.va.observaciones = response.data.va[0].observaciones;
+                        this.can.va.aspectos_sociologicos1 = response.data.va[0].aspectos_sociologicos1;
+                        this.can.va.aspectos_sociologicos2 = response.data.va[0].aspectos_sociologicos2;
+                        this.can.va.aspectos_sociologicos3 = response.data.va[0].aspectos_sociologicos3;
+                        this.can.va.aspectos_academicos1 = response.data.va[0].aspectos_academicos1;
+                        this.can.va.aspectos_academicos2 = response.data.va[0].aspectos_academicos2;
+                        this.can.va.aspectos_academicos3 = response.data.va[0].aspectos_academicos3;
+                        this.can.va.otros = response.data.va[0].otros;
+                        this.can.va.status = response.data.va[0].status;
+                        this.can.va.desc_area = response.data.va[0].desc_area;
+                        this.can.va.desc_subarea = response.data.va[0].desc_subarea;
+                        /////
+                    });
+                },
+                submitActualiza: function(){
+                    axios.post(this.pruebact,  {
+                                    id_alumno: this.can.va.id_alumno,
+                                    id_personal:this.can.va.id_personal,
+                                    fecha_canalizacion:this.can.va.fecha_canalizacion,
+                                    hora:this.can.va.hora,
+                                    observaciones:this.can.va.observaciones,
+                                    aspectos_sociologicos1:this.aspectos_sociologicos1,
+                                    aspectos_sociologicos2:this.aspectos_sociologicos2,
+                                    aspectos_sociologicos3:this.aspectos_sociologicos3,
+                                    aspectos_academicos1:this.aspectos_academicos1,
+                                    aspectos_academicos2:this.aspectos_academicos2,
+                                    aspectos_academicos3:this.aspectos_academicos3,
+                                    otros:this.can.va.otros,
+                                    status:this.status,
+                                    desc_area:this.desc_area,
+                                    desc_subarea:this.desc_subarea,
+                                    })
+                    .then(response => {
+                        $("#actualizacanalizacion").modal("hide");
+                    });
+                },
                 verestrategia: function (alumno) {
                     console.log(alumno);
                     $("#modalestrategia").modal("show");
@@ -1949,6 +2034,20 @@
                 },
                 pdfAlumno: function (alumno) {
                     axios.post(this.palu, {id_alumno: alumno.id_alumno}, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/pdf'
+                        },
+                        responseType: "blob"
+                    }).then(response => {
+                        console.log(response.data);
+                        const blob = new Blob([response.data], {type: 'application/pdf'});
+                        const objectUrl = URL.createObjectURL(blob);
+                        window.open(objectUrl)
+                    });
+                },
+                pdfCana: function (alumno) {
+                    axios.post(this.pdfcan, {id_alumno: alumno.id_alumno}, {
                         headers: {
                             'Content-Type': 'application/json',
                             'Accept': 'application/pdf'

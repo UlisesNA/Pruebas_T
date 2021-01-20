@@ -208,7 +208,11 @@ Route::group(['prefix'=>'tutorias'],function () {
     Route::post('/versuge','ViewAlumnosController@versugerencia');
 
     ///VER CANALIZACION TUTOR
-    Route::post('/vercanaliza','ViewAlumnosController@veralumno1');/////////////////////////////////si se utiliza
+    Route::post('/vercanaliza','ViewAlumnosController@veralumno1');//////////////////////si se utiliza
+    Route::post('/pcan','Canalizados_tutorController@store');
+    Route::post('/modalact','Canalizados_tutorController@canactualiza');
+    Route::post('/actualizadatos','Canalizados_tutorController@datosact');
+    Route::post("pdf/citacan","PdfCitController@pdf_cita")->name("pdf_cita");
 
     ///Ruta planeacion pdf tutor
     Route::post("pdf/planeacion","PlaneacionPDFController@pdf_planeacion")->name("pdf_planeacion");
