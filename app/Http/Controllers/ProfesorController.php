@@ -55,20 +55,20 @@ class ProfesorController extends Controller
     public function planeacion(Request $request)
     {
         $plan=DB::select('SELECT plan_actividades.*,plan_asigna_planeacion_tutor.*
-FROM  plan_actividades,plan_asigna_planeacion_actividad,exp_asigna_generacion
-,plan_asigna_planeacion_tutor,gnral_personales,exp_asigna_tutor
-WHERE plan_actividades.id_plan_actividad=plan_asigna_planeacion_actividad.id_plan_actividad
-AND plan_asigna_planeacion_actividad.id_asigna_generacion=exp_asigna_generacion.id_asigna_generacion
-AND gnral_personales.id_personal=exp_asigna_tutor.id_personal
-and plan_asigna_planeacion_actividad.id_asigna_generacion=exp_asigna_tutor.id_asigna_generacion
-and plan_asigna_planeacion_tutor.id_asigna_planeacion_actividad=plan_asigna_planeacion_actividad.id_asigna_planeacion_actividad
-and plan_asigna_planeacion_tutor.id_asigna_generacion=plan_asigna_planeacion_actividad.id_asigna_generacion
-AND exp_asigna_tutor.deleted_at is null
-AND exp_asigna_generacion.deleted_at is null
-AND plan_actividades.deleted_at is null
-AND plan_asigna_planeacion_actividad.id_estado=1
-    AND gnral_personales.tipo_usuario='.Auth::user()->id.'
-    AND exp_asigna_generacion.id_asigna_generacion='.$request->id_asigna_generacion);
+        FROM  plan_actividades,plan_asigna_planeacion_actividad,exp_asigna_generacion
+        ,plan_asigna_planeacion_tutor,gnral_personales,exp_asigna_tutor
+        WHERE plan_actividades.id_plan_actividad=plan_asigna_planeacion_actividad.id_plan_actividad
+        AND plan_asigna_planeacion_actividad.id_asigna_generacion=exp_asigna_generacion.id_asigna_generacion
+        AND gnral_personales.id_personal=exp_asigna_tutor.id_personal
+        and plan_asigna_planeacion_actividad.id_asigna_generacion=exp_asigna_tutor.id_asigna_generacion
+        and plan_asigna_planeacion_tutor.id_asigna_planeacion_actividad=plan_asigna_planeacion_actividad.id_asigna_planeacion_actividad
+        and plan_asigna_planeacion_tutor.id_asigna_generacion=plan_asigna_planeacion_actividad.id_asigna_generacion
+        AND exp_asigna_tutor.deleted_at is null
+        AND exp_asigna_generacion.deleted_at is null
+        AND plan_actividades.deleted_at is null
+        AND plan_asigna_planeacion_actividad.id_estado=1
+        AND gnral_personales.tipo_usuario='.Auth::user()->id.'
+        AND exp_asigna_generacion.id_asigna_generacion='.$request->id_asigna_generacion);
 
 
         return $plan;
@@ -93,6 +93,21 @@ AND plan_asigna_planeacion_actividad.id_estado=1
         DB::update('UPDATE exp_asigna_alumnos set estado='.$request->estado.' where id_asigna_alumno='.$request->id_asigna_alumno);
     }
 
+    public function ev(Request $request)
+    {
+        $datos=DB::table('gnral_alumnos')
+            ->join('exp_asigna_alumnos','exp_asigna_alumnos.id_alumno','=','gnral_alumnos.id_alumno')
+            ->join('plan_asigna_evidencias','plan_asigna_evidencias.id_alumno','=','gnral_alumnos.id_alumno')
+            ->select(DB::raw('UPPER(gnral_alumnos.nombre) as nombre, UPPER(gnral_alumnos.apaterno) as apaterno, UPPER(gnral_alumnos.amaterno) as amaterno, gnral_alumnos.id_alumno, gnral_alumnos.cuenta, exp_asigna_alumnos.estado, exp_asigna_alumnos.id_asigna_alumno'))
+            ->where('exp_asigna_alumnos.id_asigna_generacion', '=', $request->id_asigna_generacion)
+            ->where('gnral_alumnos.id_carrera','=',$request->id_carrera)
+            ->whereNull('exp_asigna_alumnos.deleted_at')
+            ->groupBy('gnral_alumnos.cuenta')
+            ->orderBy('gnral_alumnos.cuenta')
+            ->get();
+
+        return $datos;
+    }
 
     /**
      * Show the form for creating a new resource.

@@ -7,16 +7,15 @@
                     <h3>Seguimiento de Actividades</h3>
                 </div>
                 <div class="row">
-                    <div class="col-3" v-for="grupo in grupos">
+                    <div class="col-3 pt-4" v-for="grupo in grupos">
                         <div class="card">
                             <div class="card-header text-center font-weight-bold"> @{{ grupo.nombre }}</div>
                             <div class="card-body text-center">
                                 <h5 class="card-title">Generación @{{ grupo.generacion }}</h5>
                                 <p class="card-text">Grupo @{{ grupo.grupo }}</p>
-                                <a href="#?" @click="getlista(grupo)" class="btn btn-outline-primary">Ver</a>
+                                <a href="#" @click="getlista(grupo)" class="btn btn-outline-primary">Ver</a>
                             </div>
                         </div>
-                        <br>
                     </div>
                 </div>
             </div>
@@ -25,8 +24,10 @@
             <div class="col-12">
                 <div class="row">
                     <div class="col-12 pb-3">
-                        <i class="fas fa-chevron-left h5"></i>
-                        <a href="{{url('/tutorias/seguimiento')}}" class="font-weight-bold h6 pb-1">{{\Illuminate\Support\Facades\Session::get('tutor')>1?'Regresar':'Regresar'}}</a>
+                         <div class="col-12 pb-3">
+                            <i class="fas fa-chevron-left h5"></i>
+                            <a href="{{url('/tutorias/seguimiento')}}" class="font-weight-bold h6 pb-1">{{\Illuminate\Support\Facades\Session::get('tutor')>1?'Regresar':'Regresar'}}</a>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -34,12 +35,12 @@
                         <div class="card">
                             <div class="card">
                                 <div class="card-header">
-                                    <div align="center">
+                                    <div class="row">
                                         <div class="col-9 text-center font-weight-bold">@{{ carrera }}</div>
                                     </div>
-                                    <div align="center"><div class="col-9 text-center">@{{ gen }}</div></div>
+                                    <div class="row"><div class="col-9 text-center">@{{ gen }}</div></div>
                                 </div>
-                                <div class="card-body" v-if="(lista==true && datos.length>0)">
+                                <div class="card-body">
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="row pb-3">
@@ -61,14 +62,23 @@
                                             <div class="tableFixHeadLista">
                                                 <data-table class=" col-12 table table-sm" :data="datos" :columns-to-display="gridColumns" :filter-key="searchQuery">
                                                     <template slot="Cuenta" scope="alumno">
-                                                        <div class="pt-2">@{{ alumno.entry.cuenta }}</div>
+                                                        <div class="text-left font-weight-bold pt-2" >
+                                                             @{{ alumno.entry.cuenta }}
+                                                        </div>
                                                     </template>
                                                     <template slot="Nombre" scope="alumno">
-                                                        <div class="pt-2">@{{ alumno.entry.apaterno }} @{{ alumno.entry.amaterno }} @{{ alumno.entry.nombre }}</div>
+                                                        <div class="pt-2">@{{ alumno.entry.apaterno }} @{{ alumno.entry.amaterno}} @{{ alumno.entry.nombre }}</div>
                                                     </template>
                                                     <template slot="Evidencias" scope="alumno">
-                                                        <div>
-                                                            @{{ alumno.entry.evidencia }}
+                                                        <div class="text-center">
+                                                            <button class="btn btn-outline-success m-1" 
+                                                            @click="verdocuments(alumno.entry)" data-toggle="tooltip" 
+                                                            data-placement="bottom" title="Ver Evidencias">
+                                                            <i class="far fa-folder-open"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div v-else class="text-center">
+
                                                         </div>
                                                     </template>
                                                     <template slot="nodata">
@@ -80,49 +90,39 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-body" v-if="datos.length==0">
-                                <div class="row ">
-                                    <div class="col-12 alert-info alert text-center">
-                                        <h5 class="font-weight-bold">Los estudiantes no han subido evidencias</h5>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
+        @include('profesor.modalevidenciactividad')
     </div>
     <script type="text/javascript">
         Vue.use(DataTable);
         new Vue({
             el: "#ind",
             created: function () {
-                this.lista = false;
-                this.menugrupos = true;
-                this.menu = false;
                 this.getTut();
             },
             data: {
                 searchQuery: '',
                 gridColumns: ['Cuenta', 'Nombre', 'Evidencias'],
-                rut: "/tutorias/seguimientoplan",
+                ruts: "/tutorias/profe",
                 grup: "/tutorias/grupos",
-                veralu: "/tutorias/ver",
+                veralu: '/tutorias/ver',
+                verdoc: '/tutorias/verevidencia',
                 datos: [],
                 grupos: [],
-                alumnog: [],
-                vista: [],
-                periodos: [],
-                semestres: [],
-                carreras: [],
-                grupo: [],
+                menugrupos: true,
+                content_modal: "",
+                v:[],
             },
             methods: {
                 getTut: function () {
                     axios.get(this.grup).then(response => {
                         this.grupos = response.data;
-                }).catch(error => {
+                    }).catch(error => {
                     });
                 },
                 getlista: function (grupo) {
@@ -132,21 +132,26 @@
                     this.gen = " GENERACIÓN " + grupo.generacion + " GRUPO " + grupo.grupo;
                     this.gene = " GENERACIÓN " + grupo.generacion;
                     this.getAlumnos();
+                    //this.getAlumnos1();
                 },
                 getAlumnos: function () {
-                    axios.post(this.rut, {
+                    axios.post(this.ruts, {
                         id_asigna_generacion: this.idasigna,
                         id_carrera: this.idca
                     }).then(response => {
                         this.menugrupos = false;
-                    this.menu = true;
-                    this.lista = true;
-                    this.plan = false;
-                    this.listacanaliza = false;
-                    this.graficas = false;
-                    this.datos = response.data;
-                    this.nuevos = response.data;
-                }).catch(error => {
+                        this.menu = true;
+                        this.lista = true;
+                        this.plan = false;
+                        this.datos = response.data;
+                        this.nuevos = response.data;
+                    }).catch(error => {
+                    });
+                },
+                verdocuments: function (alumno) {
+                    $("#evidalumn").modal("show");
+                    axios.post(this.verdoc, {id: alumno.id_alumno}).then(response => {
+                        this.v=response.data.va;
                     });
                 },
             },

@@ -112,6 +112,8 @@ Route::group(['prefix'=>'tutorias'],function () {
     Route::get('getAlumno','PanelAlumnoController@datosPrincipales');
     Route::post('guardar','ViewAlumnosController@store');
     Route::post('imagen','ViewAlumnosController@guardarImagen');
+    Route::post('/verevidencia','SeguimientoPlanController@archivos');
+
     ///GRAFICAS
     ///GRAFICAS TUTOR
     Route::group(['prefix'=>'graphics'],function (){
@@ -194,6 +196,7 @@ Route::group(['prefix'=>'tutorias'],function () {
 
     ///VISTA PLANEACION TUTOR
     Route::post('/semestre','ProfesorController@planeacion');
+    Route::post('/profe','ProfesorController@ev');
 
     ///INSERTE Y ACTUALIZA ESTRATEGIA TUTOR
     Route::post('/actualizaestra','ViewAlumnosController@actualizaestrategia');

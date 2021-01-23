@@ -29,12 +29,11 @@
                                     <td>{{$plan->desc_actividad_cambio}}</td>
                                     <td>{{$plan->objetivo_actividad_cambio}}</td>
                             @endif
-
+                                <td>{{$plan->estrategia}}</td>
+                                <td>{{$plan->objetivo_actividad}}</td>
                                 <td>{{$plan->fi_actividad}}</td>
                                 <td>{{$plan->ff_actividad}}</td>
-                                <td>{{$plan->estrategia}}</td>
-
-
+                                <td></td>
                                 <td>
                                 @if($plan->requiere_evidencia==null)
                                     <h6>No requiere evidencia</h6>
