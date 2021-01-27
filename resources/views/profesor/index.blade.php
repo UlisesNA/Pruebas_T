@@ -1846,8 +1846,19 @@
                 });
                 },
                 vercanaliza: function (alumno) {
-                    console.log(alumno);
-                    $("#modalcanalizacion").modal("show");
+                    this.fecha_canalizacion="";
+                    this.observaciones="";
+                    this.hora="";
+                    this.aspectos_sociologicos1="";
+                    this.aspectos_sociologicos2="";
+                    this.aspectos_sociologicos3="";
+                    this.aspectos_academicos1="";
+                    this.aspectos_academicos2="";
+                    this.aspectos_academicos3="";
+                    this.otros="";
+                    this.status="";
+                    this.desc_area="";
+                    this.desc_subarea="";
                     axios.post(this.vercanalizacion, {id: alumno.id_alumno}).then(response => {
                         this.canaliza.valores.grupo = response.data.valores[0].grupo;
                     this.canaliza.valores.nombre = response.data.valores[0].nombre;
@@ -1861,6 +1872,7 @@
                     /////areas
                     this.areas= response.data.areas;
                     this.subareas= response.data.subareas;
+                    $("#modalcanalizacion").modal("show");
                 });
                 },
                 submitForm: function(){
@@ -1883,11 +1895,17 @@
                                     })
                     .then(response => {
                         $("#modalcanalizacion").modal("hide");
+                        this.getAlumnos();        
                     });
                 },
                 acanaliza: function (alumno) {
-                    console.log(alumno);
-                    $("#actualizacanalizacion").modal("show");
+                    this.aspectos_sociologicos1="";
+                    this.aspectos_sociologicos2="";
+                    this.aspectos_sociologicos3="";
+                    this.aspectos_academicos1="";
+                    this.aspectos_academicos2="";
+                    this.aspectos_academicos3="";
+
                     axios.post(this.canalizaciona, {id: alumno.id_alumno}).then(response => {
                         this.can.va.grupo = response.data.va[0].grupo;
                         this.can.va.nombre = response.data.va[0].nombre;
@@ -1913,6 +1931,7 @@
                         this.can.va.desc_area = response.data.va[0].desc_area;
                         this.can.va.desc_subarea = response.data.va[0].desc_subarea;
                         /////
+                        $("#actualizacanalizacion").modal("show");
                     });
                 },
                 submitActualiza: function(){

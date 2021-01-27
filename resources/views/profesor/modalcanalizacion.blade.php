@@ -56,19 +56,32 @@
                             </tr>
                             <tr>
                               <td>Indisciplina:</td>
-                              <td> <input type="checkbox" class="" id="aspectos_sociologicos1" name="aspectos_sociologicos1" 
-                               v-model="aspectos_sociologicos1" value="1"></td>
+                              <td style="width: 8%">
+                                  <select id="aspectos_sociologicos1" name="aspectos_sociologicos1" v-model="aspectos_sociologicos1" 
+                                  class="custom-select" required>
+                                            <option value="Si">Si</option>
+                                            <option value="No">No</option>
+                                  </select> 
+                              </td>
                             </tr>
                             <tr>
                               <td>Problemas de integración:</td>
-                              <td> <input type="checkbox" class="" id="aspectos_sociologicos2" name="aspectos_sociologicos2" 
-                                v-model="aspectos_sociologicos2" value="1"></td>
+                              <td style="width: 8%">
+                                  <select id="aspectos_sociologicos2" name="aspectos_sociologicos2" v-model="aspectos_sociologicos2" 
+                                  class="custom-select" required>
+                                            <option value="Si">Si</option>
+                                            <option value="No">No</option>
+                                  </select> 
+                              </td>
                             </tr>
                             <tr>
                               <td>Problemas familiares:</td>
-                              <td> 
-                               <input type="checkbox" class="" id="aspectos_sociologicos3" name="aspectos_sociologicos3" 
-                               v-model="aspectos_sociologicos3" value="1">
+                              <td style="width: 8%">
+                                  <select id="aspectos_sociologicos3" name="aspectos_sociologicos3" v-model="aspectos_sociologicos3" 
+                                  class="custom-select" required>
+                                            <option value="Si">Si</option>
+                                            <option value="No">No</option>
+                                  </select> 
                               </td>
                             </tr>
                             <tr>
@@ -76,18 +89,33 @@
                             </tr>
                             <tr>
                               <td>Dificultades de concentración:</td>
-                              <td><input type="checkbox" class="" id="aspectos_academicos1" name="aspectos_academicos1" 
-                                v-model="aspectos_academicos1" value="1"></td>
+                              <td style="width: 8%">
+                                  <select id="aspectos_academicos1" name="aspectos_academicos1" v-model="aspectos_academicos1" 
+                                  class="custom-select" required>
+                                            <option value="Si">Si</option>
+                                            <option value="No">No</option>
+                                  </select> 
+                              </td>
                             </tr>
                             <tr>
                               <td>Falta de motivación académica:</td>
-                              <td> <input type="checkbox" class="" id="aspectos_academicos2" name="aspectos_academicos2" 
-                                v-model="aspectos_academicos2" value="1"></td>
+                              <td style="width: 8%">
+                                  <select id="aspectos_academicos2" name="aspectos_academicos2" v-model="aspectos_academicos2" 
+                                  class="custom-select" required>
+                                            <option value="Si">Si</option>
+                                            <option value="No">No</option>
+                                  </select> 
+                              </td>
                             </tr>
                             <tr>
                               <td>Bajo rendimiento académico:</td>
-                              <td> <input type="checkbox" class="" id="aspectos_academicos3" name="aspectos_academicos3" 
-                                v-model="aspectos_academicos3" value="1"></td>
+                              <td style="width: 8%">
+                                  <select id="aspectos_academicos3" name="aspectos_academicos3" v-model="aspectos_academicos3" 
+                                  class="custom-select" required>
+                                            <option value="Si">Si</option>
+                                            <option value="No">No</option>
+                                  </select> 
+                              </td>
                             </tr>
                             <tr>
                               <th scope="row" colspan="3">OTROS (especifique):

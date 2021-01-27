@@ -60,41 +60,35 @@
                             </tr>
                             <tr>
                               <td>Indisciplina:</td>
-                              <td> 
-                                  <div v-if="can.va.aspectos_sociologicos1==1">
-                                    <input type="checkbox" id="aspectos_sociologicos1" name="aspectos_sociologicos1" 
-                                    checked="true" value="1" v-model="aspectos_sociologicos1">
-                                  </div>
-                                  <div v-else>
-                                    <input type="checkbox" id="aspectos_sociologicos1" name="aspectos_sociologicos1" value="1"
-                                    v-model="aspectos_sociologicos1">
-                                  </div>
+                              <td>@{{can.va.aspectos_sociologicos1}}</td>
+                              <td style="width: 8%">
+                                  <select id="aspectos_sociologicos1" name="aspectos_sociologicos1" v-model="aspectos_sociologicos1" 
+                                  class="custom-select" required>
+                                      <option value="Si">Si</option>
+                                      <option value="No">No</option>
+                                  </select> 
                               </td>
                             </tr>
                             <tr>
                               <td>Problemas de integración:</td>
-                              <td> 
-                                  <div v-if="can.va.aspectos_sociologicos2==1">
-                                    <input type="checkbox" id="aspectos_sociologicos2" name="aspectos_sociologicos2" 
-                                    checked="true" value="1" v-model="aspectos_sociologicos2">
-                                  </div>
-                                  <div v-else>
-                                    <input type="checkbox" id="aspectos_sociologicos2" name="aspectos_sociologicos2" value="1"
-                                    v-model="aspectos_sociologicos2">
-                                  </div>
+                              <td>@{{can.va.aspectos_sociologicos2}}</td>
+                              <td style="width: 8%">
+                                  <select id="aspectos_sociologicos2" name="aspectos_sociologicos2" v-model="aspectos_sociologicos2" 
+                                  class="custom-select" required>
+                                      <option value="Si">Si</option>
+                                      <option value="No">No</option>
+                                  </select> 
                               </td>
                             </tr>
                             <tr>
                               <td>Problemas familiares:</td>
-                              <td> 
-                                <div v-if="can.va.aspectos_sociologicos3==1">
-                                   <input type="checkbox" id="aspectos_sociologicos3" name="aspectos_sociologicos3" 
-                                   checked="true" value="1" v-model="aspectos_sociologicos3">
-                                 </div>
-                                 <div v-else>
-                                    <input type="checkbox" id="aspectos_sociologicos3" name="aspectos_sociologicos3" value="1"
-                                    v-model="aspectos_sociologicos3">
-                                 </div>
+                              <td>@{{can.va.aspectos_sociologicos3}}</td>
+                              <td style="width: 8%">
+                                  <select id="aspectos_sociologicos3" name="aspectos_sociologicos3" v-model="aspectos_sociologicos3" 
+                                  class="custom-select" required>                                 
+                                      <option value="Si">Si</option>
+                                      <option value="No">No</option>
+                                  </select> 
                               </td>
                             </tr>
                             <tr>
@@ -102,41 +96,35 @@
                             </tr>
                             <tr>
                               <td>Dificultades de concentración:</td>
-                              <td>
-                                <div v-if="can.va.aspectos_academicos1==1">
-                                   <input type="checkbox" id="aspectos_academicos1" name="aspectos_academicos1" 
-                                   checked="true" value="1" v-model="aspectos_academicos1">
-                                </div>
-                                <div v-else>
-                                   <input type="checkbox" id="aspectos_academicos1" name="aspectos_academicos1" value="1"
-                                   v-model="aspectos_academicos1">
-                                </div>
+                              <td>@{{can.va.aspectos_academicos1}}</td>
+                              <td style="width: 8%">
+                                  <select id="aspectos_academicos1" name="aspectos_academicos1" v-model="aspectos_academicos1" 
+                                  class="custom-select" required>
+                                      <option value="Si">Si</option>
+                                      <option value="No">No</option>
+                                  </select> 
                               </td>
                             </tr>
                             <tr>
                               <td>Falta de motivación académica:</td>
-                              <td>
-                                <div v-if="can.va.aspectos_academicos2==1"> 
-                                  <input type="checkbox" id="aspectos_academicos2" name="aspectos_academicos2" 
-                                  checked="true" value="1" v-model="aspectos_academicos2">
-                                </div>
-                                <div v-else> 
-                                  <input type="checkbox" id="aspectos_academicos2" name="aspectos_academicos2" value="1" 
-                                  v-model="aspectos_academicos2">
-                                </div>
+                              <td>@{{can.va.aspectos_academicos2}}</td>
+                              <td style="width: 8%">
+                                  <select id="aspectos_academicos2" name="aspectos_academicos2" v-model="aspectos_academicos2" 
+                                  class="custom-select" required>
+                                      <option value="Si">Si</option>
+                                      <option value="No">No</option>
+                                  </select> 
                               </td>
                             </tr>
                             <tr>
                               <td>Bajo rendimiento académico:</td>
-                              <td>
-                                <div v-if="can.va.aspectos_academicos3==1"> 
-                                  <input type="checkbox" id="aspectos_academicos3" name="aspectos_academicos3" 
-                                  checked="true" value="1" v-model="aspectos_academicos3">
-                                </div>
-                                <div v-else> 
-                                  <input type="checkbox" id="aspectos_academicos3" name="aspectos_academicos3" value="1"
-                                  v-model="aspectos_academicos3">
-                                </div>
+                              <td>@{{can.va.aspectos_academicos3}}</td>
+                              <td style="width: 8%">
+                                  <select id="aspectos_academicos3" name="aspectos_academicos3" v-model="aspectos_academicos3" 
+                                  class="custom-select" required>
+                                      <option value="Si">Si</option>
+                                      <option value="No">No</option>
+                                  </select> 
                               </td>
                             </tr>
                             <tr>

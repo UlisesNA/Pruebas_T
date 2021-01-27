@@ -87,7 +87,7 @@ class PdfCitController extends Controller
         $pdf->Cell(95, 5, utf8_decode("Aspectos Sociológicos"), 1, 0, "C", "true");
         $pdf->ln();
         $pdf->Cell(90, 5, utf8_decode("Indisciplina:  "), 1, 0, "L", "true");
-        if($c[0]->aspectos_sociologicos1==1){
+        if($c[0]->aspectos_sociologicos1=="Si"){
             $pdf->Cell(5, 5, utf8_decode("*"), 1, 0, "C", "true");
         }
         else{
@@ -95,7 +95,7 @@ class PdfCitController extends Controller
         }
         $pdf->ln();
         $pdf->Cell(90, 5, utf8_decode("Problemas de integración:  "), 1, 0, "L", "true");
-        if($c[0]->aspectos_sociologicos2==1){
+        if($c[0]->aspectos_sociologicos2=="Si"){
             $pdf->Cell(5, 5, utf8_decode("*"), 1, 0, "C", "true");
         }
         else{
@@ -103,7 +103,7 @@ class PdfCitController extends Controller
         }
         $pdf->ln();
         $pdf->Cell(90, 5, utf8_decode("Problemas familiares:  "), 1, 0, "L", "true");
-        if($c[0]->aspectos_sociologicos3==1){
+        if($c[0]->aspectos_sociologicos3=="Si"){
             $pdf->Cell(5, 5, utf8_decode("*"), 1, 0, "C", "true");
         }
         else{
@@ -113,7 +113,7 @@ class PdfCitController extends Controller
         $pdf->Cell(95, 5, utf8_decode("Aspectos Académicos"), 1, 0, "C", "true");
         $pdf->ln();
         $pdf->Cell(90, 5, utf8_decode("Dificultades de concentración:  "), 1, 0, "L", "true");
-        if($c[0]->aspectos_academicos1==1){
+        if($c[0]->aspectos_academicos1=="Si"){
             $pdf->Cell(5, 5, utf8_decode("*"), 1, 0, "C", "true");
         }
         else{
@@ -121,7 +121,7 @@ class PdfCitController extends Controller
         }
         $pdf->ln();
         $pdf->Cell(90, 5, utf8_decode("Falta de motivación académica:  "), 1, 0, "L", "true");
-        if($c[0]->aspectos_academicos2==1){
+        if($c[0]->aspectos_academicos2=="Si"){
             $pdf->Cell(5, 5, utf8_decode("*"), 1, 0, "C", "true");
         }
         else{
@@ -129,7 +129,7 @@ class PdfCitController extends Controller
         }
         $pdf->ln();
         $pdf->Cell(90, 5, utf8_decode("Bajo rendimiento académico:  "), 1, 0, "L", "true");
-        if($c[0]->aspectos_academicos3==1){
+        if($c[0]->aspectos_academicos3=="Si"){
             $pdf->Cell(5, 5, utf8_decode("*"), 1, 0, "C", "true");
         }
         else{
