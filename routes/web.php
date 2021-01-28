@@ -163,6 +163,12 @@ Route::group(['prefix'=>'tutorias'],function () {
     ///PLANEACION DESARROLLO ACADEMICO
     Route::Resource('/planeaciondesarrollo','Dep_desarrolloController');
 
+    ///CONSULTA DE GENERACIONES PARA PLANEACION
+    Route::get('generacion','Dep_desarrolloController@generacion');
+
+    ///CONSULTA DE ACTIVIDADES DE PLANEACION
+    Route::post('actividades','Dep_desarrolloController@actividades');
+
     ///REVISION DE PLANEACION DESARROLLO ACADEMICO
     Route::get('/revisiondesarrollo', function () {
         return view('dep_desarrollo.revisiondesarrollo');
@@ -173,6 +179,9 @@ Route::group(['prefix'=>'tutorias'],function () {
 
     ///LISTA DE PROFESORES EN ASIGNA COORDINADOR INSTITUCIONAL
     Route::Resource('/asignacoordinadorgeneral','AsignaCoordinadorGeneralController');
+
+    ////Checar si ya existe coordinador institucional
+    Route::get('check','AsignaCoordinadorGeneralController@check');
 
     ///LISTA DE CARRERAS EN REVISION DE DE PLANEACION EN DESARROLLO ACADEMICO
     Route::get('/carrerasinst','Coordina_instController@carreras1');

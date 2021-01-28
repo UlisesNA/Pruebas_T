@@ -27,6 +27,10 @@ class AsignaCoordinadorGeneralController extends Controller
     {
         //
         $datosProfesores=GnralPersonales::getAllProf();
+        $datos=$datosProfesores;
+        return $datos;
+
+        /*$datosProfesores=GnralPersonales::getAllProf();
 
         $checkasig=DB::select('SELECT * FROM desarrollo_asigna_coordinador_general,gnral_personales
                                         WHERE desarrollo_asigna_coordinador_general.id_personal=gnral_personales.id_personal
@@ -40,8 +44,25 @@ class AsignaCoordinadorGeneralController extends Controller
             $datos['check']=false;
         }
         $datos['profesores']=$datosProfesores;
-        return $datos;
+        return $datos;*/
 
+    }
+    public  function check()
+    {
+        //dd(Session::get('id_periodo'));
+        $checkasig=DB::select('SELECT * FROM desarrollo_asigna_coordinador_general,gnral_personales
+                                        WHERE desarrollo_asigna_coordinador_general.id_personal=gnral_personales.id_personal
+                                        AND desarrollo_asigna_coordinador_general.deleted_at is null
+                                        AND desarrollo_asigna_coordinador_general.id_personal_asigna='.Session::get('desarrollo'));
+        if(count($checkasig)>0)
+        {
+            $datos['check']=true;
+        }
+        else{
+            $datos['check']=false;
+        }
+
+        return $datos;
     }
     public function repo(Request $request){
         dd($request);

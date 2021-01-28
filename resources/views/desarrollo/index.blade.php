@@ -40,7 +40,7 @@
                 </div>
             </div>
         </div>
-        @include('jefe.eliminarcoor')
+        @include('desarrollo.eliminarcoor')
     </div>
 
     <script>
@@ -62,7 +62,7 @@
                     }).catch(error=>{ });
                 },
                 deleteC:function () {
-                    var url = '/asignacoordinadorgeneral/' + this.id_co;
+                    var url = '/tutorias/asignacoordinadorgeneral/' + this.id_co;
                     axios.delete(url).then(response => {
                         this.getDatos();
                     });
