@@ -169,6 +169,12 @@ Route::group(['prefix'=>'tutorias'],function () {
     ///CONSULTA DE ACTIVIDADES DE PLANEACION
     Route::post('actividades','Dep_desarrolloController@actividades');
 
+    ///MODAL EDITAR ACTIVIDAD DESARROLLO ACADEMICO
+    Route::post('/modalactactidesa','Dep_desarrolloController@actuactivi');
+
+    //RUTA APROBAR ACTIVIDAD
+    Route::post('/apruebaactividad','Dep_desarrolloController@apruactivi');
+
     ///REVISION DE PLANEACION DESARROLLO ACADEMICO
     Route::get('/revisiondesarrollo', function () {
         return view('dep_desarrollo.revisiondesarrollo');
