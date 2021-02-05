@@ -12,8 +12,6 @@ class Dep_desarrolloController extends Controller
 {
     public function index(Request $request)
     {
-        //$tabla=Exp_asigna_generacion::getGeneraciont1();
-        ///$tabla1=Exp_asigna_generacion::getDatos();
         return view('dep_desarrollo.index');
     }
     public  function generacion()
@@ -41,12 +39,6 @@ class Dep_desarrolloController extends Controller
                                     AND exp_asigna_generacion.id_asigna_generacion='.$request->id_asigna_generacion.'
                                     AND plan_actividades.deleted_at is null
                                     AND plan_asigna_planeacion_actividad.deleted_at is null');
-
-        /*$datos->map(function ($value, $key) {
-            $can=Plan_asigna_planeacion_actividad::where('id_estado',$value->id_estado)->count();
-            $value->estado=$can>0?true:false;
-            return $value;
-        });*/
         return $datos;
     }
 

@@ -166,7 +166,7 @@ Route::group(['prefix'=>'tutorias'],function () {
     ///CONSULTA DE GENERACIONES PARA PLANEACION
     Route::get('generacion','Dep_desarrolloController@generacion');
 
-    ///CONSULTA DE ACTIVIDADES DE PLANEACION
+    ///CONSULTA DE ACTIVIDADES DE PLANEACION DESARROLLO
     Route::post('actividades','Dep_desarrolloController@actividades');
 
     ///MODAL REVISAR ACTIVIDAD DESARROLLO ACADEMICO
@@ -194,6 +194,9 @@ Route::group(['prefix'=>'tutorias'],function () {
 
     ////Checar si ya existe coordinador institucional
     Route::get('check','AsignaCoordinadorGeneralController@check');
+
+    ///CONSULTA DE ACTIVIDADES DE PLANEACION COORDINADOR INSTITUCIONAL
+    Route::post('actividadescoor','Dep_desarrolloController@actividades');
 
     ///LISTA DE CARRERAS EN REVISION DE DE PLANEACION EN DESARROLLO ACADEMICO
     Route::get('/carrerasinst','Coordina_instController@carreras1');

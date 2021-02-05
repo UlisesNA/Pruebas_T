@@ -21,9 +21,7 @@ class Coordina_instController extends Controller
         ]);
         $id=DB::select('SELECT @@identity as id');
         //dd($id);*/
-        $tabla=Exp_asigna_generacion::getGeneraciont();
-        $tabla1=Exp_asigna_generacion::getDatos();
-        return view('coordina_inst.index',compact('tabla','tabla1'));
+        return view('coordina_inst.index');
     }
     public function carreras()
     {

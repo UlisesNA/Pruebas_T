@@ -1,301 +1,302 @@
 @extends('layouts.app')
 @section('content')
-    <div class="container card">
-        <div class="row">
-            <div class="col-md-12">
-                <nav>
-                    <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-                        @foreach($tabla as $dato)
-                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#target_{{$dato->id_asigna_generacion}}" role="tab" aria-controls="target_{{$dato->id_asigna_generacion}}" aria-selected="false">Generación {{$dato->generacion}}</a>
-                        @endforeach
+    <div class="container" id="ind">
+        <div class="row" v-show="menugrupos==true">
+            <div class="col-12">
+                <div class="row" >
+                    <div class="col-2 pt-2" v-for="grupo in grupos">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Generación @{{ grupo.generacion }}</h5>
+                                <a href="#" @click="getlista(grupo)" class="btn btn-outline-primary">Ver</a>
+                            </div>
+                        </div>
                     </div>
-                </nav>
-                <div class="tab-content" id="nav-tabContent">
-                    @foreach($tabla as $dato)
-                        <div class="tab-pane fade" id="target_{{$dato->id_asigna_generacion}}" role="tabpanel" aria-labelledby="nav-profile-tab">
-                            <div class="container card">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <br>
-                                        <div class="tab-content" id="nav-tabContent">
-                                            <div class="tab-pane fade show active" id="primero" role="tabpanel" aria-labelledby="primero-tab">
-                                                <br>
-                                                <div class="form-group row">
-                                                    <div class="col-sm-11" align="center"><h5>Planeación Generación {{$dato->generacion}}</h5></div>
-                                                    <a class="btn btn-primary" data-toggle="modal" data-target="#myModal_{{$dato->id_generacion}}" style="background: #067a39;color: white">+</a>
-                                                </div>
-                                                <table class="table table-hover table-sm">
-                                                    <tr>
-                                                        <th>Fecha Inicio</th>
-                                                        <th>Fecha Fin</th>
-                                                        <th>Nombre de Actividad</th>
-                                                        <th>Objetivo</th>
-                                                        <th>Acciones</th>
-                                                        <th>Acciones</th>
-                                                    </tr>
-                                                    @foreach($tabla1 as $dat)
-                                                        @if($dato->id_asigna_generacion==$dat->id_asigna_generacion)
-                                                            <tr onmouseover="this.style.backgroundColor='#DBE7F3'" onmouseout="this.style.backgroundColor='white'">
-                                                                <td>{{$dat->fi_acti}}</td>
-                                                                <td>{{$dat->ff_acti}}</td>
-                                                                <td>{{$dat->desc_actividad}}</td>
-                                                                <td>{{$dat->objetivo_actividad}}</td>
-                                                                @if($dat->id_estado == 2 && $dat->comentario != null)
-                                                                    <td>
-                                                                        <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_plan_actividad}}_tar" style="background: #f0f0f0;">
-                                                                            <i class="fas fa-pen" style="color: black"></i>
-                                                                        </a>
-                                                                    </td>
-                                                                    <td>
-                                                                        <a>
-                                                                            Actividad Corregida
-                                                                        </a>
-                                                                    </td>
-                                                                @else
-                                                                    @if($dat->id_estado == 2 && $dat->comentario == null)
-                                                                    <td>
-                                                                        <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_plan_actividad}}_tar" style="background: #f0f0f0;">
-                                                                            <i class="fas fa-pen" style="color: black"></i>
-                                                                        </a>
-                                                                    </td>
-                                                                    <td>
-                                                                        <form action="{{ route('actividades.destroy', $dat->id_plan_actividad)}}" method="post">
-                                                                            @csrf
-                                                                            @method('DELETE')
-                                                                            <button type="submit" class="btn btn-lg" id="final" style="background: #f0f0f0;"><i class="fas fa-times-circle"></i></button>
-
-                                                                        </form>
-                                                                    </td>
-                                                                    @else
-                                                                        @if($dat->id_estado == 1)
-                                                                            <td>
-                                                                                <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_plan_actividad}}_ver" style="background: #f0f0f0;">
-                                                                                    <i class="fas fa-eye" style="color: black"></i>
-                                                                                </a>
-                                                                            </td>
-                                                                            <td>
-                                                                                <a>
-                                                                                    Actividad Aprobada
-                                                                                </a>
-                                                                            </td>
-                                                                        @else
-                                                                            @if($dat->id_estado == 3)
-                                                                                <td>
-                                                                                    <a class="btn btn-lg" data-toggle="modal" data-target="#myModal_{{$dat->id_plan_actividad}}_tar" style="background: #f0f0f0;">
-                                                                                        <i class="fas fa-edit" style="color: black"></i>
-                                                                                    </a>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <a>
-                                                                                        Actividad con Cambios
-                                                                                    </a>
-                                                                                </td>
-                                                                            @endif
-                                                                        @endif
-                                                                    @endif
-                                                                @endif
-                                                            </tr>
-                                                        @endif
-                                                    @endforeach
-                                                </table>
+                </div>
+            </div>
+        </div>
+        <div class="row" v-show="menu==true">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-12 pb-3">
+                        <i class="fas fa-chevron-right h5"></i>
+                        <a href="{{url('/tutorias/planeacioncoorgen')}}" class="font-weight-bold h6 pb-1">GENERACIONES</a>
+                        <i class="fas fa-chevron-right h5"></i>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <div class="col-11 text-center">PLANEACIÓN @{{ gen }}</div>
+                                        <div class="col-1 text-center">
+                                            <button class="btn btn-outline-info m-1"
+                                                    @click="acanaliza(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Agregar Actividad">+
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body" v-if="(lista==true && datos.length>0)">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="tableFixHeadLista">
+                                                <data-table class=" col-12 table-hover table-sm" :data="datos" :columns-to-display="gridColumns">
+                                                    <template slot="Fecha Inicio" scope="alumno">
+                                                        <div class="text-center pt-2">@{{ alumno.entry.fi_acti}}</div>
+                                                    </template>
+                                                    <template slot="Fecha Fin" scope="alumno">
+                                                        <div class="text-center pt-2">@{{ alumno.entry.ff_acti}}</div>
+                                                    </template>
+                                                    <template slot="Nombre Actividad" scope="alumno">
+                                                        <div class="text-center pt-2">@{{ alumno.entry.desc_actividad}}</div>
+                                                    </template>
+                                                    <template slot="Acciones" scope="alumno">
+                                                        <div class="text-center" v-if="alumno.entry.id_estado==2 && alumno.entry.comentario!=null">
+                                                            <button class="btn btn-outline-primary m-1"
+                                                                    @click="acanaliza(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Editar Actividad"><i class="far fa-edit"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="text-center" v-else-if="alumno.entry.id_estado==2 && alumno.entry.comentario==null">
+                                                            <button class="btn btn-outline-primary m-1"
+                                                                    @click="acanaliza(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Editar Actividad"><i class="far fa-edit"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="text-center" v-else-if="alumno.entry.id_estado==1">
+                                                            <button class="btn btn-outline-primary m-1"
+                                                                    @click="acanaliza(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Ver Actividad"><i class="far fa-eye"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="text-center" v-else-if="alumno.entry.id_estado==3">
+                                                            <button class="btn btn-outline-primary m-1"
+                                                                    @click="acanaliza(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Actividad con Cambios"><i class="far fa-edit"></i>
+                                                            </button>
+                                                        </div>
+                                                    </template>
+                                                    <template slot="Mensaje" scope="alumno">
+                                                        <div class="text-center" v-if="alumno.entry.id_estado==2 && alumno.entry.comentario!=null">
+                                                            <a>Actividad Corregida</a>
+                                                        </div>
+                                                        <div class="text-center" v-else-if="alumno.entry.id_estado==2 && alumno.entry.comentario==null">
+                                                            <button class="btn btn-outline-primary m-1"
+                                                                    @click="acanaliza(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Eliminar Actividad"><i class="far fa-eraser"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="text-center" v-else-if="alumno.entry.id_estado==1">
+                                                            <a>Actividad Aprobada</a>
+                                                        </div>
+                                                        <div class="text-center" v-else-if="alumno.entry.id_estado==3">
+                                                            <a>Actividad Con Cambios</a>
+                                                        </div>
+                                                    </template>
+                                                    <template slot="nodata">
+                                                        <div class=" alert font-weight-bold alert-danger text-center">Ningún dato encontrado</div>
+                                                    </template>
+                                                </data-table>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="card-body" v-if="datos.length==0">
+                                <div class="row ">
+                                    <div class="col-12 alert-info alert text-center">
+                                        <h5 class="font-weight-bold">No se han asignado actividades</h5>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    @endforeach
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        Vue.use(DataTable);
+        new Vue({
+            el: "#ind",
+            created: function () {
+                this.lista = false;
+                this.plan = false;
+                this.menugrupos = true;
+                this.graficas = false;
+                this.menu = false;
+                this.getTut();
+            },
+            data: {
+                gridColumns: ['Fecha Inicio', 'Fecha Fin', 'Nombre Actividad', 'Acciones', 'Mensaje'],
+                rut: "/tutorias/actividadescoor",/////////////////
+                rutaa: "/tutorias/semestre",
+                generacion: "/tutorias/generacion",/////////////////////
+                act: '/tutorias/actualiza',////////
+                actestra: '/tutorias/actualizaestra',
+                actsuge: '/tutorias/actualizasuge',
+                cambios: '/tutorias/cambio',
+                editaract : '/tutorias/modalactactidesa',//////////////////////////
+                apruact: '/tutorias/apruebaactividad',/////////////////////////////
+                correc : '/tutorias/modalcorrecion',//////////////////////////
+                aprucorrect: '/tutorias/apruebacorreccion',/////////////////////////////
+                datos: [],////////////////////
+                grupos: [],///////////
+                alumnog: [],
+                semestres: [],
+                carreras: [],
+                grupo: [],
+                lista: false,
+                listaa: false,
+                listacanaliza: false,
+                menugrupos: true,/////////
+                menu: false,
+                carrera: "",
+                gen: "",
+                gene: "",
+                idca: null,
+                idasigna: null,
+                content_modal: "",
+                act: {
+                    va: {
+                        id_plan_actividad: "",
+                        desc_actividad: "",
+                        objetivo_actividad: "",
+                        fi_acti: "",
+                        ff_acti: "",
+                        id_asigna_generacion: "",
+                        comentario: "",
+                        id_estado: "",
+                        id_asigna_planeacion_actividad: "",
+                        id_generacion: "",
+                        generacion: "",
+                    },
+                },
+                correct: {
+                    va: {
+                        id_plan_actividad: "",
+                        id_asigna_generacion: "",
+                        comentario: "",
+                        id_estado: "",
+                        id_asigna_planeacion_actividad: "",
+                        id_generacion: "",
+                        generacion: "",
+                    },
+                },
+            },
+            methods: {
+                ////////////////////////
+                getTut: function () {
+                    axios.get(this.generacion).then(response => {
+                        this.grupos = response.data;
+                    }).catch(error => {
+                    });
+                },
+                ////////////
+                getlista: function (grupo) {
+                    this.idgenera = grupo.id_generacion;
+                    this.idasigna = grupo.id_asigna_generacion;
+                    this.gen = " GENERACIÓN " + grupo.generacion;
+                    this.getAlumnos();
+                },
+                getAlumnos: function () {
+                    axios.post(this.rut, {
+                        id_generacion: this.idgenera,
+                        id_asigna_generacion: this.idasigna
+                    }).then(response => {
+                        this.menugrupos = false;
+                        this.menu = true;
+                        this.lista = true;
+                        this.plan = false;
+                        this.listacanaliza = false;
+                        this.graficas = false;
+                        this.datos = response.data;
+                    }).catch(error => {
+                    });
+                },
+                acanaliza: function (alumno) {
+                    console.log(alumno);
+                    axios.post(this.editaract, {id: alumno.id_plan_actividad}).then(response => {
+                        this.act.va.id_plan_actividad = response.data.va[0].id_plan_actividad;
+                        this.act.va.desc_actividad = response.data.va[0].desc_actividad;
+                        this.act.va.objetivo_actividad = response.data.va[0].objetivo_actividad;
+                        this.act.va.fi_acti = response.data.va[0].fi_acti;
+                        this.act.va.ff_acti = response.data.va[0].ff_acti;
+                        this.act.va.id_asigna_generacion = response.data.va[0].id_asigna_generacion;
+                        this.act.va.comentario = response.data.va[0].comentario;
+                        this.act.va.id_estado = response.data.va[0].id_estado;
+                        this.act.va.id_asigna_planeacion_actividad = response.data.va[0].id_asigna_planeacion_actividad;
+                        this.act.va.id_generacion = response.data.va[0].id_generacion;
+                        this.act.va.generacion = response.data.va[0].generacion;
+                        $("#modaleditar").modal("show");
+                    });
 
-    <!-- crear actividad-->
-    @foreach($tabla as $dato)
-        <div class="modal fade" id="myModal_{{$dato->id_generacion}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <form action="{{url('actividades')}}" method="post">
-                    <div class="modal-body">
+                },
+                submitAprobar: function(){
+                    axios.post(this.apruact,  {
+                        id_plan_actividad: this.act.va.id_plan_actividad,
+                        id_generacion: this.act.va.id_generacion,
+                        id_asigna_generacion: this.act.va.id_asigna_generacion,
+                        generacion: this.act.va.generacion,
+                        id_estado:1,
+                    })
+                        .then(response => {
+                            $("#modaleditar").modal("hide");
+                            //alert(response.data)
+                            this.getlista(response.data);
+                            this.popToast('Actividad Aprobada');
+                        });
+                },
+                correccion: function (correc) {
+                    console.log(correc);
+                    axios.post(this.correc, {id: correc.id_plan_actividad}).then(response => {
+                        this.correct.va.comentario = response.data.va[0].comentario;
+                        this.correct.va.id_plan_actividad = response.data.va[0].id_plan_actividad;
+                        this.correct.va.id_asigna_planeacion_actividad = response.data.va[0].id_asigna_planeacion_actividad;
+                        this.correct.va.id_asigna_generacion = response.data.va[0].id_asigna_generacion;
+                        this.correct.va.id_generacion = response.data.va[0].id_generacion;
+                        this.correct.va.generacion = response.data.va[0].generacion;
+                        $("#modaleditar").modal("hide");
+                        $("#modalcorrecion").modal("show");
+                    });
 
-                            {{ csrf_field() }}
-                            <div class="form-group">
-                                <div class="row">
+                },
+                submitCorreccion: function(){
+                    axios.post(this.aprucorrect,  {
+                        id_plan_actividad: this.correct.va.id_plan_actividad,
+                        id_generacion: this.correct.va.id_generacion,
+                        id_asigna_generacion: this.correct.va.id_asigna_generacion,
+                        generacion: this.correct.va.generacion,
+                        comentario: this.correct.va.comentario,
+                        id_estado:3,
+                    })
+                        .then(response => {
+                            $("#modalcorrecion").modal("hide");
+                            //alert(response.data)
+                            this.getlista(response.data);
+                            this.popToast('Corrección Agregada');
+                        });
+                },
+                popToast(Mensaje) {
+                    const h = this.$createElement;
+                    const vNodesMsg = h(
+                        'p',
+                        { class: ['text-center', 'mb-0'] },
+                        [
+                            h('b-spinner', { props: { type: 'grow', small: true } }),
+                            h('strong', {}, Mensaje),
+                            h('b-spinner', { props: { type: 'grow', small: true } })
+                        ]
+                    );
+                    this.$bvToast.toast([vNodesMsg], {
+                        solid: true,
+                        variant: 'success',
+                        toaster:'b-toaster-top-full',
+                        noCloseButton: true,
+                        noHoverPause:false,
+                        autoHideDelay:'2000',
 
-                                    <div class="col">
-                                        <label >Fecha Inicio</label>
-                                        <input required type="date" class="form-control" id="fi_actividad" name="fi_actividad" min="">
-                                    </div>
-                                    <div class="col">
-                                        <label >Fecha Límite</label>
-                                        <input required type="date" class="form-control"  id="ff_actividad" name="ff_actividad" min="" max="">
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Nombre de Actividad</label>
-                                <textarea required class="form-control" rows="3" id="desc_actividad" name="desc_actividad"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>Objetivo</label>
-                                <textarea required class="form-control" rows="3" id="objetivo_actividad" name="objetivo_actividad"></textarea>
-                            </div>
-                            <div style="display: none">
-                                <input type="number" class="form-control"  id="id_generacion" name="id_generacion" value="{{$dato->id_generacion}}">
-                                <input type="number" class="form-control"  id="id_estado" name="id_estado" value="2">
-                            </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" style="background: #0c7a0e" id="trg1">Guardar</button>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <a class="btn" style="background: #e0e0e0">Cerrar</a>
-                        </button>
-                    </div>
-
-                    </form>
-
-                </div>
-            </div>
-        </div>
-    @endforeach
-
-    <!-- editar actividad-->
-    @foreach($tabla1 as $dato)
-        <div class="modal fade" id="myModal_{{$dato->id_plan_actividad}}_tar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Editar Actividad</h5>
-
-                    </div>
-                    <div class="modal-body">
-                        <form action="{{route('actividades.update',$dato->id_plan_actividad)}}" method="post">
-                            @csrf
-                            @method('PUT')
-                            <div class="modal-body">
-
-                                <div class="form-group">
-                                    <div class="row">
-
-                                        <div class="col">
-                                            <label >Fecha Inicio</label>
-                                            <input required type="date" class="form-control" id="fi_actividad" name="fi_actividad" value={{$dato->fi_actividad}}>
-                                        </div>
-                                        <div class="col">
-                                            <label >Fecha Límite</label>
-                                            <input required type="date" class="form-control"  id="ff_actividad" name="ff_actividad" value="{{$dato->ff_actividad}}">
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Nombre de Actividad</label>
-                                    <textarea required class="form-control" rows="3" id="desc_actividad" name="desc_actividad">{{$dato->desc_actividad }}</textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label>Objetivo</label>
-                                    <textarea required class="form-control" rows="3" id="objetivo_actividad" name="objetivo_actividad">{{$dato->objetivo_actividad}}</textarea>
-                                </div>
-                                @if($dato->comentario!=null)
-                                    <div class="form-group">
-                                        <label>Comentario</label>
-                                        <textarea class="form-control" rows="3" id="comentario"disabled name="comentario">{{$dato->comentario}}</textarea>
-                                    </div>
-                                @endif
-                            </div>
-                            <div style="display: none">
-                                <input type="number" class="form-control"  id="id_estado" name="id_estado" value="2">
-                            </div>
-                            <div class="modal-footer">
-                                <div align="center"><button type="submit" class="btn" style="background: #e0e0e0">Enviar</button></div>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <a class="btn" style="background: #e0e0e0">Cerrar</a>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endforeach
-
-    <!-- ver actividad-->
-    @foreach($tabla1 as $dato)
-        <div class="modal fade" id="myModal_{{$dato->id_plan_actividad}}_ver" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Ver Actividad</h5>
-
-                    </div>
-                    <div class="modal-body">
-                        <form  method="post">
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <div class="row">
-
-                                        <div class="col">
-                                            <label >Fecha Inicio</label>
-                                            <input type="date" class="form-control" id="fi_actividad" name="fi_actividad" disabled value={{$dato->fi_actividad}}>
-                                        </div>
-                                        <div class="col">
-                                            <label >Fecha Limite</label>
-                                            <input type="date" class="form-control"  id="ff_actividad" name="ff_actividad" disabled value="{{$dato->ff_actividad}}">
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Nombre de Actividad</label>
-                                    <textarea class="form-control" rows="3" id="desc_actividad" disabled name="desc_actividad">{{$dato->desc_actividad }}</textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label>Objetivo</label>
-                                    <textarea class="form-control" rows="3" id="objetivo_actividad" disabled name="objetivo_actividad">{{$dato->objetivo_actividad}}</textarea>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <div align="center">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <a class="btn" style="background: #e0e0e0">Cerrar</a>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endforeach
-
+                    });
+                },
+            },
+        }).catch(error=>{ });
+    </script>
 @endsection
-<script>
-    $(document).ready(function () {
-        $('#final_primero').click(function(){
-            var con= true;
-            var datos = $('#form-expe_1').serialize();
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url: "actividades",
-                method: "POST",
-                dataType: "json",
-                data:datos,
-                success:function (data) {
-                    location.reload();
-                },
-                error:function(request,status,data)
-                {
-                    console.log(request);
-                    console.log(status);
-                    console.log(data);
-                    alert("Hubo un error al insertar el dato, intentelo de nuevo");
-                }
-            });
-        });
-    });
-</script>
 

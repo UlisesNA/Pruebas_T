@@ -1,4 +1,3 @@
-
 @extends('layouts.app')
 @section('content')
     <div class="container" id="ind">
@@ -36,7 +35,7 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="tableFixHeadLista">
-                                                <data-table class=" col-12 table table-sm" :data="datos" :columns-to-display="gridColumns">
+                                                <data-table class=" col-12 table-hover table-sm" :data="datos" :columns-to-display="gridColumns">
                                                     <template slot="Fecha Inicio" scope="alumno">
                                                         <div class="text-center pt-2">@{{ alumno.entry.fi_acti}}</div>
                                                     </template>
