@@ -169,11 +169,17 @@ Route::group(['prefix'=>'tutorias'],function () {
     ///CONSULTA DE ACTIVIDADES DE PLANEACION
     Route::post('actividades','Dep_desarrolloController@actividades');
 
-    ///MODAL EDITAR ACTIVIDAD DESARROLLO ACADEMICO
+    ///MODAL REVISAR ACTIVIDAD DESARROLLO ACADEMICO
     Route::post('/modalactactidesa','Dep_desarrolloController@actuactivi');
+
+    ///MODAL SUGERENCIA EN ACTIVIDAD DESARROLLO ACADEMICO
+    Route::post('/modalcorrecion','Dep_desarrolloController@correcion');
 
     //RUTA APROBAR ACTIVIDAD
     Route::post('/apruebaactividad','Dep_desarrolloController@apruactivi');
+
+    //RUTA AGREGAR CORRECION
+    Route::post('/apruebacorreccion','Dep_desarrolloController@agrecorreccion');
 
     ///REVISION DE PLANEACION DESARROLLO ACADEMICO
     Route::get('/revisiondesarrollo', function () {

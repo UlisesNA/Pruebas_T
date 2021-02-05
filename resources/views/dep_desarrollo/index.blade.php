@@ -52,7 +52,7 @@
                                                         </div>
                                                         <div class="text-center" v-else-if="alumno.entry.id_estado==2" class="text-center">
                                                             <button class="btn btn-outline-primary m-1"
-                                                                    @click="acanaliza(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Editar Actividad"><i class="far fa-edit"></i>
+                                                                    @click="acanaliza(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Revisar Actividad"><i class="far fa-edit"></i>
                                                             </button>
                                                         </div>
                                                         <div class="text-center" v-else-if="alumno.entry.id_estado==3">
@@ -82,6 +82,7 @@
 
         </div>
         @include('dep_desarrollo.modaleditar')
+        @include('dep_desarrollo.modalcorrecion')
     </div>
     <script type="text/javascript">
         Vue.use(DataTable);
@@ -106,6 +107,8 @@
                 cambios: '/tutorias/cambio',
                 editaract : '/tutorias/modalactactidesa',//////////////////////////
                 apruact: '/tutorias/apruebaactividad',/////////////////////////////
+                correc : '/tutorias/modalcorrecion',//////////////////////////
+                aprucorrect: '/tutorias/apruebacorreccion',/////////////////////////////
                 datos: [],////////////////////
                 grupos: [],///////////
                 alumnog: [],
@@ -130,6 +133,17 @@
                         objetivo_actividad: "",
                         fi_acti: "",
                         ff_acti: "",
+                        id_asigna_generacion: "",
+                        comentario: "",
+                        id_estado: "",
+                        id_asigna_planeacion_actividad: "",
+                        id_generacion: "",
+                        generacion: "",
+                    },
+                },
+                correct: {
+                    va: {
+                        id_plan_actividad: "",
                         id_asigna_generacion: "",
                         comentario: "",
                         id_estado: "",
@@ -200,6 +214,36 @@
                             //alert(response.data)
                             this.getlista(response.data);
                             this.popToast('Actividad Aprobada');
+                        });
+                },
+                correccion: function (correc) {
+                    console.log(correc);
+                    axios.post(this.correc, {id: correc.id_plan_actividad}).then(response => {
+                        this.correct.va.comentario = response.data.va[0].comentario;
+                        this.correct.va.id_plan_actividad = response.data.va[0].id_plan_actividad;
+                        this.correct.va.id_asigna_planeacion_actividad = response.data.va[0].id_asigna_planeacion_actividad;
+                        this.correct.va.id_asigna_generacion = response.data.va[0].id_asigna_generacion;
+                        this.correct.va.id_generacion = response.data.va[0].id_generacion;
+                        this.correct.va.generacion = response.data.va[0].generacion;
+                        $("#modaleditar").modal("hide");
+                        $("#modalcorrecion").modal("show");
+                    });
+
+                },
+                submitCorreccion: function(){
+                    axios.post(this.aprucorrect,  {
+                        id_plan_actividad: this.correct.va.id_plan_actividad,
+                        id_generacion: this.correct.va.id_generacion,
+                        id_asigna_generacion: this.correct.va.id_asigna_generacion,
+                        generacion: this.correct.va.generacion,
+                        comentario: this.correct.va.comentario,
+                        id_estado:3,
+                    })
+                        .then(response => {
+                            $("#modalcorrecion").modal("hide");
+                            //alert(response.data)
+                            this.getlista(response.data);
+                            this.popToast('Corrección Agregada');
                         });
                 },
                 popToast(Mensaje) {

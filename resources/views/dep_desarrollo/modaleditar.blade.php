@@ -44,7 +44,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" @click='submitAprobar()'>Aprobar</button>
-                    <button type="button" class="btn btn-secondary" @click='submitSugerencia()'>Sugerencia</button>
+                    <button type="button" class="btn btn-secondary" @click='correccion(act.va)'>Sugerencia</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                 </div>
             </form>

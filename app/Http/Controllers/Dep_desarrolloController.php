@@ -65,21 +65,37 @@ class Dep_desarrolloController extends Controller
                                     AND plan_asigna_planeacion_actividad.deleted_at is null
                                     GROUP BY plan_actividades.id_plan_actividad');
         return $data;
-        //dd($num);
-
-        /*$ic=count($num);
-        for ($i = 0; $i <$ic; $i++) {
-            $plan = Plan_asigna_planeacion_actividad::find($num[$i]->id_asigna_planeacion_actividad);
-            $plan->id_estado = $request->id_estado;
-            $plan->save();
-        }
-        return redirect()->back();*/
     }
     public function apruactivi(Request $request)
     {
         DB::table('Plan_asigna_planeacion_actividad')
             ->where('id_plan_actividad', '=', $request->id_plan_actividad)
             ->update(array("id_estado"=>$request->id_estado));
+
+        return $request;
+    }
+
+    public function correcion(Request $request)
+    {
+        $data['va']=DB::select('SELECT plan_actividades.id_plan_actividad,plan_actividades.desc_actividad,plan_actividades.objetivo_actividad,(plan_actividades.fi_actividad) as fi_acti,
+                                  (plan_actividades.ff_actividad) as ff_acti,exp_asigna_generacion.id_asigna_generacion,plan_asigna_planeacion_actividad.comentario,
+                                    plan_asigna_planeacion_actividad.id_estado,plan_asigna_planeacion_actividad.id_asigna_planeacion_actividad,
+                                    plan_actividades.fi_actividad,plan_actividades.fi_actividad,plan_actividades.ff_actividad,exp_generacion.id_generacion,exp_generacion.generacion
+                                    FROM plan_actividades,exp_asigna_generacion,plan_asigna_planeacion_actividad,exp_generacion
+                                    WHERE plan_asigna_planeacion_actividad.id_asigna_generacion=exp_asigna_generacion.id_asigna_generacion
+                                    AND plan_asigna_planeacion_actividad.id_plan_actividad=plan_actividades.id_plan_actividad
+                                    AND exp_asigna_generacion.id_generacion=exp_generacion.id_generacion
+                                    AND plan_actividades.id_plan_actividad='.$request->id.'
+                                    AND plan_actividades.deleted_at is null
+                                    AND plan_asigna_planeacion_actividad.deleted_at is null
+                                    GROUP BY plan_actividades.id_plan_actividad');
+        return $data;
+    }
+    public function agrecorreccion(Request $request)
+    {
+        DB::table('Plan_asigna_planeacion_actividad')
+            ->where('id_plan_actividad', '=', $request->id_plan_actividad)
+            ->update(array("id_estado"=>$request->id_estado,"comentario"=>$request->comentario));
 
         return $request;
     }
