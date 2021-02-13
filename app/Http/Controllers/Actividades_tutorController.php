@@ -43,13 +43,12 @@ class Actividades_tutorController extends Controller
         );
         Plan_actividades::create($planea);
         return response()->json();*/
+        //dd($request->id_generacion);
         $num=DB::select('SELECT exp_asigna_generacion.id_asigna_generacion
         FROM exp_asigna_generacion
         WHERE exp_asigna_generacion.deleted_at is null
         AND exp_asigna_generacion.id_generacion='.$request->id_generacion);
-
         //dd($num);
-
         $datos=request()->except('_token');
         Plan_actividades::create($datos);
         $id_actividad=DB::select('SELECT @@identity as id_ac');
@@ -77,23 +76,23 @@ class Actividades_tutorController extends Controller
             $plan->id_asigna_generacion = $num[$i]->id_asigna_generacion;
             $plan->save();
         }
-
-        return redirect()->back();
+        return $request;
+        //return redirect()->back();
     }
 
-    public function update(Request $request, $id)
+    public function actu(Request $request)
     {
-        $plan = Plan_actividades::find($id);
-        $plan->fi_actividad = $request->fi_actividad;
-        $plan->ff_actividad = $request->ff_actividad;
-        $plan->desc_actividad = $request->desc_actividad;
-        $plan->objetivo_actividad = $request->objetivo_actividad;
-        $plan->save();
+        DB::table('plan_actividades')
+            ->where('id_plan_actividad', '=', $request->id_plan_actividad)
+            ->update(array("desc_actividad"=>$request->desc_actividad,
+                            "objetivo_actividad"=>$request->objetivo_actividad,
+                            "fi_actividad"=>$request->fi_actividad,
+                            "ff_actividad"=>$request->ff_actividad));
         $num=DB::select('SELECT plan_asigna_planeacion_actividad.id_asigna_planeacion_actividad
         FROM plan_asigna_planeacion_actividad,plan_actividades
         WHERE plan_actividades.deleted_at is null
         AND plan_actividades.id_plan_actividad=plan_asigna_planeacion_actividad.id_plan_actividad
-        AND plan_asigna_planeacion_actividad.id_plan_actividad='.$id);
+        AND plan_asigna_planeacion_actividad.id_plan_actividad='.$request->id_plan_actividad);
         //dd($num);
         $ic=count($num);
         for ($i = 0; $i <$ic; $i++) {
@@ -101,7 +100,7 @@ class Actividades_tutorController extends Controller
             $plan->id_estado = $request->id_estado;
             $plan->save();
         }
-        return redirect()->back();
+        return $request;
     }
     public function update1(Request $request, $id)
     {
@@ -122,8 +121,19 @@ class Actividades_tutorController extends Controller
 
     public function destroy($id)
     {
-        $plan = Plan_actividades::find($id);
-        $plan->delete();
-        return redirect()->back();
+        Plan_actividades::find($id)->delete();
+    }
+
+    public function idgene(Request $request)
+    {
+        $data['va'] = DB::select('SELECT exp_asigna_generacion.id_asigna_generacion,exp_asigna_generacion.id_generacion,exp_generacion.generacion
+            FROM exp_asigna_generacion,exp_generacion,exp_asigna_tutor
+            WHERE exp_asigna_generacion.id_generacion=exp_generacion.id_generacion
+            AND exp_asigna_generacion.deleted_at is null
+            and exp_asigna_generacion.id_jefe_periodo=exp_asigna_tutor.id_jefe_periodo
+            and exp_asigna_generacion.id_generacion='.$request->idg.'
+            GROUP BY exp_generacion.generacion ASC');
+        //dd($data);
+        return $data;
     }
 }

@@ -33,7 +33,7 @@ Route::resource("canalizacion","Canaliza_tutorController");
 Route::resource("canalizados","Canalizados_tutorController");
 Route::Resource('/profesor','ProfesorController');
 Route::Resource('/planeacion','Planea_tutorController');
-Route::Resource('/actividades','Actividades_tutorController');
+
 Route::Resource('/eventos','Eventos_tutorController');
 Route::Resource('/evidencias','Evidencias_tutorController');
 
@@ -167,7 +167,7 @@ Route::group(['prefix'=>'tutorias'],function () {
     Route::get('generacion','Dep_desarrolloController@generacion');
 
     ///CONSULTA DE ACTIVIDADES DE PLANEACION DESARROLLO
-    Route::post('actividades','Dep_desarrolloController@actividades');
+    Route::post('actividades1','Dep_desarrolloController@actividades');
 
     ///MODAL REVISAR ACTIVIDAD DESARROLLO ACADEMICO
     Route::post('/modalactactidesa','Dep_desarrolloController@actuactivi');
@@ -197,6 +197,18 @@ Route::group(['prefix'=>'tutorias'],function () {
 
     ///CONSULTA DE ACTIVIDADES DE PLANEACION COORDINADOR INSTITUCIONAL
     Route::post('actividadescoor','Dep_desarrolloController@actividades');
+
+    ////RUTA ACTIVIDADES
+    Route::Resource('/actividades','Actividades_tutorController');
+
+    ///AGREGAR ACTIVIDAD COORDINADOR GENERAL
+    Route::post('/agactcoorgen','Actividades_tutorController@store');
+
+    ///MODAL AGREGAR ACTIVIDAD COORDINADOR GENERAL
+    Route::post('/modalagregaractividad','Actividades_tutorController@idgene');
+
+    ///ACTUALIZA ACTIVIDADES COORDINADOR GENERAL
+    Route::post('/editaractcoor','Actividades_tutorController@actu');
 
     ///LISTA DE CARRERAS EN REVISION DE DE PLANEACION EN DESARROLLO ACADEMICO
     Route::get('/carrerasinst','Coordina_instController@carreras1');

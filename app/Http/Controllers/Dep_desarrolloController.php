@@ -30,7 +30,7 @@ class Dep_desarrolloController extends Controller
     public  function actividades(Request $request)
     {
         $datos=DB::select('SELECT plan_actividades.id_plan_actividad,plan_actividades.desc_actividad,plan_actividades.objetivo_actividad,DATE_FORMAT(plan_actividades.fi_actividad, \'%d/%m/%Y\') as fi_acti,
-                                  DATE_FORMAT(plan_actividades.ff_actividad, \'%d/%m/%Y\') as ff_acti,exp_asigna_generacion.id_asigna_generacion,plan_asigna_planeacion_actividad.comentario,plan_asigna_planeacion_actividad.id_estado,plan_asigna_planeacion_actividad.id_asigna_planeacion_actividad,plan_actividades.fi_actividad,plan_actividades.fi_actividad,plan_actividades.ff_actividad
+                                  DATE_FORMAT(plan_actividades.ff_actividad, \'%d/%m/%Y\') as ff_acti,exp_asigna_generacion.id_asigna_generacion,plan_asigna_planeacion_actividad.comentario,plan_asigna_planeacion_actividad.id_estado,plan_asigna_planeacion_actividad.id_asigna_planeacion_actividad,plan_actividades.fi_actividad,plan_actividades.fi_actividad,plan_actividades.ff_actividad,exp_generacion.id_generacion
                                     FROM plan_actividades,exp_asigna_generacion,plan_asigna_planeacion_actividad,exp_generacion
                                     WHERE plan_asigna_planeacion_actividad.id_asigna_generacion=exp_asigna_generacion.id_asigna_generacion
                                     AND plan_asigna_planeacion_actividad.id_plan_actividad=plan_actividades.id_plan_actividad

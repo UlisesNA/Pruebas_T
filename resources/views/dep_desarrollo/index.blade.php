@@ -97,7 +97,7 @@
             },
             data: {
                 gridColumns: ['Fecha Inicio', 'Fecha Fin', 'Nombre Actividad', 'Revisar'],
-                rut: "/tutorias/actividades",/////////////////
+                rut: "/tutorias/actividades1",/////////////////
                 rutaa: "/tutorias/semestre",
                 generacion: "/tutorias/generacion",/////////////////////
                 act: '/tutorias/actualiza',////////

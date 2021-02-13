@@ -33,7 +33,7 @@
                                         <div class="col-11 text-center">PLANEACIÓN @{{ gen }}</div>
                                         <div class="col-1 text-center">
                                             <button class="btn btn-outline-info m-1"
-                                                    @click="acanaliza(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Agregar Actividad">+
+                                                    @click="agregaract()" data-toggle="tooltip" data-placement="bottom" title="Agregar Actividad">+
                                             </button>
                                         </div>
                                     </div>
@@ -55,22 +55,22 @@
                                                     <template slot="Acciones" scope="alumno">
                                                         <div class="text-center" v-if="alumno.entry.id_estado==2 && alumno.entry.comentario!=null">
                                                             <button class="btn btn-outline-primary m-1"
-                                                                    @click="acanaliza(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Editar Actividad"><i class="far fa-edit"></i>
+                                                                    @click="acticam(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Editar Actividad"><i class="far fa-edit"></i>
                                                             </button>
                                                         </div>
                                                         <div class="text-center" v-else-if="alumno.entry.id_estado==2 && alumno.entry.comentario==null">
                                                             <button class="btn btn-outline-primary m-1"
-                                                                    @click="acanaliza(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Editar Actividad"><i class="far fa-edit"></i>
+                                                                    @click="acticam(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Editar Actividad"><i class="far fa-edit"></i>
                                                             </button>
                                                         </div>
                                                         <div class="text-center" v-else-if="alumno.entry.id_estado==1">
                                                             <button class="btn btn-outline-primary m-1"
-                                                                    @click="acanaliza(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Ver Actividad"><i class="far fa-eye"></i>
+                                                                    @click="acticam(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Ver Actividad"><i class="far fa-eye"></i>
                                                             </button>
                                                         </div>
                                                         <div class="text-center" v-else-if="alumno.entry.id_estado==3">
                                                             <button class="btn btn-outline-primary m-1"
-                                                                    @click="acanaliza(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Actividad con Cambios"><i class="far fa-edit"></i>
+                                                                    @click="acticam(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Actividad con Cambios"><i class="far fa-edit"></i>
                                                             </button>
                                                         </div>
                                                     </template>
@@ -79,9 +79,7 @@
                                                             <a>Actividad Corregida</a>
                                                         </div>
                                                         <div class="text-center" v-else-if="alumno.entry.id_estado==2 && alumno.entry.comentario==null">
-                                                            <button class="btn btn-outline-primary m-1"
-                                                                    @click="acanaliza(alumno.entry)" data-toggle="tooltip" data-placement="bottom" title="Eliminar Actividad"><i class="far fa-eraser"></i>
-                                                            </button>
+                                                            <button  v-on:click="confirmC(alumno.entry.id_plan_actividad)" class=" btn btn-outline-danger" data-toggle="tooltip" title="Eliminar Actividad"><i class="fa fa-times"></i></button>
                                                         </div>
                                                         <div class="text-center" v-else-if="alumno.entry.id_estado==1">
                                                             <a>Actividad Aprobada</a>
@@ -111,6 +109,9 @@
                 </div>
             </div>
         </div>
+        @include('coordina_inst.modalagregaract')
+        @include('coordina_inst.eliminaracti')
+        @include('coordina_inst.modalact')
     </div>
     <script type="text/javascript">
         Vue.use(DataTable);
@@ -134,9 +135,11 @@
                 actsuge: '/tutorias/actualizasuge',
                 cambios: '/tutorias/cambio',
                 editaract : '/tutorias/modalactactidesa',//////////////////////////
-                apruact: '/tutorias/apruebaactividad',/////////////////////////////
+                editaractcoor: '/tutorias/editaractcoor',/////////////////////////////
                 correc : '/tutorias/modalcorrecion',//////////////////////////
+                actividadid: '/tutorias/modalagregaractividad',//////////////////////////
                 aprucorrect: '/tutorias/apruebacorreccion',/////////////////////////////
+                prueba: '/tutorias/agactcoorgen',
                 datos: [],////////////////////
                 grupos: [],///////////
                 alumnog: [],
@@ -180,6 +183,15 @@
                         generacion: "",
                     },
                 },
+                agract:{
+                    id_generacion: "",
+                    id_asigna_generacion: "",
+                    fi_actividad: "",
+                    ff_actividad: "",
+                    desc_actividad: "",
+                    objetivo_actividad: "",
+                    id_estado: "2",
+                }
             },
             methods: {
                 ////////////////////////
@@ -197,6 +209,7 @@
                     this.getAlumnos();
                 },
                 getAlumnos: function () {
+                    this.id= this.idgenera;
                     axios.post(this.rut, {
                         id_generacion: this.idgenera,
                         id_asigna_generacion: this.idasigna
@@ -211,7 +224,35 @@
                     }).catch(error => {
                     });
                 },
-                acanaliza: function (alumno) {
+                agregaract: function () {
+                    axios.post(this.actividadid, {
+                        idg:this.id,
+                    }).then(response => {
+                        this.agract.id_generacion=response.data.va[0].id_generacion;
+                        this.agract.id_asigna_generacion=response.data.va[0].id_asigna_generacion;
+                        $("#modalagregaract").modal("show");
+                    });
+                },
+                submitAgregar: function(){
+                    axios.post(this.prueba,  {
+                        fi_actividad:this.agract.fi_actividad,
+                        ff_actividad:this.agract.ff_actividad,
+                        desc_actividad:this.agract.desc_actividad,
+                        objetivo_actividad:this.agract.objetivo_actividad,
+                        id_estado:this.agract.id_estado,
+                        id_generacion:this.agract.id_generacion,
+                    })
+                        .then(response => {
+                            $("#modalagregaract").modal("hide");
+                            this.agract.fi_actividad="";
+                            this.agract.ff_actividad="";
+                            this.agract.desc_actividad="";
+                            this.agract.objetivo_actividad="";
+                            this.getAlumnos();
+                            this.popToast('Actividad Agregada');
+                        });
+                },
+                acticam: function (alumno) {
                     console.log(alumno);
                     axios.post(this.editaract, {id: alumno.id_plan_actividad}).then(response => {
                         this.act.va.id_plan_actividad = response.data.va[0].id_plan_actividad;
@@ -225,54 +266,39 @@
                         this.act.va.id_asigna_planeacion_actividad = response.data.va[0].id_asigna_planeacion_actividad;
                         this.act.va.id_generacion = response.data.va[0].id_generacion;
                         this.act.va.generacion = response.data.va[0].generacion;
-                        $("#modaleditar").modal("show");
+                        $("#modalact").modal("show");
                     });
-
                 },
                 submitAprobar: function(){
-                    axios.post(this.apruact,  {
+                    axios.post(this.editaractcoor,  {
                         id_plan_actividad: this.act.va.id_plan_actividad,
                         id_generacion: this.act.va.id_generacion,
                         id_asigna_generacion: this.act.va.id_asigna_generacion,
+                        fi_actividad:this.act.va.fi_actividad,
+                        ff_actividad:this.act.va.ff_actividad,
+                        desc_actividad:this.act.va.desc_actividad,
+                        objetivo_actividad:this.act.va.objetivo_actividad,
                         generacion: this.act.va.generacion,
-                        id_estado:1,
+                        comentario: this.act.va.comentario,
+                        id_estado:2,
                     })
                         .then(response => {
-                            $("#modaleditar").modal("hide");
+                            $("#modalact").modal("hide");
                             //alert(response.data)
                             this.getlista(response.data);
-                            this.popToast('Actividad Aprobada');
+                            this.popToast('Actividad Corregida');
                         });
                 },
-                correccion: function (correc) {
-                    console.log(correc);
-                    axios.post(this.correc, {id: correc.id_plan_actividad}).then(response => {
-                        this.correct.va.comentario = response.data.va[0].comentario;
-                        this.correct.va.id_plan_actividad = response.data.va[0].id_plan_actividad;
-                        this.correct.va.id_asigna_planeacion_actividad = response.data.va[0].id_asigna_planeacion_actividad;
-                        this.correct.va.id_asigna_generacion = response.data.va[0].id_asigna_generacion;
-                        this.correct.va.id_generacion = response.data.va[0].id_generacion;
-                        this.correct.va.generacion = response.data.va[0].generacion;
-                        $("#modaleditar").modal("hide");
-                        $("#modalcorrecion").modal("show");
+                deleteC:function () {
+                    var url = '/tutorias/actividades/' + this.id_co;
+                    axios.delete(url).then(response => {
+                        this.getAlumnos();
+                        this.popToast1('Actividad Eliminada');
                     });
-
                 },
-                submitCorreccion: function(){
-                    axios.post(this.aprucorrect,  {
-                        id_plan_actividad: this.correct.va.id_plan_actividad,
-                        id_generacion: this.correct.va.id_generacion,
-                        id_asigna_generacion: this.correct.va.id_asigna_generacion,
-                        generacion: this.correct.va.generacion,
-                        comentario: this.correct.va.comentario,
-                        id_estado:3,
-                    })
-                        .then(response => {
-                            $("#modalcorrecion").modal("hide");
-                            //alert(response.data)
-                            this.getlista(response.data);
-                            this.popToast('Corrección Agregada');
-                        });
+                confirmC:function (id) {
+                    this.id_co=id;
+                    $('#EliminarAct').modal('show');
                 },
                 popToast(Mensaje) {
                     const h = this.$createElement;
@@ -288,6 +314,27 @@
                     this.$bvToast.toast([vNodesMsg], {
                         solid: true,
                         variant: 'success',
+                        toaster:'b-toaster-top-full',
+                        noCloseButton: true,
+                        noHoverPause:false,
+                        autoHideDelay:'2000',
+
+                    });
+                },
+                popToast1(Mensaje) {
+                    const h = this.$createElement;
+                    const vNodesMsg = h(
+                        'p',
+                        { class: ['text-center', 'mb-0'] },
+                        [
+                            h('b-spinner', { props: { type: 'grow', small: true } }),
+                            h('strong', {}, Mensaje),
+                            h('b-spinner', { props: { type: 'grow', small: true } })
+                        ]
+                    );
+                    this.$bvToast.toast([vNodesMsg], {
+                        solid: true,
+                        variant: 'warning',
                         toaster:'b-toaster-top-full',
                         noCloseButton: true,
                         noHoverPause:false,
